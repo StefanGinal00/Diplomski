@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://d25wjjihdqoeb"]
+
+[ext_resource type="Script" uid="uid://byyp7iuo28yo6" path="res://player.gd" id="1_xkndl"]
+[ext_resource type="Texture2D" uid="uid://gb1r7s7q6tf4" path="res://icon.svg" id="2_u44n3"]
+[ext_resource type="Script" uid="uid://d3mlgtramkl0h" path="res://SpikeTrap.gd" id="3_u44n3"]
+[ext_resource type="Script" uid="uid://cs81wy3ba6sfk" path="res://Enemy.gd" id="4_sb48q"]
+[ext_resource type="PackedScene" uid="uid://cgcejgeuqurqk" path="res://XPOrb.tscn" id="5_t88pq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sb48q"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_xkndl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t88pq"]
+size = Vector2(802, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r0x5m"]
+size = Vector2(19, 31.75)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2vekm"]
+size = Vector2(16, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3mrqo"]
+size = Vector2(18, 15)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_joorw"]
+size = Vector2(16, 6)
+
+[node name="Game" type="Node2D" unique_id=535081610]
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1179743779]
+position = Vector2(234, 342)
+script = ExtResource("1_xkndl")
+unlock_double_jump = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=721759141]
+position = Vector2(7.1525574e-07, -7.1525574e-07)
+scale = Vector2(0.15234375, 0.16015626)
+texture = ExtResource("2_u44n3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1397834662]
+shape = SubResource("RectangleShape2D_sb48q")
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=917960643]
+zoom = Vector2(3, 3)
+
+[node name="InvulnerabilityTimer" type="Timer" parent="Player" unique_id=1391366989]
+wait_time = 0.8
+one_shot = true
+
+[node name="Ground" type="StaticBody2D" parent="." unique_id=860781869]
+position = Vector2(300, 400)
+physics_material_override = SubResource("PhysicsMaterial_xkndl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=1454486460]
+position = Vector2(297, -2)
+shape = SubResource("RectangleShape2D_t88pq")
+
+[node name="Polygon2D" type="Polygon2D" parent="Ground" unique_id=486365016]
+color = Color(0.7733917, 0.120958306, 0.36783326, 1)
+polygon = PackedVector2Array(-102, -10, -102, 5, 504, 5, 503, -10)
+
+[node name="SpikeTrap" type="Area2D" parent="." unique_id=512036186]
+position = Vector2(345, 375)
+disable_mode = 2
+script = ExtResource("3_u44n3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpikeTrap" unique_id=1525981450]
+position = Vector2(-0.5, -1.125)
+shape = SubResource("RectangleShape2D_r0x5m")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="SpikeTrap" unique_id=1958434574]
+position = Vector2(-3.8146973e-06, 8)
+scale = Vector2(1.0098684, 1)
+polygon = PackedVector2Array(0, -13, -10, -1, -10, 8, 9, 8, 9, -2)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1211638105]
+
+[node name="HealthBar" type="ProgressBar" parent="UI" unique_id=1763113388]
+custom_minimum_size = Vector2(20, 20)
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = -932.0
+offset_bottom = 27.0
+grow_horizontal = 2
+max_value = 5.0
+value = 5.0
+show_percentage = false
+
+[node name="HealthLabel" type="Label" parent="UI/HealthBar" unique_id=1320604432]
+layout_mode = 0
+offset_right = 220.0
+offset_bottom = 27.0
+text = "HP: 5/5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Enemy" type="CharacterBody2D" parent="." unique_id=966733978]
+position = Vector2(507, 380)
+script = ExtResource("4_sb48q")
+
+[node name="Sprite2D" type="Sprite2D" parent="Enemy" unique_id=1734652846]
+position = Vector2(0.24998283, 0)
+scale = Vector2(0.10546848, 0.09375)
+texture = ExtResource("2_u44n3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy" unique_id=1410967247]
+shape = SubResource("RectangleShape2D_2vekm")
+
+[node name="DetectionArea" type="Area2D" parent="Enemy" unique_id=1805845043]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/DetectionArea" unique_id=955365596]
+shape = SubResource("RectangleShape2D_3mrqo")
+
+[node name="LeftPoint" type="Marker2D" parent="Enemy" unique_id=1992589058]
+position = Vector2(-120, 0)
+
+[node name="RightPoint" type="Marker2D" parent="Enemy" unique_id=746639315]
+position = Vector2(120, 0)
+
+[node name="TopHitbox" type="Area2D" parent="Enemy" unique_id=1388792432]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/TopHitbox" unique_id=357831158]
+position = Vector2(0, -10)
+shape = SubResource("RectangleShape2D_joorw")
+
+[node name="XPOrb" parent="." unique_id=109054762 instance=ExtResource("5_t88pq")]
+position = Vector2(-12, -1)
+
+[node name="XPOrb2" parent="." unique_id=2051720433 instance=ExtResource("5_t88pq")]
+position = Vector2(81, -37)
+
+[node name="XPOrb3" parent="." unique_id=2078735444 instance=ExtResource("5_t88pq")]
+position = Vector2(284, -1)
+
+[connection signal="timeout" from="Player/InvulnerabilityTimer" to="Player" method="_on_invulnerability_timer_timeout"]
+[connection signal="area_entered" from="SpikeTrap" to="SpikeTrap" method="_on_area_entered"]
