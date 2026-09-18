@@ -4,3 +4,6 @@
 
 # Local temporary analysis files
 .tmp*
+
+# Local Godot validation logs
+debug.log

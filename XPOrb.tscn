@@ -1,21 +1,23 @@
 [gd_scene format=3 uid="uid://cgcejgeuqurqk"]
 
 [ext_resource type="Script" uid="uid://dltlfno56otv5" path="res://XPOrb.gd" id="1_865k8"]
-[ext_resource type="Texture2D" uid="uid://cyt41h1poejud" path="res://red-orb.svg" id="2_xj5ed"]
+[ext_resource type="Texture2D" path="res://coin-svgrepo-com.svg" id="2_xj5ed"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_drlxq"]
 radius = 4.0
 
-[node name="XPOrb" type="Node2D" unique_id=109054762]
-
-[node name="XPOrb" type="Area2D" parent="." unique_id=1190296272]
-position = Vector2(264, 382)
+[node name="XPOrb" type="Area2D" groups=["xp_orb"]]
 script = ExtResource("1_865k8")
 
-[node name="Sprite2D" type="Sprite2D" parent="XPOrb" unique_id=1532332352]
-position = Vector2(-4.7683716e-07, 0)
-scale = Vector2(0.018737162, 0.018656716)
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Glow" type="Polygon2D" parent="Visual"]
+color = Color(0.25, 1, 0.82, 0.22)
+polygon = PackedVector2Array(0, -10, 7, -7, 10, 0, 7, 7, 0, 10, -7, 7, -10, 0, -7, -7)
+
+[node name="Sprite2D" type="Sprite2D" parent="Visual"]
+scale = Vector2(0.02, 0.02)
 texture = ExtResource("2_xj5ed")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="XPOrb" unique_id=1453290143]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_drlxq")

@@ -3,8 +3,14 @@
 [ext_resource type="Script" uid="uid://byyp7iuo28yo6" path="res://player.gd" id="1_xkndl"]
 [ext_resource type="Texture2D" uid="uid://gb1r7s7q6tf4" path="res://icon.svg" id="2_u44n3"]
 [ext_resource type="Script" uid="uid://d3mlgtramkl0h" path="res://SpikeTrap.gd" id="3_u44n3"]
-[ext_resource type="Script" uid="uid://cs81wy3ba6sfk" path="res://Enemy.gd" id="4_sb48q"]
 [ext_resource type="PackedScene" uid="uid://cgcejgeuqurqk" path="res://XPOrb.tscn" id="5_t88pq"]
+[ext_resource type="Script" uid="uid://ntub5qs7redy" path="res://UI.gd" id="6_ui"]
+[ext_resource type="PackedScene" path="res://Enemy.tscn" id="7_enemy"]
+[ext_resource type="Script" path="res://LevelExit.gd" id="8_exit"]
+[ext_resource type="Script" path="res://QuestManager.gd" id="9_quest"]
+[ext_resource type="Script" path="res://FriendlyNPC.gd" id="10_npc"]
+[ext_resource type="PackedScene" path="res://QuestItem.tscn" id="11_quest_item"]
+[ext_resource type="Script" path="res://DashGate.gd" id="12_dash_gate"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sb48q"]
 
@@ -13,28 +19,60 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t88pq"]
 size = Vector2(802, 20)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_r0x5m"]
-size = Vector2(19, 31.75)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_attack"]
+size = Vector2(34, 20)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2vekm"]
-size = Vector2(16, 14)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_small"]
+size = Vector2(100, 10)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3mrqo"]
-size = Vector2(18, 15)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_wide"]
+size = Vector2(130, 10)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_joorw"]
-size = Vector2(16, 6)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(24, 44)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_npc_interaction"]
+radius = 32.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dash_gate"]
+size = Vector2(18, 260)
 
 [node name="Game" type="Node2D" unique_id=535081610]
 
-[node name="Player" type="CharacterBody2D" parent="." unique_id=1179743779]
+[node name="QuestManager" type="Node" parent="." groups=["quest_manager"]]
+script = ExtResource("9_quest")
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -10
+
+[node name="Sky" type="ColorRect" parent="Background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.035, 0.055, 0.11, 1)
+
+[node name="Horizon" type="ColorRect" parent="Background"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -210.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+color = Color(0.065, 0.12, 0.18, 1)
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1179743779 groups=["player"]]
 position = Vector2(234, 342)
 script = ExtResource("1_xkndl")
-unlock_double_jump = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=721759141]
 position = Vector2(7.1525574e-07, -7.1525574e-07)
 scale = Vector2(0.15234375, 0.16015626)
+modulate = Color(0.45, 0.95, 1, 1)
 texture = ExtResource("2_u44n3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1397834662]
@@ -47,6 +85,34 @@ zoom = Vector2(3, 3)
 wait_time = 0.8
 one_shot = true
 
+[node name="AttackCast" type="ShapeCast2D" parent="Player"]
+position = Vector2(24, 0)
+shape = SubResource("RectangleShape2D_attack")
+target_position = Vector2(0, 0)
+collision_mask = 1
+max_results = 8
+collide_with_bodies = true
+collide_with_areas = false
+
+[node name="AttackVisual" type="Polygon2D" parent="Player/AttackCast"]
+visible = false
+color = Color(1, 0.78, 0.16, 0.82)
+polygon = PackedVector2Array(-16, -10, 10, -8, 18, 0, 10, 8, -16, 10, -8, 0)
+
+[node name="AttackCooldownTimer" type="Timer" parent="Player"]
+wait_time = 0.35
+one_shot = true
+
+[node name="AttackVisualTimer" type="Timer" parent="Player"]
+wait_time = 0.12
+one_shot = true
+
+[node name="DashVisual" type="Polygon2D" parent="Player"]
+visible = false
+z_index = -1
+color = Color(0.18, 0.95, 1, 0.55)
+polygon = PackedVector2Array(-32, -8, 6, -5, 12, 0, 6, 5, -32, 8, -20, 0)
+
 [node name="Ground" type="StaticBody2D" parent="." unique_id=860781869]
 position = Vector2(300, 400)
 physics_material_override = SubResource("PhysicsMaterial_xkndl")
@@ -56,81 +122,413 @@ position = Vector2(297, -2)
 shape = SubResource("RectangleShape2D_t88pq")
 
 [node name="Polygon2D" type="Polygon2D" parent="Ground" unique_id=486365016]
-color = Color(0.7733917, 0.120958306, 0.36783326, 1)
-polygon = PackedVector2Array(-102, -10, -102, 5, 504, 5, 503, -10)
+color = Color(0.08, 0.24, 0.3, 1)
+polygon = PackedVector2Array(-104, -10, -104, 5, 698, 5, 698, -10)
+
+[node name="SurfaceGlow" type="Line2D" parent="Ground"]
+points = PackedVector2Array(-104, -10, 698, -10)
+width = 2.0
+default_color = Color(0.15, 0.82, 0.78, 0.8)
+
+[node name="PlatformLow" type="StaticBody2D" parent="."]
+position = Vector2(455, 335)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformLow"]
+shape = SubResource("RectangleShape2D_platform_small")
+
+[node name="Polygon2D" type="Polygon2D" parent="PlatformLow"]
+color = Color(0.1, 0.3, 0.37, 1)
+polygon = PackedVector2Array(-50, -5, 50, -5, 50, 5, -50, 5)
+
+[node name="SurfaceGlow" type="Line2D" parent="PlatformLow"]
+points = PackedVector2Array(-50, -5, 50, -5)
+width = 2.0
+default_color = Color(0.15, 0.82, 0.78, 0.8)
+
+[node name="PlatformHigh" type="StaticBody2D" parent="."]
+position = Vector2(665, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformHigh"]
+shape = SubResource("RectangleShape2D_platform_wide")
+
+[node name="Polygon2D" type="Polygon2D" parent="PlatformHigh"]
+color = Color(0.1, 0.3, 0.37, 1)
+polygon = PackedVector2Array(-65, -5, 65, -5, 65, 5, -65, 5)
+
+[node name="SurfaceGlow" type="Line2D" parent="PlatformHigh"]
+points = PackedVector2Array(-65, -5, 65, -5)
+width = 2.0
+default_color = Color(0.15, 0.82, 0.78, 0.8)
+
+[node name="Caretaker" type="Area2D" parent="." groups=["friendly_npc"]]
+z_index = 1
+position = Vector2(290, 376)
+script = ExtResource("10_npc")
+
+[node name="Sprite2D" type="Sprite2D" parent="Caretaker"]
+scale = Vector2(0.115, 0.115)
+modulate = Color(0.55, 1, 0.58, 1)
+texture = ExtResource("2_u44n3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Caretaker"]
+shape = SubResource("CircleShape2D_npc_interaction")
+
+[node name="NameLabel" type="Label" parent="Caretaker"]
+offset_left = -38.0
+offset_top = -32.0
+offset_right = 38.0
+offset_bottom = -14.0
+text = "Caretaker"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="Caretaker"]
+offset_left = -38.0
+offset_top = 17.0
+offset_right = 38.0
+offset_bottom = 37.0
+text = "[E] Talk"
+horizontal_alignment = 1
+
+[node name="LostSigil" parent="." instance=ExtResource("11_quest_item")]
+position = Vector2(665, 278)
 
 [node name="SpikeTrap" type="Area2D" parent="." unique_id=512036186]
 position = Vector2(345, 375)
 disable_mode = 2
 script = ExtResource("3_u44n3")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SpikeTrap" unique_id=1525981450]
-position = Vector2(-0.5, -1.125)
-shape = SubResource("RectangleShape2D_r0x5m")
-
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="SpikeTrap" unique_id=1958434574]
 position = Vector2(-3.8146973e-06, 8)
 scale = Vector2(1.0098684, 1)
 polygon = PackedVector2Array(0, -13, -10, -1, -10, 8, 9, 8, 9, -2)
 
+[node name="Polygon2D" type="Polygon2D" parent="SpikeTrap"]
+position = Vector2(-3.8146973e-06, 8)
+scale = Vector2(1.0098684, 1)
+color = Color(0.9, 0.16, 0.18, 1)
+polygon = PackedVector2Array(0, -13, -10, -1, -10, 8, 9, 8, 9, -2)
+
 [node name="UI" type="CanvasLayer" parent="." unique_id=1211638105]
+script = ExtResource("6_ui")
 
 [node name="HealthBar" type="ProgressBar" parent="UI" unique_id=1763113388]
-custom_minimum_size = Vector2(20, 20)
-anchors_preset = 10
-anchor_right = 1.0
-offset_right = -932.0
-offset_bottom = 27.0
-grow_horizontal = 2
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 260.0
+offset_bottom = 48.0
 max_value = 5.0
 value = 5.0
 show_percentage = false
 
 [node name="HealthLabel" type="Label" parent="UI/HealthBar" unique_id=1320604432]
-layout_mode = 0
-offset_right = 220.0
-offset_bottom = 27.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "HP: 5/5"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Enemy" type="CharacterBody2D" parent="." unique_id=966733978]
+[node name="XPBar" type="ProgressBar" parent="UI"]
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 260.0
+offset_bottom = 84.0
+max_value = 3.0
+show_percentage = false
+
+[node name="XPLabel" type="Label" parent="UI/XPBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "XP: 0/3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SkillPointsLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 92.0
+offset_right = 260.0
+offset_bottom = 120.0
+text = "SKILL POINTS: 0"
+
+[node name="QuestTrackerLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 126.0
+offset_right = 360.0
+offset_bottom = 154.0
+text = "QUEST: Talk to the Caretaker"
+
+[node name="ObjectivePanel" type="Panel" parent="UI"]
+anchors_preset = 10
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -155.0
+offset_top = 20.0
+offset_right = 155.0
+offset_bottom = 58.0
+grow_horizontal = 2
+
+[node name="ObjectiveLabel" type="Label" parent="UI/ObjectivePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "DEFEAT ENEMIES  0/2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NotificationLabel" type="Label" parent="UI"]
+anchors_preset = 10
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -220.0
+offset_top = 68.0
+offset_right = 220.0
+offset_bottom = 96.0
+grow_horizontal = 2
+text = "ENEMY DEFEATED  •  XP DROPPED"
+horizontal_alignment = 1
+
+[node name="DialoguePanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -310.0
+offset_top = -230.0
+offset_right = 310.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="SpeakerLabel" type="Label" parent="UI/DialoguePanel"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 14.0
+offset_right = 600.0
+offset_bottom = 40.0
+text = "CARETAKER"
+
+[node name="DialogueText" type="Label" parent="UI/DialoguePanel"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 46.0
+offset_right = 600.0
+offset_bottom = 104.0
+text = "Dialogue text"
+autowrap_mode = 2
+
+[node name="PrimaryButton" type="Button" parent="UI/DialoguePanel"]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 116.0
+offset_right = 470.0
+offset_bottom = 154.0
+text = "Accept Mission"
+
+[node name="CloseButton" type="Button" parent="UI/DialoguePanel"]
+layout_mode = 0
+offset_left = 482.0
+offset_top = 116.0
+offset_right = 600.0
+offset_bottom = 154.0
+text = "Close"
+
+[node name="SkillPanel" type="Panel" parent="UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -330.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 220.0
+grow_horizontal = 0
+
+[node name="TitleLabel" type="Label" parent="UI/SkillPanel"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 298.0
+offset_bottom = 36.0
+text = "SKILLS"
+horizontal_alignment = 1
+
+[node name="DoubleJumpButton" type="Button" parent="UI/SkillPanel"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 44.0
+offset_right = 298.0
+offset_bottom = 82.0
+disabled = true
+text = "Unlock Double Jump - 1 SP"
+
+[node name="DashButton" type="Button" parent="UI/SkillPanel"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 92.0
+offset_right = 298.0
+offset_bottom = 130.0
+disabled = true
+text = "Unlock Dash - 1 SP"
+
+[node name="SkillInfoLabel" type="Label" parent="UI/SkillPanel"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 142.0
+offset_right = 298.0
+offset_bottom = 192.0
+text = "Collect XP to earn a skill point."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="GameOverPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -90.0
+offset_right = 160.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameOverLabel" type="Label" parent="UI/GameOverPanel"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 24.0
+offset_right = 300.0
+offset_bottom = 62.0
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="UI/GameOverPanel"]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 92.0
+offset_right = 250.0
+offset_bottom = 136.0
+text = "Restart"
+
+[node name="LevelCompletePanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -115.0
+offset_right = 190.0
+offset_bottom = 115.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="UI/LevelCompletePanel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 26.0
+offset_right = 356.0
+offset_bottom = 66.0
+text = "LEVEL COMPLETE"
+horizontal_alignment = 1
+
+[node name="SummaryLabel" type="Label" parent="UI/LevelCompletePanel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 78.0
+offset_right = 356.0
+offset_bottom = 126.0
+text = "Training ground cleared.\nYour next challenge awaits."
+horizontal_alignment = 1
+
+[node name="PlayAgainButton" type="Button" parent="UI/LevelCompletePanel"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 156.0
+offset_right = 280.0
+offset_bottom = 202.0
+text = "Play Again"
+
+[node name="ControlsLabel" type="Label" parent="UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -42.0
+offset_right = 470.0
+offset_bottom = -14.0
+grow_vertical = 0
+text = "Move: Arrows  |  Jump: Space  |  Attack: F  |  Dash: X  |  Interact: E"
+
+[node name="Enemy" parent="." instance=ExtResource("7_enemy")]
 position = Vector2(507, 380)
-script = ExtResource("4_sb48q")
 
-[node name="Sprite2D" type="Sprite2D" parent="Enemy" unique_id=1734652846]
-position = Vector2(0.24998283, 0)
-scale = Vector2(0.10546848, 0.09375)
-texture = ExtResource("2_u44n3")
+[node name="Enemy2" parent="." instance=ExtResource("7_enemy")]
+position = Vector2(760, 380)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy" unique_id=1410967247]
-shape = SubResource("RectangleShape2D_2vekm")
+[node name="DashGate" type="Area2D" parent="." groups=["ability_gate"]]
+z_index = 1
+position = Vector2(860, 258)
+script = ExtResource("12_dash_gate")
 
-[node name="DetectionArea" type="Area2D" parent="Enemy" unique_id=1805845043]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DashGate"]
+shape = SubResource("RectangleShape2D_dash_gate")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/DetectionArea" unique_id=955365596]
-shape = SubResource("RectangleShape2D_3mrqo")
+[node name="EnergyField" type="Polygon2D" parent="DashGate"]
+color = Color(0.15, 0.78, 1, 0.42)
+polygon = PackedVector2Array(-7, -130, 7, -130, 7, 130, -7, 130)
 
-[node name="LeftPoint" type="Marker2D" parent="Enemy" unique_id=1992589058]
-position = Vector2(-120, 0)
+[node name="EnergyCore" type="Line2D" parent="DashGate"]
+points = PackedVector2Array(0, -130, 0, 130)
+width = 2.0
+default_color = Color(0.62, 0.96, 1, 0.95)
 
-[node name="RightPoint" type="Marker2D" parent="Enemy" unique_id=746639315]
-position = Vector2(120, 0)
+[node name="StatusLabel" type="Label" parent="DashGate"]
+offset_left = -58.0
+offset_top = 62.0
+offset_right = 58.0
+offset_bottom = 82.0
+text = "DASH REQUIRED"
+horizontal_alignment = 1
 
-[node name="TopHitbox" type="Area2D" parent="Enemy" unique_id=1388792432]
+[node name="ExitPortal" type="Area2D" parent="."]
+z_index = 1
+position = Vector2(930, 366)
+script = ExtResource("8_exit")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/TopHitbox" unique_id=357831158]
-position = Vector2(0, -10)
-shape = SubResource("RectangleShape2D_joorw")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitPortal"]
+shape = SubResource("RectangleShape2D_exit")
+
+[node name="Frame" type="Polygon2D" parent="ExitPortal"]
+color = Color(0.38, 0.42, 0.5, 1)
+polygon = PackedVector2Array(-15, -25, 15, -25, 15, 25, 9, 25, 9, -18, -9, -18, -9, 25, -15, 25)
+
+[node name="Core" type="Polygon2D" parent="ExitPortal"]
+color = Color(0.2, 0.08, 0.12, 0.75)
+polygon = PackedVector2Array(-8, -17, 8, -17, 8, 24, -8, 24)
+
+[node name="StatusLabel" type="Label" parent="ExitPortal"]
+offset_left = -30.0
+offset_top = -43.0
+offset_right = 30.0
+offset_bottom = -23.0
+text = "LOCKED"
+horizontal_alignment = 1
 
 [node name="XPOrb" parent="." unique_id=109054762 instance=ExtResource("5_t88pq")]
-position = Vector2(-12, -1)
-
-[node name="XPOrb2" parent="." unique_id=2051720433 instance=ExtResource("5_t88pq")]
-position = Vector2(81, -37)
-
-[node name="XPOrb3" parent="." unique_id=2078735444 instance=ExtResource("5_t88pq")]
-position = Vector2(284, -1)
+position = Vector2(252, 381)
 
 [connection signal="timeout" from="Player/InvulnerabilityTimer" to="Player" method="_on_invulnerability_timer_timeout"]
-[connection signal="area_entered" from="SpikeTrap" to="SpikeTrap" method="_on_area_entered"]

@@ -1,0 +1,4 @@
+{
+    "godotTools.editorPath.godot4": "${env:USERPROFILE}\\Desktop\\Godot_v4.6.2-stable_win64.exe",
+    "godotTools.lsp.headless": true
+}

@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://QuestItem.gd" id="1_item"]
+
+[sub_resource type="CircleShape2D" id="ItemShape"]
+radius = 8.0
+
+[node name="QuestItem" type="Area2D" groups=["quest_item"]]
+script = ExtResource("1_item")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("ItemShape")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Glow" type="Polygon2D" parent="Visual"]
+color = Color(0.72, 0.34, 1, 0.25)
+polygon = PackedVector2Array(0, -14, 10, -10, 14, 0, 10, 10, 0, 14, -10, 10, -14, 0, -10, -10)
+
+[node name="Sigil" type="Polygon2D" parent="Visual"]
+color = Color(0.86, 0.58, 1, 1)
+polygon = PackedVector2Array(0, -9, 3, -3, 9, 0, 3, 3, 0, 9, -3, 3, -9, 0, -3, -3)
+
+[node name="Inner" type="Polygon2D" parent="Visual"]
+color = Color(0.22, 0.08, 0.34, 1)
+polygon = PackedVector2Array(0, -4, 4, 0, 0, 4, -4, 0)

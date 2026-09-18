@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://Enemy.gd" id="1_enemy"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_icon"]
+[ext_resource type="PackedScene" path="res://XPOrb.tscn" id="3_xp"]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(16, 14)
+
+[sub_resource type="RectangleShape2D" id="DamageShape"]
+size = Vector2(18, 15)
+
+[sub_resource type="RectangleShape2D" id="StompShape"]
+size = Vector2(16, 6)
+
+[sub_resource type="CircleShape2D" id="AwarenessShape"]
+radius = 110.0
+
+[node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
+script = ExtResource("1_enemy")
+xp_orb_scene = ExtResource("3_xp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0.25, 0)
+scale = Vector2(0.10546875, 0.09375)
+modulate = Color(1, 0.38, 0.3, 1)
+texture = ExtResource("2_icon")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BodyShape")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+z_index = 2
+offset_left = -12.0
+offset_top = -22.0
+offset_right = 12.0
+offset_bottom = -17.0
+mouse_filter = 2
+max_value = 2.0
+value = 2.0
+show_percentage = false
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("DamageShape")
+
+[node name="AwarenessArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AwarenessArea"]
+shape = SubResource("AwarenessShape")
+
+[node name="LeftPoint" type="Marker2D" parent="."]
+position = Vector2(-90, 0)
+
+[node name="RightPoint" type="Marker2D" parent="."]
+position = Vector2(90, 0)
+
+[node name="TopHitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopHitbox"]
+position = Vector2(0, -10)
+shape = SubResource("StompShape")
