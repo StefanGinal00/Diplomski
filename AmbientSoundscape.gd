@@ -163,6 +163,10 @@ func _get_stream(track_id: String) -> AudioStreamWAV:
 			frequencies = [58.3, 87.45, 116.6, 174.9]
 		"ash_barracks":
 			frequencies = [69.3, 103.95, 138.6, 207.9]
+		"ash_arena":
+			frequencies = [55.0, 82.5, 110.0, 220.0]
+		"ash_reservoir":
+			frequencies = [77.8, 116.7, 155.6, 233.4]
 		"boss":
 			frequencies = [82.5, 123.75, 165.0, 330.0]
 		_:

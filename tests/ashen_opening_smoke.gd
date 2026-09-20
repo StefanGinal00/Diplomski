@@ -145,7 +145,7 @@ func _run() -> void:
 	_check(causeway.get_node("UpperCache").opened and forge.get_node("ForgeCache").opened, "Saved Ashen caches reopened")
 	_check(causeway.get_node("CausewayLamp").is_active and forge.get_node("ForgeLamp").is_active, "Saved Ashen lamps went dark")
 	ui._update_route_summary()
-	_check("ASHEN BASTION  2/3 OPENING ROOMS" in ui.map_route_label.text and "CACHES 2/3" in ui.map_route_label.text and "FAN ON" in ui.map_route_label.text, "World map did not track Ashen opening")
+	_check("ASHEN BASTION  2/5 OPENING ROOMS" in ui.map_route_label.text and "CACHES 2/5" in ui.map_route_label.text and "FAN ON" in ui.map_route_label.text, "World map did not track Ashen opening")
 	ui._open_world_map(true, forge.get_node("ForgeLamp"))
 	await process_frame
 	var route_scroll: ScrollContainer = ui.get_node("WorldMapPanel/RouteScroll")

@@ -38,6 +38,8 @@
 [ext_resource type="PackedScene" path="res://BrokenCauseway.tscn" id="37_ash_causeway"]
 [ext_resource type="PackedScene" path="res://CinderForge.tscn" id="38_ash_forge"]
 [ext_resource type="PackedScene" path="res://EmberBarracks.tscn" id="39_ash_barracks"]
+[ext_resource type="PackedScene" path="res://AshArena.tscn" id="40_ash_arena"]
+[ext_resource type="PackedScene" path="res://SlagReservoir.tscn" id="41_ash_reservoir"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sb48q"]
 
@@ -178,6 +180,12 @@ position = Vector2(6800, 1350)
 
 [node name="EmberBarracks" parent="." instance=ExtResource("39_ash_barracks")]
 position = Vector2(7900, 1350)
+
+[node name="AshArena" parent="." instance=ExtResource("40_ash_arena")]
+position = Vector2(9400, 1350)
+
+[node name="SlagReservoir" parent="." instance=ExtResource("41_ash_reservoir")]
+position = Vector2(11000, 1350)
 
 [node name="QuestManager" type="Node" parent="." groups=["quest_manager"]]
 script = ExtResource("9_quest")

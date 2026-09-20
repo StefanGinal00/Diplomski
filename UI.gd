@@ -188,6 +188,9 @@ func _ready() -> void:
 	var barracks := get_parent().get_node_or_null("EmberBarracks")
 	if barracks != null:
 		barracks.trial_changed.connect(_update_objective_label)
+	var arena := get_parent().get_node_or_null("AshArena")
+	if arena != null:
+		arena.encounter_changed.connect(_update_objective_label)
 	if game_state != null:
 		if not game_state.gold_changed.is_connected(_on_gold_changed):
 			game_state.gold_changed.connect(_on_gold_changed)
@@ -468,6 +471,8 @@ func _show_zone_title(room_id: String) -> void:
 		"ash_causeway": ["BROKEN CAUSEWAY", "Ashen Bastion begins beyond the Matriarch"],
 		"ash_forge": ["CINDER FORGE", "Restore airflow to quiet the vents"],
 		"ash_barracks": ["EMBER BARRACKS", "Two waves guard a route back to the Causeway"],
+		"ash_arena": ["CINDER COLISEUM", "Four waves, ending with the Ember Marshal"],
+		"ash_reservoir": ["SLAG RESERVOIR", "Balance the coolant flow across two levels"],
 	}
 	var entry: Array = titles.get(room_id, [room_id.replace("_", " ").to_upper(), "An unfamiliar place"])
 	var subtitle: String = str(entry[1])
@@ -652,12 +657,14 @@ func _update_route_summary() -> void:
 	var shaft_rooms := 0
 	for room_id in ["sunken_shaft", "shaft_hollow", "shaft_crossing", "shaft_gallery", "shaft_cistern", "shaft_approach"]:
 		shaft_rooms += int(bool(game_state.discovered_rooms.get(room_id, false)))
-	var ash_rooms := int(bool(game_state.discovered_rooms.get("ash_causeway", false))) + int(bool(game_state.discovered_rooms.get("ash_forge", false))) + int(bool(game_state.discovered_rooms.get("ash_barracks", false)))
-	var ash_caches := int(bool(game_state.opened_caches.get("ash_causeway_supply", false))) + int(bool(game_state.opened_caches.get("ash_forge_supply", false))) + int(bool(game_state.opened_caches.get("ash_barracks_supply", false)))
+	var ash_rooms := int(bool(game_state.discovered_rooms.get("ash_causeway", false))) + int(bool(game_state.discovered_rooms.get("ash_forge", false))) + int(bool(game_state.discovered_rooms.get("ash_barracks", false))) + int(bool(game_state.discovered_rooms.get("ash_arena", false))) + int(bool(game_state.discovered_rooms.get("ash_reservoir", false)))
+	var ash_caches := int(bool(game_state.opened_caches.get("ash_causeway_supply", false))) + int(bool(game_state.opened_caches.get("ash_forge_supply", false))) + int(bool(game_state.opened_caches.get("ash_barracks_supply", false))) + int(bool(game_state.opened_caches.get("ash_arena_victory", false))) + int(bool(game_state.opened_caches.get("ash_reservoir_core", false)))
 	var fan_status := "ON" if bool(game_state.unlocked_shortcuts.get("ash_forge_fan", false)) else "OFF"
 	var trial_status := "CLEARED" if bool(game_state.unlocked_shortcuts.get("ash_barracks_cleared", false)) else "OPEN"
-	map_route_label.text = "ECHO GROTTO  %d/8 PLAYABLE ROOMS\n%s\nCACHES %d/10  •  %s\n\nSUNKEN SHAFT  %d/6 PLAYABLE ROOMS\nCACHES %d/11  •  %s\n\nASHEN BASTION  %d/3 OPENING ROOMS\nCACHES %d/3  •  FAN %s  •  TRIAL %s" % [
-		visited, "\n".join(room_lines), found_caches, echo_boss, shaft_rooms, shaft_caches, shaft_boss, ash_rooms, ash_caches, fan_status, trial_status,
+	var arena_status := "CLEARED" if bool(game_state.unlocked_shortcuts.get("ash_arena_cleared", false)) else "OPEN"
+	var coolant_count := int(bool(game_state.unlocked_shortcuts.get("ash_reservoir_lower", false))) + int(bool(game_state.unlocked_shortcuts.get("ash_reservoir_upper", false)))
+	map_route_label.text = "ECHO GROTTO  %d/8 PLAYABLE ROOMS\n%s\nCACHES %d/10  •  %s\n\nSUNKEN SHAFT  %d/6 PLAYABLE ROOMS\nCACHES %d/11  •  %s\n\nASHEN BASTION  %d/5 OPENING ROOMS\nCACHES %d/5  •  FAN %s\nBARRACKS %s  •  ARENA %s  •  COOLANT %d/2" % [
+		visited, "\n".join(room_lines), found_caches, echo_boss, shaft_rooms, shaft_caches, shaft_boss, ash_rooms, ash_caches, fan_status, trial_status, arena_status, coolant_count,
 	]
 
 
@@ -1180,6 +1187,13 @@ func _on_world_progress_changed(progress_id: String) -> void:
 	elif progress_id == "ash_barracks_cleared":
 		_update_objective_label()
 		_show_notification("BARRACKS CLEARED  •  CAUSEWAY LOOP OPEN")
+	elif progress_id == "ash_arena_cleared":
+		_update_objective_label()
+		_show_notification("CINDER COLISEUM CLEARED  •  EMBLEM EARNED")
+	elif progress_id.begins_with("ash_reservoir_"):
+		_update_objective_label()
+		var coolant_count := int(bool(game_state.unlocked_shortcuts.get("ash_reservoir_lower", false))) + int(bool(game_state.unlocked_shortcuts.get("ash_reservoir_upper", false)))
+		_show_notification("COOLANT FLOW RESTORED  •  FORGE LOOP OPEN" if coolant_count == 2 else "COOLANT VALVE OPEN  •  1/2")
 	elif progress_id.begins_with("echo_resonator_"):
 		_update_objective_label()
 		_show_notification("RESONATOR ATTUNED  •  THE GROTTO RESPONDS")
@@ -1225,9 +1239,11 @@ func _on_item_acquired(item_id: String, amount: int) -> void:
 	var item_name := item_id.replace("_", " ").capitalize()
 	if item_id == "barracks_insignia":
 		_show_notification("BARRACKS CLEARED  •  INSIGNIA + 45 GOLD + 4 XP  •  LOOP OPEN")
+	elif item_id == "marshal_emblem":
+		_show_notification("MARSHAL DEFEATED  •  EMBLEM + 100 GOLD + 7 XP")
 	else:
 		_show_notification("TIDEGUARD MANTLE FOUND  •  EQUIP IN INVENTORY [I]" if item_id == "tideguard_mantle" else "ITEM ACQUIRED  •  %s x%d" % [item_name, amount])
-	if item_id == "echo_charm" or item_id == "gallery_prism" or item_id == "memory_sigil_echo" or item_id == "tide_core" or item_id == "nest_crest" or item_id == "matriarch_seal" or item_id == "tideguard_mantle":
+	if item_id == "echo_charm" or item_id == "gallery_prism" or item_id == "memory_sigil_echo" or item_id == "tide_core" or item_id == "nest_crest" or item_id == "matriarch_seal" or item_id == "tideguard_mantle" or item_id == "crucible_core":
 		_update_objective_label()
 	if shop_panel.visible:
 		_populate_shop()
@@ -1640,11 +1656,31 @@ func _update_objective_label() -> void:
 	if game_state != null and game_state.current_room_id == "ash_barracks":
 		var barracks := get_parent().get_node_or_null("EmberBarracks")
 		if bool(game_state.unlocked_shortcuts.get("ash_barracks_cleared", false)):
-			objective_label.text = "TRIAL CLEARED  •  CAUSEWAY LOOP OPEN"
+			objective_label.text = "TRIAL CLEARED  •  COLISEUM ABOVE"
 		elif barracks != null and barracks.active:
 			objective_label.text = "TRIAL WAVE %d/2  •  %d LEFT" % [barracks.wave, barracks.enemies_remaining]
 		else:
 			objective_label.text = "ACTIVATE THE BARRACKS SIGNAL [E]"
+		return
+	if game_state != null and game_state.current_room_id == "ash_arena":
+		var arena := get_parent().get_node_or_null("AshArena")
+		if bool(game_state.unlocked_shortcuts.get("ash_arena_cleared", false)):
+			objective_label.text = "MARSHAL DEFEATED  •  RESERVOIR RIGHT"
+		elif arena != null and arena.active and arena.intermission:
+			objective_label.text = "WAVE %d/4 CLEARED  •  NEXT INCOMING" % arena.wave
+		elif arena != null and arena.active:
+			objective_label.text = "ARENA WAVE %d/4  •  %d LEFT" % [arena.wave, arena.enemies_remaining]
+		else:
+			objective_label.text = "SOUND THE WAR BELL [E]  •  FOUR WAVES"
+		return
+	if game_state != null and game_state.current_room_id == "ash_reservoir":
+		var coolant_count := int(bool(game_state.unlocked_shortcuts.get("ash_reservoir_lower", false))) + int(bool(game_state.unlocked_shortcuts.get("ash_reservoir_upper", false)))
+		if game_state.has_item("crucible_core"):
+			objective_label.text = "CRUCIBLE CORE SECURED  •  FORGE LOOP OPEN"
+		elif coolant_count == 2:
+			objective_label.text = "COOLANT FLOW RESTORED  •  CLAIM THE HIGH CORE"
+		else:
+			objective_label.text = "OPEN COOLANT VALVES  %d/2" % coolant_count
 		return
 	if game_state != null and game_state.current_room_id == "sunken_shaft":
 		if bool(game_state.defeated_bosses.get("abyss_warden", false)):

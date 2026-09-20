@@ -138,6 +138,9 @@ position = Vector2(82, 387)
 [node name="BarracksLoopEntry" type="Marker2D" parent="." groups=["ash_barracks_loop_entry"]]
 position = Vector2(1085, 387)
 
+[node name="ArenaReturn" type="Marker2D" parent="." groups=["ash_barracks_arena_return"]]
+position = Vector2(848, 312)
+
 [node name="ReturnDoor" parent="." instance=ExtResource("2_door")]
 position = Vector2(27, 387)
 target_marker_group = &"ash_forge_barracks_return"
@@ -153,6 +156,15 @@ required_event_ids = PackedStringArray("ash_barracks_cleared")
 locked_label = "TRIAL SEALED"
 locked_hint = "Clear the Barracks Trial to open this loop."
 
+[node name="ArenaDoor" parent="." instance=ExtResource("2_door")]
+position = Vector2(933, 312)
+target_marker_group = &"ash_arena_entry"
+target_room_id = "ash_arena"
+door_label = "CINDER COLISEUM"
+required_event_ids = PackedStringArray("ash_barracks_cleared")
+locked_label = "TRIAL SEALED"
+locked_hint = "Clear the Barracks Trial before entering the Coliseum."
+
 [node name="BarracksLamp" parent="." instance=ExtResource("3_lamp")]
 position = Vector2(150, 387)
 lamp_id = "ember_barracks_lamp"
@@ -164,7 +176,7 @@ enemy_block_radius = 105.0
 position = Vector2(335, 387)
 
 [node name="UpperSentry" parent="." instance=ExtResource("7_sentry")]
-position = Vector2(903, 313)
+position = Vector2(760, 258)
 
 [node name="BarracksVent" parent="." instance=ExtResource("4_vent")]
 position = Vector2(755, 369)

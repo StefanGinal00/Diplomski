@@ -87,7 +87,7 @@ func _run() -> void:
 	_check(cache.open(player) and state.opened_caches.has("ash_barracks_supply"), "Barracks cache did not unlock")
 	_check(not cache.open(player), "Barracks cache paid twice")
 	ui._update_route_summary()
-	_check("ASHEN BASTION  2/3 OPENING ROOMS" in ui.map_route_label.text and "CACHES 1/3" in ui.map_route_label.text and "TRIAL CLEARED" in ui.map_route_label.text, "Map did not track Barracks progress")
+	_check("ASHEN BASTION  2/5 OPENING ROOMS" in ui.map_route_label.text and "CACHES 1/5" in ui.map_route_label.text and "BARRACKS CLEARED" in ui.map_route_label.text, "Map did not track Barracks progress")
 	player.global_position = barracks.get_node("BarracksLamp/RespawnPoint").global_position
 	_check(barracks.get_node("BarracksLamp")._save_progress(player), "Barracks lamp did not save trial")
 	_check(state.get_discovered_lamps().has("ember_barracks_lamp"), "Barracks lamp did not enter travel network")

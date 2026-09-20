@@ -143,6 +143,9 @@ position = Vector2(80, 387)
 [node name="BarracksReturn" type="Marker2D" parent="." groups=["ash_forge_barracks_return"]]
 position = Vector2(905, 387)
 
+[node name="ReservoirReturn" type="Marker2D" parent="." groups=["ash_forge_reservoir_return"]]
+position = Vector2(795, 282)
+
 [node name="ReturnDoor" parent="." instance=ExtResource("1_door")]
 position = Vector2(27, 387)
 target_marker_group = &"ash_causeway_forge_return"
@@ -157,6 +160,15 @@ door_label = "EMBER BARRACKS"
 required_event_ids = PackedStringArray("ash_forge_fan")
 locked_label = "SMOKE SEALED"
 locked_hint = "Restore the cooling fan before entering the barracks."
+
+[node name="ReservoirLoopDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(875, 282)
+target_marker_group = &"ash_reservoir_forge_entry"
+target_room_id = "ash_reservoir"
+door_label = "RESERVOIR LOOP"
+required_event_ids = PackedStringArray("ash_reservoir_lower", "ash_reservoir_upper")
+locked_label = "PRESSURE SEALED"
+locked_hint = "Open both Reservoir coolant valves to release this loop."
 
 [node name="ForgeVent" parent="." instance=ExtResource("3_vent")]
 position = Vector2(445, 369)

@@ -1,5 +1,9 @@
 extends Area2D
 
+@export var inactive_prompt: String = "[E] START BARRACKS TRIAL"
+@export var completed_prompt: String = "SIGNAL COMPLETE"
+@export var total_waves: int = 2
+
 var player_in_range: Player
 
 @onready var glow: Polygon2D = $Glow
@@ -26,15 +30,15 @@ func refresh() -> void:
 		return
 	var trial := get_parent()
 	if trial.completed:
-		prompt.text = "SIGNAL COMPLETE"
+		prompt.text = completed_prompt
 		core.color = Color(0.38, 0.88, 0.65, 1)
 		glow.color = Color(0.17, 0.7, 0.45, 0.24)
 	elif trial.active:
-		prompt.text = "WAVE %d/2  •  %d LEFT" % [trial.wave, trial.enemies_remaining]
+		prompt.text = "WAVE %d/%d  •  %d LEFT" % [trial.wave, total_waves, trial.enemies_remaining]
 		core.color = Color(1, 0.58, 0.18, 1)
 		glow.color = Color(0.95, 0.33, 0.1, 0.38)
 	else:
-		prompt.text = "[E] START BARRACKS TRIAL"
+		prompt.text = inactive_prompt
 		core.color = Color(0.96, 0.33, 0.17, 1)
 		glow.color = Color(0.9, 0.24, 0.13, 0.25)
 	prompt.visible = player_in_range != null

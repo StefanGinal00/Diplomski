@@ -55,6 +55,8 @@ const ITEM_DEFINITIONS := {
 	"nest_crest": {"name": "Nest Crest", "type": "key_item", "description": "A crest revealed when the Echo Nest brood is cleared. It will open the path to the Echo Matriarch.", "droppable": false},
 	"matriarch_seal": {"name": "Matriarch Seal", "type": "key_item", "description": "Taken from the Echo Matriarch. Together with her defeat, it opens the path into Ashen Bastion.", "droppable": false},
 	"barracks_insignia": {"name": "Barracks Insignia", "type": "key_item", "description": "Proof of surviving the Ember Barracks trial. The Ashen Castellan's guard will recognize it.", "droppable": false},
+	"marshal_emblem": {"name": "Marshal Emblem", "type": "key_item", "description": "Won in the Cinder Coliseum. One of the marks required to challenge the Ashen Castellan.", "droppable": false},
+	"crucible_core": {"name": "Crucible Core", "type": "key_item", "description": "Recovered after balancing both Slag Reservoir coolant valves. It may power the path to the Ashen Castellan.", "droppable": false},
 	"warden_heart": {"name": "Warden Heart", "type": "key_item", "description": "Earned by defeating the awakened Warden. Permanently grants +1 maximum HP.", "droppable": false},
 	"matriarch_heart": {"name": "Matriarch Heart", "type": "key_item", "description": "Earned by defeating the awakened Matriarch. Permanently grants +1 maximum mana.", "droppable": false},
 }

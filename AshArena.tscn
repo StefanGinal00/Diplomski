@@ -1,0 +1,172 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://AshArenaEncounter.gd" id="1_encounter"]
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="2_door"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="3_lamp"]
+[ext_resource type="PackedScene" path="res://ResonanceCache.tscn" id="4_cache"]
+[ext_resource type="PackedScene" path="res://BarracksBeacon.tscn" id="5_bell"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(1340, 18)
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 520)
+
+[sub_resource type="RectangleShape2D" id="RoofShape"]
+size = Vector2(1340, 12)
+
+[sub_resource type="RectangleShape2D" id="StepShape"]
+size = Vector2(170, 10)
+
+[node name="AshArena" type="Node2D"]
+script = ExtResource("1_encounter")
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -5
+color = Color(0.065, 0.032, 0.052, 1)
+polygon = PackedVector2Array(0, 0, 1340, 0, 1340, 520, 0, 520)
+
+[node name="Grandstand" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.23, 0.085, 0.085, 1)
+polygon = PackedVector2Array(0, 120, 125, 95, 265, 123, 390, 81, 520, 117, 660, 74, 810, 111, 945, 78, 1085, 115, 1220, 82, 1340, 116, 1340, 430, 0, 430)
+
+[node name="RearArch" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.39, 0.13, 0.11, 1)
+polygon = PackedVector2Array(525, 175, 585, 110, 755, 110, 815, 175, 815, 430, 525, 430)
+
+[node name="ArchVoid" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.11, 0.035, 0.05, 1)
+polygon = PackedVector2Array(563, 188, 610, 150, 730, 150, 777, 188, 777, 430, 563, 430)
+
+[node name="TorchLeft" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(1, 0.42, 0.13, 0.72)
+polygon = PackedVector2Array(286, 248, 278, 214, 291, 229, 300, 192, 306, 244)
+
+[node name="TorchRight" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(1, 0.42, 0.13, 0.72)
+polygon = PackedVector2Array(1041, 245, 1033, 208, 1046, 225, 1054, 188, 1061, 246)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(670, 430)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+color = Color(0.3, 0.13, 0.15, 1)
+polygon = PackedVector2Array(-670, -9, 670, -9, 670, 9, -670, 9)
+
+[node name="Roof" type="StaticBody2D" parent="."]
+position = Vector2(670, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
+shape = SubResource("RoofShape")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1340, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="WestStand" type="StaticBody2D" parent="."]
+position = Vector2(535, 335)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WestStand"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WestStand"]
+color = Color(0.46, 0.2, 0.18, 1)
+polygon = PackedVector2Array(-85, -5, 85, -5, 85, 5, -85, 5)
+
+[node name="HighStand" type="StaticBody2D" parent="."]
+position = Vector2(710, 275)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HighStand"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="HighStand"]
+color = Color(0.54, 0.24, 0.19, 1)
+polygon = PackedVector2Array(-85, -5, 85, -5, 85, 5, -85, 5)
+
+[node name="EastStand" type="StaticBody2D" parent="."]
+position = Vector2(895, 325)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EastStand"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="EastStand"]
+color = Color(0.46, 0.2, 0.18, 1)
+polygon = PackedVector2Array(-85, -5, 85, -5, 85, 5, -85, 5)
+
+[node name="ArenaEntry" type="Marker2D" parent="." groups=["ash_arena_entry"]]
+position = Vector2(84, 397)
+
+[node name="ReservoirReturn" type="Marker2D" parent="." groups=["ash_arena_reservoir_return"]]
+position = Vector2(1210, 397)
+
+[node name="ReturnDoor" parent="." instance=ExtResource("2_door")]
+position = Vector2(28, 397)
+target_marker_group = &"ash_barracks_arena_return"
+target_room_id = "ash_barracks"
+door_label = "EMBER BARRACKS"
+
+[node name="ReservoirDoor" parent="." instance=ExtResource("2_door")]
+position = Vector2(1300, 397)
+target_marker_group = &"ash_reservoir_entry"
+target_room_id = "ash_reservoir"
+door_label = "SLAG RESERVOIR"
+required_event_ids = PackedStringArray("ash_arena_cleared")
+locked_label = "MARSHAL SEALED"
+locked_hint = "Defeat the Ember Marshal and his guards to pass."
+
+[node name="ArenaLamp" parent="." instance=ExtResource("3_lamp")]
+position = Vector2(150, 397)
+lamp_id = "ash_arena_lamp"
+lamp_name = "Cinder Coliseum Lamp"
+room_id = "ash_arena"
+enemy_block_radius = 115.0
+
+[node name="ArenaBell" parent="." instance=ExtResource("5_bell")]
+position = Vector2(382, 397)
+inactive_prompt = "[E] SOUND THE WAR BELL"
+completed_prompt = "ARENA CLEARED"
+total_waves = 4
+
+[node name="ArenaCache" parent="." instance=ExtResource("4_cache")]
+position = Vector2(710, 242)
+cache_id = "ash_arena_victory"
+cache_name = "Coliseum Victor's Cache"
+gold_reward = 55
+reward_item_id = "resonance_shard"
+required_event_ids = PackedStringArray("ash_arena_cleared")
+
+[node name="Combatants" type="Node2D" parent="."]
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(82, 83)
+size = Vector2(215, 25)
+theme_override_colors/font_color = Color(1, 0.7, 0.48, 0.9)
+theme_override_font_sizes/font_size = 12
+text = "CINDER COLISEUM"
+horizontal_alignment = 1
+
+[node name="ArenaStatus" type="Label" parent="."]
+position = Vector2(400, 88)
+size = Vector2(545, 29)
+theme_override_colors/font_color = Color(1, 0.77, 0.55, 0.86)
+theme_override_font_sizes/font_size = 11
+horizontal_alignment = 1
