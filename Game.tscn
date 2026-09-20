@@ -1,23 +1,50 @@
 [gd_scene format=3 uid="uid://d25wjjihdqoeb"]
 
-[ext_resource type="Script" uid="uid://byyp7iuo28yo6" path="res://player.gd" id="1_xkndl"]
+[ext_resource type="Script" path="res://player.gd" id="1_xkndl"]
 [ext_resource type="Texture2D" uid="uid://gb1r7s7q6tf4" path="res://icon.svg" id="2_u44n3"]
-[ext_resource type="Script" uid="uid://d3mlgtramkl0h" path="res://SpikeTrap.gd" id="3_u44n3"]
-[ext_resource type="PackedScene" uid="uid://cgcejgeuqurqk" path="res://XPOrb.tscn" id="5_t88pq"]
-[ext_resource type="Script" uid="uid://ntub5qs7redy" path="res://UI.gd" id="6_ui"]
+[ext_resource type="Script" path="res://SpikeTrap.gd" id="3_u44n3"]
+[ext_resource type="PackedScene" path="res://XPOrb.tscn" id="5_t88pq"]
+[ext_resource type="Script" path="res://UI.gd" id="6_ui"]
 [ext_resource type="PackedScene" path="res://Enemy.tscn" id="7_enemy"]
 [ext_resource type="Script" path="res://LevelExit.gd" id="8_exit"]
 [ext_resource type="Script" path="res://QuestManager.gd" id="9_quest"]
 [ext_resource type="Script" path="res://FriendlyNPC.gd" id="10_npc"]
 [ext_resource type="PackedScene" path="res://QuestItem.tscn" id="11_quest_item"]
 [ext_resource type="Script" path="res://DashGate.gd" id="12_dash_gate"]
+[ext_resource type="PackedScene" path="res://RangedEnemy.tscn" id="13_ranged_enemy"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="14_checkpoint"]
+[ext_resource type="PackedScene" path="res://LifeBloom.tscn" id="15_life_bloom"]
+[ext_resource type="PackedScene" path="res://Boss.tscn" id="16_boss"]
+[ext_resource type="PackedScene" path="res://DestructibleCrate.tscn" id="17_crate"]
+[ext_resource type="PackedScene" path="res://VerticalChamber.tscn" id="18_vertical"]
+[ext_resource type="PackedScene" path="res://PlayerArrow.tscn" id="19_arrow"]
+[ext_resource type="PackedScene" path="res://MerchantNPC.tscn" id="20_merchant"]
+[ext_resource type="PackedScene" path="res://PlayerMagicProjectile.tscn" id="21_magic"]
+[ext_resource type="PackedScene" path="res://EchoGrotto.tscn" id="22_grotto"]
+[ext_resource type="Script" path="res://AmbientSoundscape.gd" id="23_ambient"]
+[ext_resource type="PackedScene" path="res://EchoGallery.tscn" id="24_gallery"]
+[ext_resource type="PackedScene" path="res://PrismArchive.tscn" id="25_archive"]
+[ext_resource type="PackedScene" path="res://TideWell.tscn" id="26_tide"]
+[ext_resource type="PackedScene" path="res://EchoNest.tscn" id="27_nest"]
+[ext_resource type="PackedScene" path="res://ResonanceSanctum.tscn" id="28_sanctum"]
+[ext_resource type="Script" path="res://ZoneReplayDirector.gd" id="29_replay"]
+[ext_resource type="PackedScene" path="res://ShaftHollow.tscn" id="30_hollow"]
+[ext_resource type="PackedScene" path="res://DrownedCrossing.tscn" id="31_crossing"]
+[ext_resource type="PackedScene" path="res://FloodedGallery.tscn" id="32_gallery"]
+[ext_resource type="PackedScene" path="res://CrystalCauseway.tscn" id="33_causeway"]
+[ext_resource type="PackedScene" path="res://UndertowVault.tscn" id="34_vault"]
+[ext_resource type="PackedScene" path="res://BlackwaterCistern.tscn" id="35_cistern"]
+[ext_resource type="PackedScene" path="res://WardenApproach.tscn" id="36_approach"]
+[ext_resource type="PackedScene" path="res://BrokenCauseway.tscn" id="37_ash_causeway"]
+[ext_resource type="PackedScene" path="res://CinderForge.tscn" id="38_ash_forge"]
+[ext_resource type="PackedScene" path="res://EmberBarracks.tscn" id="39_ash_barracks"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sb48q"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_xkndl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t88pq"]
-size = Vector2(802, 20)
+size = Vector2(1362, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_attack"]
 size = Vector2(34, 20)
@@ -37,10 +64,129 @@ radius = 32.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dash_gate"]
 size = Vector2(18, 260)
 
+[sub_resource type="StyleBoxFlat" id="StyleBox_hud"]
+bg_color = Color(0.025, 0.045, 0.09, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.12, 0.56, 0.62, 0.75)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_overlay"]
+bg_color = Color(0.018, 0.025, 0.06, 0.97)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.25, 0.86, 0.82, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_bar_bg"]
+bg_color = Color(0.015, 0.025, 0.05, 0.95)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_health_fill"]
+bg_color = Color(0.88, 0.2, 0.32, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_xp_fill"]
+bg_color = Color(0.18, 0.82, 0.72, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_dash_fill"]
+bg_color = Color(0.18, 0.72, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_boss_fill"]
+bg_color = Color(0.8, 0.18, 0.56, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
 [node name="Game" type="Node2D" unique_id=535081610]
+
+[node name="PassageReturnMarker" type="Marker2D" parent="." groups=["passage_return"]]
+position = Vector2(1288, 376)
+
+[node name="VerticalChamber" parent="." instance=ExtResource("18_vertical")]
+position = Vector2(1500, 0)
+
+[node name="ShaftHollow" parent="." instance=ExtResource("30_hollow")]
+position = Vector2(1500, -600)
+
+[node name="DrownedCrossing" parent="." instance=ExtResource("31_crossing")]
+position = Vector2(2500, -600)
+
+[node name="FloodedGallery" parent="." instance=ExtResource("32_gallery")]
+position = Vector2(2500, -1200)
+
+[node name="BlackwaterCistern" parent="." instance=ExtResource("35_cistern")]
+position = Vector2(3500, -600)
+
+[node name="WardenApproach" parent="." instance=ExtResource("36_approach")]
+position = Vector2(3500, -1200)
+
+[node name="EchoGrotto" parent="." instance=ExtResource("22_grotto")]
+position = Vector2(2600, 500)
+
+[node name="EchoGallery" parent="." instance=ExtResource("24_gallery")]
+position = Vector2(3700, 500)
+
+[node name="PrismArchive" parent="." instance=ExtResource("25_archive")]
+position = Vector2(4700, 350)
+
+[node name="TideWell" parent="." instance=ExtResource("26_tide")]
+position = Vector2(2600, 850)
+
+[node name="CrystalCauseway" parent="." instance=ExtResource("33_causeway")]
+position = Vector2(3700, 1900)
+
+[node name="UndertowVault" parent="." instance=ExtResource("34_vault")]
+position = Vector2(2200, 1900)
+
+[node name="EchoNest" parent="." instance=ExtResource("27_nest")]
+position = Vector2(3300, 1350)
+
+[node name="ResonanceSanctum" parent="." instance=ExtResource("28_sanctum")]
+position = Vector2(4400, 1350)
+
+[node name="BrokenCauseway" parent="." instance=ExtResource("37_ash_causeway")]
+position = Vector2(5500, 1350)
+
+[node name="CinderForge" parent="." instance=ExtResource("38_ash_forge")]
+position = Vector2(6800, 1350)
+
+[node name="EmberBarracks" parent="." instance=ExtResource("39_ash_barracks")]
+position = Vector2(7900, 1350)
 
 [node name="QuestManager" type="Node" parent="." groups=["quest_manager"]]
 script = ExtResource("9_quest")
+
+[node name="AmbientSoundscape" type="Node" parent="."]
+script = ExtResource("23_ambient")
+
+[node name="ZoneReplayDirector" type="Node" parent="."]
+script = ExtResource("29_replay")
 
 [node name="Background" type="CanvasLayer" parent="."]
 layer = -10
@@ -68,6 +214,8 @@ color = Color(0.065, 0.12, 0.18, 1)
 [node name="Player" type="CharacterBody2D" parent="." unique_id=1179743779 groups=["player"]]
 position = Vector2(234, 342)
 script = ExtResource("1_xkndl")
+arrow_scene = ExtResource("19_arrow")
+magic_projectile_scene = ExtResource("21_magic")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=721759141]
 position = Vector2(7.1525574e-07, -7.1525574e-07)
@@ -79,7 +227,7 @@ texture = ExtResource("2_u44n3")
 shape = SubResource("RectangleShape2D_sb48q")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=917960643]
-zoom = Vector2(3, 3)
+zoom = Vector2(2.5, 2.5)
 
 [node name="InvulnerabilityTimer" type="Timer" parent="Player" unique_id=1391366989]
 wait_time = 0.8
@@ -113,20 +261,44 @@ z_index = -1
 color = Color(0.18, 0.95, 1, 0.55)
 polygon = PackedVector2Array(-32, -8, 6, -5, 12, 0, 6, 5, -32, 8, -20, 0)
 
+[node name="BowVisual" type="Polygon2D" parent="Player"]
+visible = false
+z_index = 2
+color = Color(0.82, 0.58, 0.25, 1)
+polygon = PackedVector2Array(-3, -13, 2, -10, 5, -5, 6, 0, 5, 5, 2, 10, -3, 13, 0, 8, 2, 3, 3, 0, 2, -3, 0, -8)
+
+[node name="StaffVisual" type="Polygon2D" parent="Player"]
+visible = false
+z_index = 2
+color = Color(0.72, 0.42, 1, 1)
+polygon = PackedVector2Array(-2, -16, 2, -16, 2, 7, 7, 12, 0, 16, -7, 12, -2, 7)
+
+[node name="WeaponAura" type="Polygon2D" parent="Player"]
+visible = false
+z_index = 3
+color = Color(1.5, 1.15, 0.4, 0.9)
+polygon = PackedVector2Array(0, -12, 5, -4, 5, 6, 0, 12, -5, 6, -5, -4)
+
+[node name="Halo" type="Polygon2D" parent="Player/WeaponAura"]
+z_index = -1
+scale = Vector2(1.8, 1.8)
+color = Color(1.2, 0.9, 0.35, 0.18)
+polygon = PackedVector2Array(0, -12, 5, -4, 5, 6, 0, 12, -5, 6, -5, -4)
+
 [node name="Ground" type="StaticBody2D" parent="." unique_id=860781869]
 position = Vector2(300, 400)
 physics_material_override = SubResource("PhysicsMaterial_xkndl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=1454486460]
-position = Vector2(297, -2)
+position = Vector2(417, -2)
 shape = SubResource("RectangleShape2D_t88pq")
 
 [node name="Polygon2D" type="Polygon2D" parent="Ground" unique_id=486365016]
 color = Color(0.08, 0.24, 0.3, 1)
-polygon = PackedVector2Array(-104, -10, -104, 5, 698, 5, 698, -10)
+polygon = PackedVector2Array(-264, -10, -264, 5, 1098, 5, 1098, -10)
 
 [node name="SurfaceGlow" type="Line2D" parent="Ground"]
-points = PackedVector2Array(-104, -10, 698, -10)
+points = PackedVector2Array(-264, -10, 1098, -10)
 width = 2.0
 default_color = Color(0.15, 0.82, 0.78, 0.8)
 
@@ -174,11 +346,12 @@ texture = ExtResource("2_u44n3")
 shape = SubResource("CircleShape2D_npc_interaction")
 
 [node name="NameLabel" type="Label" parent="Caretaker"]
-offset_left = -38.0
-offset_top = -32.0
-offset_right = 38.0
-offset_bottom = -14.0
-text = "Caretaker"
+offset_left = -32.0
+offset_top = -31.0
+offset_right = 32.0
+offset_bottom = -13.0
+theme_override_font_sizes/font_size = 10
+text = "Eldric"
 horizontal_alignment = 1
 
 [node name="InteractionPrompt" type="Label" parent="Caretaker"]
@@ -186,11 +359,30 @@ offset_left = -38.0
 offset_top = 17.0
 offset_right = 38.0
 offset_bottom = 37.0
+theme_override_font_sizes/font_size = 10
 text = "[E] Talk"
 horizontal_alignment = 1
 
+[node name="WayfarerMerchant" parent="." instance=ExtResource("20_merchant")]
+position = Vector2(150, 376)
+
 [node name="LostSigil" parent="." instance=ExtResource("11_quest_item")]
-position = Vector2(665, 278)
+position = Vector2(620, 278)
+
+[node name="Checkpoint" parent="." instance=ExtResource("14_checkpoint")]
+position = Vector2(560, 376)
+
+[node name="LifeBloom" parent="." instance=ExtResource("15_life_bloom")]
+position = Vector2(790, 278)
+
+[node name="CratePassage" parent="." instance=ExtResource("17_crate")]
+position = Vector2(405, 378)
+
+[node name="CrateGate" parent="." instance=ExtResource("17_crate")]
+position = Vector2(825, 378)
+
+[node name="CrateArena" parent="." instance=ExtResource("17_crate")]
+position = Vector2(1225, 378)
 
 [node name="SpikeTrap" type="Area2D" parent="." unique_id=512036186]
 position = Vector2(345, 375)
@@ -211,14 +403,24 @@ polygon = PackedVector2Array(0, -13, -10, -1, -10, 8, 9, 8, 9, -2)
 [node name="UI" type="CanvasLayer" parent="." unique_id=1211638105]
 script = ExtResource("6_ui")
 
+[node name="HUDPanel" type="Panel" parent="UI"]
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 244.0
+offset_bottom = 108.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBox_hud")
+
 [node name="HealthBar" type="ProgressBar" parent="UI" unique_id=1763113388]
 offset_left = 20.0
 offset_top = 20.0
-offset_right = 260.0
-offset_bottom = 48.0
+offset_right = 157.0
+offset_bottom = 42.0
 max_value = 5.0
 value = 5.0
 show_percentage = false
+theme_override_styles/background = SubResource("StyleBox_bar_bg")
+theme_override_styles/fill = SubResource("StyleBox_health_fill")
 
 [node name="HealthLabel" type="Label" parent="UI/HealthBar" unique_id=1320604432]
 layout_mode = 1
@@ -231,13 +433,26 @@ text = "HP: 5/5"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="ReviveStatusLabel" type="Label" parent="UI"]
+visible = false
+offset_left = 143.0
+offset_top = 78.0
+offset_right = 234.0
+offset_bottom = 99.0
+theme_override_colors/font_color = Color(0.62, 0.68, 0.78, 1)
+theme_override_font_sizes/font_size = 10
+text = "BREATH READY"
+horizontal_alignment = 2
+
 [node name="XPBar" type="ProgressBar" parent="UI"]
 offset_left = 20.0
-offset_top = 56.0
-offset_right = 260.0
-offset_bottom = 84.0
+offset_top = 48.0
+offset_right = 157.0
+offset_bottom = 70.0
 max_value = 3.0
 show_percentage = false
+theme_override_styles/background = SubResource("StyleBox_bar_bg")
+theme_override_styles/fill = SubResource("StyleBox_xp_fill")
 
 [node name="XPLabel" type="Label" parent="UI/XPBar"]
 layout_mode = 1
@@ -251,18 +466,130 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="SkillPointsLabel" type="Label" parent="UI"]
-offset_left = 20.0
-offset_top = 92.0
-offset_right = 260.0
-offset_bottom = 120.0
-text = "SKILL POINTS: 0"
+offset_left = 164.0
+offset_top = 48.0
+offset_right = 234.0
+offset_bottom = 70.0
+theme_override_font_sizes/font_size = 12
+text = "SP: 0"
+horizontal_alignment = 2
 
-[node name="QuestTrackerLabel" type="Label" parent="UI"]
+[node name="GoldLabel" type="Label" parent="UI"]
+offset_left = 164.0
+offset_top = 20.0
+offset_right = 234.0
+offset_bottom = 42.0
+theme_override_colors/font_color = Color(1, 0.78, 0.22, 1)
+theme_override_font_sizes/font_size = 12
+text = "GOLD: 0"
+horizontal_alignment = 2
+
+[node name="ModeLabel" type="Label" parent="UI"]
 offset_left = 20.0
-offset_top = 126.0
-offset_right = 360.0
-offset_bottom = 154.0
-text = "QUEST: Talk to the Caretaker"
+offset_top = 78.0
+offset_right = 140.0
+offset_bottom = 99.0
+theme_override_colors/font_color = Color(0.45, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "MODE: NORMAL"
+
+[node name="MapHintLabel" type="Label" parent="UI"]
+visible = false
+offset_left = 200.0
+offset_top = 128.0
+offset_right = 365.0
+offset_bottom = 151.0
+theme_override_colors/font_color = Color(0.48, 0.82, 0.82, 1)
+theme_override_font_sizes/font_size = 12
+text = "MAP [M]  •  LAMPS 0"
+horizontal_alignment = 2
+
+[node name="QuestPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -330.0
+offset_top = 70.0
+offset_right = -20.0
+offset_bottom = 374.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBox_hud")
+
+[node name="TitleLabel" type="Label" parent="UI/QuestPanel"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 260.0
+offset_bottom = 32.0
+theme_override_colors/font_color = Color(1, 0.78, 0.28, 1)
+text = "QUEST LOG"
+horizontal_alignment = 1
+
+[node name="QuestScroll" type="ScrollContainer" parent="UI/QuestPanel"]
+offset_left = 14.0
+offset_top = 38.0
+offset_right = 296.0
+offset_bottom = 286.0
+horizontal_scroll_mode = 0
+
+[node name="QuestTrackerLabel" type="Label" parent="UI/QuestPanel/QuestScroll"]
+custom_minimum_size = Vector2(268, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "QUEST: Talk to the Caretaker\nREWARD: 1 Skill Point  •  2 XP  •  30 Gold"
+autowrap_mode = 2
+
+[node name="CloseButton" type="Button" parent="UI/QuestPanel"]
+offset_left = 267.0
+offset_top = 7.0
+offset_right = 300.0
+offset_bottom = 34.0
+text = "×"
+
+[node name="MenuBarPanel" type="Panel" parent="UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -312.0
+offset_top = 20.0
+offset_right = -12.0
+offset_bottom = 57.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBox_hud")
+
+[node name="SkillsButton" type="Button" parent="UI/MenuBarPanel"]
+offset_left = 5.0
+offset_top = 4.0
+offset_right = 76.0
+offset_bottom = 33.0
+text = "Skills"
+tooltip_text = "Skills [K]"
+
+[node name="QuestsButton" type="Button" parent="UI/MenuBarPanel"]
+offset_left = 79.0
+offset_top = 4.0
+offset_right = 150.0
+offset_bottom = 33.0
+text = "Quests"
+tooltip_text = "Quest log [J]"
+
+[node name="BagButton" type="Button" parent="UI/MenuBarPanel"]
+offset_left = 153.0
+offset_top = 4.0
+offset_right = 224.0
+offset_bottom = 33.0
+text = "Bag"
+tooltip_text = "Inventory [I]"
+
+[node name="MapButton" type="Button" parent="UI/MenuBarPanel"]
+offset_left = 227.0
+offset_top = 4.0
+offset_right = 295.0
+offset_bottom = 33.0
+text = "Map"
+tooltip_text = "Map [M]"
 
 [node name="ObjectivePanel" type="Panel" parent="UI"]
 anchors_preset = 10
@@ -273,6 +600,7 @@ offset_top = 20.0
 offset_right = 155.0
 offset_bottom = 58.0
 grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBox_hud")
 
 [node name="ObjectiveLabel" type="Label" parent="UI/ObjectivePanel"]
 layout_mode = 1
@@ -281,7 +609,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "DEFEAT ENEMIES  0/2"
+text = "DEFEAT ENEMIES  0/3"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -297,6 +625,109 @@ grow_horizontal = 2
 text = "ENEMY DEFEATED  •  XP DROPPED"
 horizontal_alignment = 1
 
+[node name="BossHealthPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 10
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -190.0
+offset_top = 104.0
+offset_right = 190.0
+offset_bottom = 146.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBox_hud")
+
+[node name="BossHealthBar" type="ProgressBar" parent="UI/BossHealthPanel"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 368.0
+offset_bottom = 34.0
+max_value = 10.0
+value = 10.0
+show_percentage = false
+theme_override_styles/background = SubResource("StyleBox_bar_bg")
+theme_override_styles/fill = SubResource("StyleBox_boss_fill")
+
+[node name="DashStatusPanel" type="Panel" parent="UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -84.0
+offset_right = 250.0
+offset_bottom = -50.0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBox_hud")
+
+[node name="DashCooldownBar" type="ProgressBar" parent="UI/DashStatusPanel"]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 6.0
+offset_right = 223.0
+offset_bottom = 28.0
+max_value = 0.45
+value = 0.45
+show_percentage = false
+theme_override_styles/background = SubResource("StyleBox_bar_bg")
+theme_override_styles/fill = SubResource("StyleBox_dash_fill")
+
+[node name="DashStatusLabel" type="Label" parent="UI/DashStatusPanel/DashCooldownBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "DASH  •  LOCKED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WeaponStatusPanel" type="Panel" parent="UI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -108.0
+offset_right = -20.0
+offset_bottom = -52.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBox_hud")
+
+[node name="WeaponLabel" type="Label" parent="UI/WeaponStatusPanel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 7.0
+offset_right = 270.0
+offset_bottom = 27.0
+theme_override_colors/font_color = Color(1, 0.78, 0.3, 1)
+text = "WEAPON [Q]  •  BASIC SWORD"
+horizontal_alignment = 1
+
+[node name="AmmoLabel" type="Label" parent="UI/WeaponStatusPanel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 29.0
+offset_right = 270.0
+offset_bottom = 49.0
+theme_override_font_sizes/font_size = 12
+text = "SECONDARY  •  NONE"
+horizontal_alignment = 1
+
+[node name="BossHealthLabel" type="Label" parent="UI/BossHealthPanel/BossHealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "VOID SENTINEL  10/10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="DialoguePanel" type="Panel" parent="UI"]
 visible = false
 anchors_preset = 7
@@ -310,6 +741,7 @@ offset_right = 310.0
 offset_bottom = -60.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBox_overlay")
 
 [node name="SpeakerLabel" type="Label" parent="UI/DialoguePanel"]
 layout_mode = 0
@@ -345,49 +777,120 @@ offset_bottom = 154.0
 text = "Close"
 
 [node name="SkillPanel" type="Panel" parent="UI"]
+visible = false
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -330.0
-offset_top = 20.0
+offset_top = 70.0
 offset_right = -20.0
-offset_bottom = 220.0
+offset_bottom = 470.0
 grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBox_hud")
 
 [node name="TitleLabel" type="Label" parent="UI/SkillPanel"]
 layout_mode = 0
 offset_left = 12.0
 offset_top = 10.0
-offset_right = 298.0
+offset_right = 260.0
 offset_bottom = 36.0
 text = "SKILLS"
 horizontal_alignment = 1
 
+[node name="CloseButton" type="Button" parent="UI/SkillPanel"]
+offset_left = 267.0
+offset_top = 8.0
+offset_right = 300.0
+offset_bottom = 36.0
+text = "×"
+
 [node name="DoubleJumpButton" type="Button" parent="UI/SkillPanel"]
 layout_mode = 0
+theme_override_font_sizes/font_size = 13
 offset_left = 12.0
 offset_top = 44.0
 offset_right = 298.0
-offset_bottom = 82.0
+offset_bottom = 76.0
 disabled = true
 text = "Unlock Double Jump - 1 SP"
 
 [node name="DashButton" type="Button" parent="UI/SkillPanel"]
 layout_mode = 0
+theme_override_font_sizes/font_size = 13
 offset_left = 12.0
-offset_top = 92.0
+offset_top = 82.0
 offset_right = 298.0
-offset_bottom = 130.0
+offset_bottom = 114.0
 disabled = true
 text = "Unlock Dash - 1 SP"
+
+[node name="SwordMasteryButton" type="Button" parent="UI/SkillPanel"]
+layout_mode = 0
+theme_override_font_sizes/font_size = 13
+offset_left = 12.0
+offset_top = 120.0
+offset_right = 298.0
+offset_bottom = 152.0
+disabled = true
+text = "Sword Mastery: +1 Damage  •  1 SP"
+
+[node name="SwordReachButton" type="Button" parent="UI/SkillPanel"]
+layout_mode = 0
+theme_override_font_sizes/font_size = 13
+offset_left = 12.0
+offset_top = 158.0
+offset_right = 298.0
+offset_bottom = 190.0
+disabled = true
+text = "Long Reach  •  Requires Sword Mastery"
+
+[node name="BowMasteryButton" type="Button" parent="UI/SkillPanel"]
+layout_mode = 0
+theme_override_font_sizes/font_size = 13
+offset_left = 12.0
+offset_top = 196.0
+offset_right = 298.0
+offset_bottom = 228.0
+disabled = true
+text = "Bow Mastery  •  Requires Hunter Bow"
+
+[node name="BowPiercingButton" type="Button" parent="UI/SkillPanel"]
+layout_mode = 0
+theme_override_font_sizes/font_size = 13
+offset_left = 12.0
+offset_top = 234.0
+offset_right = 298.0
+offset_bottom = 266.0
+disabled = true
+text = "Piercing Shot  •  Requires Bow Mastery"
+
+[node name="StaffMasteryButton" type="Button" parent="UI/SkillPanel"]
+layout_mode = 0
+theme_override_font_sizes/font_size = 13
+offset_left = 12.0
+offset_top = 272.0
+offset_right = 298.0
+offset_bottom = 304.0
+disabled = true
+text = "Runic Mastery  •  Requires Runed Staff"
+
+[node name="StaffFlowButton" type="Button" parent="UI/SkillPanel"]
+layout_mode = 0
+theme_override_font_sizes/font_size = 13
+offset_left = 12.0
+offset_top = 310.0
+offset_right = 298.0
+offset_bottom = 342.0
+disabled = true
+text = "Mana Flow  •  Requires Runic Mastery"
 
 [node name="SkillInfoLabel" type="Label" parent="UI/SkillPanel"]
 layout_mode = 0
 offset_left = 12.0
-offset_top = 142.0
+offset_top = 354.0
 offset_right = 298.0
-offset_bottom = 192.0
-text = "Collect XP to earn a skill point."
+offset_bottom = 392.0
+text = "Spend Skill Points on movement or a weapon style."
 horizontal_alignment = 1
 autowrap_mode = 2
 
@@ -401,26 +904,37 @@ anchor_bottom = 0.5
 offset_left = -160.0
 offset_top = -90.0
 offset_right = 160.0
-offset_bottom = 90.0
+offset_bottom = 120.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_overlay")
 
 [node name="GameOverLabel" type="Label" parent="UI/GameOverPanel"]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 24.0
 offset_right = 300.0
-offset_bottom = 62.0
+offset_bottom = 78.0
 text = "GAME OVER"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="RestartButton" type="Button" parent="UI/GameOverPanel"]
 layout_mode = 0
-offset_left = 70.0
+offset_left = 36.0
 offset_top = 92.0
-offset_right = 250.0
+offset_right = 284.0
 offset_bottom = 136.0
-text = "Restart"
+text = "Respawn"
+
+[node name="SwitchModeButton" type="Button" parent="UI/GameOverPanel"]
+visible = false
+layout_mode = 0
+offset_left = 36.0
+offset_top = 148.0
+offset_right = 284.0
+offset_bottom = 192.0
+text = "Switch to Normal Mode"
 
 [node name="LevelCompletePanel" type="Panel" parent="UI"]
 visible = false
@@ -435,6 +949,7 @@ offset_right = 190.0
 offset_bottom = 115.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_overlay")
 
 [node name="TitleLabel" type="Label" parent="UI/LevelCompletePanel"]
 layout_mode = 0
@@ -462,22 +977,528 @@ offset_right = 280.0
 offset_bottom = 202.0
 text = "Play Again"
 
+[node name="PausePanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -150.0
+offset_right = 190.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_overlay")
+
+[node name="TitleLabel" type="Label" parent="UI/PausePanel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 356.0
+offset_bottom = 58.0
+theme_override_colors/font_color = Color(0.42, 1, 0.88, 1)
+theme_override_font_sizes/font_size = 22
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="UI/PausePanel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 68.0
+offset_right = 356.0
+offset_bottom = 118.0
+theme_override_font_sizes/font_size = 12
+text = "Move: arrows   Jump: Space   Attack: F   Interact: E\nSkills: K   Quests: J   Bag: I   Map: M\nDash: X   Weapon: Q   Spell/Ammo: R   Travel: T"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ResumeButton" type="Button" parent="UI/PausePanel"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 122.0
+offset_right = 300.0
+offset_bottom = 164.0
+text = "Resume"
+
+[node name="RestartLevelButton" type="Button" parent="UI/PausePanel"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 230.0
+offset_right = 300.0
+offset_bottom = 272.0
+text = "Restart Journey"
+
+[node name="MusicButton" type="Button" parent="UI/PausePanel"]
+offset_left = 80.0
+offset_top = 178.0
+offset_right = 300.0
+offset_bottom = 220.0
+text = "Ambient Music: On"
+
+[node name="InventoryPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -270.0
+offset_top = -220.0
+offset_right = 270.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_overlay")
+
+[node name="TitleLabel" type="Label" parent="UI/InventoryPanel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 516.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(1, 0.78, 0.28, 1)
+theme_override_font_sizes/font_size = 22
+text = "INVENTORY"
+horizontal_alignment = 1
+
+[node name="GoldLabel" type="Label" parent="UI/InventoryPanel"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 24.0
+offset_right = 140.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(1, 0.78, 0.22, 1)
+text = "GOLD: 0"
+
+[node name="ItemList" type="ItemList" parent="UI/InventoryPanel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 66.0
+offset_right = 252.0
+offset_bottom = 350.0
+allow_reselect = true
+
+[node name="ItemNameLabel" type="Label" parent="UI/InventoryPanel"]
+layout_mode = 0
+offset_left = 276.0
+offset_top = 70.0
+offset_right = 512.0
+offset_bottom = 102.0
+theme_override_colors/font_color = Color(0.45, 1, 0.82, 1)
+theme_override_font_sizes/font_size = 18
+text = "Select an item"
+
+[node name="ItemDescriptionLabel" type="Label" parent="UI/InventoryPanel"]
+layout_mode = 0
+offset_left = 276.0
+offset_top = 112.0
+offset_right = 512.0
+offset_bottom = 252.0
+text = "Choose an item to see its description and available actions."
+autowrap_mode = 2
+
+[node name="ActionButton" type="Button" parent="UI/InventoryPanel"]
+layout_mode = 0
+offset_left = 276.0
+offset_top = 270.0
+offset_right = 512.0
+offset_bottom = 310.0
+disabled = true
+text = "No Action"
+
+[node name="DropButton" type="Button" parent="UI/InventoryPanel"]
+layout_mode = 0
+offset_left = 276.0
+offset_top = 320.0
+offset_right = 512.0
+offset_bottom = 360.0
+disabled = true
+text = "Drop One"
+
+[node name="CloseButton" type="Button" parent="UI/InventoryPanel"]
+layout_mode = 0
+offset_left = 170.0
+offset_top = 382.0
+offset_right = 370.0
+offset_bottom = 422.0
+text = "Close [I / Esc]"
+
+[node name="WorldMapPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -310.0
+offset_top = -255.0
+offset_right = 310.0
+offset_bottom = 255.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_overlay")
+
+[node name="TitleLabel" type="Label" parent="UI/WorldMapPanel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 596.0
+offset_bottom = 52.0
+theme_override_colors/font_color = Color(0.42, 1, 0.88, 1)
+theme_override_font_sizes/font_size = 22
+text = "WORLD MAP  •  SAVE LAMPS"
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="UI/WorldMapPanel"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 54.0
+offset_right = 592.0
+offset_bottom = 82.0
+text = "Discovered lamps become safe navigation points. Fast travel is available only while resting at a lamp."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="LampList" type="ItemList" parent="UI/WorldMapPanel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 96.0
+offset_right = 292.0
+offset_bottom = 395.0
+allow_reselect = true
+
+[node name="DetailsLabel" type="Label" parent="UI/WorldMapPanel"]
+layout_mode = 0
+offset_left = 318.0
+offset_top = 100.0
+offset_right = 592.0
+offset_bottom = 210.0
+text = "Select a discovered lamp."
+autowrap_mode = 2
+
+[node name="RouteScroll" type="ScrollContainer" parent="UI/WorldMapPanel"]
+layout_mode = 0
+offset_left = 318.0
+offset_top = 216.0
+offset_right = 592.0
+offset_bottom = 394.0
+
+[node name="RouteLabel" type="Label" parent="UI/WorldMapPanel/RouteScroll"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+text = "Explore the rooms to reveal the route."
+autowrap_mode = 2
+
+[node name="TravelButton" type="Button" parent="UI/WorldMapPanel"]
+layout_mode = 0
+offset_left = 326.0
+offset_top = 405.0
+offset_right = 580.0
+offset_bottom = 445.0
+text = "Travel to Lamp"
+
+[node name="CloseButton" type="Button" parent="UI/WorldMapPanel"]
+layout_mode = 0
+offset_left = 190.0
+offset_top = 455.0
+offset_right = 430.0
+offset_bottom = 495.0
+text = "Close [M / Esc]"
+
+[node name="ShopDimmer" type="ColorRect" parent="UI"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.005, 0.009, 0.018, 0.82)
+
+[node name="ShopPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -330.0
+offset_top = -235.0
+offset_right = 330.0
+offset_bottom = 235.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_overlay")
+
+[node name="TitleLabel" type="Label" parent="UI/ShopPanel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 16.0
+offset_right = 636.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(1, 0.76, 0.28, 1)
+theme_override_font_sizes/font_size = 22
+text = "ORIN'S WAYFARER SHOP"
+horizontal_alignment = 1
+
+[node name="GoldLabel" type="Label" parent="UI/ShopPanel"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 52.0
+offset_right = 220.0
+offset_bottom = 78.0
+theme_override_colors/font_color = Color(1, 0.78, 0.22, 1)
+text = "GOLD: 0"
+
+[node name="BuyTabButton" type="Button" parent="UI/ShopPanel"]
+layout_mode = 0
+offset_left = 354.0
+offset_top = 50.0
+offset_right = 482.0
+offset_bottom = 79.0
+text = "BUY"
+
+[node name="ForgeTabButton" type="Button" parent="UI/ShopPanel"]
+layout_mode = 0
+offset_left = 494.0
+offset_top = 50.0
+offset_right = 622.0
+offset_bottom = 79.0
+text = "FORGE"
+
+[node name="ItemList" type="ItemList" parent="UI/ShopPanel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 84.0
+offset_right = 310.0
+offset_bottom = 328.0
+allow_reselect = true
+
+[node name="ItemNameLabel" type="Label" parent="UI/ShopPanel"]
+layout_mode = 0
+offset_left = 334.0
+offset_top = 84.0
+offset_right = 632.0
+offset_bottom = 116.0
+theme_override_colors/font_color = Color(0.45, 1, 0.82, 1)
+theme_override_font_sizes/font_size = 18
+text = "Select an item"
+
+[node name="ItemDescriptionLabel" type="Label" parent="UI/ShopPanel"]
+layout_mode = 0
+offset_left = 334.0
+offset_top = 124.0
+offset_right = 632.0
+offset_bottom = 234.0
+text = "Choose an item to inspect it."
+autowrap_mode = 2
+
+[node name="BuyButton" type="Button" parent="UI/ShopPanel"]
+layout_mode = 0
+offset_left = 348.0
+offset_top = 252.0
+offset_right = 618.0
+offset_bottom = 294.0
+text = "Buy"
+
+[node name="QuestLabel" type="Label" parent="UI/ShopPanel"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 342.0
+offset_right = 410.0
+offset_bottom = 418.0
+theme_override_colors/font_color = Color(0.7, 0.9, 1, 1)
+text = "SIDE TASK  •  A FAIR PRICE"
+autowrap_mode = 2
+
+[node name="QuestButton" type="Button" parent="UI/ShopPanel"]
+layout_mode = 0
+offset_left = 426.0
+offset_top = 346.0
+offset_right = 632.0
+offset_bottom = 386.0
+text = "Accept Side Task"
+
+[node name="CloseButton" type="Button" parent="UI/ShopPanel"]
+layout_mode = 0
+offset_left = 426.0
+offset_top = 402.0
+offset_right = 632.0
+offset_bottom = 442.0
+text = "Close [Esc]"
+
+[node name="MainMenuBackdrop" type="ColorRect" parent="UI"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.005, 0.009, 0.018, 1)
+
+[node name="MainMenuPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -310.0
+offset_top = -225.0
+offset_right = 310.0
+offset_bottom = 225.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_overlay")
+
+[node name="TitleLabel" type="Label" parent="UI/MainMenuPanel"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 24.0
+offset_right = 590.0
+offset_bottom = 62.0
+theme_override_colors/font_color = Color(0.42, 1, 0.88, 1)
+theme_override_font_sizes/font_size = 26
+text = "ECHOES OF THE PASSAGE"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="UI/MainMenuPanel"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 68.0
+offset_right = 580.0
+offset_bottom = 98.0
+text = "Choose how your journey will remember failure."
+horizontal_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="UI/MainMenuPanel"]
+layout_mode = 0
+offset_left = 190.0
+offset_top = 106.0
+offset_right = 430.0
+offset_bottom = 146.0
+text = "Continue from Save Lamp"
+
+[node name="ContinueInfoLabel" type="Label" parent="UI/MainMenuPanel"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 150.0
+offset_right = 540.0
+offset_bottom = 180.0
+theme_override_colors/font_color = Color(0.55, 0.82, 0.84, 1)
+theme_override_font_sizes/font_size = 12
+text = "No Save Lamp data found"
+horizontal_alignment = 1
+
+[node name="NormalModeButton" type="Button" parent="UI/MainMenuPanel"]
+layout_mode = 0
+offset_left = 55.0
+offset_top = 184.0
+offset_right = 285.0
+offset_bottom = 230.0
+text = "New Normal Journey"
+
+[node name="NormalDescription" type="Label" parent="UI/MainMenuPanel"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 240.0
+offset_right = 295.0
+offset_bottom = 345.0
+text = "On death, return to your last Save Lamp. Only progress saved there is kept."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="HardcoreModeButton" type="Button" parent="UI/MainMenuPanel"]
+layout_mode = 0
+offset_left = 335.0
+offset_top = 184.0
+offset_right = 565.0
+offset_bottom = 230.0
+text = "New Hardcore Journey"
+
+[node name="HardcoreDescription" type="Label" parent="UI/MainMenuPanel"]
+layout_mode = 0
+offset_left = 325.0
+offset_top = 240.0
+offset_right = 575.0
+offset_bottom = 345.0
+theme_override_colors/font_color = Color(1, 0.5, 0.48, 1)
+text = "One life. A real death deletes the run. Lamps let you continue later; Second Breath may save you once."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="WarningLabel" type="Label" parent="UI/MainMenuPanel"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 374.0
+offset_right = 580.0
+offset_bottom = 416.0
+theme_override_font_sizes/font_size = 13
+text = "Save progress at a lamp with [E]."
+horizontal_alignment = 1
+
 [node name="ControlsLabel" type="Label" parent="UI"]
+visible = false
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 20.0
 offset_top = -42.0
-offset_right = 470.0
+offset_right = 940.0
 offset_bottom = -14.0
 grow_vertical = 0
-text = "Move: Arrows  |  Jump: Space  |  Attack: F  |  Dash: X  |  Interact: E"
+text = "Move: ← →  |  Jump: Space  |  Attack: F  |  Dash: X  |  Weapon: Q  |  Ammo: R  |  Interact: E  |  Map: M  |  Travel: T  |  Inventory: I"
 
-[node name="Enemy" parent="." instance=ExtResource("7_enemy")]
+[node name="ZoneTitlePanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -205.0
+offset_top = -66.0
+offset_right = 205.0
+offset_bottom = 54.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBox_overlay")
+
+[node name="ZoneTitleLabel" type="Label" parent="UI/ZoneTitlePanel"]
+offset_left = 18.0
+offset_top = 25.0
+offset_right = 392.0
+offset_bottom = 70.0
+theme_override_colors/font_color = Color(0.45, 1, 0.9, 1)
+theme_override_font_sizes/font_size = 25
+text = "TRAINING PASSAGE"
+horizontal_alignment = 1
+
+[node name="ZoneSubtitleLabel" type="Label" parent="UI/ZoneTitlePanel"]
+offset_left = 18.0
+offset_top = 75.0
+offset_right = 392.0
+offset_bottom = 100.0
+theme_override_colors/font_color = Color(0.7, 0.83, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "The journey begins"
+horizontal_alignment = 1
+
+[node name="Enemy" parent="." groups=["enemy", "passage_enemy", "family_demon"] instance=ExtResource("7_enemy")]
 position = Vector2(507, 380)
 
-[node name="Enemy2" parent="." instance=ExtResource("7_enemy")]
+[node name="Enemy2" parent="." groups=["enemy", "passage_enemy", "family_demon"] instance=ExtResource("7_enemy")]
 position = Vector2(760, 380)
+
+[node name="RangedEnemy" parent="." groups=["enemy", "passage_enemy", "family_construct"] instance=ExtResource("13_ranged_enemy")]
+position = Vector2(690, 281)
+
+[node name="SentinelBoss" parent="." groups=["boss", "enemy", "passage_enemy", "family_construct"] instance=ExtResource("16_boss")]
+position = Vector2(1080, 370)
 
 [node name="DashGate" type="Area2D" parent="." groups=["ability_gate"]]
 z_index = 1
@@ -497,17 +1518,21 @@ width = 2.0
 default_color = Color(0.62, 0.96, 1, 0.95)
 
 [node name="StatusLabel" type="Label" parent="DashGate"]
-offset_left = -58.0
+offset_left = -70.0
 offset_top = 62.0
-offset_right = 58.0
+offset_right = 70.0
 offset_bottom = 82.0
+theme_override_font_sizes/font_size = 10
 text = "DASH REQUIRED"
 horizontal_alignment = 1
 
 [node name="ExitPortal" type="Area2D" parent="."]
 z_index = 1
-position = Vector2(930, 366)
+position = Vector2(1335, 366)
 script = ExtResource("8_exit")
+target_marker_group = &"vertical_entry"
+target_room_id = "sunken_shaft"
+required_enemy_group = &"passage_enemy"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExitPortal"]
 shape = SubResource("RectangleShape2D_exit")
@@ -525,6 +1550,7 @@ offset_left = -30.0
 offset_top = -43.0
 offset_right = 30.0
 offset_bottom = -23.0
+theme_override_font_sizes/font_size = 10
 text = "LOCKED"
 horizontal_alignment = 1
 

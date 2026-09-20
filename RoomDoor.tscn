@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://RoomDoor.gd" id="1_door"]
+
+[sub_resource type="RectangleShape2D" id="DoorShape"]
+size = Vector2(24, 48)
+
+[node name="RoomDoor" type="Area2D" groups=["room_door"]]
+z_index = 1
+script = ExtResource("1_door")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("DoorShape")
+
+[node name="Frame" type="Polygon2D" parent="."]
+color = Color(0.2, 0.72, 0.78, 1)
+polygon = PackedVector2Array(-15, -27, 15, -27, 15, 27, 9, 27, 9, -20, -9, -20, -9, 27, -15, 27)
+
+[node name="Core" type="Polygon2D" parent="."]
+color = Color(0.08, 0.2, 0.28, 0.85)
+polygon = PackedVector2Array(-8, -19, 8, -19, 8, 26, -8, 26)
+
+[node name="StatusLabel" type="Label" parent="."]
+offset_left = -46.0
+offset_top = -48.0
+offset_right = 46.0
+offset_bottom = -28.0
+theme_override_font_sizes/font_size = 10
+text = "RETURN"
+horizontal_alignment = 1

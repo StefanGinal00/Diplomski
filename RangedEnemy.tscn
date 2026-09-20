@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://RangedEnemy.gd" id="1_ranged"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_icon"]
+[ext_resource type="PackedScene" path="res://EnemyProjectile.tscn" id="3_projectile"]
+[ext_resource type="PackedScene" path="res://XPOrb.tscn" id="4_xp"]
+[ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="5_gold"]
+
+[sub_resource type="RectangleShape2D" id="RangedBodyShape"]
+size = Vector2(18, 18)
+
+[node name="RangedEnemy" type="StaticBody2D" groups=["enemy", "family_construct"]]
+script = ExtResource("1_ranged")
+projectile_scene = ExtResource("3_projectile")
+xp_orb_scene = ExtResource("4_xp")
+gold_pickup_scene = ExtResource("5_gold")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.105, 0.105)
+modulate = Color(0.78, 0.34, 1, 1)
+texture = ExtResource("2_icon")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RangedBodyShape")
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(-13, 0)
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+z_index = 2
+offset_left = -13.0
+offset_top = -24.0
+offset_right = 13.0
+offset_bottom = -19.0
+mouse_filter = 2
+max_value = 2.0
+value = 2.0
+show_percentage = false

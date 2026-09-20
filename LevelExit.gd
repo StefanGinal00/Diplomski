@@ -7,10 +7,14 @@ signal level_completed
 @export var locked_color: Color = Color(0.38, 0.42, 0.5, 1.0)
 @export var unlocked_color: Color = Color(0.18, 0.95, 0.78, 1.0)
 @export_range(0.1, 10.0, 0.1) var pulse_speed: float = 3.0
+@export var target_marker_group: StringName
+@export var target_room_id: String = ""
+@export var required_enemy_group: StringName = &"enemy"
 
 var is_unlocked: bool = false
 var remaining_enemies: int = 0
 var pulse_time: float = 0.0
+var transition_in_progress: bool = false
 
 @onready var frame: Polygon2D = $Frame
 @onready var core: Polygon2D = $Core
@@ -32,7 +36,11 @@ func _process(delta: float) -> void:
 
 
 func _track_enemies() -> void:
-	var enemies := get_tree().get_nodes_in_group("enemy")
+	var game_state := get_node_or_null("/root/GameState")
+	if target_room_id == "sunken_shaft" and game_state != null and bool(game_state.defeated_bosses.get("void_sentinel", false)):
+		unlock_exit()
+		return
+	var enemies := get_tree().get_nodes_in_group(required_enemy_group)
 	remaining_enemies = enemies.size()
 	for enemy in enemies:
 		var callback := Callable(self, "_on_enemy_defeated")
@@ -56,7 +64,7 @@ func unlock_exit() -> void:
 	is_unlocked = true
 	frame.color = unlocked_color
 	core.color = Color(unlocked_color.r, unlocked_color.g, unlocked_color.b, 0.7)
-	status_label.text = "EXIT"
+	status_label.text = "ENTER" if not target_marker_group.is_empty() else "EXIT"
 	status_label.modulate = unlocked_color
 	unlocked.emit()
 
@@ -70,8 +78,22 @@ func _set_locked_visuals() -> void:
 
 
 func _on_body_entered(body: Node) -> void:
-	if not is_unlocked or not body.is_in_group("player"):
+	if transition_in_progress or not is_unlocked or not body.is_in_group("player"):
 		return
 
-	monitoring = false
-	level_completed.emit()
+	if target_marker_group.is_empty():
+		transition_in_progress = true
+		set_deferred("monitoring", false)
+		level_completed.emit()
+		return
+
+	var target := get_tree().get_first_node_in_group(target_marker_group) as Node2D
+	var transition_manager := get_node_or_null("/root/RoomTransition")
+	if target == null or transition_manager == null or not body is Player:
+		push_warning("Level exit could not resolve transition target: " + str(target_marker_group))
+		return
+	transition_in_progress = true
+	set_deferred("monitoring", false)
+	await transition_manager.transition_player(body, target.global_position, target_room_id)
+	set_deferred("monitoring", true)
+	transition_in_progress = false

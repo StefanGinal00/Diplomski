@@ -1,0 +1,212 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
+[ext_resource type="PackedScene" path="res://TidePulse.tscn" id="3_surge"]
+[ext_resource type="PackedScene" path="res://SluiceValve.tscn" id="4_valve"]
+[ext_resource type="PackedScene" path="res://ResonanceCache.tscn" id="5_cache"]
+[ext_resource type="PackedScene" path="res://ShaftWisp.tscn" id="6_wisp"]
+[ext_resource type="PackedScene" path="res://ShaftSentry.tscn" id="7_sentry"]
+[ext_resource type="PackedScene" path="res://ShaftCrawler.tscn" id="8_crawler"]
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 420)
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(900, 18)
+
+[sub_resource type="RectangleShape2D" id="LedgeShape"]
+size = Vector2(108, 10)
+
+[sub_resource type="RectangleShape2D" id="RoofShape"]
+size = Vector2(900, 12)
+
+[node name="DrownedCrossing" type="Node2D"]
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.025, 0.07, 0.12, 1)
+polygon = PackedVector2Array(0, 0, 900, 0, 900, 420, 0, 420)
+
+[node name="BrokenAqueduct" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.065, 0.17, 0.22, 1)
+polygon = PackedVector2Array(0, 70, 135, 48, 250, 87, 350, 42, 486, 74, 570, 35, 735, 62, 900, 29, 900, 345, 0, 345)
+
+[node name="DeepWater" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.07, 0.36, 0.48, 0.52)
+polygon = PackedVector2Array(0, 354, 900, 354, 900, 420, 0, 420)
+
+[node name="SluiceChannel" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.11, 0.47, 0.6, 0.2)
+polygon = PackedVector2Array(220, 115, 640, 115, 640, 344, 220, 344)
+
+[node name="FlowLine" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(226, 293, 316, 307, 410, 293, 504, 307, 630, 294)
+width = 4.0
+default_color = Color(0.39, 0.83, 0.89, 0.5)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(450, 360)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+color = Color(0.07, 0.25, 0.31, 1)
+polygon = PackedVector2Array(-450, -9, 450, -9, 450, 9, -450, 9)
+
+[node name="Roof" type="StaticBody2D" parent="."]
+position = Vector2(450, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
+shape = SubResource("RoofShape")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, 210)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(900, 210)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="FirstLedge" type="StaticBody2D" parent="."]
+position = Vector2(224, 287)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FirstLedge"]
+shape = SubResource("LedgeShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="FirstLedge"]
+color = Color(0.16, 0.41, 0.45, 1)
+polygon = PackedVector2Array(-54, -5, 54, -5, 54, 5, -54, 5)
+
+[node name="SecondLedge" type="StaticBody2D" parent="."]
+position = Vector2(358, 252)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SecondLedge"]
+shape = SubResource("LedgeShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="SecondLedge"]
+color = Color(0.16, 0.43, 0.46, 1)
+polygon = PackedVector2Array(-54, -5, 54, -5, 54, 5, -54, 5)
+
+[node name="ThirdLedge" type="StaticBody2D" parent="."]
+position = Vector2(496, 278)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ThirdLedge"]
+shape = SubResource("LedgeShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="ThirdLedge"]
+color = Color(0.16, 0.43, 0.46, 1)
+polygon = PackedVector2Array(-54, -5, 54, -5, 54, 5, -54, 5)
+
+[node name="FourthLedge" type="StaticBody2D" parent="."]
+position = Vector2(634, 245)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FourthLedge"]
+shape = SubResource("LedgeShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="FourthLedge"]
+color = Color(0.16, 0.43, 0.46, 1)
+polygon = PackedVector2Array(-54, -5, 54, -5, 54, 5, -54, 5)
+
+[node name="CisternLedge" type="StaticBody2D" parent="."]
+position = Vector2(755, 245)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CisternLedge"]
+shape = SubResource("LedgeShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="CisternLedge"]
+color = Color(0.19, 0.47, 0.5, 1)
+polygon = PackedVector2Array(-54, -5, 54, -5, 54, 5, -54, 5)
+
+[node name="ShaftEntry" type="Marker2D" parent="." groups=["crossing_shaft_entry"]]
+position = Vector2(84, 327)
+
+[node name="HollowEntry" type="Marker2D" parent="." groups=["crossing_hollow_entry"]]
+position = Vector2(800, 327)
+
+[node name="GalleryReturn" type="Marker2D" parent="." groups=["crossing_gallery_return"]]
+position = Vector2(530, 246)
+
+[node name="CisternReturn" type="Marker2D" parent="." groups=["crossing_cistern_return"]]
+position = Vector2(795, 212)
+
+[node name="ShaftReturnDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(28, 327)
+target_marker_group = &"shaft_crossing_return"
+target_room_id = "sunken_shaft"
+door_label = "LOWER SHAFT"
+
+[node name="HollowDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(865, 327)
+target_marker_group = &"hollow_crossing_entry"
+target_room_id = "shaft_hollow"
+door_label = "WISP HOLLOW"
+required_event_ids = PackedStringArray("shaft_hollow_relay")
+locked_label = "RELAY SEALED"
+locked_hint = "Activate the relay in Wisp Hollow to open this return loop."
+
+[node name="GalleryDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(480, 246)
+target_marker_group = &"gallery_crossing_entry"
+target_room_id = "shaft_gallery"
+door_label = "FLOODED GALLERY"
+
+[node name="CisternDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(755, 212)
+target_marker_group = &"cistern_crossing_entry"
+target_room_id = "shaft_cistern"
+door_label = "BLACKWATER CISTERN"
+
+[node name="CrossingLamp" parent="." instance=ExtResource("2_lamp")]
+position = Vector2(132, 327)
+lamp_id = "drowned_crossing_lamp"
+lamp_name = "Drowned Crossing Lamp"
+room_id = "shaft_crossing"
+enemy_block_radius = 100.0
+
+[node name="SluiceSurge" parent="." instance=ExtResource("3_surge")]
+position = Vector2(430, 322)
+zone_id = "sunken_shaft"
+disabled_by_shortcut_id = "shaft_sluice_valve"
+knockback = Vector2(-190, -110)
+
+[node name="Valve" parent="." instance=ExtResource("4_valve")]
+position = Vector2(717, 326)
+
+[node name="CrossingCache" parent="." instance=ExtResource("5_cache")]
+position = Vector2(790, 329)
+cache_id = "crossing_supply"
+cache_name = "Crossing Supply"
+gold_reward = 30
+reward_item_id = "iron_fragment"
+
+[node name="ChannelCrawler" parent="." instance=ExtResource("8_crawler")]
+position = Vector2(312, 329)
+
+[node name="AqueductWisp" parent="." instance=ExtResource("6_wisp")]
+position = Vector2(500, 216)
+
+[node name="FarSentry" parent="." instance=ExtResource("7_sentry")]
+position = Vector2(634, 329)
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(86, 80)
+size = Vector2(188, 24)
+theme_override_colors/font_color = Color(0.55, 0.9, 0.94, 0.8)
+theme_override_font_sizes/font_size = 12
+text = "DROWNED CROSSING"
+horizontal_alignment = 1

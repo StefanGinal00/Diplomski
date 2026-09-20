@@ -1,0 +1,199 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
+[ext_resource type="PackedScene" path="res://HeatVent.tscn" id="3_vent"]
+[ext_resource type="PackedScene" path="res://ResonanceCache.tscn" id="4_cache"]
+[ext_resource type="PackedScene" path="res://AshFiend.tscn" id="5_fiend"]
+[ext_resource type="PackedScene" path="res://AshSentry.tscn" id="6_sentry"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(1100, 18)
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 470)
+
+[sub_resource type="RectangleShape2D" id="RoofShape"]
+size = Vector2(1100, 12)
+
+[sub_resource type="RectangleShape2D" id="StepShape"]
+size = Vector2(125, 10)
+
+[node name="BrokenCauseway" type="Node2D"]
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.095, 0.045, 0.055, 1)
+polygon = PackedVector2Array(0, 0, 1100, 0, 1100, 470, 0, 470)
+
+[node name="CinderSpine" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.25, 0.105, 0.08, 1)
+polygon = PackedVector2Array(0, 88, 115, 38, 225, 75, 350, 30, 465, 76, 580, 23, 715, 65, 825, 28, 945, 70, 1100, 33, 1100, 390, 0, 390)
+
+[node name="CoalGlow" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.62, 0.19, 0.07, 0.27)
+polygon = PackedVector2Array(270, 245, 870, 245, 1030, 390, 180, 390)
+
+[node name="EmberSeam" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(215, 372, 342, 365, 487, 376, 620, 365, 760, 375, 900, 367)
+width = 4.0
+default_color = Color(0.96, 0.37, 0.14, 0.43)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(550, 390)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+color = Color(0.28, 0.12, 0.11, 1)
+polygon = PackedVector2Array(-550, -9, 550, -9, 550, 9, -550, 9)
+
+[node name="Roof" type="StaticBody2D" parent="."]
+position = Vector2(550, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
+shape = SubResource("RoofShape")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, 235)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1100, 235)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="Step1" type="StaticBody2D" parent="."]
+position = Vector2(300, 310)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step1"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step1"]
+color = Color(0.43, 0.21, 0.16, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="Step2" type="StaticBody2D" parent="."]
+position = Vector2(430, 245)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step2"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step2"]
+color = Color(0.47, 0.23, 0.17, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="Step3" type="StaticBody2D" parent="."]
+position = Vector2(560, 205)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step3"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step3"]
+color = Color(0.52, 0.26, 0.18, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="Step4" type="StaticBody2D" parent="."]
+position = Vector2(690, 245)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step4"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step4"]
+color = Color(0.47, 0.23, 0.17, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="Step5" type="StaticBody2D" parent="."]
+position = Vector2(820, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step5"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step5"]
+color = Color(0.43, 0.21, 0.16, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="CausewayEntry" type="Marker2D" parent="." groups=["ash_causeway_entry"]]
+position = Vector2(80, 357)
+
+[node name="ForgeReturn" type="Marker2D" parent="." groups=["ash_causeway_forge_return"]]
+position = Vector2(1000, 357)
+
+[node name="BarracksReturn" type="Marker2D" parent="." groups=["ash_causeway_barracks_return"]]
+position = Vector2(866, 267)
+
+[node name="SanctumReturnDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(26, 357)
+target_marker_group = &"sanctum_ash_return"
+target_room_id = "echo_sanctum"
+door_label = "RESONANCE SANCTUM"
+
+[node name="ForgeDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(1065, 357)
+target_marker_group = &"ash_forge_entry"
+target_room_id = "ash_forge"
+door_label = "CINDER FORGE"
+
+[node name="BarracksLoopDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(789, 267)
+target_marker_group = &"ash_barracks_loop_entry"
+target_room_id = "ash_barracks"
+door_label = "BARRACKS LOOP"
+required_event_ids = PackedStringArray("ash_barracks_cleared")
+locked_label = "TRIAL SEALED"
+locked_hint = "Clear the Barracks Trial to open this loop."
+
+[node name="CausewayLamp" parent="." instance=ExtResource("2_lamp")]
+position = Vector2(155, 357)
+lamp_id = "ash_causeway_lamp"
+lamp_name = "Broken Causeway Lamp"
+room_id = "ash_causeway"
+enemy_block_radius = 110.0
+
+[node name="FirstVent" parent="." instance=ExtResource("3_vent")]
+position = Vector2(410, 339)
+
+[node name="SecondVent" parent="." instance=ExtResource("3_vent")]
+position = Vector2(735, 339)
+initial_offset = 0.85
+
+[node name="UpperCache" parent="." instance=ExtResource("4_cache")]
+position = Vector2(560, 172)
+cache_id = "ash_causeway_supply"
+cache_name = "Cinder Trail Supply"
+gold_reward = 30
+reward_item_id = "healing_herb"
+
+[node name="NearFiend" parent="." instance=ExtResource("5_fiend")]
+position = Vector2(295, 357)
+
+[node name="FarSentry" parent="." instance=ExtResource("6_sentry")]
+position = Vector2(870, 357)
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(91, 83)
+size = Vector2(195, 24)
+theme_override_colors/font_color = Color(1, 0.68, 0.42, 0.86)
+theme_override_font_sizes/font_size = 12
+text = "BROKEN CAUSEWAY"
+horizontal_alignment = 1
+
+[node name="RouteHint" type="Label" parent="."]
+position = Vector2(365, 96)
+size = Vector2(370, 32)
+theme_override_colors/font_color = Color(1, 0.73, 0.55, 0.72)
+theme_override_font_sizes/font_size = 10
+text = "The vents warn before erupting. Climb above or time the crossing."
+horizontal_alignment = 1

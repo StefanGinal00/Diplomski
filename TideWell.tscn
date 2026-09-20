@@ -1,0 +1,293 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
+[ext_resource type="PackedScene" path="res://ShaftLift.tscn" id="3_lift"]
+[ext_resource type="PackedScene" path="res://EchoShade.tscn" id="4_shade"]
+[ext_resource type="PackedScene" path="res://ShaftWisp.tscn" id="5_wisp"]
+[ext_resource type="PackedScene" path="res://ItemPickup.tscn" id="6_item"]
+[ext_resource type="PackedScene" path="res://TidePulse.tscn" id="7_pulse"]
+[ext_resource type="PackedScene" path="res://EchoTrace.tscn" id="8_trace"]
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 690)
+
+[sub_resource type="RectangleShape2D" id="UpperFloorShape"]
+size = Vector2(155, 18)
+
+[sub_resource type="RectangleShape2D" id="StepShape"]
+size = Vector2(110, 10)
+
+[sub_resource type="RectangleShape2D" id="BottomFloorShape"]
+size = Vector2(500, 18)
+
+[sub_resource type="RectangleShape2D" id="RimShape"]
+size = Vector2(500, 12)
+
+[node name="TideWell" type="Node2D"]
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.025, 0.09, 0.15, 1)
+polygon = PackedVector2Array(0, -25, 500, -25, 500, 680, 0, 680)
+
+[node name="RockFace" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.065, 0.18, 0.25, 1)
+polygon = PackedVector2Array(0, -25, 125, -25, 86, 100, 123, 201, 67, 285, 101, 391, 60, 505, 90, 665, 0, 665)
+
+[node name="DeepGlow" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.08, 0.43, 0.53, 0.32)
+polygon = PackedVector2Array(140, 160, 380, 160, 455, 650, 44, 650)
+
+[node name="CurrentLine" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(42, 195, 136, 263, 353, 332, 155, 452, 314, 563, 454, 634)
+width = 4.0
+default_color = Color(0.21, 0.71, 0.79, 0.34)
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, 335)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="Visual" type="Polygon2D" parent="LeftWall"]
+color = Color(0.07, 0.25, 0.32, 1)
+polygon = PackedVector2Array(-6, -345, 6, -345, 6, 345, -6, 345)
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(500, 335)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="Visual" type="Polygon2D" parent="RightWall"]
+color = Color(0.07, 0.25, 0.32, 1)
+polygon = PackedVector2Array(-6, -345, 6, -345, 6, 345, -6, 345)
+
+[node name="UpperFloor" type="StaticBody2D" parent="."]
+position = Vector2(77.5, 160)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperFloor"]
+shape = SubResource("UpperFloorShape")
+
+[node name="Visual" type="Polygon2D" parent="UpperFloor"]
+color = Color(0.12, 0.35, 0.4, 1)
+polygon = PackedVector2Array(-77.5, -9, 77.5, -9, 77.5, 9, -77.5, 9)
+
+[node name="Step1" type="StaticBody2D" parent="."]
+position = Vector2(210, 220)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step1"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step1"]
+color = Color(0.12, 0.36, 0.45, 1)
+polygon = PackedVector2Array(-55, -5, 55, -5, 55, 5, -55, 5)
+
+[node name="Step2" type="StaticBody2D" parent="."]
+position = Vector2(335, 290)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step2"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step2"]
+color = Color(0.12, 0.36, 0.45, 1)
+polygon = PackedVector2Array(-55, -5, 55, -5, 55, 5, -55, 5)
+
+[node name="Step3" type="StaticBody2D" parent="."]
+position = Vector2(220, 360)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step3"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step3"]
+color = Color(0.12, 0.36, 0.45, 1)
+polygon = PackedVector2Array(-55, -5, 55, -5, 55, 5, -55, 5)
+
+[node name="Step4" type="StaticBody2D" parent="."]
+position = Vector2(105, 430)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step4"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step4"]
+color = Color(0.12, 0.36, 0.45, 1)
+polygon = PackedVector2Array(-55, -5, 55, -5, 55, 5, -55, 5)
+
+[node name="WellTrace" parent="." instance=ExtResource("8_trace")]
+position = Vector2(105, 403)
+item_id = "echo_trace_well"
+
+[node name="Step5" type="StaticBody2D" parent="."]
+position = Vector2(220, 500)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step5"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step5"]
+color = Color(0.12, 0.36, 0.45, 1)
+polygon = PackedVector2Array(-55, -5, 55, -5, 55, 5, -55, 5)
+
+[node name="Step6" type="StaticBody2D" parent="."]
+position = Vector2(345, 570)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step6"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step6"]
+color = Color(0.12, 0.36, 0.45, 1)
+polygon = PackedVector2Array(-55, -5, 55, -5, 55, 5, -55, 5)
+
+[node name="Step7" type="StaticBody2D" parent="."]
+position = Vector2(420, 625)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step7"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step7"]
+color = Color(0.12, 0.36, 0.45, 1)
+polygon = PackedVector2Array(-55, -5, 55, -5, 55, 5, -55, 5)
+
+[node name="BottomFloor" type="StaticBody2D" parent="."]
+position = Vector2(250, 665)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomFloor"]
+shape = SubResource("BottomFloorShape")
+
+[node name="Visual" type="Polygon2D" parent="BottomFloor"]
+color = Color(0.07, 0.3, 0.38, 1)
+polygon = PackedVector2Array(-250, -9, 250, -9, 250, 9, -250, 9)
+
+[node name="WaterRim" type="StaticBody2D" parent="."]
+position = Vector2(250, 683)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WaterRim"]
+shape = SubResource("RimShape")
+
+[node name="Visual" type="Polygon2D" parent="WaterRim"]
+color = Color(0.1, 0.51, 0.61, 0.63)
+polygon = PackedVector2Array(-250, -6, 250, -6, 250, 6, -250, 6)
+
+[node name="TideEntry" type="Marker2D" parent="." groups=["tide_entry"]]
+position = Vector2(65, 130)
+
+[node name="ReturnDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(25, 130)
+target_marker_group = &"grotto_tide_return"
+target_room_id = "echo_grotto"
+door_label = "GROTTO"
+
+[node name="CausewayReturn" type="Marker2D" parent="." groups=["tide_causeway_return"]]
+position = Vector2(180, 190)
+
+[node name="CausewayDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(235, 190)
+target_marker_group = &"causeway_tide_entry"
+target_room_id = "echo_causeway"
+door_label = "CRYSTAL CAUSEWAY"
+required_event_ids = PackedStringArray("echo_causeway_anchor")
+locked_label = "ANCHOR SEALED"
+locked_hint = "Stabilize the far anchor from the Crystal Causeway."
+
+[node name="UpperLiftMarker" type="Marker2D" parent="." groups=["tide_upper_lift"]]
+position = Vector2(101, 130)
+
+[node name="LowerLiftMarker" type="Marker2D" parent="." groups=["tide_lower_lift"]]
+position = Vector2(320, 630)
+
+[node name="NestReturn" type="Marker2D" parent="." groups=["tide_nest_return"]]
+position = Vector2(400, 630)
+
+[node name="NestShortcutReturn" type="Marker2D" parent="." groups=["tide_nest_shortcut_return"]]
+position = Vector2(65, 130)
+
+[node name="VaultReturn" type="Marker2D" parent="." groups=["tide_vault_return"]]
+position = Vector2(220, 630)
+
+[node name="UpperLift" parent="." instance=ExtResource("3_lift")]
+position = Vector2(130, 128)
+shortcut_id = "tide_lift"
+target_marker_group = &"tide_lower_lift"
+room_id = "echo_tide_well"
+enemy_group = &"enemy"
+lift_label = "TIDE LIFT"
+
+[node name="LowerLift" parent="." instance=ExtResource("3_lift")]
+position = Vector2(345, 630)
+shortcut_id = "tide_lift"
+target_marker_group = &"tide_upper_lift"
+activates_shortcut = true
+room_id = "echo_tide_well"
+enemy_group = &"enemy"
+lift_label = "TIDE LIFT"
+
+[node name="Surge" parent="." instance=ExtResource("7_pulse")]
+position = Vector2(250, 402)
+
+[node name="MidWisp" parent="." instance=ExtResource("5_wisp")]
+position = Vector2(300, 319)
+zone_id = "echo_grotto"
+xp_reward = 2
+gold_reward = 12
+
+[node name="DeepShade" parent="." instance=ExtResource("4_shade")]
+position = Vector2(325, 637)
+max_health = 5
+gold_reward = 20
+
+[node name="TideLamp" parent="." instance=ExtResource("2_lamp")]
+position = Vector2(92, 628)
+lamp_id = "tide_well_lamp"
+lamp_name = "Tide Well Lamp"
+room_id = "echo_tide_well"
+enemy_block_radius = 130.0
+
+[node name="TideCore" parent="." instance=ExtResource("6_item")]
+position = Vector2(246, 636)
+item_id = "tide_core"
+display_name = "Tide Core"
+unique = true
+
+[node name="VaultDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(174, 630)
+target_marker_group = &"vault_entry"
+target_room_id = "echo_vault"
+door_label = "UNDERTOW VAULT"
+required_item_id = "tide_core"
+locked_label = "CORE LOCK"
+locked_hint = "Recover the Tide Core before exploring the Vault."
+
+[node name="NestDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(465, 630)
+target_marker_group = &"nest_entry"
+target_room_id = "echo_nest"
+door_label = "ECHO NEST"
+required_item_id = "tide_core"
+locked_label = "CORE LOCK"
+locked_hint = "Recover the Tide Core below."
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(17, 54)
+size = Vector2(184, 20)
+theme_override_colors/font_color = Color(0.61, 0.95, 1, 0.82)
+theme_override_font_sizes/font_size = 10
+text = "THE TIDE WELL"
+horizontal_alignment = 1
+
+[node name="DepthHint" type="Label" parent="."]
+position = Vector2(82, 575)
+size = Vector2(190, 24)
+theme_override_colors/font_color = Color(0.6, 0.88, 0.92, 0.79)
+theme_override_font_sizes/font_size = 9
+text = "The current guards a living core."
+horizontal_alignment = 1

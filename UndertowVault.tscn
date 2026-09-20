@@ -1,0 +1,207 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
+[ext_resource type="PackedScene" path="res://EchoAnchor.tscn" id="3_seal"]
+[ext_resource type="PackedScene" path="res://TidePulse.tscn" id="4_surge"]
+[ext_resource type="PackedScene" path="res://ResonanceCache.tscn" id="5_cache"]
+[ext_resource type="PackedScene" path="res://EchoShade.tscn" id="6_shade"]
+[ext_resource type="PackedScene" path="res://ShaftWisp.tscn" id="7_wisp"]
+[ext_resource type="PackedScene" path="res://EchoBroodling.tscn" id="8_brood"]
+[ext_resource type="PackedScene" path="res://DestructibleCrate.tscn" id="9_crate"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(1050, 18)
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 520)
+
+[sub_resource type="RectangleShape2D" id="RoofShape"]
+size = Vector2(1050, 12)
+
+[sub_resource type="RectangleShape2D" id="StepShape"]
+size = Vector2(120, 10)
+
+[node name="UndertowVault" type="Node2D"]
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.025, 0.055, 0.12, 1)
+polygon = PackedVector2Array(0, 0, 1050, 0, 1050, 520, 0, 520)
+
+[node name="VaultRibs" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.08, 0.15, 0.27, 1)
+polygon = PackedVector2Array(0, 82, 130, 47, 260, 83, 385, 36, 525, 91, 680, 32, 800, 87, 945, 48, 1050, 78, 1050, 400, 0, 400)
+
+[node name="ReservoirGlow" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.09, 0.46, 0.61, 0.3)
+polygon = PackedVector2Array(350, 198, 770, 166, 840, 410, 300, 410)
+
+[node name="TideChannel" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(270, 360, 395, 350, 525, 362, 655, 350, 785, 363)
+width = 5.0
+default_color = Color(0.28, 0.76, 0.86, 0.45)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(525, 410)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+color = Color(0.09, 0.25, 0.38, 1)
+polygon = PackedVector2Array(-525, -9, 525, -9, 525, 9, -525, 9)
+
+[node name="Roof" type="StaticBody2D" parent="."]
+position = Vector2(525, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
+shape = SubResource("RoofShape")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1050, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="FirstStep" type="StaticBody2D" parent="."]
+position = Vector2(180, 340)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FirstStep"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="FirstStep"]
+color = Color(0.17, 0.43, 0.53, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="SecondStep" type="StaticBody2D" parent="."]
+position = Vector2(265, 285)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SecondStep"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="SecondStep"]
+color = Color(0.2, 0.49, 0.56, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="UpperStep" type="StaticBody2D" parent="."]
+position = Vector2(350, 230)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperStep"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="UpperStep"]
+color = Color(0.25, 0.58, 0.63, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="CrossingStep" type="StaticBody2D" parent="."]
+position = Vector2(555, 325)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CrossingStep"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="CrossingStep"]
+color = Color(0.18, 0.45, 0.57, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="FarStep" type="StaticBody2D" parent="."]
+position = Vector2(700, 305)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FarStep"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="FarStep"]
+color = Color(0.18, 0.45, 0.57, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="TideSurge" parent="." instance=ExtResource("4_surge")]
+position = Vector2(570, 373)
+
+[node name="VaultEntry" type="Marker2D" parent="." groups=["vault_entry"]]
+position = Vector2(82, 377)
+
+[node name="ReturnDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(27, 377)
+target_marker_group = &"tide_vault_return"
+target_room_id = "echo_tide_well"
+door_label = "TIDE WELL"
+
+[node name="UpperSeal" parent="." instance=ExtResource("3_seal")]
+position = Vector2(350, 197)
+shortcut_id = "echo_vault_upper"
+inactive_label = "UPPER SEAL"
+active_label = "UPPER ATTUNED"
+inactive_prompt = "[E] ATTUNE UPPER SEAL"
+active_prompt = "UPPER CURRENT STABLE"
+
+[node name="FarSeal" parent="." instance=ExtResource("3_seal")]
+position = Vector2(824, 377)
+shortcut_id = "echo_vault_far"
+inactive_label = "FAR SEAL"
+active_label = "FAR ATTUNED"
+inactive_prompt = "[E] ATTUNE FAR SEAL"
+active_prompt = "FAR CURRENT STABLE"
+
+[node name="VaultLamp" parent="." instance=ExtResource("2_lamp")]
+position = Vector2(916, 377)
+lamp_id = "undertow_vault_lamp"
+lamp_name = "Undertow Vault Lamp"
+room_id = "echo_vault"
+enemy_block_radius = 120.0
+
+[node name="VaultCache" parent="." instance=ExtResource("5_cache")]
+position = Vector2(996, 377)
+cache_id = "vault_mantle"
+cache_name = "Tideguard Reliquary"
+gold_reward = 42
+reward_item_id = "tideguard_mantle"
+required_event_ids = PackedStringArray("echo_vault_upper", "echo_vault_far")
+
+[node name="VaultWisp" parent="." instance=ExtResource("7_wisp")]
+position = Vector2(360, 153)
+zone_id = "echo_grotto"
+xp_reward = 2
+gold_reward = 14
+
+[node name="MidShade" parent="." instance=ExtResource("6_shade")]
+position = Vector2(472, 377)
+gold_reward = 18
+
+[node name="FarBroodling" parent="." instance=ExtResource("8_brood")]
+position = Vector2(690, 377)
+max_health = 4
+gold_reward = 19
+counts_for_nest = false
+
+[node name="VaultCrate" parent="." instance=ExtResource("9_crate")]
+position = Vector2(586, 378)
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(80, 95)
+size = Vector2(195, 24)
+theme_override_colors/font_color = Color(0.58, 0.87, 1, 0.88)
+theme_override_font_sizes/font_size = 12
+text = "UNDERTOW VAULT"
+horizontal_alignment = 1
+
+[node name="SealHint" type="Label" parent="."]
+position = Vector2(716, 93)
+size = Vector2(250, 42)
+theme_override_colors/font_color = Color(0.7, 0.89, 0.98, 0.78)
+theme_override_font_sizes/font_size = 10
+text = "One seal above. One beyond the current."
+horizontal_alignment = 1

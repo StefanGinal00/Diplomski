@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://Enemy.gd" id="1_enemy"]
 [ext_resource type="Texture2D" path="res://icon.svg" id="2_icon"]
 [ext_resource type="PackedScene" path="res://XPOrb.tscn" id="3_xp"]
+[ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="4_gold"]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
 size = Vector2(16, 14)
@@ -16,9 +17,10 @@ size = Vector2(16, 6)
 [sub_resource type="CircleShape2D" id="AwarenessShape"]
 radius = 110.0
 
-[node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
+[node name="Enemy" type="CharacterBody2D" groups=["enemy", "family_demon"]]
 script = ExtResource("1_enemy")
 xp_orb_scene = ExtResource("3_xp")
+gold_pickup_scene = ExtResource("4_gold")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0.25, 0)

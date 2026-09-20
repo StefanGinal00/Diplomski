@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://QuestItem.gd" id="1_item"]
+
+[sub_resource type="CircleShape2D" id="TraceShape"]
+radius = 10.0
+
+[node name="EchoTrace" type="Area2D" groups=["quest_item"]]
+script = ExtResource("1_item")
+bob_height = 2.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("TraceShape")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Glow" type="Polygon2D" parent="Visual"]
+color = Color(0.24, 0.92, 0.93, 0.32)
+polygon = PackedVector2Array(0, -16, 11, -11, 16, 0, 11, 11, 0, 16, -11, 11, -16, 0, -11, -11)
+
+[node name="Shard" type="Polygon2D" parent="Visual"]
+color = Color(0.58, 1, 0.93, 1)
+polygon = PackedVector2Array(0, -11, 5, -3, 7, 5, 0, 11, -7, 5, -5, -3)
+
+[node name="Core" type="Polygon2D" parent="Visual"]
+color = Color(0.06, 0.27, 0.4, 1)
+polygon = PackedVector2Array(0, -5, 4, 0, 0, 5, -4, 0)

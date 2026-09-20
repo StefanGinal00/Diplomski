@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://ShaftLift.gd" id="1_lift"]
+
+[sub_resource type="RectangleShape2D" id="LiftShape"]
+size = Vector2(48, 40)
+
+[node name="ShaftLift" type="Area2D" groups=["shaft_lift"]]
+script = ExtResource("1_lift")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("LiftShape")
+
+[node name="Rails" type="Polygon2D" parent="."]
+color = Color(0.23, 0.47, 0.53, 0.8)
+polygon = PackedVector2Array(-20, 17, -20, -16, -15, -16, -15, 12, 15, 12, 15, -16, 20, -16, 20, 17)
+
+[node name="Core" type="Polygon2D" parent="."]
+color = Color(0.55, 0.45, 0.68, 1)
+polygon = PackedVector2Array(0, -13, 8, -4, 8, 8, 0, 14, -8, 8, -8, -4)
+
+[node name="Prompt" type="Label" parent="."]
+offset_left = -72.0
+offset_top = -45.0
+offset_right = 72.0
+offset_bottom = -24.0
+theme_override_font_sizes/font_size = 10
+text = "LIFT LOCKED BELOW"
+horizontal_alignment = 1

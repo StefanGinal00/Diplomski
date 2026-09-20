@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://DestructibleCrate.gd" id="1_crate"]
+[ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="2_gold"]
+[ext_resource type="PackedScene" path="res://ItemPickup.tscn" id="3_item"]
+
+[sub_resource type="RectangleShape2D" id="CrateShape"]
+size = Vector2(24, 24)
+
+[node name="DestructibleCrate" type="StaticBody2D" groups=["breakable"]]
+script = ExtResource("1_crate")
+gold_pickup_scene = ExtResource("2_gold")
+item_pickup_scene = ExtResource("3_item")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CrateShape")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Box" type="Polygon2D" parent="Visual"]
+color = Color(0.42, 0.24, 0.12, 1)
+polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
+
+[node name="Border" type="Line2D" parent="Visual"]
+points = PackedVector2Array(-11, -11, 11, -11, 11, 11, -11, 11, -11, -11, 11, 11, 11, -11, -11, 11)
+width = 2.0
+default_color = Color(0.84, 0.55, 0.22, 1)
+
+[node name="Mark" type="Polygon2D" parent="Visual"]
+color = Color(1, 0.75, 0.28, 0.9)
+polygon = PackedVector2Array(-2, -6, 3, -6, 3, -1, 7, -1, 7, 3, 2, 3, 2, 7, -3, 7, -3, 2, -7, 2, -7, -2, -2, -2)

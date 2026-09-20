@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cgcejgeuqurqk"]
 
-[ext_resource type="Script" uid="uid://dltlfno56otv5" path="res://XPOrb.gd" id="1_865k8"]
+[ext_resource type="Script" path="res://XPOrb.gd" id="1_865k8"]
 [ext_resource type="Texture2D" path="res://coin-svgrepo-com.svg" id="2_xj5ed"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_drlxq"]

@@ -1,0 +1,129 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
+[ext_resource type="PackedScene" path="res://EchoMatriarch.tscn" id="3_boss"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(920, 18)
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 350)
+
+[sub_resource type="RectangleShape2D" id="PlatformShape"]
+size = Vector2(145, 10)
+
+[node name="ResonanceSanctum" type="Node2D"]
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.055, 0.04, 0.12, 1)
+polygon = PackedVector2Array(0, -190, 920, -190, 920, 185, 0, 185)
+
+[node name="Vault" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.16, 0.1, 0.27, 1)
+polygon = PackedVector2Array(0, 150, 62, -50, 235, -172, 472, -187, 698, -161, 871, -41, 920, 150, 862, 150, 815, -7, 662, -112, 470, -137, 260, -109, 101, -2, 56, 150)
+
+[node name="CoreGlow" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.64, 0.23, 0.61, 0.26)
+polygon = PackedVector2Array(418, -174, 542, -174, 756, 152, 186, 152)
+
+[node name="ResonanceArc" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(165, 135, 235, -54, 463, -135, 703, -58, 775, 135)
+width = 4.0
+default_color = Color(0.71, 0.43, 0.77, 0.45)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(460, 166)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+color = Color(0.19, 0.18, 0.33, 1)
+polygon = PackedVector2Array(-460, -9, 460, -9, 460, 9, -460, 9)
+
+[node name="EndWall" type="StaticBody2D" parent="."]
+position = Vector2(920, -5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EndWall"]
+shape = SubResource("WallShape")
+
+[node name="Visual" type="Polygon2D" parent="EndWall"]
+color = Color(0.2, 0.15, 0.33, 1)
+polygon = PackedVector2Array(-6, -175, 6, -175, 6, 175, -6, 175)
+
+[node name="LeftPlatform" type="StaticBody2D" parent="."]
+position = Vector2(305, 95)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftPlatform"]
+shape = SubResource("PlatformShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="LeftPlatform"]
+color = Color(0.31, 0.3, 0.5, 1)
+polygon = PackedVector2Array(-72, -5, 73, -5, 73, 5, -72, 5)
+
+[node name="RightPlatform" type="StaticBody2D" parent="."]
+position = Vector2(695, 95)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightPlatform"]
+shape = SubResource("PlatformShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="RightPlatform"]
+color = Color(0.31, 0.3, 0.5, 1)
+polygon = PackedVector2Array(-72, -5, 73, -5, 73, 5, -72, 5)
+
+[node name="SanctumEntry" type="Marker2D" parent="." groups=["sanctum_entry"]]
+position = Vector2(65, 130)
+
+[node name="ReturnDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(25, 130)
+target_marker_group = &"nest_sanctum_return"
+target_room_id = "echo_nest"
+door_label = "ECHO NEST"
+
+[node name="SanctumLamp" parent="." instance=ExtResource("2_lamp")]
+position = Vector2(120, 128)
+lamp_id = "sanctum_lamp"
+lamp_name = "Resonance Sanctum Lamp"
+room_id = "echo_sanctum"
+enemy_block_radius = 200.0
+
+[node name="EchoMatriarch" parent="." instance=ExtResource("3_boss")]
+position = Vector2(500, 34)
+
+[node name="GrottoShortcut" parent="." instance=ExtResource("1_door")]
+position = Vector2(865, 130)
+target_marker_group = &"grotto_sanctum_return"
+target_room_id = "echo_grotto"
+door_label = "GROTTO LOOP"
+required_item_id = "matriarch_seal"
+required_boss_ids = PackedStringArray("echo_matriarch")
+locked_label = "MATRIARCH"
+locked_hint = "Defeat the Echo Matriarch."
+
+[node name="AshenReturn" type="Marker2D" parent="." groups=["sanctum_ash_return"]]
+position = Vector2(807, 130)
+
+[node name="AshenGate" parent="." instance=ExtResource("1_door")]
+position = Vector2(750, 130)
+target_marker_group = &"ash_causeway_entry"
+target_room_id = "ash_causeway"
+door_label = "ASHEN BASTION"
+required_item_id = "matriarch_seal"
+required_boss_ids = PackedStringArray("echo_matriarch")
+locked_label = "MATRIARCH SEAL"
+locked_hint = "Defeat the Echo Matriarch to enter Ashen Bastion."
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(31, 56)
+size = Vector2(191, 23)
+theme_override_colors/font_color = Color(0.91, 0.64, 0.9, 0.88)
+theme_override_font_sizes/font_size = 10
+text = "RESONANCE SANCTUM"
+horizontal_alignment = 1

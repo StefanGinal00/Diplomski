@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://BarracksBeacon.gd" id="1_beacon"]
+
+[sub_resource type="CircleShape2D" id="Reach"]
+radius = 43.0
+
+[node name="BarracksBeacon" type="Area2D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_beacon")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("Reach")
+
+[node name="Glow" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.9, 0.24, 0.13, 0.25)
+polygon = PackedVector2Array(-24, 16, -20, -19, 0, -30, 20, -19, 24, 16)
+
+[node name="Base" type="Polygon2D" parent="."]
+color = Color(0.3, 0.13, 0.14, 1)
+polygon = PackedVector2Array(-17, 21, 17, 21, 22, 29, -22, 29)
+
+[node name="Core" type="Polygon2D" parent="."]
+color = Color(0.96, 0.33, 0.17, 1)
+polygon = PackedVector2Array(0, -23, 15, -9, 10, 11, 0, 18, -10, 11, -15, -9)
+
+[node name="Prompt" type="Label" parent="."]
+offset_left = -112.0
+offset_top = -56.0
+offset_right = 112.0
+offset_bottom = -36.0
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 1

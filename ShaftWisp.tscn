@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://ShaftWisp.gd" id="1_wisp"]
+[ext_resource type="PackedScene" path="res://XPOrb.tscn" id="2_xp"]
+[ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="3_gold"]
+[ext_resource type="PackedScene" path="res://ItemPickup.tscn" id="4_item"]
+
+[sub_resource type="CircleShape2D" id="BodyShape"]
+radius = 11.0
+
+[sub_resource type="CircleShape2D" id="ContactShape"]
+radius = 15.0
+
+[node name="ShaftWisp" type="CharacterBody2D" groups=["enemy", "family_spirit"]]
+collision_layer = 1
+collision_mask = 1
+script = ExtResource("1_wisp")
+xp_orb_scene = ExtResource("2_xp")
+gold_pickup_scene = ExtResource("3_gold")
+item_pickup_scene = ExtResource("4_item")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BodyShape")
+
+[node name="LeftWing" type="Polygon2D" parent="."]
+position = Vector2(-9, 0)
+color = Color(0.22, 0.78, 0.86, 0.72)
+polygon = PackedVector2Array(0, -4, -15, -10, -11, 2, -17, 10, 0, 5)
+
+[node name="RightWing" type="Polygon2D" parent="."]
+position = Vector2(9, 0)
+color = Color(0.22, 0.78, 0.86, 0.72)
+polygon = PackedVector2Array(0, -4, 15, -10, 11, 2, 17, 10, 0, 5)
+
+[node name="BodyVisual" type="Polygon2D" parent="."]
+color = Color(0.48, 0.24, 0.78, 1)
+polygon = PackedVector2Array(0, -13, 10, -5, 9, 7, 0, 13, -9, 7, -10, -5)
+
+[node name="Eye" type="Polygon2D" parent="."]
+color = Color(0.72, 1, 0.92, 1)
+polygon = PackedVector2Array(-5, -2, 5, -2, 3, 3, -3, 3)
+
+[node name="ContactArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContactArea"]
+shape = SubResource("ContactShape")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+z_index = 2
+offset_left = -15.0
+offset_top = -24.0
+offset_right = 15.0
+offset_bottom = -19.0
+mouse_filter = 2
+max_value = 3.0
+value = 3.0
+show_percentage = false

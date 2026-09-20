@@ -1,0 +1,200 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
+[ext_resource type="PackedScene" path="res://EchoShade.tscn" id="3_shade"]
+[ext_resource type="PackedScene" path="res://ItemPickup.tscn" id="4_item"]
+[ext_resource type="PackedScene" path="res://DestructibleCrate.tscn" id="5_crate"]
+[ext_resource type="PackedScene" path="res://EchoTrace.tscn" id="6_trace"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(840, 18)
+
+[sub_resource type="RectangleShape2D" id="EndWallShape"]
+size = Vector2(12, 280)
+
+[sub_resource type="RectangleShape2D" id="StepShape"]
+size = Vector2(130, 10)
+
+[sub_resource type="RectangleShape2D" id="UpperStepShape"]
+size = Vector2(135, 10)
+
+[sub_resource type="RectangleShape2D" id="PrismLedgeShape"]
+size = Vector2(150, 10)
+
+[sub_resource type="RectangleShape2D" id="MiddleStepShape"]
+size = Vector2(135, 10)
+
+[node name="EchoGallery" type="Node2D"]
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.045, 0.055, 0.14, 1)
+polygon = PackedVector2Array(0, -200, 840, -200, 840, 180, 0, 180)
+
+[node name="CavernRibs" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.12, 0.16, 0.29, 1)
+polygon = PackedVector2Array(0, 150, 35, -20, 125, -145, 270, -180, 430, -140, 585, -185, 735, -105, 835, 72, 840, 150, 780, 150, 682, -56, 590, -124, 434, -86, 265, -116, 122, -62, 63, 150)
+
+[node name="PrismBeam" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.39, 0.5, 0.92, 0.18)
+polygon = PackedVector2Array(650, -170, 735, -170, 783, 151, 567, 151)
+
+[node name="BackgroundCrystals" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.23, 0.62, 0.78, 0.45)
+polygon = PackedVector2Array(180, 155, 220, -55, 252, 155, 420, 155, 461, -103, 504, 155, 745, 155, 776, -35, 806, 155)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(420, 166)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+color = Color(0.11, 0.24, 0.38, 1)
+polygon = PackedVector2Array(-420, -9, 420, -9, 420, 9, -420, 9)
+
+[node name="EndWall" type="StaticBody2D" parent="."]
+position = Vector2(840, 20)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EndWall"]
+shape = SubResource("EndWallShape")
+
+[node name="Visual" type="Polygon2D" parent="EndWall"]
+color = Color(0.12, 0.23, 0.35, 1)
+polygon = PackedVector2Array(-6, -140, 6, -140, 6, 140, -6, 140)
+
+[node name="FirstStep" type="StaticBody2D" parent="."]
+position = Vector2(220, 94)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FirstStep"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="FirstStep"]
+color = Color(0.18, 0.38, 0.52, 1)
+polygon = PackedVector2Array(-65, -5, 65, -5, 65, 5, -65, 5)
+
+[node name="MiddleStep" type="StaticBody2D" parent="."]
+position = Vector2(370, 39)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MiddleStep"]
+shape = SubResource("MiddleStepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="MiddleStep"]
+color = Color(0.2, 0.43, 0.56, 1)
+polygon = PackedVector2Array(-67, -5, 68, -5, 68, 5, -67, 5)
+
+[node name="UpperStep" type="StaticBody2D" parent="."]
+position = Vector2(525, -16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperStep"]
+shape = SubResource("UpperStepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="UpperStep"]
+color = Color(0.22, 0.47, 0.59, 1)
+polygon = PackedVector2Array(-67, -5, 68, -5, 68, 5, -67, 5)
+
+[node name="PrismLedge" type="StaticBody2D" parent="."]
+position = Vector2(690, -70)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PrismLedge"]
+shape = SubResource("PrismLedgeShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="PrismLedge"]
+color = Color(0.3, 0.54, 0.65, 1)
+polygon = PackedVector2Array(-75, -5, 75, -5, 75, 5, -75, 5)
+
+[node name="GalleryEntry" type="Marker2D" parent="." groups=["gallery_entry"]]
+position = Vector2(65, 131)
+
+[node name="ArchiveReturn" type="Marker2D" parent="." groups=["gallery_archive_return"]]
+position = Vector2(640, -100)
+
+[node name="CausewayReturn" type="Marker2D" parent="." groups=["gallery_causeway_return"]]
+position = Vector2(715, 131)
+
+[node name="ReturnDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(25, 130)
+target_marker_group = &"grotto_gallery_return"
+target_room_id = "echo_grotto"
+door_label = "GROTTO"
+
+[node name="GalleryLamp" parent="." instance=ExtResource("2_lamp")]
+position = Vector2(116, 128)
+lamp_id = "echo_gallery_lamp"
+lamp_name = "Whispering Gallery Lamp"
+room_id = "echo_gallery"
+enemy_block_radius = 130.0
+
+[node name="GalleryTrace" parent="." instance=ExtResource("6_trace")]
+position = Vector2(220, 67)
+item_id = "echo_trace_gallery"
+
+[node name="NearShade" parent="." instance=ExtResource("3_shade")]
+position = Vector2(342, 135)
+
+[node name="FarShade" parent="." instance=ExtResource("3_shade")]
+position = Vector2(585, 135)
+max_health = 5
+gold_reward = 18
+
+[node name="PrismCrate" parent="." instance=ExtResource("5_crate")]
+position = Vector2(473, 136)
+min_gold = 15
+max_gold = 26
+
+[node name="GalleryPrism" parent="." instance=ExtResource("4_item")]
+position = Vector2(690, -101)
+item_id = "gallery_prism"
+display_name = "Gallery Prism"
+unique = true
+
+[node name="ArchiveDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(745, -101)
+target_marker_group = &"archive_entry"
+target_room_id = "echo_archive"
+door_label = "ARCHIVE"
+required_item_id = "gallery_prism"
+locked_label = "PRISM LOCK"
+locked_hint = "Find the Gallery Prism first."
+
+[node name="ShortcutDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(790, 130)
+target_marker_group = &"grotto_shortcut_return"
+target_room_id = "echo_grotto"
+door_label = "GROTTO LOOP"
+required_item_id = "gallery_prism"
+locked_label = "PRISM LOCK"
+locked_hint = "Find the Gallery Prism above."
+
+[node name="CausewayDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(660, 130)
+target_marker_group = &"causeway_gallery_entry"
+target_room_id = "echo_causeway"
+door_label = "CRYSTAL CAUSEWAY"
+required_item_id = "gallery_prism"
+locked_label = "PRISM LOCK"
+locked_hint = "Find the Gallery Prism above to reveal this route."
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(60, 55)
+size = Vector2(165, 22)
+theme_override_colors/font_color = Color(0.7, 0.88, 1, 0.85)
+theme_override_font_sizes/font_size = 10
+text = "WHISPERING GALLERY"
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="."]
+position = Vector2(612, 55)
+size = Vector2(155, 22)
+theme_override_colors/font_color = Color(0.64, 0.82, 0.96, 0.7)
+theme_override_font_sizes/font_size = 9
+text = "The answer waits above."
+horizontal_alignment = 1

@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://PlayerArrow.gd" id="1_arrow"]
+
+[sub_resource type="RectangleShape2D" id="ArrowShape"]
+size = Vector2(18, 4)
+
+[node name="PlayerArrow" type="Area2D" groups=["player_projectile"]]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_arrow")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("ArrowShape")
+
+[node name="Trail" type="Polygon2D" parent="."]
+color = Color(0.66, 0.5, 0.26, 0.7)
+polygon = PackedVector2Array(-12, -1, 3, -1, 3, 1, -12, 1)
+
+[node name="Head" type="Polygon2D" parent="."]
+color = Color(0.82, 0.9, 0.94, 1)
+polygon = PackedVector2Array(2, -4, 11, 0, 2, 4)

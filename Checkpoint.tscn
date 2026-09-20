@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Checkpoint.gd" id="1_checkpoint"]
+
+[sub_resource type="CircleShape2D" id="CheckpointShape"]
+radius = 22.0
+
+[node name="Checkpoint" type="Area2D" groups=["checkpoint"]]
+script = ExtResource("1_checkpoint")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CheckpointShape")
+
+[node name="Glow" type="Polygon2D" parent="."]
+color = Color(0.25, 0.65, 1, 0.2)
+polygon = PackedVector2Array(0, -18, 13, -13, 18, 0, 13, 13, 0, 18, -13, 13, -18, 0, -13, -13)
+
+[node name="Core" type="Polygon2D" parent="."]
+color = Color(0.88, 0.65, 0.22, 1)
+polygon = PackedVector2Array(-3, -16, 3, -16, 3, 8, 10, 13, -10, 13, -3, 8)
+
+[node name="StatusLabel" type="Label" parent="."]
+offset_left = -70.0
+offset_top = -40.0
+offset_right = 70.0
+offset_bottom = -20.0
+theme_override_font_sizes/font_size = 10
+text = "SAVE LAMP"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="."]
+offset_left = -58.0
+offset_top = 24.0
+offset_right = 58.0
+offset_bottom = 44.0
+theme_override_font_sizes/font_size = 10
+text = "[E] Rest and Save"
+horizontal_alignment = 1
+
+[node name="RespawnPoint" type="Marker2D" parent="."]
+position = Vector2(0, 2)
+
+[node name="SaveChime" type="AudioStreamPlayer2D" parent="."]
+volume_db = -7.0
+max_distance = 420.0

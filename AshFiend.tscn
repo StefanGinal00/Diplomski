@@ -1,0 +1,76 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://Enemy.gd" id="1_enemy"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_icon"]
+[ext_resource type="PackedScene" path="res://XPOrb.tscn" id="3_xp"]
+[ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="4_gold"]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(19, 18)
+
+[sub_resource type="RectangleShape2D" id="DamageShape"]
+size = Vector2(22, 19)
+
+[sub_resource type="RectangleShape2D" id="StompShape"]
+size = Vector2(18, 7)
+
+[sub_resource type="CircleShape2D" id="AwarenessShape"]
+radius = 140.0
+
+[node name="AshFiend" type="CharacterBody2D" groups=["enemy", "family_demon"]]
+script = ExtResource("1_enemy")
+zone_id = "ashen_bastion"
+move_speed = 55.0
+chase_speed = 86.0
+damage = 2
+max_health = 4
+xp_orb_scene = ExtResource("3_xp")
+xp_reward = 2
+gold_pickup_scene = ExtResource("4_gold")
+gold_reward = 15
+
+[node name="BackFlames" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.95, 0.3, 0.12, 0.88)
+polygon = PackedVector2Array(-13, 8, -16, -11, -5, -3, 0, -20, 6, -3, 16, -13, 14, 8)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.123, 0.115)
+modulate = Color(1, 0.53, 0.24, 1)
+texture = ExtResource("2_icon")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BodyShape")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+z_index = 2
+offset_left = -14.0
+offset_top = -24.0
+offset_right = 14.0
+offset_bottom = -18.0
+mouse_filter = 2
+max_value = 4.0
+value = 4.0
+show_percentage = false
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("DamageShape")
+
+[node name="AwarenessArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AwarenessArea"]
+shape = SubResource("AwarenessShape")
+
+[node name="LeftPoint" type="Marker2D" parent="."]
+position = Vector2(-85, 0)
+
+[node name="RightPoint" type="Marker2D" parent="."]
+position = Vector2(85, 0)
+
+[node name="TopHitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopHitbox"]
+position = Vector2(0, -12)
+shape = SubResource("StompShape")

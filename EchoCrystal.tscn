@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://EchoCrystal.gd" id="1_crystal"]
+
+[sub_resource type="CircleShape2D" id="InteractionShape"]
+radius = 30.0
+
+[node name="EchoCrystal" type="Area2D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_crystal")
+
+[node name="Glow" type="Polygon2D" parent="."]
+color = Color(0.2, 0.68, 1, 0.3)
+polygon = PackedVector2Array(0, -28, 23, -12, 23, 12, 0, 28, -23, 12, -23, -12)
+
+[node name="Core" type="Polygon2D" parent="."]
+color = Color(0.37, 0.67, 0.95, 1)
+polygon = PackedVector2Array(0, -22, 13, -8, 10, 14, 0, 23, -10, 14, -13, -8)
+
+[node name="Facet" type="Polygon2D" parent="."]
+color = Color(0.72, 0.96, 1, 0.72)
+polygon = PackedVector2Array(0, -20, 7, -7, 0, 8, -5, -7)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("InteractionShape")
+
+[node name="Prompt" type="Label" parent="."]
+offset_left = -105.0
+offset_top = -48.0
+offset_right = 105.0
+offset_bottom = -29.0
+theme_override_colors/font_color = Color(0.69, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 9
+text = "[E] ATTUNE RESONATOR"
+horizontal_alignment = 1

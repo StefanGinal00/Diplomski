@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://ArchiveMirror.gd" id="1_mirror"]
+
+[sub_resource type="CircleShape2D" id="InteractionShape"]
+radius = 29.0
+
+[node name="ArchiveMirror" type="Area2D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_mirror")
+
+[node name="Halo" type="Polygon2D" parent="."]
+color = Color(0.34, 0.62, 1, 0.28)
+polygon = PackedVector2Array(0, -26, 22, -15, 27, 0, 22, 15, 0, 26, -22, 15, -27, 0, -22, -15)
+
+[node name="Pedestal" type="Polygon2D" parent="."]
+color = Color(0.18, 0.29, 0.43, 1)
+polygon = PackedVector2Array(-18, 17, 18, 17, 23, 27, -23, 27)
+
+[node name="Core" type="Polygon2D" parent="."]
+color = Color(0.37, 0.55, 0.93, 1)
+polygon = PackedVector2Array(0, -23, 15, -10, 13, 11, 0, 19, -13, 11, -15, -10)
+
+[node name="Facet" type="Polygon2D" parent="."]
+color = Color(0.78, 0.95, 1, 0.75)
+polygon = PackedVector2Array(0, -19, 7, -8, 2, 8, -7, -5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("InteractionShape")
+
+[node name="Prompt" type="Label" parent="."]
+offset_left = -92.0
+offset_top = -48.0
+offset_right = 92.0
+offset_bottom = -29.0
+theme_override_colors/font_color = Color(0.72, 0.91, 1, 1)
+theme_override_font_sizes/font_size = 9
+text = "[E] MIRROR"
+horizontal_alignment = 1

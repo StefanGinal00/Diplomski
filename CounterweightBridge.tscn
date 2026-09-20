@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://CounterweightBridge.gd" id="1_bridge"]
+
+[sub_resource type="RectangleShape2D" id="BridgeShape"]
+size = Vector2(620, 12)
+
+[node name="CounterweightBridge" type="StaticBody2D"]
+script = ExtResource("1_bridge")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BridgeShape")
+disabled = true
+
+[node name="Walkway" type="Polygon2D" parent="."]
+color = Color(0.11, 0.4, 0.46, 0.18)
+polygon = PackedVector2Array(-310, -6, 310, -6, 310, 6, -310, 6)
+
+[node name="Rail" type="Line2D" parent="."]
+points = PackedVector2Array(-310, -9, 310, -9)
+width = 2.0
+default_color = Color(0.28, 0.71, 0.74, 0.23)
+
+[node name="StatusLabel" type="Label" parent="."]
+offset_left = -150.0
+offset_top = -33.0
+offset_right = 150.0
+offset_bottom = -14.0
+theme_override_font_sizes/font_size = 10
+text = "BRIDGE RAISED  •  CLIMB ABOVE"
+horizontal_alignment = 1

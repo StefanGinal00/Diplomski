@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://HeatVent.gd" id="1_vent"]
+
+[sub_resource type="RectangleShape2D" id="VentShape"]
+size = Vector2(94, 84)
+
+[node name="HeatVent" type="Area2D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_vent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("VentShape")
+
+[node name="Base" type="Polygon2D" parent="."]
+color = Color(0.32, 0.15, 0.15, 1)
+polygon = PackedVector2Array(-50, 41, 50, 41, 44, 49, -44, 49)
+
+[node name="Flame" type="Polygon2D" parent="."]
+color = Color(0.8, 0.24, 0.08, 0.1)
+polygon = PackedVector2Array(-46, 39, -34, -31, -19, 4, -8, -41, 9, 3, 24, -29, 47, 39)
+
+[node name="WarningLine" type="Line2D" parent="."]
+points = PackedVector2Array(-48, 41, -34, -31, -19, 4, -8, -41, 9, 3, 24, -29, 48, 41)
+width = 2.0
+default_color = Color(0.95, 0.38, 0.18, 0.24)

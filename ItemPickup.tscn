@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://ItemPickup.gd" id="1_item"]
+
+[sub_resource type="CircleShape2D" id="ItemShape"]
+radius = 8.0
+
+[node name="ItemPickup" type="Area2D" groups=["item_pickup"]]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_item")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Glow" type="Polygon2D" parent="Visual"]
+color = Color(0.35, 0.95, 0.55, 0.25)
+polygon = PackedVector2Array(0, -12, 9, -7, 12, 0, 9, 7, 0, 12, -9, 7, -12, 0, -9, -7)
+
+[node name="Item" type="Polygon2D" parent="Visual"]
+color = Color(0.46, 0.92, 0.48, 1)
+polygon = PackedVector2Array(-5, -8, 4, -6, 7, 1, 2, 8, -5, 6, -8, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("ItemShape")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -55.0
+offset_top = -31.0
+offset_right = 55.0
+offset_bottom = -11.0
+theme_override_font_sizes/font_size = 10
+text = "Healing Herb"
+horizontal_alignment = 1

@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://EchoBroodling.gd" id="1_brood"]
+[ext_resource type="PackedScene" path="res://XPOrb.tscn" id="2_xp"]
+[ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="3_gold"]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(27, 18)
+
+[node name="EchoBroodling" type="CharacterBody2D" groups=["enemy", "nest_brood", "family_beast"]]
+script = ExtResource("1_brood")
+xp_orb_scene = ExtResource("2_xp")
+gold_pickup_scene = ExtResource("3_gold")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BodyShape")
+
+[node name="BackSpines" type="Polygon2D" parent="."]
+color = Color(0.23, 0.54, 0.62, 1)
+polygon = PackedVector2Array(-12, 1, -9, -15, -4, -6, 0, -18, 5, -6, 10, -15, 13, 2)
+
+[node name="BodyVisual" type="Polygon2D" parent="."]
+color = Color(0.35, 0.75, 0.79, 1)
+polygon = PackedVector2Array(-15, 7, -13, -5, -7, -10, 8, -10, 14, -4, 15, 7, 7, 3, 0, 9, -7, 3)
+
+[node name="Eye" type="Polygon2D" parent="."]
+color = Color(1, 0.76, 0.43, 1)
+polygon = PackedVector2Array(-8, -4, -2, -4, -2, -1, -8, -1)
+
+[node name="WarningIcon" type="Polygon2D" parent="."]
+position = Vector2(0, -22)
+color = Color(1, 0.43, 0.54, 1)
+polygon = PackedVector2Array(0, -8, 7, 4, -7, 4)
+
+[node name="ContactArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContactArea"]
+shape = SubResource("BodyShape")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+z_index = 2
+offset_left = -17.0
+offset_top = -22.0
+offset_right = 17.0
+offset_bottom = -17.0
+mouse_filter = 2
+max_value = 3.0
+value = 3.0
+show_percentage = false

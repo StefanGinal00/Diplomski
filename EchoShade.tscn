@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://EchoShade.gd" id="1_shade"]
+[ext_resource type="PackedScene" path="res://XPOrb.tscn" id="2_xp"]
+[ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="3_gold"]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(28, 35)
+
+[node name="EchoShade" type="CharacterBody2D" groups=["enemy", "family_spirit"]]
+script = ExtResource("1_shade")
+xp_orb_scene = ExtResource("2_xp")
+gold_pickup_scene = ExtResource("3_gold")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BodyShape")
+
+[node name="Mantle" type="Polygon2D" parent="."]
+color = Color(0.19, 0.16, 0.38, 0.8)
+polygon = PackedVector2Array(-22, 13, -14, -13, 0, -22, 14, -13, 22, 13, 8, 18, 0, 12, -8, 18)
+
+[node name="BodyVisual" type="Polygon2D" parent="."]
+color = Color(0.43, 0.35, 0.7, 1)
+polygon = PackedVector2Array(-14, 14, -13, -7, -6, -17, 7, -17, 14, -7, 14, 14, 7, 10, 0, 17, -7, 10)
+
+[node name="Eyes" type="Polygon2D" parent="."]
+color = Color(0.72, 1, 0.96, 1)
+polygon = PackedVector2Array(-8, -5, -2, -5, -2, -2, -8, -2, 2, -5, 8, -5, 8, -2, 2, -2)
+
+[node name="Telegraph" type="Line2D" parent="."]
+visible = false
+points = PackedVector2Array(0, 5, 130, 5)
+width = 4.0
+default_color = Color(1, 0.39, 0.64, 0.9)
+
+[node name="ContactArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContactArea"]
+shape = SubResource("BodyShape")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+z_index = 2
+offset_left = -18.0
+offset_top = -32.0
+offset_right = 18.0
+offset_bottom = -27.0
+mouse_filter = 2
+max_value = 4.0
+value = 4.0
+show_percentage = false

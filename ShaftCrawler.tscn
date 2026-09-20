@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://ShaftCrawler.gd" id="1_crawler"]
+[ext_resource type="PackedScene" path="res://XPOrb.tscn" id="2_xp"]
+[ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="3_gold"]
+[ext_resource type="PackedScene" path="res://ItemPickup.tscn" id="4_item"]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(25, 18)
+
+[sub_resource type="RectangleShape2D" id="ContactShape"]
+size = Vector2(29, 19)
+
+[node name="ShaftCrawler" type="CharacterBody2D" groups=["enemy", "shaft_enemy", "family_beast"]]
+script = ExtResource("1_crawler")
+xp_orb_scene = ExtResource("2_xp")
+gold_pickup_scene = ExtResource("3_gold")
+item_pickup_scene = ExtResource("4_item")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BodyShape")
+
+[node name="BodyVisual" type="Polygon2D" parent="."]
+color = Color(0.42, 0.45, 0.7, 1)
+polygon = PackedVector2Array(-14, 8, -13, -2, -7, -9, 8, -9, 14, -2, 14, 8, 8, 3, -8, 3)
+
+[node name="Eye" type="Polygon2D" parent="."]
+color = Color(0.8, 1, 0.9, 1)
+polygon = PackedVector2Array(-9, -3, -3, -4, -3, 0, -9, 0)
+
+[node name="WarningIcon" type="Polygon2D" parent="."]
+position = Vector2(0, -19)
+color = Color(1.0, 0.28, 0.28, 1)
+polygon = PackedVector2Array(0, -8, 6, 4, -6, 4)
+
+[node name="ContactArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContactArea"]
+shape = SubResource("ContactShape")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+z_index = 2
+offset_left = -17.0
+offset_top = -20.0
+offset_right = 17.0
+offset_bottom = -15.0
+mouse_filter = 2
+max_value = 4.0
+value = 4.0
+show_percentage = false

@@ -1,0 +1,199 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://BarracksTrial.gd" id="1_trial"]
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="2_door"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="3_lamp"]
+[ext_resource type="PackedScene" path="res://HeatVent.tscn" id="4_vent"]
+[ext_resource type="PackedScene" path="res://ResonanceCache.tscn" id="5_cache"]
+[ext_resource type="PackedScene" path="res://AshFiend.tscn" id="6_fiend"]
+[ext_resource type="PackedScene" path="res://AshSentry.tscn" id="7_sentry"]
+[ext_resource type="PackedScene" path="res://BarracksBeacon.tscn" id="8_beacon"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(1200, 18)
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 520)
+
+[sub_resource type="RectangleShape2D" id="RoofShape"]
+size = Vector2(1200, 12)
+
+[sub_resource type="RectangleShape2D" id="StepShape"]
+size = Vector2(140, 10)
+
+[node name="EmberBarracks" type="Node2D"]
+script = ExtResource("1_trial")
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.07, 0.037, 0.065, 1)
+polygon = PackedVector2Array(0, 0, 1200, 0, 1200, 520, 0, 520)
+
+[node name="StoneRanks" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.2, 0.085, 0.105, 1)
+polygon = PackedVector2Array(0, 130, 90, 75, 180, 122, 300, 62, 400, 116, 520, 68, 660, 120, 800, 58, 935, 118, 1070, 63, 1200, 115, 1200, 420, 0, 420)
+
+[node name="FurnaceWindowLeft" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.98, 0.27, 0.09, 0.2)
+polygon = PackedVector2Array(212, 135, 258, 135, 258, 295, 212, 295)
+
+[node name="FurnaceWindowMiddle" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.98, 0.27, 0.09, 0.2)
+polygon = PackedVector2Array(592, 118, 638, 118, 638, 292, 592, 292)
+
+[node name="FurnaceWindowRight" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.98, 0.27, 0.09, 0.2)
+polygon = PackedVector2Array(972, 135, 1018, 135, 1018, 295, 972, 295)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(600, 420)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+color = Color(0.29, 0.13, 0.15, 1)
+polygon = PackedVector2Array(-600, -9, 600, -9, 600, 9, -600, 9)
+
+[node name="Roof" type="StaticBody2D" parent="."]
+position = Vector2(600, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
+shape = SubResource("RoofShape")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1200, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="Step1" type="StaticBody2D" parent="."]
+position = Vector2(325, 345)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step1"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step1"]
+color = Color(0.42, 0.2, 0.2, 1)
+polygon = PackedVector2Array(-70, -5, 70, -5, 70, 5, -70, 5)
+
+[node name="Step2" type="StaticBody2D" parent="."]
+position = Vector2(470, 290)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step2"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step2"]
+color = Color(0.47, 0.23, 0.21, 1)
+polygon = PackedVector2Array(-70, -5, 70, -5, 70, 5, -70, 5)
+
+[node name="Step3" type="StaticBody2D" parent="."]
+position = Vector2(615, 245)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step3"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step3"]
+color = Color(0.53, 0.26, 0.22, 1)
+polygon = PackedVector2Array(-70, -5, 70, -5, 70, 5, -70, 5)
+
+[node name="Step4" type="StaticBody2D" parent="."]
+position = Vector2(760, 290)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step4"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step4"]
+color = Color(0.47, 0.23, 0.21, 1)
+polygon = PackedVector2Array(-70, -5, 70, -5, 70, 5, -70, 5)
+
+[node name="Step5" type="StaticBody2D" parent="."]
+position = Vector2(905, 345)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step5"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step5"]
+color = Color(0.42, 0.2, 0.2, 1)
+polygon = PackedVector2Array(-70, -5, 70, -5, 70, 5, -70, 5)
+
+[node name="BarracksEntry" type="Marker2D" parent="." groups=["ash_barracks_entry"]]
+position = Vector2(82, 387)
+
+[node name="BarracksLoopEntry" type="Marker2D" parent="." groups=["ash_barracks_loop_entry"]]
+position = Vector2(1085, 387)
+
+[node name="ReturnDoor" parent="." instance=ExtResource("2_door")]
+position = Vector2(27, 387)
+target_marker_group = &"ash_forge_barracks_return"
+target_room_id = "ash_forge"
+door_label = "CINDER FORGE"
+
+[node name="CausewayLoopDoor" parent="." instance=ExtResource("2_door")]
+position = Vector2(1170, 387)
+target_marker_group = &"ash_causeway_barracks_return"
+target_room_id = "ash_causeway"
+door_label = "CAUSEWAY LOOP"
+required_event_ids = PackedStringArray("ash_barracks_cleared")
+locked_label = "TRIAL SEALED"
+locked_hint = "Clear the Barracks Trial to open this loop."
+
+[node name="BarracksLamp" parent="." instance=ExtResource("3_lamp")]
+position = Vector2(150, 387)
+lamp_id = "ember_barracks_lamp"
+lamp_name = "Ember Barracks Lamp"
+room_id = "ash_barracks"
+enemy_block_radius = 105.0
+
+[node name="EntryFiend" parent="." instance=ExtResource("6_fiend")]
+position = Vector2(335, 387)
+
+[node name="UpperSentry" parent="." instance=ExtResource("7_sentry")]
+position = Vector2(903, 313)
+
+[node name="BarracksVent" parent="." instance=ExtResource("4_vent")]
+position = Vector2(755, 369)
+disabled_by_shortcut_id = "ash_barracks_cleared"
+
+[node name="BarracksCache" parent="." instance=ExtResource("5_cache")]
+position = Vector2(615, 212)
+cache_id = "ash_barracks_supply"
+cache_name = "Barracks Supply"
+gold_reward = 35
+reward_item_id = "iron_fragment"
+required_event_ids = PackedStringArray("ash_barracks_cleared")
+
+[node name="BarracksBeacon" parent="." instance=ExtResource("8_beacon")]
+position = Vector2(590, 387)
+
+[node name="WaveEnemies" type="Node2D" parent="."]
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(73, 92)
+size = Vector2(220, 25)
+theme_override_colors/font_color = Color(1, 0.69, 0.49, 0.9)
+theme_override_font_sizes/font_size = 12
+text = "EMBER BARRACKS"
+horizontal_alignment = 1
+
+[node name="ChallengeLabel" type="Label" parent="."]
+position = Vector2(415, 95)
+size = Vector2(405, 26)
+theme_override_colors/font_color = Color(1, 0.76, 0.56, 0.85)
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 1

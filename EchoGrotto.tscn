@@ -1,0 +1,235 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
+[ext_resource type="PackedScene" path="res://DestructibleCrate.tscn" id="3_crate"]
+[ext_resource type="PackedScene" path="res://EchoCrystal.tscn" id="4_resonator"]
+[ext_resource type="PackedScene" path="res://ShaftWisp.tscn" id="5_wisp"]
+[ext_resource type="PackedScene" path="res://LyraSurveyor.tscn" id="6_lyra"]
+
+[sub_resource type="RectangleShape2D" id="GrottoFloorShape"]
+size = Vector2(980, 18)
+
+[sub_resource type="RectangleShape2D" id="GrottoWallShape"]
+size = Vector2(12, 240)
+
+[sub_resource type="RectangleShape2D" id="FirstPlatformShape"]
+size = Vector2(140, 10)
+
+[sub_resource type="RectangleShape2D" id="SecondPlatformShape"]
+size = Vector2(140, 10)
+
+[sub_resource type="RectangleShape2D" id="ThirdPlatformShape"]
+size = Vector2(150, 10)
+
+[sub_resource type="RectangleShape2D" id="HighLedgeShape"]
+size = Vector2(125, 10)
+
+[node name="EchoGrotto" type="Node2D"]
+
+[node name="CavernBackdrop" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.035, 0.07, 0.15, 1)
+polygon = PackedVector2Array(0, -180, 980, -180, 980, 180, 0, 180)
+
+[node name="Arch" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.08, 0.18, 0.28, 1)
+polygon = PackedVector2Array(20, 150, 48, 42, 125, -80, 244, -110, 430, -155, 690, -160, 880, -85, 955, 65, 965, 150, 924, 150, 850, -39, 704, -109, 452, -105, 238, 31, 129, 31, 78, 70, 57, 150)
+
+[node name="InnerGlow" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.13, 0.51, 0.58, 0.28)
+polygon = PackedVector2Array(95, 70, 380, -72, 810, -110, 930, 154, 54, 154)
+
+[node name="CrystalLeft" type="Polygon2D" parent="."]
+color = Color(0.23, 0.79, 0.86, 0.78)
+polygon = PackedVector2Array(82, 154, 95, 106, 108, 154)
+
+[node name="CrystalRight" type="Polygon2D" parent="."]
+color = Color(0.47, 0.91, 0.95, 0.7)
+polygon = PackedVector2Array(296, 154, 313, 90, 328, 154)
+
+[node name="CrystalDepth" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.21, 0.61, 0.78, 0.28)
+polygon = PackedVector2Array(440, 153, 490, -112, 531, 153, 650, 153, 709, -149, 758, 153)
+
+[node name="CrystalFar" type="Polygon2D" parent="."]
+color = Color(0.31, 0.83, 0.88, 0.68)
+polygon = PackedVector2Array(871, 155, 894, 56, 920, 155)
+
+[node name="ResonanceLine" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(520, 123, 612, 20, 735, -51, 899, 101)
+width = 3.0
+default_color = Color(0.3, 0.83, 0.91, 0.33)
+
+[node name="GrottoFloor" type="StaticBody2D" parent="."]
+position = Vector2(490, 166)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrottoFloor"]
+shape = SubResource("GrottoFloorShape")
+
+[node name="Visual" type="Polygon2D" parent="GrottoFloor"]
+color = Color(0.07, 0.29, 0.37, 1)
+polygon = PackedVector2Array(-490, -9, 490, -9, 490, 9, -490, 9)
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(980, 40)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("GrottoWallShape")
+
+[node name="Visual" type="Polygon2D" parent="RightWall"]
+color = Color(0.09, 0.24, 0.33, 1)
+polygon = PackedVector2Array(-6, -120, 6, -120, 6, 120, -6, 120)
+
+[node name="FirstPlatform" type="StaticBody2D" parent="."]
+position = Vector2(400, 94)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FirstPlatform"]
+shape = SubResource("FirstPlatformShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="FirstPlatform"]
+color = Color(0.12, 0.38, 0.46, 1)
+polygon = PackedVector2Array(-70, -5, 70, -5, 70, 5, -70, 5)
+
+[node name="SecondPlatform" type="StaticBody2D" parent="."]
+position = Vector2(560, 40)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SecondPlatform"]
+shape = SubResource("SecondPlatformShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="SecondPlatform"]
+color = Color(0.13, 0.43, 0.48, 1)
+polygon = PackedVector2Array(-70, -5, 70, -5, 70, 5, -70, 5)
+
+[node name="ThirdPlatform" type="StaticBody2D" parent="."]
+position = Vector2(730, -14)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ThirdPlatform"]
+shape = SubResource("ThirdPlatformShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="ThirdPlatform"]
+color = Color(0.14, 0.46, 0.51, 1)
+polygon = PackedVector2Array(-75, -5, 75, -5, 75, 5, -75, 5)
+
+[node name="HighLedge" type="StaticBody2D" parent="."]
+position = Vector2(900, -68)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HighLedge"]
+shape = SubResource("HighLedgeShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="HighLedge"]
+color = Color(0.16, 0.49, 0.53, 1)
+polygon = PackedVector2Array(-62, -5, 63, -5, 63, 5, -62, 5)
+
+[node name="GrottoEntry" type="Marker2D" parent="." groups=["grotto_entry"]]
+position = Vector2(65, 131)
+
+[node name="GalleryReturn" type="Marker2D" parent="." groups=["grotto_gallery_return"]]
+position = Vector2(790, 131)
+
+[node name="ShortcutReturn" type="Marker2D" parent="." groups=["grotto_shortcut_return"]]
+position = Vector2(440, 131)
+
+[node name="ArchiveReturn" type="Marker2D" parent="." groups=["grotto_archive_return"]]
+position = Vector2(340, 131)
+
+[node name="TideReturn" type="Marker2D" parent="." groups=["grotto_tide_return"]]
+position = Vector2(460, 131)
+
+[node name="SanctumReturn" type="Marker2D" parent="." groups=["grotto_sanctum_return"]]
+position = Vector2(720, 131)
+
+[node name="ReturnDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(25, 130)
+target_marker_group = &"shaft_return"
+target_room_id = "sunken_shaft"
+door_label = "SUNKEN SHAFT"
+
+[node name="GrottoLamp" parent="." instance=ExtResource("2_lamp")]
+position = Vector2(262, 128)
+lamp_id = "echo_grotto_lamp"
+lamp_name = "Echo Grotto Lamp"
+room_id = "echo_grotto"
+
+[node name="LyraSurveyor" parent="." instance=ExtResource("6_lyra")]
+position = Vector2(333, 128)
+
+[node name="ForgottenCrate" parent="." instance=ExtResource("3_crate")]
+position = Vector2(171, 136)
+min_gold = 12
+max_gold = 22
+
+[node name="TideDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(390, 130)
+target_marker_group = &"tide_entry"
+target_room_id = "echo_tide_well"
+door_label = "TIDE WELL"
+
+[node name="LowerResonator" parent="." instance=ExtResource("4_resonator")]
+position = Vector2(520, 126)
+crystal_id = "lower"
+crystal_name = "Lower Resonator"
+
+[node name="UpperResonator" parent="." instance=ExtResource("4_resonator")]
+position = Vector2(739, -47)
+crystal_id = "upper"
+crystal_name = "Upper Resonator"
+
+[node name="EchoWisp" parent="." instance=ExtResource("5_wisp")]
+position = Vector2(604, -20)
+zone_id = "echo_grotto"
+xp_reward = 2
+gold_reward = 11
+
+[node name="FarWisp" parent="." instance=ExtResource("5_wisp")]
+position = Vector2(869, 70)
+zone_id = "echo_grotto"
+xp_reward = 2
+gold_reward = 12
+
+[node name="FarCrate" parent="." instance=ExtResource("3_crate")]
+position = Vector2(900, 136)
+min_gold = 15
+max_gold = 25
+
+[node name="GalleryDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(945, 130)
+target_marker_group = &"gallery_entry"
+target_room_id = "echo_gallery"
+door_label = "GALLERY"
+required_item_id = "echo_charm"
+required_event_ids = PackedStringArray("echo_resonator_lower", "echo_resonator_upper")
+locked_label = "RESONANCE"
+locked_hint = "Attune both Grotto resonators first."
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(98, 55)
+size = Vector2(164, 28)
+theme_override_colors/font_color = Color(0.52, 0.98, 0.94, 0.86)
+theme_override_font_sizes/font_size = 11
+text = "THE ECHO GROTTO"
+horizontal_alignment = 1
+
+[node name="LoreLabel" type="Label" parent="."]
+position = Vector2(92, 84)
+size = Vector2(176, 35)
+theme_override_colors/font_color = Color(0.68, 0.83, 0.91, 0.8)
+theme_override_font_sizes/font_size = 10
+text = "The Warden guarded a path,\nnot a treasure."
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="."]
+position = Vector2(365, 129)
+size = Vector2(110, 19)
+theme_override_colors/font_color = Color(0.57, 0.87, 0.94, 0.74)
+theme_override_font_sizes/font_size = 9
+text = "Follow the echoes  →"
+horizontal_alignment = 1

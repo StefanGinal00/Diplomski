@@ -1,0 +1,318 @@
+[gd_scene load_steps=17 format=3]
+
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
+[ext_resource type="PackedScene" path="res://SluiceValve.tscn" id="3_crank"]
+[ext_resource type="PackedScene" path="res://CounterweightBridge.tscn" id="4_bridge"]
+[ext_resource type="PackedScene" path="res://ResonanceCache.tscn" id="5_cache"]
+[ext_resource type="PackedScene" path="res://ShaftWisp.tscn" id="6_wisp"]
+[ext_resource type="PackedScene" path="res://ShaftSentry.tscn" id="7_sentry"]
+[ext_resource type="PackedScene" path="res://ShaftCrawler.tscn" id="8_crawler"]
+[ext_resource type="Script" path="res://SpikeTrap.gd" id="9_spike"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(300, 18)
+
+[sub_resource type="RectangleShape2D" id="PitFloorShape"]
+size = Vector2(640, 18)
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 560)
+
+[sub_resource type="RectangleShape2D" id="RoofShape"]
+size = Vector2(1200, 12)
+
+[sub_resource type="RectangleShape2D" id="StepShape"]
+size = Vector2(125, 10)
+
+[sub_resource type="RectangleShape2D" id="RecoveryShape"]
+size = Vector2(100, 10)
+
+[sub_resource type="RectangleShape2D" id="SpikeShape"]
+size = Vector2(95, 22)
+
+[node name="WardenApproach" type="Node2D"]
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.035, 0.065, 0.105, 1)
+polygon = PackedVector2Array(0, 0, 1200, 0, 1200, 560, 0, 560)
+
+[node name="BrokenGantry" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.08, 0.18, 0.23, 1)
+polygon = PackedVector2Array(0, 70, 130, 35, 285, 73, 430, 28, 575, 65, 715, 24, 860, 69, 1010, 36, 1200, 64, 1200, 440, 0, 440)
+
+[node name="PitGlow" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.23, 0.13, 0.19, 0.36)
+polygon = PackedVector2Array(270, 442, 930, 442, 930, 555, 270, 555)
+
+[node name="SuspendedChains" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(330, 15, 330, 225, 460, 240, 460, 10)
+width = 3.0
+default_color = Color(0.41, 0.55, 0.58, 0.38)
+
+[node name="LeftFloor" type="StaticBody2D" parent="."]
+position = Vector2(150, 450)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftFloor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="LeftFloor"]
+color = Color(0.11, 0.28, 0.34, 1)
+polygon = PackedVector2Array(-150, -9, 150, -9, 150, 9, -150, 9)
+
+[node name="RightFloor" type="StaticBody2D" parent="."]
+position = Vector2(1050, 450)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightFloor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="RightFloor"]
+color = Color(0.11, 0.28, 0.34, 1)
+polygon = PackedVector2Array(-150, -9, 150, -9, 150, 9, -150, 9)
+
+[node name="PitFloor" type="StaticBody2D" parent="."]
+position = Vector2(600, 530)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PitFloor"]
+shape = SubResource("PitFloorShape")
+
+[node name="Visual" type="Polygon2D" parent="PitFloor"]
+color = Color(0.13, 0.21, 0.28, 1)
+polygon = PackedVector2Array(-320, -9, 320, -9, 320, 9, -320, 9)
+
+[node name="Roof" type="StaticBody2D" parent="."]
+position = Vector2(600, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
+shape = SubResource("RoofShape")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, 280)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1200, 280)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="UpperStep1" type="StaticBody2D" parent="."]
+position = Vector2(210, 370)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperStep1"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="UpperStep1"]
+color = Color(0.21, 0.42, 0.46, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="UpperStep2" type="StaticBody2D" parent="."]
+position = Vector2(335, 315)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperStep2"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="UpperStep2"]
+color = Color(0.21, 0.44, 0.48, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="UpperStep3" type="StaticBody2D" parent="."]
+position = Vector2(460, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperStep3"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="UpperStep3"]
+color = Color(0.23, 0.48, 0.5, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="UpperStep4" type="StaticBody2D" parent="."]
+position = Vector2(585, 215)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperStep4"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="UpperStep4"]
+color = Color(0.27, 0.57, 0.57, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="UpperStep5" type="StaticBody2D" parent="."]
+position = Vector2(710, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperStep5"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="UpperStep5"]
+color = Color(0.23, 0.48, 0.5, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="UpperStep6" type="StaticBody2D" parent="."]
+position = Vector2(835, 315)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperStep6"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="UpperStep6"]
+color = Color(0.21, 0.44, 0.48, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="UpperStep7" type="StaticBody2D" parent="."]
+position = Vector2(960, 370)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperStep7"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="UpperStep7"]
+color = Color(0.21, 0.42, 0.46, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="RecoveryLeft" type="StaticBody2D" parent="."]
+position = Vector2(395, 465)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RecoveryLeft"]
+shape = SubResource("RecoveryShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="RecoveryLeft"]
+color = Color(0.18, 0.38, 0.43, 1)
+polygon = PackedVector2Array(-50, -5, 50, -5, 50, 5, -50, 5)
+
+[node name="RecoveryMiddleLeft" type="StaticBody2D" parent="."]
+position = Vector2(520, 405)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RecoveryMiddleLeft"]
+shape = SubResource("RecoveryShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="RecoveryMiddleLeft"]
+color = Color(0.19, 0.4, 0.44, 1)
+polygon = PackedVector2Array(-50, -5, 50, -5, 50, 5, -50, 5)
+
+[node name="RecoveryMiddleRight" type="StaticBody2D" parent="."]
+position = Vector2(680, 405)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RecoveryMiddleRight"]
+shape = SubResource("RecoveryShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="RecoveryMiddleRight"]
+color = Color(0.19, 0.4, 0.44, 1)
+polygon = PackedVector2Array(-50, -5, 50, -5, 50, 5, -50, 5)
+
+[node name="RecoveryRight" type="StaticBody2D" parent="."]
+position = Vector2(805, 465)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RecoveryRight"]
+shape = SubResource("RecoveryShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="RecoveryRight"]
+color = Color(0.18, 0.38, 0.43, 1)
+polygon = PackedVector2Array(-50, -5, 50, -5, 50, 5, -50, 5)
+
+[node name="NearSpikes" type="Area2D" parent="."]
+position = Vector2(485, 508)
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("9_spike")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NearSpikes"]
+shape = SubResource("SpikeShape")
+
+[node name="Visual" type="Polygon2D" parent="NearSpikes"]
+color = Color(0.73, 0.28, 0.38, 1)
+polygon = PackedVector2Array(-48, 11, -39, -12, -28, 11, -18, -12, -7, 11, 4, -12, 16, 11, 27, -12, 38, 11, 48, -12, 48, 11)
+
+[node name="FarSpikes" type="Area2D" parent="."]
+position = Vector2(700, 508)
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("9_spike")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FarSpikes"]
+shape = SubResource("SpikeShape")
+
+[node name="Visual" type="Polygon2D" parent="FarSpikes"]
+color = Color(0.73, 0.28, 0.38, 1)
+polygon = PackedVector2Array(-48, 11, -39, -12, -28, 11, -18, -12, -7, 11, 4, -12, 16, 11, 27, -12, 38, 11, 48, -12, 48, 11)
+
+[node name="Bridge" parent="." instance=ExtResource("4_bridge")]
+position = Vector2(600, 450)
+
+[node name="GalleryEntry" type="Marker2D" parent="." groups=["approach_gallery_entry"]]
+position = Vector2(80, 417)
+
+[node name="ShaftEntry" type="Marker2D" parent="." groups=["approach_shaft_entry"]]
+position = Vector2(1100, 417)
+
+[node name="GalleryReturnDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(25, 417)
+target_marker_group = &"gallery_shaft_entry"
+target_room_id = "shaft_gallery"
+door_label = "FLOODED GALLERY"
+
+[node name="ArenaDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(1170, 417)
+target_marker_group = &"shaft_gallery_return"
+target_room_id = "sunken_shaft"
+door_label = "WARDEN ARENA"
+
+[node name="CounterweightCrank" parent="." instance=ExtResource("3_crank")]
+position = Vector2(960, 417)
+shortcut_id = "shaft_approach_bridge"
+inactive_label = "COUNTERWEIGHT"
+active_label = "BRIDGE LOWERED"
+inactive_prompt = "[E] LOWER THE BRIDGE"
+active_prompt = "DIRECT ROUTE OPEN"
+
+[node name="UpperCache" parent="." instance=ExtResource("5_cache")]
+position = Vector2(585, 182)
+cache_id = "approach_supply"
+cache_name = "Gantry Supply"
+gold_reward = 34
+reward_item_id = "iron_fragment"
+
+[node name="ApproachLamp" parent="." instance=ExtResource("2_lamp")]
+position = Vector2(1080, 417)
+lamp_id = "warden_approach_lamp"
+lamp_name = "Warden Approach Lamp"
+room_id = "shaft_approach"
+enemy_block_radius = 115.0
+
+[node name="EntryCrawler" parent="." instance=ExtResource("8_crawler")]
+position = Vector2(185, 417)
+
+[node name="HighWisp" parent="." instance=ExtResource("6_wisp")]
+position = Vector2(603, 146)
+
+[node name="PitSentry" parent="." instance=ExtResource("7_sentry")]
+position = Vector2(782, 498)
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(68, 78)
+size = Vector2(200, 24)
+theme_override_colors/font_color = Color(0.7, 0.87, 0.91, 0.84)
+theme_override_font_sizes/font_size = 12
+text = "WARDEN APPROACH"
+horizontal_alignment = 1
+
+[node name="RouteHint" type="Label" parent="."]
+position = Vector2(110, 123)
+size = Vector2(245, 38)
+theme_override_colors/font_color = Color(0.72, 0.86, 0.9, 0.76)
+theme_override_font_sizes/font_size = 10
+text = "Climb the gantry. Lower the far counterweight for a faster return."
+autowrap_mode = 3

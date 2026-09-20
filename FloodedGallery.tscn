@@ -1,0 +1,209 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
+[ext_resource type="PackedScene" path="res://SluiceValve.tscn" id="2_control"]
+[ext_resource type="PackedScene" path="res://ResonanceCache.tscn" id="3_cache"]
+[ext_resource type="PackedScene" path="res://ShaftCrawler.tscn" id="4_crawler"]
+[ext_resource type="PackedScene" path="res://ShaftWisp.tscn" id="5_wisp"]
+[ext_resource type="PackedScene" path="res://ShaftSentry.tscn" id="6_sentry"]
+[ext_resource type="PackedScene" path="res://DestructibleCrate.tscn" id="7_crate"]
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 450)
+
+[sub_resource type="RectangleShape2D" id="RoofShape"]
+size = Vector2(820, 12)
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(820, 18)
+
+[sub_resource type="RectangleShape2D" id="LedgeShape"]
+size = Vector2(112, 10)
+
+[node name="FloodedGallery" type="Node2D"]
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.025, 0.08, 0.13, 1)
+polygon = PackedVector2Array(0, 0, 820, 0, 820, 450, 0, 450)
+
+[node name="AqueductArches" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.07, 0.19, 0.25, 1)
+polygon = PackedVector2Array(0, 80, 110, 49, 177, 65, 260, 40, 342, 62, 420, 37, 510, 61, 616, 40, 719, 65, 820, 43, 820, 370, 0, 370)
+
+[node name="DeepPool" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.07, 0.32, 0.43, 0.62)
+polygon = PackedVector2Array(0, 370, 820, 370, 820, 450, 0, 450)
+
+[node name="UpperConduit" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(160, 90, 300, 110, 440, 75, 580, 100, 700, 85)
+width = 5.0
+default_color = Color(0.2, 0.65, 0.71, 0.45)
+
+[node name="LowerConduit" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(160, 330, 300, 318, 440, 330, 580, 317, 700, 330)
+width = 5.0
+default_color = Color(0.2, 0.65, 0.71, 0.45)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(410, 380)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+color = Color(0.08, 0.28, 0.33, 1)
+polygon = PackedVector2Array(-410, -9, 410, -9, 410, 9, -410, 9)
+
+[node name="Roof" type="StaticBody2D" parent="."]
+position = Vector2(410, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
+shape = SubResource("RoofShape")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, 225)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(820, 225)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="FirstLedge" type="StaticBody2D" parent="."]
+position = Vector2(195, 310)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FirstLedge"]
+shape = SubResource("LedgeShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="FirstLedge"]
+color = Color(0.17, 0.45, 0.48, 1)
+polygon = PackedVector2Array(-56, -5, 56, -5, 56, 5, -56, 5)
+
+[node name="SecondLedge" type="StaticBody2D" parent="."]
+position = Vector2(325, 255)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SecondLedge"]
+shape = SubResource("LedgeShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="SecondLedge"]
+color = Color(0.17, 0.45, 0.48, 1)
+polygon = PackedVector2Array(-56, -5, 56, -5, 56, 5, -56, 5)
+
+[node name="ThirdLedge" type="StaticBody2D" parent="."]
+position = Vector2(455, 205)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ThirdLedge"]
+shape = SubResource("LedgeShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="ThirdLedge"]
+color = Color(0.17, 0.45, 0.48, 1)
+polygon = PackedVector2Array(-56, -5, 56, -5, 56, 5, -56, 5)
+
+[node name="HighLedge" type="StaticBody2D" parent="."]
+position = Vector2(575, 185)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HighLedge"]
+shape = SubResource("LedgeShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="HighLedge"]
+color = Color(0.22, 0.55, 0.53, 1)
+polygon = PackedVector2Array(-56, -5, 56, -5, 56, 5, -56, 5)
+
+[node name="CacheLedge" type="StaticBody2D" parent="."]
+position = Vector2(700, 240)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CacheLedge"]
+shape = SubResource("LedgeShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="CacheLedge"]
+color = Color(0.18, 0.48, 0.5, 1)
+polygon = PackedVector2Array(-56, -5, 56, -5, 56, 5, -56, 5)
+
+[node name="CrossingEntry" type="Marker2D" parent="." groups=["gallery_crossing_entry"]]
+position = Vector2(84, 347)
+
+[node name="ShaftEntry" type="Marker2D" parent="." groups=["gallery_shaft_entry"]]
+position = Vector2(720, 347)
+
+[node name="CisternReturn" type="Marker2D" parent="." groups=["gallery_cistern_return"]]
+position = Vector2(194, 347)
+
+[node name="CrossingReturnDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(28, 347)
+target_marker_group = &"crossing_gallery_return"
+target_room_id = "shaft_crossing"
+door_label = "DROWNED CROSSING"
+
+[node name="CisternDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(138, 347)
+target_marker_group = &"cistern_gallery_entry"
+target_room_id = "shaft_cistern"
+door_label = "BLACKWATER CISTERN"
+required_event_ids = PackedStringArray("shaft_cistern_pump")
+locked_label = "PUMP OFFLINE"
+locked_hint = "Start the Blackwater Cistern pump from Drowned Crossing."
+
+[node name="WardenShortcutDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(784, 347)
+target_marker_group = &"approach_gallery_entry"
+target_room_id = "shaft_approach"
+door_label = "WARDEN APPROACH"
+required_event_ids = PackedStringArray("shaft_gallery_lower", "shaft_gallery_upper")
+locked_label = "CONDUITS SEALED"
+locked_hint = "Turn both Gallery controls to open the Warden shortcut."
+
+[node name="LowerControl" parent="." instance=ExtResource("2_control")]
+position = Vector2(340, 347)
+shortcut_id = "shaft_gallery_lower"
+inactive_label = "LOWER CONTROL"
+active_label = "LOWER OPEN"
+inactive_prompt = "[E] TURN LOWER CONTROL"
+active_prompt = "LOWER CONDUIT OPEN"
+
+[node name="UpperControl" parent="." instance=ExtResource("2_control")]
+position = Vector2(575, 154)
+shortcut_id = "shaft_gallery_upper"
+inactive_label = "UPPER CONTROL"
+active_label = "UPPER OPEN"
+inactive_prompt = "[E] TURN UPPER CONTROL"
+active_prompt = "UPPER CONDUIT OPEN"
+
+[node name="GalleryCache" parent="." instance=ExtResource("3_cache")]
+position = Vector2(700, 206)
+cache_id = "gallery_supply"
+cache_name = "Gallery Supply"
+gold_reward = 27
+reward_item_id = "ether_dust"
+
+[node name="GalleryCrawler" parent="." instance=ExtResource("4_crawler")]
+position = Vector2(260, 347)
+
+[node name="GalleryWisp" parent="." instance=ExtResource("5_wisp")]
+position = Vector2(492, 150)
+
+[node name="GallerySentry" parent="." instance=ExtResource("6_sentry")]
+position = Vector2(665, 347)
+
+[node name="GalleryCrate" parent="." instance=ExtResource("7_crate")]
+position = Vector2(426, 344)
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(90, 73)
+size = Vector2(170, 24)
+theme_override_colors/font_color = Color(0.6, 0.94, 0.9, 0.8)
+theme_override_font_sizes/font_size = 12
+text = "FLOODED GALLERY"
+horizontal_alignment = 1

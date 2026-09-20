@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://SluiceValve.gd" id="1_valve"]
+
+[sub_resource type="CircleShape2D" id="ValveReach"]
+radius = 34.0
+
+[node name="SluiceValve" type="Area2D" groups=["world_valve"]]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_valve")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("ValveReach")
+
+[node name="Glow" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.16, 0.66, 0.96, 0.34)
+polygon = PackedVector2Array(0, -27, 20, -20, 27, 0, 20, 20, 0, 27, -20, 20, -27, 0, -20, -20)
+
+[node name="Base" type="Polygon2D" parent="."]
+color = Color(0.11, 0.3, 0.35, 1)
+polygon = PackedVector2Array(-17, 17, 17, 17, 20, 25, -20, 25)
+
+[node name="Core" type="Polygon2D" parent="."]
+color = Color(0.3, 0.72, 0.95, 1)
+polygon = PackedVector2Array(-5, -16, 5, -16, 5, -6, 16, -6, 16, 4, 5, 4, 5, 16, -5, 16, -5, 4, -16, 4, -16, -6, -5, -6)
+
+[node name="StatusLabel" type="Label" parent="."]
+offset_left = -73.0
+offset_top = -51.0
+offset_right = 73.0
+offset_bottom = -31.0
+theme_override_font_sizes/font_size = 10
+text = "SLUICE VALVE"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="."]
+offset_left = -94.0
+offset_top = 29.0
+offset_right = 94.0
+offset_bottom = 49.0
+theme_override_font_sizes/font_size = 10
+text = "[E] DRAIN THE CROSSING"
+horizontal_alignment = 1

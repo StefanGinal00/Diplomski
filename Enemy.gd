@@ -3,6 +3,7 @@ extends CharacterBody2D
 signal health_changed(current_health: int, maximum_health: int)
 signal defeated
 
+@export var zone_id: String = "training_passage"
 @export var move_speed: float = 50.0
 @export var chase_speed: float = 70.0
 @export var gravity: float = 1000.0
@@ -19,6 +20,8 @@ signal defeated
 @export_category("Rewards")
 @export var xp_orb_scene: PackedScene
 @export_range(0, 100, 1) var xp_reward: int = 1
+@export var gold_pickup_scene: PackedScene
+@export_range(0, 999, 1) var gold_reward: int = 5
 
 var current_health: int
 var direction: int = 1
@@ -29,6 +32,7 @@ var hit_stun_remaining: float = 0.0
 var hit_flash_remaining: float = 0.0
 var damage_cooldown_remaining: float = 0.0
 var target_player: Node2D
+var default_sprite_modulate: Color
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var detection_area: Area2D = $DetectionArea
@@ -38,6 +42,7 @@ var target_player: Node2D
 
 func _ready() -> void:
 	current_health = max_health
+	default_sprite_modulate = sprite.modulate
 	health_bar.max_value = max_health
 	health_bar.value = current_health
 
@@ -114,7 +119,7 @@ func _update_hit_feedback(delta: float) -> void:
 
 	hit_flash_remaining = maxf(hit_flash_remaining - delta, 0.0)
 	if is_zero_approx(hit_flash_remaining):
-		sprite.modulate = Color.WHITE
+		sprite.modulate = default_sprite_modulate
 
 func _on_detection_area_body_entered(body: Node) -> void:
 	_damage_player_if_possible(body)
@@ -201,11 +206,13 @@ func die() -> void:
 		quest_manager.report_enemy_defeated()
 	defeated.emit()
 	_drop_xp_reward()
+	_drop_gold_reward()
 	queue_free()
 
 
 func _drop_xp_reward() -> void:
-	if xp_reward <= 0 or xp_orb_scene == null or get_parent() == null:
+	var drop_parent := get_parent() as Node2D
+	if xp_reward <= 0 or xp_orb_scene == null or drop_parent == null:
 		return
 
 	var orb := xp_orb_scene.instantiate() as Area2D
@@ -214,5 +221,15 @@ func _drop_xp_reward() -> void:
 		return
 
 	orb.set("xp_value", xp_reward)
-	get_parent().add_child(orb)
-	orb.global_position = global_position + Vector2(0.0, -12.0)
+	orb.position = drop_parent.to_local(global_position + Vector2(0.0, -12.0))
+	drop_parent.call_deferred("add_child", orb)
+
+
+func _drop_gold_reward() -> void:
+	var drop_parent := get_parent() as Node2D
+	if gold_reward <= 0 or gold_pickup_scene == null or drop_parent == null:
+		return
+	var pickup := gold_pickup_scene.instantiate() as Area2D
+	pickup.set("gold_value", gold_reward)
+	pickup.position = drop_parent.to_local(global_position + Vector2(9.0, -10.0))
+	drop_parent.call_deferred("add_child", pickup)

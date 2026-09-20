@@ -1,0 +1,68 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://EchoMatriarch.gd" id="1_boss"]
+[ext_resource type="PackedScene" path="res://EnemyProjectile.tscn" id="2_projectile"]
+[ext_resource type="PackedScene" path="res://XPOrb.tscn" id="3_xp"]
+[ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="4_gold"]
+
+[sub_resource type="CircleShape2D" id="BodyShape"]
+radius = 20.0
+
+[node name="EchoMatriarch" type="CharacterBody2D" groups=["boss", "enemy", "family_spirit"]]
+script = ExtResource("1_boss")
+projectile_scene = ExtResource("2_projectile")
+xp_orb_scene = ExtResource("3_xp")
+gold_pickup_scene = ExtResource("4_gold")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BodyShape")
+
+[node name="WingLeft" type="Polygon2D" parent="."]
+position = Vector2(-16, 0)
+color = Color(0.46, 0.24, 0.62, 0.85)
+polygon = PackedVector2Array(0, -10, -40, -21, -26, 0, -42, 22, 0, 11)
+
+[node name="WingRight" type="Polygon2D" parent="."]
+position = Vector2(16, 0)
+color = Color(0.46, 0.24, 0.62, 0.85)
+polygon = PackedVector2Array(0, -10, 40, -21, 26, 0, 42, 22, 0, 11)
+
+[node name="BodyVisual" type="Polygon2D" parent="."]
+color = Color(0.57, 0.29, 0.66, 1)
+polygon = PackedVector2Array(0, -25, 17, -16, 23, 1, 15, 21, 0, 27, -15, 21, -23, 1, -17, -16)
+
+[node name="Crown" type="Polygon2D" parent="."]
+position = Vector2(0, -19)
+color = Color(0.77, 0.94, 0.83, 1)
+polygon = PackedVector2Array(-18, 8, -16, -10, -7, 0, 0, -18, 7, 0, 16, -10, 18, 8)
+
+[node name="Eye" type="Polygon2D" parent="."]
+position = Vector2(0, -3)
+color = Color(1, 0.71, 0.44, 1)
+polygon = PackedVector2Array(-10, -4, 10, -4, 7, 3, -7, 3)
+
+[node name="PulseRing" type="Line2D" parent="."]
+visible = false
+points = PackedVector2Array(0, -37, 26, -26, 37, 0, 26, 26, 0, 37, -26, 26, -37, 0, -26, -26, 0, -37)
+width = 4.0
+default_color = Color(1, 0.45, 0.73, 0.9)
+
+[node name="ContactArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContactArea"]
+shape = SubResource("BodyShape")
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(0, 8)
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -77.0
+offset_top = -68.0
+offset_right = 77.0
+offset_bottom = -48.0
+theme_override_colors/font_color = Color(0.98, 0.72, 0.91, 1)
+theme_override_font_sizes/font_size = 10
+text = "ECHO MATRIARCH"
+horizontal_alignment = 1

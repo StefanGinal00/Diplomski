@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://MerchantNPC.gd" id="1_merchant"]
+
+[sub_resource type="CircleShape2D" id="InteractionShape"]
+radius = 34.0
+
+[node name="WayfarerMerchant" type="Area2D" groups=["friendly_npc", "merchant_npc"]]
+z_index = 1
+script = ExtResource("1_merchant")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("InteractionShape")
+
+[node name="Cloak" type="Polygon2D" parent="."]
+color = Color(0.2, 0.18, 0.42, 1)
+polygon = PackedVector2Array(0, -15, 11, -5, 14, 15, -14, 15, -11, -5)
+
+[node name="BodyVisual" type="Polygon2D" parent="."]
+color = Color(1, 0.7, 0.25, 1)
+polygon = PackedVector2Array(0, -19, 7, -12, 6, -4, -6, -4, -7, -12)
+
+[node name="Pack" type="Polygon2D" parent="."]
+position = Vector2(-11, 3)
+color = Color(0.45, 0.28, 0.14, 1)
+polygon = PackedVector2Array(-6, -9, 5, -9, 7, 10, -7, 10)
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -31.0
+offset_top = -34.0
+offset_right = 31.0
+offset_bottom = -16.0
+theme_override_font_sizes/font_size = 10
+text = "Orin"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="."]
+offset_left = -46.0
+offset_top = 20.0
+offset_right = 46.0
+offset_bottom = 40.0
+theme_override_font_sizes/font_size = 10
+text = "[E] Trade"
+horizontal_alignment = 1
