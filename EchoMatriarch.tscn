@@ -66,3 +66,14 @@ theme_override_colors/font_color = Color(0.98, 0.72, 0.91, 1)
 theme_override_font_sizes/font_size = 10
 text = "ECHO MATRIARCH"
 horizontal_alignment = 1
+
+[node name="ChallengePrompt" type="Label" parent="."]
+visible = false
+offset_left = -88.0
+offset_top = -89.0
+offset_right = 88.0
+offset_bottom = -69.0
+theme_override_colors/font_color = Color(0.98, 0.78, 0.98, 1)
+theme_override_font_sizes/font_size = 9
+text = "ATTACK TO CHALLENGE"
+horizontal_alignment = 1

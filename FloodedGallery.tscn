@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://SluiceValve.tscn" id="2_control"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://ShaftWisp.tscn" id="5_wisp"]
 [ext_resource type="PackedScene" path="res://ShaftSentry.tscn" id="6_sentry"]
 [ext_resource type="PackedScene" path="res://DestructibleCrate.tscn" id="7_crate"]
+[ext_resource type="Script" path="res://ShaftRoomExpansion.gd" id="8_expansion"]
 
 [sub_resource type="RectangleShape2D" id="WallShape"]
 size = Vector2(12, 450)
@@ -19,6 +20,9 @@ size = Vector2(820, 18)
 
 [sub_resource type="RectangleShape2D" id="LedgeShape"]
 size = Vector2(112, 10)
+
+[sub_resource type="RectangleShape2D" id="CisternSpurShape"]
+size = Vector2(100, 10)
 
 [node name="FloodedGallery" type="Node2D"]
 
@@ -88,6 +92,17 @@ one_way_collision = true
 color = Color(0.17, 0.45, 0.48, 1)
 polygon = PackedVector2Array(-56, -5, 56, -5, 56, 5, -56, 5)
 
+[node name="CisternSpur" type="StaticBody2D" parent="."]
+position = Vector2(100, 255)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CisternSpur"]
+shape = SubResource("CisternSpurShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="CisternSpur"]
+color = Color(0.2, 0.48, 0.53, 1)
+polygon = PackedVector2Array(-50, -5, 50, -5, 50, 5, -50, 5)
+
 [node name="SecondLedge" type="StaticBody2D" parent="."]
 position = Vector2(325, 255)
 
@@ -139,7 +154,7 @@ position = Vector2(84, 347)
 position = Vector2(720, 347)
 
 [node name="CisternReturn" type="Marker2D" parent="." groups=["gallery_cistern_return"]]
-position = Vector2(194, 347)
+position = Vector2(130, 222)
 
 [node name="CrossingReturnDoor" parent="." instance=ExtResource("1_door")]
 position = Vector2(28, 347)
@@ -148,7 +163,7 @@ target_room_id = "shaft_crossing"
 door_label = "DROWNED CROSSING"
 
 [node name="CisternDoor" parent="." instance=ExtResource("1_door")]
-position = Vector2(138, 347)
+position = Vector2(65, 222)
 target_marker_group = &"cistern_gallery_entry"
 target_room_id = "shaft_cistern"
 door_label = "BLACKWATER CISTERN"
@@ -188,18 +203,6 @@ cache_name = "Gallery Supply"
 gold_reward = 27
 reward_item_id = "ether_dust"
 
-[node name="GalleryCrawler" parent="." instance=ExtResource("4_crawler")]
-position = Vector2(260, 347)
-
-[node name="GalleryWisp" parent="." instance=ExtResource("5_wisp")]
-position = Vector2(492, 150)
-
-[node name="GallerySentry" parent="." instance=ExtResource("6_sentry")]
-position = Vector2(665, 347)
-
-[node name="GalleryCrate" parent="." instance=ExtResource("7_crate")]
-position = Vector2(426, 344)
-
 [node name="AreaTitle" type="Label" parent="."]
 position = Vector2(90, 73)
 size = Vector2(170, 24)
@@ -207,3 +210,6 @@ theme_override_colors/font_color = Color(0.6, 0.94, 0.9, 0.8)
 theme_override_font_sizes/font_size = 12
 text = "FLOODED GALLERY"
 horizontal_alignment = 1
+
+[node name="ExpandedRoute" type="Node2D" parent="."]
+script = ExtResource("8_expansion")

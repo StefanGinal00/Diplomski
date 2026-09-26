@@ -2,6 +2,7 @@ extends StaticBody2D
 
 signal health_changed(current_health: int, maximum_health: int)
 signal defeated
+signal shot_fired(direction: Vector2)
 
 @export var max_health: int = 2
 @export var detection_range: float = 220.0
@@ -61,11 +62,11 @@ func _shoot_at_player() -> void:
 		return
 	get_parent().add_child(projectile)
 	projectile.global_position = muzzle.global_position
-	projectile.setup(
-		(target_player.global_position - muzzle.global_position).normalized(),
-		self
-	)
+	var shot_direction := (target_player.global_position - muzzle.global_position).normalized()
+	projectile.setup(shot_direction, self)
 	shot_cooldown_remaining = shot_interval
+	# Presentation observes a successful launch; it never controls cadence.
+	shot_fired.emit(shot_direction)
 
 
 func take_damage(amount: int, _knockback: Vector2 = Vector2.ZERO) -> void:

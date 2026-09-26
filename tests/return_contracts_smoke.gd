@@ -70,8 +70,10 @@ func _run() -> void:
 	_check(bool(resumed_quests.return_contract_done.get("sunken_shaft", false)), "Dynamic upgraded enemy did not count toward Shaft quest")
 	_check(state.has_item("iron_fragment", 2), "Shaft quest material reward missing")
 	_check("Shaft Vigil" not in resumed_ui.quest_tracker_label.text, "Completed Shaft quest stayed in active quests")
-	for path in ["EchoGallery/NearShade", "EchoGallery/FarShade", "PrismArchive/ArchiveShade", "EchoNest/BroodlingOne"]:
-		var enemy = resumed.get_node(path)
+	for target in [["echo_gallery", "EchoGallery/NearShade"], ["echo_gallery", "EchoGallery/FarShade"], ["echo_archive", "PrismArchive/ArchiveShade"], ["echo_nest", "EchoNest/BroodlingOne"]]:
+		state.set_current_room(String(target[0]))
+		await process_frame
+		var enemy = resumed.get_node(String(target[1]))
 		enemy.take_damage(enemy.max_health)
 	_check(int(resumed_quests.return_contract_kills.get("echo_grotto", 0)) == 4, "Upgraded Echo kills were not tracked")
 	var gold_before_caches: int = state.gold

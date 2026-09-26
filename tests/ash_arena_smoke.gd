@@ -40,7 +40,7 @@ func _run() -> void:
 	_check(arena_door._requirements_met(), "Barracks victory did not open Arena")
 	state.set_current_room("ash_barracks")
 	player.global_position = barracks.get_node("ArenaReturn").global_position
-	arena_door._on_body_entered(player)
+	arena_door.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "ash_arena" and bool(state.discovered_rooms.get("ash_arena", false)), "Arena transition or discovery failed")
 	_check(player.global_position.distance_to(arena.get_node("ArenaEntry").global_position) < 45.0, "Arena entry marker is wrong")
@@ -55,14 +55,12 @@ func _run() -> void:
 	await process_frame
 	_check(arena.intermission and arena.enemies_remaining == 0, "Wave 1 did not enter a breathing pause")
 	_check(player.skill_points * player.xp_per_level + player.xp == xp_before and state.gold == gold_before, "Wave enemies granted farmable rewards")
-	state.set_current_room("ash_barracks")
-	await process_frame
-	_check(not arena.active and arena.wave == 0 and not arena.intermission, "Retreat did not reset Arena")
-	state.set_current_room("ash_arena")
+	await arena.get_node("ReturnDoor").activate(player)
+	_check(state.current_room_id == "ash_arena" and arena.active and arena.get_node("ReturnDoor").status_label.text == "BATTLE SEALED", "Arena return did not seal during the trial")
+	_check(not arena.get_node("ArenaLamp")._save_progress(player), "Arena lamp saved during an active trial")
 	await create_timer(1.7).timeout
-	_check(arena.wave == 0 and arena.enemies_remaining == 0, "Abandoned wave timer spawned enemies after retreat")
-	_check(arena.start_trial(player), "Arena could not restart after retreat")
-	for expected_wave in range(1, 5):
+	_check(arena.wave == 2 and arena.enemies_remaining > 0, "Sealed Arena did not advance after wave-one intermission")
+	for expected_wave in range(2, 5):
 		_check(arena.wave == expected_wave, "Arena skipped wave %d" % expected_wave)
 		if expected_wave == 4:
 			var marshal = arena.marshal
@@ -89,7 +87,7 @@ func _run() -> void:
 	_check(cache.open(player) and state.opened_caches.has("ash_arena_victory"), "Arena victor cache did not unlock")
 	_check(not cache.open(player), "Arena victor cache paid twice")
 	ui._update_route_summary()
-	_check("ARENA CLEARED" in ui.map_route_label.text and "CACHES 1/5" in ui.map_route_label.text, "World map did not track Arena victory")
+	_check("ARENA CLEARED" in ui.map_route_label.text and "CACHES 1/15" in ui.map_route_label.text, "World map did not track Arena victory")
 	player.global_position = arena.get_node("ArenaLamp/RespawnPoint").global_position
 	_check(arena.get_node("ArenaLamp")._save_progress(player), "Arena lamp did not save victory")
 	_check(state.get_discovered_lamps().has("ash_arena_lamp"), "Arena lamp did not enter travel network")
@@ -107,7 +105,7 @@ func _run() -> void:
 	player = game.get_node("Player")
 	_check(arena.completed and state.has_item("marshal_emblem") and arena.get_node("ArenaCache").opened, "Saved Arena clear, emblem or cache did not restore")
 	_check(player.skill_points == rewarded_skill_points and player.xp == rewarded_xp, "Saved Arena XP reward did not restore")
-	arena.get_node("ReturnDoor")._on_body_entered(player)
+	arena.get_node("ReturnDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "ash_barracks" and player.global_position.distance_to(game.get_node("EmberBarracks/ArenaReturn").global_position) < 45.0, "Arena return passage failed")
 	state.delete_save()

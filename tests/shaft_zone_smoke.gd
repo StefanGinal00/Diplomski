@@ -42,10 +42,15 @@ func _run() -> void:
 	_check("ABYSS WARDEN" in ui.boss_health_label.text, "Warden HUD name missing")
 	player.max_health = 100
 	player.current_health = 100
-	player.global_position = boss.global_position + Vector2(-165.0, 0.0)
+	player.global_position = boss.global_position + Vector2(-125.0, 0.0)
 	await create_timer(2.5).timeout
 	_check(boss.active, "Warden did not activate near player")
 	_check(soundscape.current_track == "boss", "Boss music did not start")
+	await shaft.get_node("ReturnDoor").activate(player)
+	_check(state.current_room_id == "sunken_shaft" and shaft.get_node("ReturnDoor").status_label.text == "BATTLE SEALED", "Warden fight allowed retreat to the passage")
+	var position_before_lift: Vector2 = player.global_position
+	await lower_lift._use_lift(player)
+	_check(player.global_position.distance_to(position_before_lift) < 1.0, "Shaft lift bypassed the Warden fight lock")
 	boss.take_damage(boss.max_health)
 	_check(soundscape.current_track == "sunken_shaft", "Boss music did not end")
 	_check(state.has_item("warden_seal"), "Warden Seal not rewarded")
@@ -56,14 +61,15 @@ func _run() -> void:
 	_check(state.unlock_shortcut("shaft_lift"), "Lift could not unlock")
 	lower_lift._update_visuals()
 	_check("SHAFT LIFT" in lower_lift.prompt.text, "Lift did not show unlocked state")
-	gate._on_body_entered(player)
+	gate.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_grotto", "Gate transition did not reach grotto")
 	_check(soundscape.current_track == "echo_grotto", "Grotto ambience did not start")
-	grotto.get_node("ReturnDoor")._on_body_entered(player)
+	grotto.get_node("ReturnDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "sunken_shaft", "Grotto return did not reach shaft")
 	_check(shaft.has_node("AbyssWarden") and shaft.get_node("AbyssWarden").is_rematch, "Warden did not reappear on return")
+	_check(not shaft.get_node("AbyssWarden").active and shaft.get_node("AbyssWarden/ChallengePrompt").visible, "Passing the optional Warden rematch started a locked fight")
 	lower_lift._use_lift(player)
 	await create_timer(0.5).timeout
 	_check(player.global_position.distance_to(shaft.get_node("UpperLiftMarker").global_position) < 40.0, "Lift did not reach upper marker")
@@ -102,7 +108,13 @@ func _run() -> void:
 	quest_manager.quest_state = 0
 	_check(quest_manager.start_quest(), "Awakened Warden trial did not start")
 	var original_max_health: int = reloaded_player.max_health
-	rematch.take_damage(rematch.max_health)
+	_check(not rematch.active and rematch.get_node("ChallengePrompt").visible, "Loaded Warden rematch is not optional")
+	reloaded_player.global_position = rematch.global_position + Vector2(-85.0, 0.0)
+	await process_frame
+	_check(not rematch.active, "Approaching the optional Warden started combat")
+	rematch.take_damage(1)
+	_check(rematch.active and not rematch.get_node("ChallengePrompt").visible, "Attacking did not begin the Warden rematch")
+	rematch.take_damage(rematch.current_health)
 	_check(bool(state.boss_rematches.get("abyss_warden", false)), "Warden rematch completion not recorded")
 	_check(state.has_item("warden_heart") and reloaded_player.max_health == original_max_health + 1, "Warden Heart HP reward missing")
 	_check(quest_manager.quest_state == 2, "Awakened Warden trial did not advance")

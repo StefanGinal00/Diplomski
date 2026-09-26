@@ -1,6 +1,8 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://RangedEnemy.gd" id="1_ranged"]
+[ext_resource type="Script" path="res://RangedAttackCue.gd" id="ranged_cue"]
+[ext_resource type="Script" path="res://RangedAppearance.gd" id="ranged_appearance"]
 [ext_resource type="Texture2D" path="res://icon.svg" id="2_icon"]
 [ext_resource type="PackedScene" path="res://EnemyProjectile.tscn" id="3_projectile"]
 [ext_resource type="PackedScene" path="res://XPOrb.tscn" id="4_xp"]
@@ -16,9 +18,17 @@ xp_orb_scene = ExtResource("4_xp")
 gold_pickup_scene = ExtResource("5_gold")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 scale = Vector2(0.105, 0.105)
 modulate = Color(0.78, 0.34, 1, 1)
 texture = ExtResource("2_icon")
+
+[node name="Appearance" type="Sprite2D" parent="."]
+script = ExtResource("ranged_appearance")
+
+[node name="AttackCue" type="Node2D" parent="."]
+z_index = 1
+script = ExtResource("ranged_cue")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RangedBodyShape")

@@ -26,7 +26,11 @@ func _run() -> void:
 	var sentry = game.get_node("VerticalChamber/UpperShaftSentry")
 	var crawler = game.get_node("VerticalChamber/ShaftCrawler")
 	var wisp = game.get_node("VerticalChamber/UpperShaftWisp")
+	state.set_current_room("echo_gallery")
+	await process_frame
 	var shade = game.get_node("EchoGallery/NearShade")
+	state.set_current_room("echo_nest")
+	await process_frame
 	var brood = game.get_node("EchoNest/BroodlingOne")
 	_check(sentry.zone_tier == 0 and sentry.spread_rays.is_empty(), "Base sentry started upgraded")
 	_check(shade.zone_tier == 0 and brood.zone_tier == 0, "Base Echo enemies started upgraded")
@@ -48,7 +52,7 @@ func _run() -> void:
 		state.set_current_room(room_id)
 	var ui = game.get_node("UI")
 	ui._open_world_map(false)
-	_check("6/8 PLAYABLE ROOMS" in ui.map_route_label.text, "World map did not record the six visited Echo rooms")
+	_check("6/11 PLAYABLE ROOMS" in ui.map_route_label.text, "World map did not record the six visited Echo rooms")
 	_check(ui.get_node("WorldMapPanel/RouteScroll").get_global_rect().intersection(ui.map_travel_button.get_global_rect()).get_area() <= 0.0, "Route summary viewport overlaps travel button")
 	ui._close_world_map()
 	_check(state.save_at_checkpoint(player, game.get_node("QuestManager"), player.global_position, "upgrade_test", "Upgrade Test", "echo_sanctum"), "Upgrade progress save failed")

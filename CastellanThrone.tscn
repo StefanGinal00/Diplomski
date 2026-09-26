@@ -1,0 +1,196 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
+[ext_resource type="PackedScene" path="res://AshCastellan.tscn" id="3_boss"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(1200, 18)
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 520)
+
+[sub_resource type="RectangleShape2D" id="RoofShape"]
+size = Vector2(1200, 12)
+
+[sub_resource type="RectangleShape2D" id="PlatformShape"]
+size = Vector2(140, 10)
+
+[node name="CastellanThrone" type="Node2D"]
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -6
+color = Color(0.07, 0.04, 0.06, 1)
+polygon = PackedVector2Array(0, 0, 1200, 0, 1200, 520, 0, 520)
+
+[node name="Vault" type="Polygon2D" parent="."]
+z_index = -5
+color = Color(0.21, 0.1, 0.12, 1)
+polygon = PackedVector2Array(0, 165, 70, 80, 250, 35, 405, 90, 600, 24, 795, 90, 950, 35, 1130, 80, 1200, 165, 1200, 420, 0, 420)
+
+[node name="ThroneGlow" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.95, 0.32, 0.1, 0.23)
+polygon = PackedVector2Array(475, 75, 670, 35, 875, 75, 1050, 420, 300, 420)
+
+[node name="BackThrone" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.35, 0.17, 0.18, 1)
+polygon = PackedVector2Array(585, 360, 585, 148, 630, 108, 670, 138, 710, 108, 755, 148, 755, 360)
+
+[node name="ThroneTrim" type="Line2D" parent="."]
+z_index = -2
+points = PackedVector2Array(585, 360, 585, 148, 630, 108, 670, 138, 710, 108, 755, 148, 755, 360)
+width = 4.0
+default_color = Color(0.95, 0.5, 0.18, 0.67)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(600, 420)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+color = Color(0.31, 0.18, 0.19, 1)
+polygon = PackedVector2Array(-600, -9, 600, -9, 600, 9, -600, 9)
+
+[node name="Roof" type="StaticBody2D" parent="."]
+position = Vector2(600, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
+shape = SubResource("RoofShape")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1200, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="LeftEscape" type="StaticBody2D" parent="."]
+position = Vector2(455, 315)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftEscape"]
+shape = SubResource("PlatformShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="LeftEscape"]
+color = Color(0.52, 0.34, 0.29, 1)
+polygon = PackedVector2Array(-70, -5, 70, -5, 70, 5, -70, 5)
+
+[node name="HighEscape" type="StaticBody2D" parent="."]
+position = Vector2(660, 235)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HighEscape"]
+shape = SubResource("PlatformShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="HighEscape"]
+color = Color(0.6, 0.38, 0.29, 1)
+polygon = PackedVector2Array(-70, -5, 70, -5, 70, 5, -70, 5)
+
+[node name="RightEscape" type="StaticBody2D" parent="."]
+position = Vector2(865, 315)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightEscape"]
+shape = SubResource("PlatformShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="RightEscape"]
+color = Color(0.52, 0.34, 0.29, 1)
+polygon = PackedVector2Array(-70, -5, 70, -5, 70, 5, -70, 5)
+
+[node name="StarfallStep1" type="StaticBody2D" parent="."]
+position = Vector2(980, 255)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StarfallStep1"]
+shape = SubResource("PlatformShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="StarfallStep1"]
+color = Color(0.59, 0.43, 0.33, 1)
+polygon = PackedVector2Array(-70, -5, 70, -5, 70, 5, -70, 5)
+
+[node name="StarfallStep2" type="StaticBody2D" parent="."]
+position = Vector2(1090, 195)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StarfallStep2"]
+shape = SubResource("PlatformShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="StarfallStep2"]
+color = Color(0.66, 0.49, 0.37, 1)
+polygon = PackedVector2Array(-70, -5, 70, -5, 70, 5, -70, 5)
+
+[node name="ThroneEntry" type="Marker2D" parent="." groups=["ash_throne_entry"]]
+position = Vector2(85, 387)
+
+[node name="HearthReturn" type="Marker2D" parent="." groups=["ash_throne_hearth_return"]]
+position = Vector2(1080, 387)
+
+[node name="StarfallReturn" type="Marker2D" parent="." groups=["ash_throne_starfall_return"]]
+position = Vector2(1035, 163)
+
+[node name="ChapelReturnDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(28, 387)
+target_marker_group = &"ash_chapel_throne_return"
+target_room_id = "ash_chapel"
+door_label = "ASHEN CHAPEL"
+
+[node name="HearthShortcut" parent="." instance=ExtResource("1_door")]
+position = Vector2(1165, 387)
+target_marker_group = &"ash_hearth_throne_return"
+target_room_id = "ash_hearth"
+door_label = "CINDER HEARTH"
+required_item_id = "castellan_seal"
+required_boss_ids = PackedStringArray("ash_castellan")
+locked_label = "CASTELLAN SEALED"
+
+[node name="StarfallDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(1130, 163)
+target_marker_group = &"starfall_citadel_entry"
+target_room_id = "starfall_citadel"
+door_label = "STARFALL CITADEL"
+required_item_id = "castellan_seal"
+required_boss_ids = PackedStringArray("ash_castellan")
+locked_label = "CASTELLAN SEALED"
+
+[node name="ThroneLamp" parent="." instance=ExtResource("2_lamp")]
+position = Vector2(145, 387)
+lamp_id = "castellan_throne_lamp"
+lamp_name = "Castellan Throne Lamp"
+room_id = "ash_throne"
+enemy_block_radius = 500.0
+reveal_after_boss_id = "ash_castellan"
+
+[node name="AshCastellan" parent="." instance=ExtResource("3_boss")]
+position = Vector2(700, 380)
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(86, 75)
+size = Vector2(260, 28)
+theme_override_colors/font_color = Color(1, 0.74, 0.55, 0.9)
+theme_override_font_sizes/font_size = 12
+text = "CASTELLAN THRONE"
+horizontal_alignment = 1
+
+[node name="RouteHint" type="Label" parent="."]
+position = Vector2(360, 68)
+size = Vector2(450, 28)
+theme_override_colors/font_color = Color(0.97, 0.8, 0.68, 0.82)
+theme_override_font_sizes/font_size = 10
+text = "The crown marks the floor before it burns. Climb to evade."
+horizontal_alignment = 1
+
+[node name="StarfallWaymark" type="Label" parent="."]
+position = Vector2(961, 92)
+size = Vector2(203, 24)
+theme_override_colors/font_color = Color(1, 0.81, 0.55, 0.92)
+theme_override_font_sizes/font_size = 10
+text = "STARFALL GATE  >>"
+horizontal_alignment = 1

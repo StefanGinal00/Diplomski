@@ -9,10 +9,12 @@ signal player_left(checkpoint)
 @export var lamp_name: String = "Passage Lamp"
 @export var room_id: String = "training_passage"
 @export_range(32.0, 500.0, 8.0) var enemy_block_radius: float = 150.0
+@export var reveal_after_boss_id: String = ""
 
 var is_active: bool = false
 var is_resting: bool = false
 var player_in_range: Player
+var is_revealed: bool = true
 
 @onready var core: Polygon2D = $Core
 @onready var glow: Polygon2D = $Glow
@@ -27,6 +29,10 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 	save_chime.stream = _create_save_chime()
+	var game_state := get_node_or_null("/root/GameState")
+	if game_state != null and not game_state.boss_progress_changed.is_connected(_on_boss_progress_changed):
+		game_state.boss_progress_changed.connect(_on_boss_progress_changed)
+	_refresh_reveal_state()
 	call_deferred("_restore_saved_lamp_state")
 
 
@@ -38,11 +44,13 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if player_in_range == null or is_resting or event.is_echo():
+	if not is_revealed or player_in_range == null or is_resting or event.is_echo():
 		return
 	if event.is_action_pressed("fast_travel") and is_active:
 		var game_state := get_node_or_null("/root/GameState")
-		if game_state != null and game_state.get_discovered_lamps().size() >= 2:
+		if game_state != null and game_state.is_boss_encounter_active():
+			rest_blocked.emit("Cannot fast travel during a boss fight.")
+		elif game_state != null and game_state.get_discovered_lamps().size() >= 2:
 			travel_requested.emit(self)
 		else:
 			rest_blocked.emit("Discover and activate another Save Lamp first.")
@@ -59,7 +67,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _begin_rest(player: Player) -> void:
-	if is_resting or player == null or player.is_dead:
+	if not is_revealed or is_resting or player == null or player.is_dead:
 		return
 	is_resting = true
 	player.begin_safe_rest()
@@ -83,11 +91,11 @@ func _begin_rest(player: Player) -> void:
 
 
 func _save_progress(player: Player) -> bool:
-	if player == null or player.is_dead:
+	if not is_revealed or player == null or player.is_dead:
 		return false
 	var game_state := get_node_or_null("/root/GameState")
 	var quest_manager := get_tree().get_first_node_in_group("quest_manager")
-	if game_state == null:
+	if game_state == null or game_state.is_boss_encounter_active():
 		return false
 	player.set_checkpoint(respawn_point.global_position)
 	if not game_state.save_at_checkpoint(player, quest_manager, respawn_point.global_position, lamp_id, lamp_name, room_id):
@@ -114,6 +122,8 @@ func _restore_saved_lamp_state() -> void:
 
 
 func activate_from_travel() -> void:
+	if not is_revealed:
+		return
 	is_active = true
 	_set_active_visuals()
 	_update_interaction_prompt()
@@ -126,7 +136,7 @@ func _set_active_visuals() -> void:
 
 
 func _on_body_entered(body: Node) -> void:
-	if body is Player:
+	if is_revealed and body is Player:
 		player_in_range = body
 		_update_interaction_prompt()
 		interaction_prompt.show()
@@ -138,6 +148,36 @@ func _on_body_exited(body: Node) -> void:
 	player_in_range = null
 	interaction_prompt.hide()
 	player_left.emit(self)
+
+
+func _on_boss_progress_changed(boss_id: String) -> void:
+	if boss_id == reveal_after_boss_id:
+		_refresh_reveal_state()
+
+
+func _refresh_reveal_state() -> void:
+	var should_reveal := reveal_after_boss_id.is_empty()
+	var game_state := get_node_or_null("/root/GameState")
+	if not should_reveal and game_state != null:
+		should_reveal = bool(game_state.defeated_bosses.get(reveal_after_boss_id, false))
+	is_revealed = should_reveal
+	visible = should_reveal
+	set_deferred("monitoring", should_reveal)
+	set_deferred("monitorable", should_reveal)
+	if not should_reveal:
+		player_in_range = null
+		interaction_prompt.hide()
+	else:
+		call_deferred("_capture_overlapping_player")
+
+
+func _capture_overlapping_player() -> void:
+	if not is_revealed or not monitoring:
+		return
+	for body in get_overlapping_bodies():
+		if body is Player:
+			_on_body_entered(body)
+			return
 
 
 func _update_interaction_prompt() -> void:
@@ -155,15 +195,31 @@ func _update_interaction_prompt() -> void:
 
 
 func _has_nearby_threat() -> bool:
+	var game_state := get_node_or_null("/root/GameState")
+	if game_state != null and game_state.is_boss_encounter_active():
+		return true
+	var lamp_room := _enclosing_room(self)
 	for group_name in ["enemy", "boss"]:
 		for threat in get_tree().get_nodes_in_group(group_name):
 			if not threat is Node2D or not is_instance_valid(threat):
 				continue
 			if bool(threat.get("is_dead")):
 				continue
+			if _enclosing_room(threat) != lamp_room:
+				continue
 			if global_position.distance_to(threat.global_position) <= enemy_block_radius:
 				return true
 	return false
+
+
+func _enclosing_room(node: Node) -> Node:
+	var game_scene := get_tree().current_scene
+	if game_scene == null or not game_scene.is_ancestor_of(node):
+		return node.get_parent()
+	var containing_node := node
+	while containing_node.get_parent() != game_scene:
+		containing_node = containing_node.get_parent()
+	return game_scene if containing_node == node else containing_node
 
 
 func _create_save_chime() -> AudioStreamWAV:

@@ -45,7 +45,7 @@ func _run() -> void:
 	_check(forge_door._requirements_met(), "Cooling fan did not open Barracks")
 	state.set_current_room("ash_forge")
 	player.global_position = forge.get_node("BarracksReturn").global_position
-	forge_door._on_body_entered(player)
+	forge_door.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "ash_barracks" and bool(state.discovered_rooms.get("ash_barracks", false)), "Forge door did not discover Barracks")
 	_check(player.global_position.distance_to(barracks.get_node("BarracksEntry").global_position) < 45.0, "Barracks entry marker is wrong")
@@ -87,7 +87,7 @@ func _run() -> void:
 	_check(cache.open(player) and state.opened_caches.has("ash_barracks_supply"), "Barracks cache did not unlock")
 	_check(not cache.open(player), "Barracks cache paid twice")
 	ui._update_route_summary()
-	_check("ASHEN BASTION  2/5 OPENING ROOMS" in ui.map_route_label.text and "CACHES 1/5" in ui.map_route_label.text and "BARRACKS CLEARED" in ui.map_route_label.text, "Map did not track Barracks progress")
+	_check("ASHEN BASTION  2/10 PLAYABLE ROOMS" in ui.map_route_label.text and "CACHES 1/15" in ui.map_route_label.text and "BARRACKS CLEARED" in ui.map_route_label.text, "Map did not track Barracks progress")
 	player.global_position = barracks.get_node("BarracksLamp/RespawnPoint").global_position
 	_check(barracks.get_node("BarracksLamp")._save_progress(player), "Barracks lamp did not save trial")
 	_check(state.get_discovered_lamps().has("ember_barracks_lamp"), "Barracks lamp did not enter travel network")
@@ -108,10 +108,10 @@ func _run() -> void:
 	_check(player.skill_points == rewarded_skill_points and player.xp == rewarded_xp, "Saved Barracks XP reward did not restore")
 	_check(barracks.get_node("BarracksCache").opened and barracks.get_node("BarracksVent").disabled, "Saved cache or quieted vent did not restore")
 	_check(barracks.get_node("CausewayLoopDoor")._requirements_met() and causeway.get_node("BarracksLoopDoor")._requirements_met(), "Saved two-way loop closed")
-	barracks.get_node("CausewayLoopDoor")._on_body_entered(player)
+	barracks.get_node("CausewayLoopDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "ash_causeway" and player.global_position.distance_to(causeway.get_node("BarracksReturn").global_position) < 45.0, "Barracks-to-Causeway loop failed")
-	causeway.get_node("BarracksLoopDoor")._on_body_entered(player)
+	causeway.get_node("BarracksLoopDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "ash_barracks" and player.global_position.distance_to(barracks.get_node("BarracksLoopEntry").global_position) < 45.0, "Causeway-to-Barracks loop failed")
 	state.delete_save()

@@ -12,7 +12,7 @@ signal defeated
 @export var gravity: float = 1000.0
 @export var movement_speed: float = 42.0
 @export var charge_speed: float = 260.0
-@export var activation_range: float = 265.0
+@export var activation_range: float = 140.0
 @export var arena_left_offset: float = -200.0
 @export var arena_right_offset: float = 200.0
 @export var projectile_scene: PackedScene
@@ -40,6 +40,7 @@ var contact_cooldown: float = 0.0
 @onready var telegraph: Line2D = $Telegraph
 @onready var contact_area: Area2D = $ContactArea
 @onready var muzzle: Marker2D = $Muzzle
+@onready var challenge_prompt: Label = $ChallengePrompt
 
 
 func _ready() -> void:
@@ -60,6 +61,7 @@ func _ready() -> void:
 	current_health = max_health
 	target_player = get_tree().get_first_node_in_group("player") as Player
 	telegraph.hide()
+	challenge_prompt.visible = is_rematch
 
 
 func _physics_process(delta: float) -> void:
@@ -76,7 +78,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 	if not active:
-		if global_position.distance_to(target_player.global_position) > activation_range:
+		if is_rematch or global_position.distance_to(target_player.global_position) > activation_range:
 			move_and_slide()
 			return
 		active = true
@@ -173,6 +175,13 @@ func _try_contact_damage() -> void:
 func take_damage(amount: int, _knockback: Vector2 = Vector2.ZERO) -> void:
 	if is_dead or amount <= 0:
 		return
+	if is_rematch and not active:
+		var game_state := get_node_or_null("/root/GameState")
+		if game_state == null or game_state.current_room_id != "sunken_shaft":
+			return
+		active = true
+		challenge_prompt.hide()
+		battle_started.emit()
 	current_health = maxi(current_health - amount, 0)
 	health_changed.emit(current_health, max_health)
 	if current_health <= 0:

@@ -1,0 +1,342 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
+[ext_resource type="PackedScene" path="res://TownResident.tscn" id="3_resident"]
+[ext_resource type="PackedScene" path="res://TownService.tscn" id="4_service"]
+[ext_resource type="Script" path="res://SettlementTimeline.gd" id="5_timeline"]
+[ext_resource type="Script" path="res://TownLifeExpansion.gd" id="6_life"]
+[ext_resource type="Script" path="res://CinderTownExpansion.gd" id="7_town_expansion"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(1220, 18)
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 410)
+
+[node name="CinderHearth" type="Node2D"]
+script = ExtResource("5_timeline")
+changed_at_stage = 4
+changed_subtitle = "The Starfall road brings new travelers home."
+changed_market_sign = "CITADEL TRADE"
+changed_glow_color = Color(0.91, 0.48, 0.2, 0.28)
+glow_path = NodePath("HearthGlow")
+
+[node name="UpperVillage" type="Node2D" parent="."]
+script = ExtResource("6_life")
+settlement = "ash"
+
+[node name="EasternDistricts" type="Node2D" parent="."]
+script = ExtResource("7_town_expansion")
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -6
+color = Color(0.12, 0.076, 0.078, 1)
+polygon = PackedVector2Array(0, 0, 1220, 0, 1220, 410, 0, 410)
+
+[node name="DistantRamparts" type="Polygon2D" parent="."]
+z_index = -5
+color = Color(0.21, 0.12, 0.115, 1)
+polygon = PackedVector2Array(0, 241, 0, 136, 105, 87, 219, 152, 325, 76, 441, 145, 558, 69, 700, 149, 839, 82, 948, 140, 1056, 75, 1220, 166, 1220, 390)
+
+[node name="HearthGlow" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.8, 0.34, 0.13, 0.17)
+polygon = PackedVector2Array(226, 374, 384, 157, 539, 374, 704, 374, 869, 141, 1063, 374)
+
+[node name="StoneWalk" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.33, 0.185, 0.15, 1)
+polygon = PackedVector2Array(0, 332, 1220, 332, 1220, 390, 0, 390)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(610, 390)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+color = Color(0.39, 0.23, 0.19, 1)
+polygon = PackedVector2Array(-610, -9, 610, -9, 610, 9, -610, 9)
+
+[node name="WalkwayLine" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(65, 373, 149, 371, 235, 374, 328, 371, 418, 374, 510, 371, 607, 373, 706, 371, 815, 374, 910, 371, 1002, 374, 1139, 371)
+width = 3.0
+default_color = Color(0.89, 0.51, 0.27, 0.44)
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, 196)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1220, 196)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="HearthHouse" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.31, 0.19, 0.165, 1)
+polygon = PackedVector2Array(211, 368, 211, 235, 246, 209, 331, 209, 363, 235, 363, 368)
+
+[node name="HearthRoof" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.49, 0.26, 0.19, 1)
+polygon = PackedVector2Array(195, 240, 286, 173, 379, 240, 359, 247, 286, 196, 213, 247)
+
+[node name="HearthWindow" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(1, 0.65, 0.29, 0.79)
+polygon = PackedVector2Array(267, 255, 306, 255, 306, 296, 267, 296)
+
+[node name="HearthDoor" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.12, 0.075, 0.068, 1)
+polygon = PackedVector2Array(318, 368, 318, 310, 325, 299, 348, 299, 355, 310, 355, 368)
+
+[node name="HearthDoorTrim" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(318, 368, 318, 310, 325, 299, 348, 299, 355, 310, 355, 368)
+width = 3.0
+default_color = Color(0.76, 0.45, 0.28, 1)
+
+[node name="HearthDoorGlow" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(1, 0.56, 0.24, 0.25)
+polygon = PackedVector2Array(325, 308, 348, 308, 348, 367, 325, 367)
+
+[node name="MarketHouse" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.32, 0.17, 0.145, 1)
+polygon = PackedVector2Array(506, 369, 506, 220, 548, 196, 664, 196, 706, 220, 706, 369)
+
+[node name="MarketRoof" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.52, 0.25, 0.16, 1)
+polygon = PackedVector2Array(487, 225, 605, 148, 725, 225, 705, 234, 605, 171, 505, 234)
+
+[node name="MarketWindow" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(1, 0.58, 0.25, 0.76)
+polygon = PackedVector2Array(586, 244, 626, 244, 626, 291, 586, 291)
+
+[node name="MarketDoor" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.11, 0.073, 0.062, 1)
+polygon = PackedVector2Array(515, 368, 515, 310, 523, 300, 546, 300, 554, 310, 554, 368)
+
+[node name="MarketDoorTrim" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(515, 368, 515, 310, 523, 300, 546, 300, 554, 310, 554, 368)
+width = 3.0
+default_color = Color(0.8, 0.47, 0.25, 1)
+
+[node name="MarketDoorGlow" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(1, 0.56, 0.23, 0.27)
+polygon = PackedVector2Array(523, 309, 546, 309, 546, 367, 523, 367)
+
+[node name="SmithyHouse" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.29, 0.175, 0.17, 1)
+polygon = PackedVector2Array(806, 368, 806, 230, 844, 203, 958, 203, 996, 230, 996, 368)
+
+[node name="SmithyRoof" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.46, 0.245, 0.18, 1)
+polygon = PackedVector2Array(788, 235, 900, 157, 1014, 235, 994, 243, 900, 180, 806, 243)
+
+[node name="ForgeFlame" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(1, 0.51, 0.18, 0.72)
+polygon = PackedVector2Array(917, 318, 905, 294, 911, 272, 920, 281, 928, 254, 940, 286, 948, 277, 955, 300, 947, 318)
+
+[node name="SmithyDoor" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.11, 0.071, 0.068, 1)
+polygon = PackedVector2Array(954, 368, 954, 309, 962, 299, 983, 299, 991, 309, 991, 368)
+
+[node name="SmithyDoorTrim" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(954, 368, 954, 309, 962, 299, 983, 299, 991, 309, 991, 368)
+width = 3.0
+default_color = Color(0.76, 0.45, 0.3, 1)
+
+[node name="SmithyDoorGlow" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(1, 0.48, 0.22, 0.25)
+polygon = PackedVector2Array(962, 308, 983, 308, 983, 367, 962, 367)
+
+[node name="HearthBanner" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(142, 112, 142, 252)
+width = 3.0
+default_color = Color(0.52, 0.33, 0.26, 1)
+
+[node name="BannerCloth" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.75, 0.31, 0.2, 0.88)
+polygon = PackedVector2Array(144, 128, 189, 128, 182, 184, 166, 173, 148, 184)
+
+[node name="Entry" type="Marker2D" parent="." groups=["ash_hearth_entry"]]
+position = Vector2(80, 357)
+
+[node name="ThroneReturn" type="Marker2D" parent="." groups=["ash_hearth_throne_return"]]
+position = Vector2(1105, 357)
+
+[node name="DaraHearthDoorway" type="Marker2D" parent="." groups=["town_interior"]]
+position = Vector2(336, 357)
+
+[node name="BramMarketDoorway" type="Marker2D" parent="." groups=["town_interior"]]
+position = Vector2(534, 357)
+
+[node name="OrenSmithyDoorway" type="Marker2D" parent="." groups=["town_interior"]]
+position = Vector2(973, 357)
+
+[node name="DaraConversationSpot" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(362, 357)
+
+[node name="BramConversationSpot" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(409, 357)
+
+[node name="DaraStreetCorner" type="Marker2D" parent="."]
+position = Vector2(305, 357)
+
+[node name="BramStreetCorner" type="Marker2D" parent="."]
+position = Vector2(457, 357)
+
+[node name="OrenEastSquare" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(1050, 357)
+
+[node name="OrenGateWalk" type="Marker2D" parent="."]
+position = Vector2(1151, 357)
+
+[node name="ReturnDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(26, 357)
+target_marker_group = &"ash_hearth_gate_return"
+target_room_id = "ash_hearth_outskirts"
+door_label = "HEARTH GATE"
+
+[node name="ThroneShortcut" parent="." instance=ExtResource("1_door")]
+position = Vector2(1180, 357)
+target_marker_group = &"ash_throne_hearth_return"
+target_room_id = "ash_throne"
+door_label = "CASTELLAN THRONE"
+required_item_id = "castellan_seal"
+required_boss_ids = PackedStringArray("ash_castellan")
+locked_label = "SEALED PASSAGE"
+
+[node name="HearthLamp" parent="." instance=ExtResource("2_lamp")]
+position = Vector2(151, 357)
+lamp_id = "ash_hearth_lamp"
+lamp_name = "Cinder Hearth Lamp"
+room_id = "ash_hearth"
+enemy_block_radius = 130.0
+
+[node name="Dara" parent="." instance=ExtResource("3_resident")]
+position = Vector2(271, 357)
+resident_name = "Dara"
+dialogue_lines = PackedStringArray("We keep the hearth alive for travelers who make it through the Causeway.", "The old bells still ring when the vents wake. They have saved more lives than any blade.")
+timeline_dialogue_stage = 4
+timeline_dialogue_lines = PackedStringArray("A caravan came down from Starfall. They say the Citadel gates are open to travelers again.", "The hearth stays lit, even with the Castellan gone. There will always be someone coming home through the ash.")
+coat_color = Color(0.46, 0.29, 0.28, 1)
+accent_color = Color(0.94, 0.61, 0.34, 1)
+route_marker_names = PackedStringArray("DaraConversationSpot", "DaraHearthDoorway", "DaraStreetCorner")
+talk_partner = NodePath("../Bram")
+social_lines = PackedStringArray("Bram, did the supply carts arrive?", "The hearth is warm. Stay for a moment.")
+walk_speed = 24.0
+pause_seconds = 2.2
+
+[node name="Tarin" parent="." groups=["hearth_gate_quest_npc"] instance=ExtResource("3_resident")]
+position = Vector2(210, 357)
+resident_name = "Tarin"
+dialogue_lines = PackedStringArray("The lanterns stop at the gate. Keep your blade ready beyond them.", "Our guards can hold the wall, but the road needs someone who can fight out there.")
+coat_color = Color(0.34, 0.31, 0.4, 1)
+accent_color = Color(0.96, 0.68, 0.36, 1)
+
+[node name="Bram" parent="." instance=ExtResource("3_resident")]
+position = Vector2(427, 357)
+resident_name = "Bram"
+dialogue_lines = PackedStringArray("The Bastion was a fortress once. Now its walls keep us warm.", "Past the gate, the ash belongs to the fiends. In here, you can breathe.")
+coat_color = Color(0.37, 0.34, 0.38, 1)
+accent_color = Color(0.77, 0.69, 0.54, 1)
+route_marker_names = PackedStringArray("BramConversationSpot", "BramMarketDoorway", "BramStreetCorner")
+talk_partner = NodePath("../Dara")
+social_lines = PackedStringArray("A little late, Dara. The road was quiet at least.", "I'll take the next watch by the gate.")
+walk_speed = 22.0
+pause_seconds = 5.0
+
+[node name="Mira" parent="." groups=["hearth_quest_npc"] instance=ExtResource("3_resident")]
+position = Vector2(747, 357)
+resident_name = "Mira"
+dialogue_lines = PackedStringArray("Our smith says every scar in a blade tells a story. I prefer stories with happy endings.", "If you find more emberstone, bring it home. We can make the next crossing safer.")
+coat_color = Color(0.43, 0.29, 0.34, 1)
+accent_color = Color(0.96, 0.69, 0.43, 1)
+
+[node name="Oren" parent="." instance=ExtResource("3_resident")]
+position = Vector2(1082, 357)
+resident_name = "Oren"
+dialogue_lines = PackedStringArray("I was born in this little street. Some nights I almost forget the war outside.", "We leave a bowl by the gate for those who come home late.")
+timeline_dialogue_stage = 4
+timeline_dialogue_lines = PackedStringArray("My brother wrote from Starfall Citadel. He says the city has streets above the streets.", "The supply road is open again, but we still leave a bowl by the gate for late travelers.")
+coat_color = Color(0.3, 0.36, 0.39, 1)
+accent_color = Color(0.77, 0.77, 0.6, 1)
+route_marker_names = PackedStringArray("OrenSmithyDoorway", "OrenEastSquare", "OrenGateWalk")
+social_lines = PackedStringArray("The smithy's fire is still burning.", "Keep the path clear for travelers.")
+walk_speed = 20.0
+pause_seconds = 2.6
+
+[node name="Quartermaster" parent="." instance=ExtResource("4_service")]
+position = Vector2(597, 357)
+service_kind = "shop"
+service_id = "ash_haven_shop"
+service_name = "Korin • Supply"
+service_color = Color(0.94, 0.59, 0.28, 1)
+
+[node name="Anvil" parent="." instance=ExtResource("4_service")]
+position = Vector2(909, 357)
+service_kind = "anvil"
+service_id = "ash_hearth_anvil"
+service_name = "Selen • Anvil"
+service_color = Color(0.99, 0.44, 0.22, 1)
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(62, 112)
+size = Vector2(285, 28)
+theme_override_colors/font_color = Color(1, 0.76, 0.48, 0.94)
+theme_override_font_sizes/font_size = 14
+text = "CINDER HEARTH"
+
+[node name="AreaSubtitle" type="Label" parent="."]
+position = Vector2(63, 142)
+size = Vector2(319, 32)
+theme_override_colors/font_color = Color(0.92, 0.75, 0.63, 0.8)
+theme_override_font_sizes/font_size = 10
+text = "A shelter between the furnace and the road."
+
+[node name="MarketSign" type="Label" parent="."]
+position = Vector2(520, 224)
+size = Vector2(171, 24)
+theme_override_colors/font_color = Color(1, 0.7, 0.42, 0.8)
+theme_override_font_sizes/font_size = 10
+text = "HEARTH SUPPLIES"
+horizontal_alignment = 1
+
+[node name="ForgeSign" type="Label" parent="."]
+position = Vector2(836, 225)
+size = Vector2(130, 24)
+theme_override_colors/font_color = Color(1, 0.68, 0.39, 0.82)
+theme_override_font_sizes/font_size = 10
+text = "THE OLD ANVIL"
+horizontal_alignment = 1
+
+[node name="GateSign" type="Label" parent="."]
+position = Vector2(54, 272)
+size = Vector2(145, 22)
+theme_override_colors/font_color = Color(1, 0.73, 0.58, 0.77)
+theme_override_font_sizes/font_size = 10
+text = "TO THE CAUSEWAY"
+horizontal_alignment = 1

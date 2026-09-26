@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://ItemPickup.tscn" id="4_item"]
 [ext_resource type="PackedScene" path="res://DestructibleCrate.tscn" id="5_crate"]
 [ext_resource type="PackedScene" path="res://EchoTrace.tscn" id="6_trace"]
+[ext_resource type="Script" path="res://EchoTraversal.gd" id="7_traversal"]
 
 [sub_resource type="RectangleShape2D" id="FloorShape"]
 size = Vector2(840, 18)
@@ -25,7 +26,14 @@ size = Vector2(150, 10)
 [sub_resource type="RectangleShape2D" id="MiddleStepShape"]
 size = Vector2(135, 10)
 
+[sub_resource type="RectangleShape2D" id="CausewaySpurShape"]
+size = Vector2(120, 10)
+
 [node name="EchoGallery" type="Node2D"]
+
+[node name="LongTraversal" type="Node2D" parent="."]
+script = ExtResource("7_traversal")
+route_id = "gallery"
 
 [node name="Backdrop" type="Polygon2D" parent="."]
 z_index = -3
@@ -58,7 +66,7 @@ color = Color(0.11, 0.24, 0.38, 1)
 polygon = PackedVector2Array(-420, -9, 420, -9, 420, 9, -420, 9)
 
 [node name="EndWall" type="StaticBody2D" parent="."]
-position = Vector2(840, 20)
+position = Vector2(3200, 20)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EndWall"]
 shape = SubResource("EndWallShape")
@@ -100,6 +108,17 @@ one_way_collision = true
 color = Color(0.22, 0.47, 0.59, 1)
 polygon = PackedVector2Array(-67, -5, 68, -5, 68, 5, -67, 5)
 
+[node name="CausewaySpur" type="StaticBody2D" parent="."]
+position = Vector2(600, 95)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CausewaySpur"]
+shape = SubResource("CausewaySpurShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="CausewaySpur"]
+color = Color(0.22, 0.51, 0.61, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
 [node name="PrismLedge" type="StaticBody2D" parent="."]
 position = Vector2(690, -70)
 
@@ -114,11 +133,23 @@ polygon = PackedVector2Array(-75, -5, 75, -5, 75, 5, -75, 5)
 [node name="GalleryEntry" type="Marker2D" parent="." groups=["gallery_entry"]]
 position = Vector2(65, 131)
 
+[node name="DepthsReturn" type="Marker2D" parent="." groups=["echo_depths_return"]]
+position = Vector2(3000, -967)
+
+[node name="DepthsDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(3080, -967)
+target_marker_group = &"echo_depths_entry"
+target_room_id = "echo_depths"
+door_label = "RESONANT DEPTHS"
+required_item_id = "gallery_prism"
+locked_label = "PRISM LOCK"
+locked_hint = "Find the Gallery Prism to follow the Resonant Depths."
+
 [node name="ArchiveReturn" type="Marker2D" parent="." groups=["gallery_archive_return"]]
-position = Vector2(640, -100)
+position = Vector2(2990, -967)
 
 [node name="CausewayReturn" type="Marker2D" parent="." groups=["gallery_causeway_return"]]
-position = Vector2(715, 131)
+position = Vector2(575, 63)
 
 [node name="ReturnDoor" parent="." instance=ExtResource("1_door")]
 position = Vector2(25, 130)
@@ -137,19 +168,6 @@ enemy_block_radius = 130.0
 position = Vector2(220, 67)
 item_id = "echo_trace_gallery"
 
-[node name="NearShade" parent="." instance=ExtResource("3_shade")]
-position = Vector2(342, 135)
-
-[node name="FarShade" parent="." instance=ExtResource("3_shade")]
-position = Vector2(585, 135)
-max_health = 5
-gold_reward = 18
-
-[node name="PrismCrate" parent="." instance=ExtResource("5_crate")]
-position = Vector2(473, 136)
-min_gold = 15
-max_gold = 26
-
 [node name="GalleryPrism" parent="." instance=ExtResource("4_item")]
 position = Vector2(690, -101)
 item_id = "gallery_prism"
@@ -157,10 +175,13 @@ display_name = "Gallery Prism"
 unique = true
 
 [node name="ArchiveDoor" parent="." instance=ExtResource("1_door")]
-position = Vector2(745, -101)
+position = Vector2(3990, -1627)
 target_marker_group = &"archive_entry"
 target_room_id = "echo_archive"
 door_label = "ARCHIVE"
+first_visit_marker_group = &"echo_depths_entry"
+first_visit_room_id = "echo_depths"
+first_visit_label = "DEPTHS TO ARCHIVE"
 required_item_id = "gallery_prism"
 locked_label = "PRISM LOCK"
 locked_hint = "Find the Gallery Prism first."
@@ -175,7 +196,7 @@ locked_label = "PRISM LOCK"
 locked_hint = "Find the Gallery Prism above."
 
 [node name="CausewayDoor" parent="." instance=ExtResource("1_door")]
-position = Vector2(660, 130)
+position = Vector2(650, 63)
 target_marker_group = &"causeway_gallery_entry"
 target_room_id = "echo_causeway"
 door_label = "CRYSTAL CAUSEWAY"

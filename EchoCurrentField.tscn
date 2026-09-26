@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://EchoCurrentField.gd" id="1_current"]
+
+[sub_resource type="RectangleShape2D" id="CurrentShape"]
+size = Vector2(360, 92)
+
+[node name="EchoCurrentField" type="Area2D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_current")
+
+[node name="Water" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.3, 0.82, 0.94, 0.1)
+polygon = PackedVector2Array(-180, -46, 180, -46, 180, 46, -180, 46)
+
+[node name="StreamA" type="Line2D" parent="."]
+points = PackedVector2Array(-158, -20, -92, -25, -24, -18, 42, -24, 112, -18, 154, -22)
+width = 3.0
+default_color = Color(0.3, 0.82, 0.94, 0.32)
+
+[node name="StreamB" type="Line2D" parent="."]
+points = PackedVector2Array(-150, 20, -86, 14, -15, 22, 55, 15, 124, 22, 160, 17)
+width = 2.0
+default_color = Color(0.44, 0.9, 0.98, 0.32)
+
+[node name="DirectionArrow" type="Polygon2D" parent="."]
+color = Color(0.63, 0.96, 1, 0.78)
+polygon = PackedVector2Array(-26, -5, 8, -5, 8, -15, 30, 0, 8, 15, 8, 5, -26, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CurrentShape")

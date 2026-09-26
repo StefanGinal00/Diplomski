@@ -1,0 +1,647 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="PackedScene" path="res://StarfallGate.tscn" id="1_gate"]
+[ext_resource type="PackedScene" path="res://StarfallWard.tscn" id="2_ward"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="3_lamp"]
+[ext_resource type="PackedScene" path="res://ResonanceCache.tscn" id="4_cache"]
+[ext_resource type="PackedScene" path="res://TownResident.tscn" id="5_resident"]
+[ext_resource type="PackedScene" path="res://TownService.tscn" id="6_service"]
+[ext_resource type="Script" path="res://StarfallCityDecor.gd" id="7_decor"]
+[ext_resource type="PackedScene" path="res://StarfallReport.tscn" id="8_report"]
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="9_door"]
+[ext_resource type="Script" path="res://TownLifeExpansion.gd" id="10_life"]
+[ext_resource type="Script" path="res://VisualStyleSlice.gd" id="11_art"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(6250, 18)
+
+[sub_resource type="RectangleShape2D" id="RoofShape"]
+size = Vector2(6250, 12)
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 2450)
+
+[sub_resource type="RectangleShape2D" id="StepShape"]
+size = Vector2(120, 10)
+
+[sub_resource type="RectangleShape2D" id="WestWalkShape"]
+size = Vector2(1200, 10)
+
+[sub_resource type="RectangleShape2D" id="MarketWalkShape"]
+size = Vector2(780, 10)
+
+[sub_resource type="RectangleShape2D" id="GardenWalkShape"]
+size = Vector2(860, 10)
+
+[node name="StarfallCitadel" type="Node2D"]
+script = ExtResource("7_decor")
+
+[node name="VisualStyleSlice" type="Node2D" parent="."]
+script = ExtResource("11_art")
+theme = "city"
+
+[node name="LibraryRooftop" type="Node2D" parent="."]
+script = ExtResource("10_life")
+settlement = "starfall"
+
+[node name="Sky" type="Polygon2D" parent="."]
+z_index = -10
+color = Color(0.055, 0.075, 0.14, 1)
+polygon = PackedVector2Array(0, -1950, 6250, -1950, 6250, 500, 0, 500)
+
+[node name="FarCity" type="Polygon2D" parent="."]
+z_index = -9
+color = Color(0.12, 0.17, 0.27, 1)
+polygon = PackedVector2Array(0, 290, 380, 245, 750, 270, 1000, 180, 1300, 250, 1600, 135, 1870, 245, 2180, 165, 2450, 255, 2750, 125, 3050, 230, 3320, 100, 3600, 235, 3890, 145, 4160, 240, 4490, 110, 4800, 235, 5100, 85, 5420, 205, 5720, 60, 6010, 195, 6250, 140, 6250, 400, 0, 400)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(3125, 400)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+color = Color(0.4, 0.39, 0.47, 1)
+polygon = PackedVector2Array(-3125, -9, 3125, -9, 3125, 9, -3125, 9)
+
+[node name="Roof" type="StaticBody2D" parent="."]
+position = Vector2(3125, -1950)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
+shape = SubResource("RoofShape")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, -725)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(6250, -725)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="GateDistrict" parent="." instance=ExtResource("1_gate")]
+
+[node name="WardDistrict" parent="." instance=ExtResource("2_ward")]
+position = Vector2(1500, 0)
+
+[node name="LinkTownhouse" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.3, 0.31, 0.43, 1)
+polygon = PackedVector2Array(1250, 390, 1250, 236, 1290, 202, 1450, 202, 1490, 236, 1490, 390)
+
+[node name="LinkRoof" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.56, 0.5, 0.61, 1)
+polygon = PackedVector2Array(1235, 238, 1370, 174, 1505, 238, 1485, 247, 1370, 195, 1255, 247)
+
+[node name="WestPromenade" type="StaticBody2D" parent="."]
+position = Vector2(1700, 160)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WestPromenade"]
+shape = SubResource("WestWalkShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WestPromenade"]
+color = Color(0.59, 0.58, 0.67, 1)
+polygon = PackedVector2Array(-600, -5, 600, -5, 600, 5, -600, 5)
+
+[node name="WestPromenadeRail" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(1120, 156, 1120, 121, 1320, 121, 1320, 156, 1520, 156, 1520, 121, 1720, 121, 1720, 156, 1920, 156, 1920, 121, 2120, 121, 2120, 156, 2300, 156)
+width = 3.0
+default_color = Color(0.76, 0.72, 0.75, 0.8)
+
+[node name="WestDown1" type="StaticBody2D" parent="."]
+position = Vector2(2390, 225)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WestDown1"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WestDown1"]
+color = Color(0.59, 0.57, 0.66, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="WestDown2" type="StaticBody2D" parent="."]
+position = Vector2(2500, 290)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WestDown2"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WestDown2"]
+color = Color(0.55, 0.53, 0.62, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="WestDown3" type="StaticBody2D" parent="."]
+position = Vector2(2610, 345)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WestDown3"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WestDown3"]
+color = Color(0.51, 0.5, 0.59, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="MarketArch" type="Polygon2D" parent="."]
+z_index = -5
+color = Color(0.29, 0.31, 0.43, 1)
+polygon = PackedVector2Array(2860, 390, 2860, 226, 2920, 185, 3120, 185, 3180, 226, 3180, 390)
+
+[node name="MarketArchRoof" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.56, 0.49, 0.6, 1)
+polygon = PackedVector2Array(2840, 231, 3020, 147, 3200, 231, 3180, 242, 3020, 172, 2860, 242)
+
+[node name="MarketHall" type="Polygon2D" parent="."]
+z_index = -5
+color = Color(0.35, 0.32, 0.44, 1)
+polygon = PackedVector2Array(3300, 390, 3300, 177, 3350, 127, 3840, 127, 3890, 177, 3890, 390)
+
+[node name="MarketHallRoof" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.61, 0.48, 0.55, 1)
+polygon = PackedVector2Array(3275, 183, 3595, 82, 3915, 183, 3890, 195, 3595, 107, 3300, 195)
+
+[node name="ApothecaryHouse" type="Polygon2D" parent="."]
+z_index = -5
+color = Color(0.31, 0.36, 0.42, 1)
+polygon = PackedVector2Array(3930, 390, 3930, 234, 3970, 206, 4250, 206, 4290, 234, 4290, 390)
+
+[node name="ApothecaryRoof" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.49, 0.61, 0.57, 1)
+polygon = PackedVector2Array(3910, 237, 4110, 161, 4310, 237, 4285, 250, 4110, 185, 3935, 250)
+
+[node name="MarketStep1" type="StaticBody2D" parent="."]
+position = Vector2(3000, 325)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarketStep1"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="MarketStep1"]
+color = Color(0.52, 0.54, 0.62, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="MarketStep2" type="StaticBody2D" parent="."]
+position = Vector2(3110, 265)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarketStep2"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="MarketStep2"]
+color = Color(0.56, 0.57, 0.65, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="MarketBalcony" type="StaticBody2D" parent="."]
+position = Vector2(3600, 225)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarketBalcony"]
+shape = SubResource("MarketWalkShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="MarketBalcony"]
+color = Color(0.65, 0.6, 0.68, 1)
+polygon = PackedVector2Array(-390, -5, 390, -5, 390, 5, -390, 5)
+
+[node name="MarketRail" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(3240, 221, 3240, 184, 3450, 184, 3450, 221, 3670, 221, 3670, 184, 3890, 184, 3890, 221)
+width = 3.0
+default_color = Color(0.8, 0.71, 0.75, 0.8)
+
+[node name="MarketDown1" type="StaticBody2D" parent="."]
+position = Vector2(4050, 285)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarketDown1"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="MarketDown1"]
+color = Color(0.56, 0.55, 0.62, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="MarketDown2" type="StaticBody2D" parent="."]
+position = Vector2(4160, 345)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarketDown2"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="MarketDown2"]
+color = Color(0.52, 0.51, 0.59, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="MarketStallWest" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.7, 0.44, 0.57, 1)
+polygon = PackedVector2Array(3120, 340, 3140, 285, 3320, 285, 3340, 340)
+
+[node name="MarketStallEast" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.48, 0.62, 0.63, 1)
+polygon = PackedVector2Array(3740, 340, 3760, 287, 3910, 287, 3930, 340)
+
+[node name="GardenLibrary" type="Polygon2D" parent="."]
+z_index = -5
+color = Color(0.34, 0.35, 0.46, 1)
+polygon = PackedVector2Array(4370, 390, 4370, 215, 4430, 175, 4740, 175, 4800, 215, 4800, 390)
+
+[node name="GardenLibraryRoof" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.57, 0.54, 0.66, 1)
+polygon = PackedVector2Array(4340, 221, 4585, 116, 4830, 221, 4800, 234, 4585, 142, 4370, 234)
+
+[node name="GardenArbor" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.25, 0.48, 0.47, 1)
+polygon = PackedVector2Array(4860, 390, 4860, 268, 4910, 218, 5300, 218, 5350, 268, 5350, 390, 5290, 390, 5290, 278, 5250, 245, 4960, 245, 4920, 278, 4920, 390)
+
+[node name="ObservatoryTower" type="Polygon2D" parent="."]
+z_index = -5
+color = Color(0.33, 0.36, 0.51, 1)
+polygon = PackedVector2Array(5520, 390, 5520, 150, 5570, 100, 5930, 100, 5980, 150, 5980, 390)
+
+[node name="ObservatoryDome" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.54, 0.56, 0.7, 1)
+polygon = PackedVector2Array(5480, 155, 5540, 88, 5610, 51, 5750, 30, 5890, 51, 5960, 88, 6020, 155, 5980, 168, 5930, 103, 5860, 72, 5750, 57, 5640, 72, 5570, 103, 5520, 168)
+
+[node name="GardenStep1" type="StaticBody2D" parent="."]
+position = Vector2(4500, 325)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GardenStep1"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="GardenStep1"]
+color = Color(0.51, 0.62, 0.61, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="GardenStep2" type="StaticBody2D" parent="."]
+position = Vector2(4610, 265)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GardenStep2"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="GardenStep2"]
+color = Color(0.54, 0.65, 0.64, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="GardenBalcony" type="StaticBody2D" parent="."]
+position = Vector2(5150, 210)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GardenBalcony"]
+shape = SubResource("GardenWalkShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="GardenBalcony"]
+color = Color(0.61, 0.7, 0.68, 1)
+polygon = PackedVector2Array(-430, -5, 430, -5, 430, 5, -430, 5)
+
+[node name="GardenRail" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(4730, 205, 4730, 167, 4940, 167, 4940, 205, 5150, 205, 5150, 167, 5360, 167, 5360, 205, 5560, 205)
+width = 3.0
+default_color = Color(0.76, 0.84, 0.78, 0.82)
+
+[node name="GardenDown1" type="StaticBody2D" parent="."]
+position = Vector2(5650, 270)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GardenDown1"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="GardenDown1"]
+color = Color(0.54, 0.64, 0.62, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="GardenDown2" type="StaticBody2D" parent="."]
+position = Vector2(5760, 330)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GardenDown2"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="GardenDown2"]
+color = Color(0.5, 0.6, 0.59, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="MarketLamp" parent="." instance=ExtResource("3_lamp")]
+position = Vector2(3030, 367)
+lamp_id = "starfall_market_lamp"
+lamp_name = "Starfall Market Lamp"
+room_id = "starfall_citadel"
+enemy_block_radius = 130.0
+
+[node name="GardenLamp" parent="." instance=ExtResource("3_lamp")]
+position = Vector2(5400, 367)
+lamp_id = "starfall_garden_lamp"
+lamp_name = "Celestial Garden Lamp"
+room_id = "starfall_citadel"
+enemy_block_radius = 130.0
+
+[node name="MarketBalconyCache" parent="." instance=ExtResource("4_cache")]
+position = Vector2(3750, 192)
+cache_id = "starfall_market_balcony"
+cache_name = "Market Rooftop Supply"
+gold_reward = 42
+reward_item_id = "iron_fragment"
+
+[node name="GardenCache" parent="." instance=ExtResource("4_cache")]
+position = Vector2(5280, 177)
+cache_id = "starfall_garden_skywalk"
+cache_name = "Garden Skywalk Supply"
+gold_reward = 38
+reward_item_id = "ether_dust"
+
+[node name="WatchReport" parent="." instance=ExtResource("8_report")]
+position = Vector2(2050, 127)
+item_id = "starfall_report_watch"
+
+[node name="MarketReport" parent="." instance=ExtResource("8_report")]
+position = Vector2(3870, 192)
+item_id = "starfall_report_market"
+
+[node name="GardenReport" parent="." instance=ExtResource("8_report")]
+position = Vector2(5430, 177)
+item_id = "starfall_report_garden"
+
+[node name="WardLinkSign" type="Label" parent="."]
+position = Vector2(1280, 287)
+size = Vector2(190, 24)
+theme_override_colors/font_color = Color(0.92, 0.8, 0.61, 0.9)
+theme_override_font_sizes/font_size = 10
+text = "LANTERN WARD  >>"
+horizontal_alignment = 1
+
+[node name="MarketTitle" type="Label" parent="."]
+position = Vector2(3180, 56)
+size = Vector2(410, 32)
+theme_override_colors/font_color = Color(1, 0.81, 0.61, 0.95)
+theme_override_font_sizes/font_size = 15
+text = "STARFALL MARKET"
+horizontal_alignment = 1
+
+[node name="GardenTitle" type="Label" parent="."]
+position = Vector2(4760, 54)
+size = Vector2(450, 32)
+theme_override_colors/font_color = Color(0.79, 0.94, 0.86, 0.95)
+theme_override_font_sizes/font_size = 15
+text = "CELESTIAL GARDEN"
+horizontal_alignment = 1
+
+[node name="MarketStallSign" type="Label" parent="."]
+position = Vector2(3190, 262)
+size = Vector2(150, 20)
+theme_override_colors/font_color = Color(1, 0.87, 0.72, 0.92)
+theme_override_font_sizes/font_size = 10
+text = "MARKET GOODS"
+horizontal_alignment = 1
+
+[node name="ApothecarySign" type="Label" parent="."]
+position = Vector2(3930, 273)
+size = Vector2(300, 20)
+theme_override_colors/font_color = Color(0.75, 0.95, 0.83, 0.93)
+theme_override_font_sizes/font_size = 10
+text = "THE LUMEN APOTHECARY"
+horizontal_alignment = 1
+
+[node name="LinkDoorway" type="Marker2D" parent="." groups=["town_interior"]]
+position = Vector2(1370, 367)
+
+[node name="LinkStreet" type="Marker2D" parent="."]
+position = Vector2(1440, 367)
+
+[node name="PromenadeWest" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(1630, 127)
+
+[node name="PromenadeEast" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(1890, 127)
+
+[node name="MarketHallDoorway" type="Marker2D" parent="." groups=["town_interior"]]
+position = Vector2(3500, 367)
+
+[node name="MarketStreetWest" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(3340, 367)
+
+[node name="MarketStreetEast" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(3440, 367)
+
+[node name="ApothecaryDoorway" type="Marker2D" parent="." groups=["town_interior"]]
+position = Vector2(4130, 367)
+
+[node name="MarketBalconyWest" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(3440, 192)
+
+[node name="MarketBalconyEast" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(3540, 192)
+
+[node name="LibraryDoorway" type="Marker2D" parent="." groups=["town_interior"]]
+position = Vector2(4560, 367)
+
+[node name="GardenWest" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(4850, 367)
+
+[node name="GardenEast" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(4950, 367)
+
+[node name="ObservatoryDoorway" type="Marker2D" parent="." groups=["town_interior"]]
+position = Vector2(5710, 367)
+
+[node name="GardenSkyWest" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(4960, 177)
+
+[node name="GardenSkyEast" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(5060, 177)
+
+[node name="GardenSkyFar" type="Marker2D" parent="."]
+position = Vector2(5430, 177)
+
+[node name="OuterWatchReturn" type="Marker2D" parent="." groups=["starfall_city_outer_return"]]
+position = Vector2(6030, 367)
+
+[node name="OuterWatchGate" parent="." instance=ExtResource("9_door")]
+position = Vector2(6150, 367)
+target_marker_group = &"starfall_outskirts_entry"
+target_room_id = "starfall_outskirts"
+door_label = "OUTER WATCH"
+
+[node name="OuterWatchSign" type="Label" parent="."]
+position = Vector2(5930, 257)
+size = Vector2(280, 27)
+theme_override_colors/font_color = Color(1, 0.76, 0.59, 0.93)
+theme_override_font_sizes/font_size = 11
+text = "BEYOND THE WALL - DANGER"
+horizontal_alignment = 1
+
+[node name="MarketTrader" parent="." instance=ExtResource("6_service")]
+position = Vector2(3250, 367)
+service_kind = "shop"
+service_id = "starfall_market_shop"
+service_name = "Nalia - Market"
+service_color = Color(0.93, 0.57, 0.64, 1)
+
+[node name="Apothecary" parent="." instance=ExtResource("6_service")]
+position = Vector2(3960, 367)
+service_kind = "shop"
+service_id = "starfall_apothecary_shop"
+service_name = "Aurel - Remedies"
+service_color = Color(0.54, 0.85, 0.72, 1)
+
+[node name="Rook" parent="." groups=["starfall_route_npc"] instance=ExtResource("5_resident")]
+position = Vector2(1330, 367)
+resident_name = "Rook"
+dialogue_lines = PackedStringArray("The gate is behind us, but the city keeps going long after this street.", "I deliver letters from the watch to every house before nightfall.")
+route_marker_names = PackedStringArray("LinkDoorway", "LinkStreet")
+social_lines = PackedStringArray("The ward is waking up.", "One more letter for the east row.")
+coat_color = Color(0.36, 0.42, 0.54, 1)
+accent_color = Color(0.94, 0.79, 0.54, 1)
+walk_speed = 25.0
+
+[node name="Liora" parent="." instance=ExtResource("5_resident")]
+position = Vector2(1600, 127)
+resident_name = "Liora"
+dialogue_lines = PackedStringArray("From this walk you can see the lanterns all the way to the market.", "The upper streets are quiet, but they connect back to the lower city.")
+victory_dialogue_lines = PackedStringArray("The watch lights changed when the throne went quiet. I saw it from this rail.", "For once the far road looks like a road, not a warning.")
+route_marker_names = PackedStringArray("PromenadeWest", "PromenadeEast")
+talk_partner = NodePath("../Kel")
+social_lines = PackedStringArray("Kel, did you count the market lamps?", "The west rail needs another coat of paint.")
+victory_social_lines = PackedStringArray("Kel, the far lamps are answering ours.", "People are walking the upper road again.")
+coat_color = Color(0.4, 0.4, 0.59, 1)
+accent_color = Color(0.76, 0.85, 0.98, 1)
+walk_speed = 20.0
+
+[node name="Kel" parent="." instance=ExtResource("5_resident")]
+position = Vector2(1940, 127)
+resident_name = "Kel"
+dialogue_lines = PackedStringArray("I came up here for the view and stayed for the peace.", "You can drop to the street or take the steps down at the far end.")
+victory_dialogue_lines = PackedStringArray("I thought the sky above the throne would stay dark forever.", "Liora says the watch can see every lantern on the road now.")
+route_marker_names = PackedStringArray("PromenadeEast", "PromenadeWest")
+social_lines = PackedStringArray("All the lamps are lit, Liora.", "The market is louder than the watch tonight.")
+victory_social_lines = PackedStringArray("I counted them. Not one has gone out.", "The watch can breathe tonight.")
+coat_color = Color(0.4, 0.5, 0.53, 1)
+accent_color = Color(0.89, 0.77, 0.65, 1)
+walk_speed = 18.0
+
+[node name="Osric" parent="." instance=ExtResource("5_resident")]
+position = Vector2(3150, 367)
+resident_name = "Osric"
+dialogue_lines = PackedStringArray("The market trades more stories than goods on quiet days.", "Our hall stays open to travelers, even when the stalls close.")
+victory_dialogue_lines = PackedStringArray("The square has spent years waiting for news from the throne. Now everyone has a different version.", "The hall is open. Let the travelers tell us what really happened.")
+route_marker_names = PackedStringArray("MarketStreetWest", "MarketHallDoorway")
+talk_partner = NodePath("../Cera")
+social_lines = PackedStringArray("Cera, any news from the observatory?", "The west stall is running low again.")
+victory_social_lines = PackedStringArray("Cera, make room for the returning watch.", "There is a celebration to stock for.")
+coat_color = Color(0.46, 0.34, 0.43, 1)
+accent_color = Color(0.95, 0.7, 0.58, 1)
+walk_speed = 22.0
+
+[node name="Cera" parent="." instance=ExtResource("5_resident")]
+position = Vector2(3470, 367)
+resident_name = "Cera"
+dialogue_lines = PackedStringArray("Each stall depends on the next caravan. We make the supplies last until it arrives.", "The balcony above the hall hides a little supply chest.")
+victory_dialogue_lines = PackedStringArray("The caravans may finally use the eastern road without an escort.", "I am keeping the stalls open late. We have a city to welcome back.")
+route_marker_names = PackedStringArray("MarketStreetEast", "MarketStreetWest", "MarketHallDoorway")
+social_lines = PackedStringArray("The garden lamps are bright tonight.", "Osric, save a place at the hall table.")
+victory_social_lines = PackedStringArray("Osric, the road traders are already here.", "Save them a place by the hearth.")
+coat_color = Color(0.46, 0.4, 0.52, 1)
+accent_color = Color(0.98, 0.81, 0.62, 1)
+walk_speed = 20.0
+
+[node name="Vedran" parent="." instance=ExtResource("5_resident")]
+position = Vector2(4050, 367)
+resident_name = "Vedran"
+dialogue_lines = PackedStringArray("Aurel keeps the remedies in the green-roofed house.", "Beyond the market, the library and garden are both open to everyone.")
+route_marker_names = PackedStringArray("ApothecaryDoorway", "MarketStreetEast")
+social_lines = PackedStringArray("The herb shelves are stocked.", "Time for another errand.")
+coat_color = Color(0.33, 0.49, 0.47, 1)
+accent_color = Color(0.82, 0.94, 0.67, 1)
+walk_speed = 23.0
+
+[node name="Fenn" parent="." instance=ExtResource("5_resident")]
+position = Vector2(3420, 192)
+resident_name = "Fenn"
+dialogue_lines = PackedStringArray("Up here the market looks like a patchwork of colored roofs.", "The city feels different when you find its upper paths.")
+route_marker_names = PackedStringArray("MarketBalconyWest", "MarketBalconyEast")
+talk_partner = NodePath("../Sable")
+social_lines = PackedStringArray("Sable, do you hear the square below?", "Someone left a parcel by the far rail.")
+coat_color = Color(0.37, 0.43, 0.59, 1)
+accent_color = Color(0.94, 0.72, 0.83, 1)
+walk_speed = 18.0
+
+[node name="Sable" parent="." instance=ExtResource("5_resident")]
+position = Vector2(3650, 192)
+resident_name = "Sable"
+dialogue_lines = PackedStringArray("We built the balcony so traders could cross above the busy street.", "It is a safe place to stop and look over the roofs.")
+route_marker_names = PackedStringArray("MarketBalconyEast", "MarketBalconyWest")
+social_lines = PackedStringArray("The square is never truly silent, Fenn.", "The stars will be clear tonight.")
+coat_color = Color(0.39, 0.41, 0.58, 1)
+accent_color = Color(0.7, 0.89, 0.92, 1)
+walk_speed = 19.0
+
+[node name="Atley" parent="." groups=["dawn_archive_npc"] instance=ExtResource("5_resident")]
+position = Vector2(4460, 367)
+resident_name = "Atley"
+dialogue_lines = PackedStringArray("The library keeps records of every caravan that found the Citadel.", "I walk between the shelves and the garden when the square grows too loud.")
+victory_dialogue_lines = PackedStringArray("Our records end at the sealed throne. Tomorrow I start a new volume.", "Three memories opened that door. We should write down whose hands kept them safe.")
+route_marker_names = PackedStringArray("LibraryDoorway", "GardenWest")
+talk_partner = NodePath("../Nima")
+social_lines = PackedStringArray("Nima, the library doors are open.", "The vines have reached the upper rail.")
+victory_social_lines = PackedStringArray("Nima, I need a fresh ledger.", "The library has a new chapter to keep.")
+coat_color = Color(0.36, 0.4, 0.57, 1)
+accent_color = Color(0.86, 0.75, 0.92, 1)
+walk_speed = 20.0
+
+[node name="Nima" parent="." instance=ExtResource("5_resident")]
+position = Vector2(4870, 367)
+resident_name = "Nima"
+dialogue_lines = PackedStringArray("The garden is ours to tend, not to lock away.", "There are no monsters inside these walls. Even the high walkways are safe.")
+victory_dialogue_lines = PackedStringArray("The new light reached the garden before dawn. The roots are already turning toward it.", "The world beyond these walls still needs tending. No crown can do that for us.")
+route_marker_names = PackedStringArray("GardenEast", "GardenWest")
+social_lines = PackedStringArray("I brought water for the new seedlings.", "Atley, the library is quiet today.")
+victory_social_lines = PackedStringArray("Atley, the seedlings opened overnight.", "Even the old roots feel the change.")
+coat_color = Color(0.34, 0.52, 0.43, 1)
+accent_color = Color(0.85, 0.96, 0.69, 1)
+walk_speed = 18.0
+
+[node name="Emon" parent="." instance=ExtResource("5_resident")]
+position = Vector2(5680, 367)
+resident_name = "Emon"
+dialogue_lines = PackedStringArray("The observatory is the last great building on this street.", "The old paths beyond the observatory are closed while the council surveys them.")
+victory_dialogue_lines = PackedStringArray("The observatory watched the last shadow break over the throne.", "The council must chart the road anew. For now, the outer gate is open to those who dare it.")
+route_marker_names = PackedStringArray("ObservatoryDoorway", "GardenEast")
+social_lines = PackedStringArray("The lenses are clean for tonight.", "The garden lamps are still burning.")
+coat_color = Color(0.42, 0.43, 0.61, 1)
+accent_color = Color(0.78, 0.87, 1, 1)
+walk_speed = 22.0
+
+[node name="Sol" parent="." instance=ExtResource("5_resident")]
+position = Vector2(4930, 177)
+resident_name = "Sol"
+dialogue_lines = PackedStringArray("The upper garden catches the first light of the day.", "From here you can return to the street by the steps at either end.")
+route_marker_names = PackedStringArray("GardenSkyWest", "GardenSkyEast")
+talk_partner = NodePath("../Astra")
+social_lines = PackedStringArray("Astra, the clouds are thinning.", "We should trim the vines by the rail.")
+coat_color = Color(0.39, 0.51, 0.51, 1)
+accent_color = Color(0.85, 0.95, 0.72, 1)
+walk_speed = 17.0
+
+[node name="Astra" parent="." instance=ExtResource("5_resident")]
+position = Vector2(5170, 177)
+resident_name = "Astra"
+dialogue_lines = PackedStringArray("I mark the stars from the garden before climbing into the observatory.", "When the rest of the Citadel sleeps, the upper rail is still lit.")
+victory_dialogue_lines = PackedStringArray("Three lights rose from the old lands and met above the throne. My chart has no name for that pattern.", "Perhaps the next map should begin with the roads people choose, not the stars above them.")
+route_marker_names = PackedStringArray("GardenSkyEast", "GardenSkyFar")
+social_lines = PackedStringArray("The sky is clear, Sol.", "I have one more chart to finish.")
+victory_social_lines = PackedStringArray("Sol, look at the new light over the east wall.", "I need a larger chart.")
+coat_color = Color(0.43, 0.43, 0.6, 1)
+accent_color = Color(0.75, 0.86, 1, 1)
+walk_speed = 18.0

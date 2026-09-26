@@ -8,6 +8,7 @@ signal destroyed
 @export_range(1, 999, 1) var min_gold: int = 3
 @export_range(1, 999, 1) var max_gold: int = 12
 @export_range(0.0, 1.0, 0.05) var item_drop_chance: float = 0.3
+@export_range(0.0, 1.0, 0.05) var empty_drop_chance: float = 0.0
 @export var common_item_ids: PackedStringArray = ["healing_herb", "iron_fragment", "ether_dust"]
 @export var random_seed: int = 0
 
@@ -48,6 +49,8 @@ func _destroy() -> void:
 
 
 func _drop_random_loot() -> void:
+	if rng.randf() < empty_drop_chance:
+		return
 	if rng.randf() < item_drop_chance and not common_item_ids.is_empty():
 		_drop_item()
 	else:

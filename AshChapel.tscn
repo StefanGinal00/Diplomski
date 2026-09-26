@@ -1,0 +1,240 @@
+[gd_scene load_steps=16 format=3]
+
+[ext_resource type="Script" path="res://AshChapelTrial.gd" id="1_trial"]
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="2_door"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="3_lamp"]
+[ext_resource type="PackedScene" path="res://ChapelBell.tscn" id="4_bell"]
+[ext_resource type="PackedScene" path="res://HeatVent.tscn" id="5_vent"]
+[ext_resource type="PackedScene" path="res://ResonanceCache.tscn" id="6_cache"]
+[ext_resource type="PackedScene" path="res://AshFiend.tscn" id="7_fiend"]
+[ext_resource type="PackedScene" path="res://AshSentry.tscn" id="8_sentry"]
+[ext_resource type="PackedScene" path="res://DestructibleCrate.tscn" id="9_crate"]
+[ext_resource type="PackedScene" path="res://DawnEcho.tscn" id="10_dawn_echo"]
+[ext_resource type="Script" path="res://AshSwitchback.gd" id="11_switchback"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(1150, 18)
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 2000)
+
+[sub_resource type="RectangleShape2D" id="RoofShape"]
+size = Vector2(4200, 12)
+
+[sub_resource type="RectangleShape2D" id="StepShape"]
+size = Vector2(125, 10)
+
+[node name="AshChapel" type="Node2D"]
+script = ExtResource("1_trial")
+
+[node name="AshSwitchback" type="Node2D" parent="."]
+script = ExtResource("11_switchback")
+course_id = &"chapel"
+course_width = 4200.0
+legacy_width = 1150.0
+ground_y = 420.0
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -5
+color = Color(0.065, 0.047, 0.055, 1)
+polygon = PackedVector2Array(0, -1390, 4200, -1390, 4200, 610, 0, 610)
+
+[node name="StainedWall" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.18, 0.105, 0.13, 1)
+polygon = PackedVector2Array(0, 80, 105, 54, 215, 85, 330, 42, 445, 78, 570, 36, 680, 82, 790, 45, 900, 75, 1020, 40, 1150, 73, 1150, 420, 0, 420)
+
+[node name="WindowGlow" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.9, 0.42, 0.18, 0.15)
+polygon = PackedVector2Array(560, 90, 590, 55, 620, 90, 620, 300, 560, 300)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(575, 420)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+color = Color(0.29, 0.21, 0.22, 1)
+polygon = PackedVector2Array(-575, -9, 575, -9, 575, 9, -575, 9)
+
+[node name="Roof" type="StaticBody2D" parent="."]
+position = Vector2(2100, -1390)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
+shape = SubResource("RoofShape")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, -390)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(4200, -390)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="Step1" type="StaticBody2D" parent="."]
+position = Vector2(205, 340)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step1"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step1"]
+color = Color(0.42, 0.29, 0.29, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="Step2" type="StaticBody2D" parent="."]
+position = Vector2(325, 280)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step2"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step2"]
+color = Color(0.47, 0.32, 0.29, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="Step3" type="StaticBody2D" parent="."]
+position = Vector2(445, 220)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step3"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step3"]
+color = Color(0.51, 0.36, 0.29, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="Step4" type="StaticBody2D" parent="."]
+position = Vector2(755, 340)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step4"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step4"]
+color = Color(0.42, 0.29, 0.29, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="Step5" type="StaticBody2D" parent="."]
+position = Vector2(875, 280)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step5"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step5"]
+color = Color(0.47, 0.32, 0.29, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="Step6" type="StaticBody2D" parent="."]
+position = Vector2(995, 220)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step6"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step6"]
+color = Color(0.51, 0.36, 0.29, 1)
+polygon = PackedVector2Array(-62, -5, 62, -5, 62, 5, -62, 5)
+
+[node name="ChapelEntry" type="Marker2D" parent="." groups=["ash_chapel_entry"]]
+position = Vector2(86, 387)
+
+[node name="ThroneReturn" type="Marker2D" parent="." groups=["ash_chapel_throne_return"]]
+position = Vector2(3750, -993)
+
+[node name="ReservoirReturnDoor" parent="." instance=ExtResource("2_door")]
+position = Vector2(28, 387)
+target_marker_group = &"ash_reservoir_chapel_return"
+target_room_id = "ash_reservoir"
+door_label = "SLAG RESERVOIR"
+
+[node name="ThroneDoor" parent="." instance=ExtResource("2_door")]
+position = Vector2(3940, -993)
+target_marker_group = &"ash_throne_entry"
+target_room_id = "ash_throne"
+door_label = "CASTELLAN THRONE"
+required_item_ids = PackedStringArray("barracks_insignia", "marshal_emblem", "crucible_core")
+required_event_ids = PackedStringArray("ash_chapel_bells")
+locked_label = "THRONE SEALED"
+
+[node name="ChapelLamp" parent="." instance=ExtResource("3_lamp")]
+position = Vector2(142, 387)
+lamp_id = "ash_chapel_lamp"
+lamp_name = "Ashen Chapel Lamp"
+room_id = "ash_chapel"
+enemy_block_radius = 105.0
+
+[node name="HighBell" parent="." instance=ExtResource("4_bell")]
+position = Vector2(1540, -313)
+dial_index = 0
+dial_name = "HIGH BELL"
+activation_prompt = "[E] RING HIGH BELL"
+complete_prompt = "CHAPEL QUIET"
+
+[node name="LowBell" parent="." instance=ExtResource("4_bell")]
+position = Vector2(3670, -653)
+dial_index = 1
+dial_name = "LOW BELL"
+activation_prompt = "[E] RING LOW BELL"
+complete_prompt = "CHAPEL QUIET"
+
+[node name="FarBell" parent="." instance=ExtResource("4_bell")]
+position = Vector2(2990, -993)
+dial_index = 2
+dial_name = "FAR BELL"
+activation_prompt = "[E] RING FAR BELL"
+complete_prompt = "CHAPEL QUIET"
+
+[node name="LowVent" parent="." instance=ExtResource("5_vent")]
+position = Vector2(2640, -1)
+disabled_by_shortcut_id = "ash_chapel_bells"
+
+[node name="FarVent" parent="." instance=ExtResource("5_vent")]
+position = Vector2(2290, -671)
+initial_offset = 0.9
+disabled_by_shortcut_id = "ash_chapel_bells"
+
+[node name="ChapelCache" parent="." instance=ExtResource("6_cache")]
+position = Vector2(3420, -993)
+cache_id = "ash_chapel_reliquary"
+cache_name = "Chapel Reliquary"
+gold_reward = 48
+reward_item_id = "iron_fragment"
+required_event_ids = PackedStringArray("ash_chapel_bells")
+
+[node name="MemoryReliquary" parent="." instance=ExtResource("6_cache")]
+position = Vector2(2390, -653)
+cache_id = "ash_chapel_memory_sigil"
+cache_name = "Cindered Memory"
+gold_reward = 25
+reward_item_id = "memory_sigil_ash"
+required_event_ids = PackedStringArray("ash_chapel_bells")
+
+[node name="DawnEcho" parent="." instance=ExtResource("10_dawn_echo")]
+position = Vector2(2830, -653)
+echo_id = "ash"
+echo_name = "Ember Echo"
+echo_color = Color(1, 0.75, 0.5, 1)
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(50, 65)
+size = Vector2(240, 28)
+theme_override_colors/font_color = Color(0.95, 0.75, 0.56, 0.9)
+theme_override_font_sizes/font_size = 12
+text = "ASHEN CHAPEL"
+horizontal_alignment = 1
+
+[node name="SequenceHint" type="Label" parent="."]
+position = Vector2(365, 70)
+size = Vector2(515, 28)
+theme_override_colors/font_color = Color(0.94, 0.82, 0.67, 0.85)
+theme_override_font_sizes/font_size = 10
+text = "BELL ORDER: HIGH  >  LOW  >  FAR  |  0/3"
+horizontal_alignment = 1

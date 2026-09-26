@@ -1,9 +1,28 @@
 extends CanvasLayer
 
+# Preserve the main mechanism objective until it is solved. Return-visit
+# guidance is derived from existing progress, never new quest/save flags.
+const SHAFT_RETURN_REQUIREMENTS := {
+	"shaft_hollow": ["shaft_hollow_relay"],
+	"shaft_crossing": ["shaft_sluice_valve"],
+	"shaft_gallery": ["shaft_gallery_lower", "shaft_gallery_upper"],
+	"shaft_cistern": ["shaft_cistern_pump"],
+	"shaft_approach": ["shaft_approach_bridge"],
+}
+
 const SHOP_ORDER: Array[String] = ["spiritglass_blade", "hunter_bow", "thorn_bow", "apprentice_staff", "sunder_staff", "guardian_band", "wind_cloak", "frost_rune", "healing_herb", "life_bloom", "ember_arrow", "iron_fragment", "ether_dust", "resonance_shard"]
 const FORGE_ORDER: Array[String] = ["worn_sword", "spiritglass_blade", "hunter_bow", "thorn_bow", "apprentice_staff", "sunder_staff"]
 const SHOP_QUANTITIES := {"spiritglass_blade": 1, "hunter_bow": 1, "thorn_bow": 1, "apprentice_staff": 1, "sunder_staff": 1, "guardian_band": 1, "wind_cloak": 1, "frost_rune": 1, "healing_herb": 1, "life_bloom": 1, "ember_arrow": 3, "iron_fragment": 1, "ether_dust": 1, "resonance_shard": 1}
 const FORGE_EFFECTS: Array[String] = ["+1 damage", "Attack delay -12%", "+1 damage", "Attack delay -18% total", "+1 damage; radiant glow"]
+const MEMORY_MOMENTS := {
+	"memory_sigil_shaft": {"title": "A DROWNED MEMORY", "text": "A bell kept its rhythm beneath the flood. Someone stayed to guide the last travelers through the dark.", "location": "BLACKWATER CISTERN", "color": Color(0.56, 0.82, 1.0)},
+	"memory_sigil_echo": {"title": "AN ECHOING MEMORY", "text": "The mirrors held many faces, but one voice answered them all: remember the people, not the throne.", "location": "PRISM ARCHIVE", "color": Color(0.7, 0.9, 1.0)},
+	"memory_sigil_ash": {"title": "A CINDERED MEMORY", "text": "The bells rang after the fires died. Their keeper saved one ember for a road no map could name.", "location": "ASHEN CHAPEL", "color": Color(1.0, 0.72, 0.51)},
+	"memory_complete": {"title": "THE THREE MEMORIES ANSWER", "text": "Flood, crystal and ember form a key. The Hollow Throne remembers the three guardians as well.", "location": "HOLLOW THRONE", "color": Color(0.86, 0.8, 1.0)},
+	"dawn_echo_shaft": {"title": "THE FLOOD ECHO", "text": "The bell rings once more, no longer as a warning. This time it tells the road that someone made it home.", "location": "BLACKWATER CISTERN", "color": Color(0.56, 0.82, 1.0)},
+	"dawn_echo_echo": {"title": "THE MIRROR ECHO", "text": "The mirrors no longer hold one face. They reflect the many hands that carried a memory into the light.", "location": "PRISM ARCHIVE", "color": Color(0.7, 0.9, 1.0)},
+	"dawn_echo_ash": {"title": "THE EMBER ECHO", "text": "The saved ember finds another hearth. A city is built by those willing to share its fire.", "location": "ASHEN CHAPEL", "color": Color(1.0, 0.72, 0.51)},
+}
 
 @export var player_path: NodePath = NodePath("../Player")
 @export var exit_path: NodePath = NodePath("../ExitPortal")
@@ -76,6 +95,13 @@ const FORGE_EFFECTS: Array[String] = ["+1 damage", "Attack delay -12%", "+1 dama
 @onready var zone_title_panel: Panel = $ZoneTitlePanel
 @onready var zone_title_label: Label = $ZoneTitlePanel/ZoneTitleLabel
 @onready var zone_subtitle_label: Label = $ZoneTitlePanel/ZoneSubtitleLabel
+@onready var memory_toast_panel: Panel = $MemoryToastPanel
+@onready var memory_title_label: Label = $MemoryToastPanel/MemoryTitle
+@onready var memory_text_label: Label = $MemoryToastPanel/MemoryText
+@onready var memory_status_label: Label = $MemoryToastPanel/MemoryStatus
+@onready var ending_backdrop: ColorRect = $EndingBackdrop
+@onready var ending_panel: Panel = $EndingPanel
+@onready var ending_continue_button: Button = $EndingPanel/ContinueButton
 @onready var continue_button: Button = $MainMenuPanel/ContinueButton
 @onready var continue_info_label: Label = $MainMenuPanel/ContinueInfoLabel
 @onready var normal_mode_button: Button = $MainMenuPanel/NormalModeButton
@@ -116,7 +142,11 @@ var map_allows_travel: bool = false
 var selected_shop_item_id: String = ""
 var shop_mode: String = "buy"
 var active_merchant: Node
+var active_town_line: String = ""
+var starfall_route_claimed_this_talk: bool = false
 var zone_title_tween: Tween
+var memory_reveal_tween: Tween
+var memory_reveal_queue: Array[Dictionary] = []
 
 
 func _ready() -> void:
@@ -129,6 +159,9 @@ func _ready() -> void:
 	main_menu_panel.hide()
 	main_menu_backdrop.hide()
 	zone_title_panel.hide()
+	memory_toast_panel.hide()
+	ending_backdrop.hide()
+	ending_panel.hide()
 	world_map_panel.hide()
 	shop_panel.hide()
 	_set_shop_dimmer_visible(false)
@@ -174,17 +207,24 @@ func _ready() -> void:
 	continue_button.pressed.connect(_continue_saved_game)
 	normal_mode_button.pressed.connect(_start_normal_mode)
 	hardcore_mode_button.pressed.connect(_start_hardcore_mode)
+	ending_continue_button.pressed.connect(_close_final_ending)
 	_setup_enemy_objective()
 	_setup_friendly_npcs()
 	_setup_checkpoints()
 	_setup_life_pickups()
 	_setup_shortcuts_and_doors()
+	var runtime_node_callback := Callable(self, "_on_runtime_node_added")
+	if not get_tree().node_added.is_connected(runtime_node_callback):
+		get_tree().node_added.connect(runtime_node_callback)
 	_setup_archive()
 	_setup_nest()
 	_setup_boss()
 	var cistern := get_parent().get_node_or_null("BlackwaterCistern")
 	if cistern != null:
 		cistern.sequence_changed.connect(_update_objective_label)
+	var chapel := get_parent().get_node_or_null("AshChapel")
+	if chapel != null:
+		chapel.sequence_changed.connect(_update_objective_label)
 	var barracks := get_parent().get_node_or_null("EmberBarracks")
 	if barracks != null:
 		barracks.trial_changed.connect(_update_objective_label)
@@ -198,10 +238,14 @@ func _ready() -> void:
 			game_state.item_acquired.connect(_on_item_acquired)
 		if not game_state.room_changed.is_connected(_on_room_changed):
 			game_state.room_changed.connect(_on_room_changed)
+		if not game_state.timeline_advanced.is_connected(_on_timeline_advanced):
+			game_state.timeline_advanced.connect(_on_timeline_advanced)
 		if not game_state.zone_tier_changed.is_connected(_on_zone_tier_changed):
 			game_state.zone_tier_changed.connect(_on_zone_tier_changed)
 		if not game_state.inventory_changed.is_connected(_on_inventory_changed):
 			game_state.inventory_changed.connect(_on_inventory_changed)
+		if not game_state.cache_opened.is_connected(_on_cache_opened):
+			game_state.cache_opened.connect(_on_cache_opened)
 		if not game_state.mode_changed.is_connected(_on_mode_changed):
 			game_state.mode_changed.connect(_on_mode_changed)
 		if not game_state.lamps_changed.is_connected(_on_lamps_changed):
@@ -231,6 +275,7 @@ func _ready() -> void:
 	if level_exit != null:
 		level_exit.unlocked.connect(_on_exit_unlocked)
 		level_exit.level_completed.connect(_on_level_completed)
+		level_exit.access_denied.connect(_on_access_denied)
 	if quest_manager != null:
 		quest_manager.quest_updated.connect(_on_quest_updated)
 		quest_manager.quest_item_collected.connect(_on_quest_item_collected)
@@ -291,6 +336,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if main_menu_panel.visible:
 		return
+	if ending_panel.visible:
+		if event.is_action_pressed("ui_cancel"):
+			get_viewport().set_input_as_handled()
+			_close_final_ending()
+		return
 	if event.is_action_pressed("skills_menu"):
 		get_viewport().set_input_as_handled()
 		_toggle_skills()
@@ -341,7 +391,7 @@ func _resume_game() -> void:
 
 func _hud_menu_blocked() -> bool:
 	return main_menu_panel.visible or game_over_panel.visible or level_complete_panel.visible \
-		or dialogue_panel.visible or shop_panel.visible or pause_panel.visible
+		or dialogue_panel.visible or shop_panel.visible or pause_panel.visible or ending_panel.visible
 
 
 func _close_side_panels() -> void:
@@ -456,12 +506,16 @@ func _show_zone_title(room_id: String) -> void:
 		"training_passage": ["THE TRAINING PASSAGE", "A journey begins"],
 		"sunken_shaft": ["THE SUNKEN SHAFT", "Beneath the forgotten passage"],
 		"shaft_hollow": ["WISP HOLLOW", "A hidden path through the Shaft"],
+		"shaft_drift": ["THE DRIFTWORKS", "Three old roads climb the same broken shaft"],
 		"shaft_crossing": ["DROWNED CROSSING", "Drain the old aqueduct to quiet the current"],
 		"shaft_gallery": ["FLOODED GALLERY", "Two old controls feed the Warden passage"],
 		"shaft_cistern": ["BLACKWATER CISTERN", "Restore the pump to open a second passage"],
 		"shaft_approach": ["WARDEN APPROACH", "Climb the gantry before the arena"],
 		"echo_grotto": ["THE ECHO GROTTO", "Beyond the Warden's seal"],
+		"echo_haven_outskirts": ["WHISPERLIGHT APPROACH", "Danger still lingers outside the haven gate"],
+		"echo_haven": ["WHISPERLIGHT HAVEN", "A quiet home beneath the crystals"],
 		"echo_gallery": ["WHISPERING GALLERY", "The cave remembers every footstep"],
+		"echo_depths": ["THE RESONANT DEPTHS", "Follow the lower echo to the high shelf"],
 		"echo_archive": ["THE PRISM ARCHIVE", "The mirrors hold a buried memory"],
 		"echo_tide_well": ["THE TIDE WELL", "Follow the current into the deep"],
 		"echo_nest": ["THE ECHO NEST", "The brood guards what lies beyond"],
@@ -469,15 +523,34 @@ func _show_zone_title(room_id: String) -> void:
 		"echo_causeway": ["CRYSTAL CAUSEWAY", "The bridge fades beneath each footstep"],
 		"echo_vault": ["UNDERTOW VAULT", "Two seals protect a forgotten mantle"],
 		"ash_causeway": ["BROKEN CAUSEWAY", "Ashen Bastion begins beyond the Matriarch"],
+		"ash_emberspine": ["THE EMBERSPINE", "An old kiln road winds above the cinders"],
+		"ash_hearth_outskirts": ["CINDER HEARTH APPROACH", "The road is dangerous until the town gate"],
+		"ash_hearth": ["CINDER HEARTH", "Shelter before the Bastion's burning roads"],
 		"ash_forge": ["CINDER FORGE", "Restore airflow to quiet the vents"],
 		"ash_barracks": ["EMBER BARRACKS", "Two waves guard a route back to the Causeway"],
 		"ash_arena": ["CINDER COLISEUM", "Four waves, ending with the Ember Marshal"],
 		"ash_reservoir": ["SLAG RESERVOIR", "Balance the coolant flow across two levels"],
+		"ash_chapel": ["ASHEN CHAPEL", "Ring the bells from high to low to far"],
+		"ash_throne": ["CASTELLAN THRONE", "The Ash Castellan waits beyond the chapel"],
+		"starfall_gate": ["STARFALL CITADEL", "City Gate - beyond the old Ashen road"],
+		"starfall_ward": ["LANTERN WARD", "A quiet street beneath the Citadel spires"],
+		"starfall_citadel": ["STARFALL CITADEL", "One connected city from the gate to the gardens"],
+		"starfall_outskirts": ["STARFALL OUTER WATCH", "Beyond the safe city wall"],
+		"starfall_ramparts": ["THE BROKEN RAMPARTS", "The lost patrol still guards the high walk"],
+		"starfall_silent_gate": ["SILENT GATE", "Two relays hold the road into the vault"],
+		"starfall_memory_vault": ["MEMORY VAULT", "Cross the broken floor by the bridge or the lower path"],
+		"starfall_rooted_hall": ["ROOTED HALL", "The upper control can quiet the hostile roots"],
+		"starfall_empty_court": ["EMPTY COURT", "The Starfall Guardian keeps the silent threshold"],
+		"starfall_soul_crucible": ["SOUL CRUCIBLE", "Balance the upper and lower soul channels"],
+		"starfall_sunless_passage": ["SUNLESS PASSAGE", "Cross the fading bridges or the lower recovery route"],
+		"starfall_hollow_throne": ["HOLLOW THRONE", "The last memory waits beyond the lamp"],
 	}
 	var entry: Array = titles.get(room_id, [room_id.replace("_", " ").to_upper(), "An unfamiliar place"])
 	var subtitle: String = str(entry[1])
+	if room_id == "starfall_citadel" and game_state != null and bool(game_state.defeated_bosses.get("hollow_sovereign", false)):
+		subtitle = "A new light reaches the streets and gardens"
 	var zone_id := "echo_grotto" if room_id.begins_with("echo_") else ("sunken_shaft" if room_id.begins_with("shaft_") else ("ashen_bastion" if room_id.begins_with("ash_") else room_id))
-	if game_state != null and game_state.get_zone_tier(zone_id) >= 1:
+	if game_state != null and room_id not in ["echo_haven", "ash_hearth"] and game_state.get_zone_tier(zone_id) >= 1:
 		subtitle = "AWAKENED  •  STRONGER ENEMIES" if zone_id == "ashen_bastion" else "AWAKENED  •  STRONGER ENEMIES  •  RETURN QUEST [J]"
 	_show_zone_banner(str(entry[0]), subtitle)
 
@@ -497,27 +570,38 @@ func _show_zone_banner(title: String, subtitle: String, duration: float = 1.55) 
 
 
 func _on_zone_tier_changed(zone_id: String, tier: int) -> void:
+	_update_objective_label()
 	if tier < 1 or main_menu_panel.visible:
 		return
 	if zone_id == "sunken_shaft":
 		_show_zone_banner("SUNKEN SHAFT AWAKENED", "ENEMIES GROW STRONGER  •  NEW RETURN QUEST [J]", 2.8)
 	elif zone_id == "echo_grotto":
 		_show_zone_banner("ECHO GROTTO AWAKENED", "ENEMIES GROW STRONGER  •  NEW RETURN QUEST [J]", 2.8)
+	elif zone_id == "ashen_bastion":
+		_show_zone_banner("ASHEN BASTION AWAKENED", "STRONGER FOES  •  CASTELLAN REMATCH  •  RETURN QUEST [J]", 2.8)
 
 
 func _on_return_contract_completed(zone_id: String) -> void:
-	var quest_name := "SHAFT VIGIL" if zone_id == "sunken_shaft" else "RESONANCE SWEEP"
+	var quest_name := "SHAFT VIGIL" if zone_id == "sunken_shaft" else ("RESONANCE SWEEP" if zone_id == "echo_grotto" else "EMBER RECKONING")
 	call_deferred("_show_notification", "RETURN QUEST COMPLETE  •  " + quest_name)
 
 
 func _on_quest_item_collected(item_id: String, progress: int) -> void:
 	if item_id == "old_passage_sigil":
 		_show_notification("LOST SIGIL FOUND  •  CHECK QUEST LOG [J]")
+	elif item_id.begins_with("starfall_report_"):
+		if progress >= 3 and quest_manager != null and int(quest_manager.starfall_route_state) == 2:
+			_show_notification("CITY REPORTS 3/3  -  RETURN TO ROOK")
+		else:
+			_show_notification("CITY REPORT FOUND  -  %d/3" % progress)
 	elif item_id.begins_with("echo_trace_"):
 		if progress >= 3 and quest_manager != null and int(quest_manager.echo_survey_state) == 2:
 			_show_notification("ECHO TRACES 3/3  •  RETURN TO LYRA")
 		else:
 			_show_notification("ECHO TRACE FOUND  •  %d/3" % progress)
+	elif item_id.begins_with("dawn_echo_"):
+		_show_notification("DAWN ARCHIVE 3/3  -  RETURN TO ATLEY" if quest_manager != null and int(quest_manager.dawn_archive_state) == 2 else "DAWN ECHO RECORDED  -  %d/3" % progress)
+		_queue_story_moment(item_id, progress)
 
 
 func _continue_saved_game() -> void:
@@ -549,6 +633,9 @@ func _update_continue_summary() -> void:
 
 func _open_world_map(allow_travel: bool, checkpoint: Node = null) -> void:
 	if game_state == null:
+		return
+	if allow_travel and game_state.is_boss_encounter_active():
+		_show_notification("BOSS FIGHT ACTIVE - FAST TRAVEL SEALED")
 		return
 	_close_side_panels()
 	map_allows_travel = allow_travel
@@ -619,7 +706,10 @@ func _update_map_details() -> void:
 
 func _update_route_summary() -> void:
 	var echo_rooms := [
-		["echo_grotto", "Grotto"], ["echo_gallery", "Gallery"],
+		["echo_grotto", "Grotto"], ["echo_haven_outskirts", "Approach"],
+		["echo_haven", "Haven"],
+		["echo_gallery", "Gallery"],
+		["echo_depths", "Depths"],
 		["echo_archive", "Archive"], ["echo_tide_well", "Tide Well"],
 		["echo_nest", "Nest"], ["echo_sanctum", "Sanctum"],
 		["echo_causeway", "Causeway"], ["echo_vault", "Vault"],
@@ -637,10 +727,14 @@ func _update_route_summary() -> void:
 			room_lines.append("  %s %-10s %s %s" % ["[+]" if left_seen else "[ ]", left[1], "[+]" if right_seen else "[ ]", right[1]])
 		else:
 			room_lines.append("  %s %s" % ["[+]" if left_seen else "[ ]", left[1]])
-	var echo_caches := ["grotto_high", "gallery_step", "archive_shelf", "tide_depth", "nest_cocoon", "sanctum_heart", "causeway_supply", "causeway_afterglow", "vault_mantle", "vault_undertow"]
+	var hidden_echo_reliquaries := ["echo_grotto_route_discovery", "echo_gallery_route_discovery", "echo_archive_route_discovery", "echo_tide_route_discovery", "echo_nest_route_discovery", "echo_causeway_route_discovery", "echo_vault_route_discovery"]
+	var echo_caches := ["grotto_high", "gallery_step", "archive_shelf", "tide_depth", "nest_cocoon", "sanctum_heart", "causeway_supply", "causeway_afterglow", "vault_mantle", "vault_undertow", "echo_depths_mid", "echo_depths_rim"] + hidden_echo_reliquaries
 	var found_caches := 0
 	for cache_id in echo_caches:
 		found_caches += int(bool(game_state.opened_caches.get(cache_id, false)))
+	var found_hidden_reliquaries := 0
+	for cache_id in hidden_echo_reliquaries:
+		found_hidden_reliquaries += int(bool(game_state.opened_caches.get(cache_id, false)))
 	var echo_boss := "UNDEFEATED"
 	if bool(game_state.boss_rematches.get("echo_matriarch", false)):
 		echo_boss = "REMATCH CLEARED"
@@ -652,24 +746,60 @@ func _update_route_summary() -> void:
 	elif bool(game_state.defeated_bosses.get("abyss_warden", false)):
 		shaft_boss = "REMATCH READY"
 	var shaft_caches := 0
-	for cache_id in ["shaft_rim", "shaft_depth", "hollow_resonance", "crossing_supply", "crossing_dregs", "gallery_supply", "gallery_afterglow", "cistern_supply", "cistern_echo", "approach_supply", "approach_afterglow"]:
+	for cache_id in ["shaft_rim", "shaft_depth", "hollow_resonance", "crossing_supply", "crossing_dregs", "gallery_supply", "gallery_afterglow", "cistern_supply", "cistern_echo", "cistern_memory_sigil", "approach_supply", "approach_afterglow", "shaft_drift_mid", "shaft_drift_rim"]:
 		shaft_caches += int(bool(game_state.opened_caches.get(cache_id, false)))
 	var shaft_rooms := 0
-	for room_id in ["sunken_shaft", "shaft_hollow", "shaft_crossing", "shaft_gallery", "shaft_cistern", "shaft_approach"]:
+	for room_id in ["sunken_shaft", "shaft_hollow", "shaft_drift", "shaft_crossing", "shaft_gallery", "shaft_cistern", "shaft_approach"]:
 		shaft_rooms += int(bool(game_state.discovered_rooms.get(room_id, false)))
-	var ash_rooms := int(bool(game_state.discovered_rooms.get("ash_causeway", false))) + int(bool(game_state.discovered_rooms.get("ash_forge", false))) + int(bool(game_state.discovered_rooms.get("ash_barracks", false))) + int(bool(game_state.discovered_rooms.get("ash_arena", false))) + int(bool(game_state.discovered_rooms.get("ash_reservoir", false)))
-	var ash_caches := int(bool(game_state.opened_caches.get("ash_causeway_supply", false))) + int(bool(game_state.opened_caches.get("ash_forge_supply", false))) + int(bool(game_state.opened_caches.get("ash_barracks_supply", false))) + int(bool(game_state.opened_caches.get("ash_arena_victory", false))) + int(bool(game_state.opened_caches.get("ash_reservoir_core", false)))
+	var ash_rooms := 0
+	for room_id in ["ash_causeway", "ash_emberspine", "ash_hearth_outskirts", "ash_hearth", "ash_forge", "ash_barracks", "ash_arena", "ash_reservoir", "ash_chapel", "ash_throne"]:
+		ash_rooms += int(bool(game_state.discovered_rooms.get(room_id, false)))
+	var ash_caches := 0
+	for cache_id in ["ash_causeway_supply", "ash_forge_supply", "ash_barracks_supply", "ash_arena_victory", "ash_reservoir_core", "ash_chapel_reliquary", "ash_chapel_memory_sigil", "causeway_embers", "forge_cinders", "barracks_embers", "arena_cinders", "reservoir_embers", "chapel_cinders", "ash_emberspine_mid", "ash_emberspine_rim"]:
+		ash_caches += int(bool(game_state.opened_caches.get(cache_id, false)))
+	var starfall_discovered := bool(game_state.discovered_rooms.get("starfall_citadel", false))
+	var starfall_caches := 0
+	for cache_id in ["starfall_gate_overlook", "starfall_ward_supply", "starfall_market_balcony", "starfall_garden_skywalk"]:
+		starfall_caches += int(bool(game_state.opened_caches.get(cache_id, false)))
 	var fan_status := "ON" if bool(game_state.unlocked_shortcuts.get("ash_forge_fan", false)) else "OFF"
 	var trial_status := "CLEARED" if bool(game_state.unlocked_shortcuts.get("ash_barracks_cleared", false)) else "OPEN"
 	var arena_status := "CLEARED" if bool(game_state.unlocked_shortcuts.get("ash_arena_cleared", false)) else "OPEN"
 	var coolant_count := int(bool(game_state.unlocked_shortcuts.get("ash_reservoir_lower", false))) + int(bool(game_state.unlocked_shortcuts.get("ash_reservoir_upper", false)))
-	map_route_label.text = "ECHO GROTTO  %d/8 PLAYABLE ROOMS\n%s\nCACHES %d/10  •  %s\n\nSUNKEN SHAFT  %d/6 PLAYABLE ROOMS\nCACHES %d/11  •  %s\n\nASHEN BASTION  %d/5 OPENING ROOMS\nCACHES %d/5  •  FAN %s\nBARRACKS %s  •  ARENA %s  •  COOLANT %d/2" % [
-		visited, "\n".join(room_lines), found_caches, echo_boss, shaft_rooms, shaft_caches, shaft_boss, ash_rooms, ash_caches, fan_status, trial_status, arena_status, coolant_count,
+	var ash_boss := "UNDEFEATED"
+	if bool(game_state.boss_rematches.get("ash_castellan", false)):
+		ash_boss = "REMATCH CLEARED"
+	elif bool(game_state.defeated_bosses.get("ash_castellan", false)):
+		ash_boss = "REMATCH READY"
+	map_route_label.text = "ECHO GROTTO  %d/11 PLAYABLE ROOMS\n%s\nCACHES %d/19  •  HIDDEN RELIQUARIES %d/7  •  %s\n\nSUNKEN SHAFT  %d/7 PLAYABLE ROOMS\nCACHES %d/14  •  %s\n\nASHEN BASTION  %d/10 PLAYABLE ROOMS\nCACHES %d/15  •  FAN %s\nBARRACKS %s  •  ARENA %s  •  COOLANT %d/2\nCASTELLAN %s" % [
+		visited, "\n".join(room_lines), found_caches, found_hidden_reliquaries, echo_boss, shaft_rooms, shaft_caches, shaft_boss, ash_rooms, ash_caches, fan_status, trial_status, arena_status, coolant_count, ash_boss,
 	]
+	map_route_label.text += "\n\nSTARFALL CITADEL  %s\nONE CONNECTED SAFE CITY  -  CACHES %d/4" % ["DISCOVERED" if starfall_discovered else "UNDISCOVERED", starfall_caches]
+	map_route_label.text += "\nOUTER WATCH  %s  -  CACHE %d/1" % ["DISCOVERED" if bool(game_state.discovered_rooms.get("starfall_outskirts", false)) else "UNDISCOVERED", int(bool(game_state.opened_caches.get("starfall_outer_watch", false)))]
+	var rampart_caches := int(bool(game_state.opened_caches.get("starfall_ramparts_mid", false))) + int(bool(game_state.opened_caches.get("starfall_ramparts_rim", false)))
+	map_route_label.text += "\nBROKEN RAMPARTS  %s  -  CACHES %d/2" % ["DISCOVERED" if bool(game_state.discovered_rooms.get("starfall_ramparts", false)) else "UNDISCOVERED", rampart_caches]
+	var starfall_relays := int(bool(game_state.unlocked_shortcuts.get("starfall_silent_high", false))) + int(bool(game_state.unlocked_shortcuts.get("starfall_silent_low", false)))
+	map_route_label.text += "\nSILENT GATE  %s  -  RELAYS %d/2  -  CACHE %d/1" % ["DISCOVERED" if bool(game_state.discovered_rooms.get("starfall_silent_gate", false)) else "UNDISCOVERED", starfall_relays, int(bool(game_state.opened_caches.get("starfall_silent_watch", false)))]
+	var vault_caches := int(bool(game_state.opened_caches.get("starfall_vault_bridge", false))) + int(bool(game_state.opened_caches.get("starfall_vault_depth", false)))
+	map_route_label.text += "\nMEMORY VAULT  %s  -  CACHES %d/2" % ["DISCOVERED" if bool(game_state.discovered_rooms.get("starfall_memory_vault", false)) else "UNDISCOVERED", vault_caches]
+	map_route_label.text += "\nROOTED HALL  %s  -  ROOTS %s  -  CACHE %d/1" % ["DISCOVERED" if bool(game_state.discovered_rooms.get("starfall_rooted_hall", false)) else "UNDISCOVERED", "QUIET" if bool(game_state.unlocked_shortcuts.get("starfall_root_channels", false)) else "ACTIVE", int(bool(game_state.opened_caches.get("starfall_root_crown", false)))]
+	map_route_label.text += "\nEMPTY COURT  %s  -  GUARDIAN %s  -  CACHE %d/1" % ["DISCOVERED" if bool(game_state.discovered_rooms.get("starfall_empty_court", false)) else "UNDISCOVERED", "DEFEATED" if bool(game_state.defeated_bosses.get("starfall_guardian", false)) else "AWAITING", int(bool(game_state.opened_caches.get("starfall_court_victory", false)))]
+	var crucible_channels := int(bool(game_state.unlocked_shortcuts.get("starfall_crucible_high", false))) + int(bool(game_state.unlocked_shortcuts.get("starfall_crucible_low", false)))
+	map_route_label.text += "\nSOUL CRUCIBLE  %s  -  CHANNELS %d/2  -  CACHE %d/1" % ["DISCOVERED" if bool(game_state.discovered_rooms.get("starfall_soul_crucible", false)) else "UNDISCOVERED", crucible_channels, int(bool(game_state.opened_caches.get("starfall_crucible_supply", false)))]
+	var sunless_caches := int(bool(game_state.opened_caches.get("starfall_sunless_basin", false))) + int(bool(game_state.opened_caches.get("starfall_sunless_dawn", false)))
+	map_route_label.text += "\nSUNLESS PASSAGE  %s  -  BRIDGES %s  -  CACHES %d/2" % ["DISCOVERED" if bool(game_state.discovered_rooms.get("starfall_sunless_passage", false)) else "UNDISCOVERED", "STABLE" if bool(game_state.unlocked_shortcuts.get("starfall_sunless_anchor", false)) else "FADING", sunless_caches]
+	map_route_label.text += "\nHOLLOW THRONE  %s  -  SOVEREIGN %s  -  CACHE %d/1" % ["DISCOVERED" if bool(game_state.discovered_rooms.get("starfall_hollow_throne", false)) else "UNDISCOVERED", "DEFEATED" if bool(game_state.defeated_bosses.get("hollow_sovereign", false)) else "AWAITING", int(bool(game_state.opened_caches.get("starfall_throne_victory", false)))]
+	var memory_sigils := int(game_state.has_item("memory_sigil_shaft")) + int(game_state.has_item("memory_sigil_echo")) + int(game_state.has_item("memory_sigil_ash"))
+	map_route_label.text += "\nMEMORY SIGILS  %d/3  -  SHAFT / ECHO / ASH" % memory_sigils
+	if bool(game_state.defeated_bosses.get("hollow_sovereign", false)) and quest_manager != null:
+		map_route_label.text += "\nDAWN ARCHIVE  ECHOES %d/3  -  %s" % [quest_manager.get_dawn_archive_progress(), "COMPLETE" if int(quest_manager.dawn_archive_state) == 3 else "ATLEY IN THE LIBRARY"]
+	map_route_label.text += "\n\nWORLD CHAPTER  %d/%d  -  %s" % [game_state.timeline_stage, game_state.TIMELINE_STAGE_NAMES.size() - 1, game_state.TIMELINE_STAGE_NAMES[game_state.timeline_stage].to_upper()]
 
 
 func _on_map_travel_pressed() -> void:
 	if not map_allows_travel or selected_lamp_id.is_empty() or player == null:
+		return
+	if game_state.is_boss_encounter_active():
+		_show_notification("BOSS FIGHT ACTIVE - FAST TRAVEL SEALED")
 		return
 	var lamps: Dictionary = game_state.get_discovered_lamps()
 	var lamp_data: Dictionary = lamps.get(selected_lamp_id, {})
@@ -681,11 +811,17 @@ func _on_map_travel_pressed() -> void:
 	world_map_panel.hide()
 	get_tree().paused = false
 	var transition_manager := get_node_or_null("/root/RoomTransition")
+	var traveled := true
 	if transition_manager != null:
-		await transition_manager.transition_player(player, target_position, target_room_id)
+		traveled = await transition_manager.transition_player(player, target_position, target_room_id)
 	else:
 		player.global_position = target_position
 		game_state.set_current_room(target_room_id)
+	if not traveled:
+		map_allows_travel = false
+		travel_source_checkpoint = null
+		_show_notification("FAST TRAVEL INTERRUPTED")
+		return
 	var destination := _find_checkpoint_by_id(selected_lamp_id)
 	if destination != null and destination.has_method("activate_from_travel"):
 		destination.activate_from_travel()
@@ -815,10 +951,15 @@ func _update_item_details() -> void:
 			item_action_button.text = "No Action"
 			item_action_button.disabled = true
 	item_drop_button.disabled = not bool(definition.get("droppable", true)) or is_equipped
+	if player == null or player.is_dead:
+		item_action_button.disabled = true
+		item_drop_button.disabled = true
 
 
 func _on_inventory_action_pressed() -> void:
-	if game_state == null or player == null or selected_item_id.is_empty():
+	# Revalidate at the handler too: a queued click/old selection must not spend
+	# supplies after death or activate a consumable that is no longer owned.
+	if game_state == null or player == null or player.is_dead or selected_item_id.is_empty() or not game_state.has_item(selected_item_id):
 		return
 	var definition: Dictionary = game_state.get_item_definition(selected_item_id)
 	match str(definition.get("type", "")):
@@ -846,7 +987,7 @@ func _on_inventory_action_pressed() -> void:
 
 
 func _on_inventory_drop_pressed() -> void:
-	if game_state == null or player == null or selected_item_id.is_empty():
+	if game_state == null or player == null or player.is_dead or selected_item_id.is_empty() or not game_state.has_item(selected_item_id):
 		return
 	var definition: Dictionary = game_state.get_item_definition(selected_item_id)
 	if not bool(definition.get("droppable", true)) or game_state.equipped_items.values().has(selected_item_id):
@@ -869,7 +1010,7 @@ func _open_shop(merchant: Node) -> void:
 		return
 	_close_side_panels()
 	active_merchant = merchant
-	shop_mode = "buy"
+	shop_mode = "forge" if merchant.is_in_group("town_service") and str(merchant.get("service_kind")) == "anvil" else "buy"
 	dialogue_panel.hide()
 	inventory_panel.hide()
 	world_map_panel.hide()
@@ -903,6 +1044,10 @@ func _populate_shop() -> void:
 		return
 	var previous_selection := selected_shop_item_id
 	shop_item_list.clear()
+	var town_service: bool = active_merchant != null and active_merchant.is_in_group("town_service")
+	var town_vendor_id: String = str(active_merchant.get("service_id")) if town_service else ""
+	shop_buy_tab_button.visible = not town_service or shop_mode == "buy"
+	shop_forge_tab_button.visible = not town_service or shop_mode == "forge"
 	shop_buy_tab_button.disabled = shop_mode == "buy"
 	shop_forge_tab_button.disabled = shop_mode == "forge"
 	if shop_mode == "forge":
@@ -913,27 +1058,36 @@ func _populate_shop() -> void:
 			var level: int = game_state.get_weapon_upgrade_level(item_id)
 			var index := shop_item_list.add_item("%s  +%d%s" % [str(definition.get("name", item_id)), level, "  [MAX]" if level >= game_state.MAX_WEAPON_UPGRADE else ""])
 			shop_item_list.set_item_metadata(index, item_id)
-		shop_title_label.text = "ORIN'S FORGE  •  20% DISCOUNT" if game_state.merchant_discount_unlocked else "ORIN'S FORGE"
+		var forge_name: String = str(active_merchant.get("service_name")).to_upper() if town_service else "ORIN'S FORGE"
+		shop_title_label.text = forge_name + ("  •  20% DISCOUNT" if game_state.merchant_discount_unlocked else "")
 		shop_quest_label.text = "FORGE: Damage at +1/+3/+5, speed at +2/+4. +5 glows. Save at a lamp."
 		shop_quest_button.hide()
 	else:
+		var town_stock: Dictionary = game_state.get_town_vendor_items(town_vendor_id) if town_service else {}
 		for item_id in SHOP_ORDER:
-			if item_id in ["spiritglass_blade", "thorn_bow", "sunder_staff"] and not bool(game_state.defeated_bosses.get("abyss_warden", false)):
+			if town_service and not town_stock.has(item_id):
 				continue
-			if item_id == "resonance_shard" and game_state.get_zone_tier("echo_grotto") < 1:
+			if not town_service and item_id in ["spiritglass_blade", "thorn_bow", "sunder_staff"] and not bool(game_state.defeated_bosses.get("abyss_warden", false)):
+				continue
+			if not town_service and item_id == "resonance_shard" and game_state.get_zone_tier("echo_grotto") < 1:
 				continue
 			var definition: Dictionary = game_state.get_item_definition(item_id)
 			var quantity := int(SHOP_QUANTITIES.get(item_id, 1))
 			var base_price := int(definition.get("base_price", 0)) * quantity
-			var price: int = game_state.get_shop_price(base_price)
+			var price: int = base_price if town_service else game_state.get_shop_price(base_price)
 			var one_time_owned: bool = (str(definition.get("type", "")) in ["weapon", "defense"] and game_state.has_item(item_id)) or (str(definition.get("type", "")) == "spell_tome" and game_state.unlocked_spells.has(str(definition.get("spell_id", ""))))
-			var owned_mark := "  [OWNED]" if one_time_owned else ""
+			var owned_mark := "  [%d LEFT]" % game_state.get_town_stock_remaining(town_vendor_id, item_id) if town_service else ("  [OWNED]" if one_time_owned else "")
 			var quantity_text := " x%d" % quantity if quantity > 1 else ""
 			var index := shop_item_list.add_item("%s%s  •  %dG%s" % [str(definition.get("name", item_id)), quantity_text, price, owned_mark])
 			shop_item_list.set_item_metadata(index, item_id)
-		shop_title_label.text = "ORIN'S WAYFARER SHOP  •  20% DISCOUNT" if game_state.merchant_discount_unlocked else "ORIN'S WAYFARER SHOP"
-		shop_quest_button.show()
-		_update_merchant_quest_ui()
+		if town_service:
+			shop_title_label.text = str(active_merchant.get("service_name")).to_upper()
+			shop_quest_label.text = "LIMITED LOCAL STOCK\nPurchases are restored only by loading an earlier lamp save."
+			shop_quest_button.hide()
+		else:
+			shop_title_label.text = "ORIN'S WAYFARER SHOP  •  20% DISCOUNT" if game_state.merchant_discount_unlocked else "ORIN'S WAYFARER SHOP"
+			shop_quest_button.show()
+			_update_merchant_quest_ui()
 	shop_gold_label.text = "GOLD: %d" % game_state.gold
 	if shop_item_list.item_count == 0:
 		selected_shop_item_id = ""
@@ -950,6 +1104,8 @@ func _populate_shop() -> void:
 
 
 func _on_shop_buy_tab_pressed() -> void:
+	if active_merchant != null and active_merchant.is_in_group("town_service") and str(active_merchant.get("service_kind")) == "anvil":
+		return
 	shop_mode = "buy"
 	selected_shop_item_id = ""
 	_populate_shop()
@@ -957,6 +1113,8 @@ func _on_shop_buy_tab_pressed() -> void:
 
 
 func _on_shop_forge_tab_pressed() -> void:
+	if active_merchant != null and active_merchant.is_in_group("town_service") and str(active_merchant.get("service_kind")) == "shop":
+		return
 	shop_mode = "forge"
 	selected_shop_item_id = ""
 	_populate_shop()
@@ -995,16 +1153,20 @@ func _update_shop_item_details() -> void:
 		shop_buy_button.disabled = not game_state.can_upgrade_weapon(selected_shop_item_id)
 		return
 	var quantity := int(SHOP_QUANTITIES.get(selected_shop_item_id, 1))
-	var price: int = game_state.get_shop_price(int(definition.get("base_price", 0)) * quantity)
+	var town_vendor_id: String = str(active_merchant.get("service_id")) if active_merchant != null and active_merchant.is_in_group("town_service") else ""
+	var price: int = int(definition.get("base_price", 0)) * quantity if not town_vendor_id.is_empty() else game_state.get_shop_price(int(definition.get("base_price", 0)) * quantity)
 	var item_type := str(definition.get("type", ""))
 	var already_owned: bool = (item_type in ["weapon", "defense"] and game_state.has_item(selected_shop_item_id)) or (item_type == "spell_tome" and game_state.unlocked_spells.has(str(definition.get("spell_id", ""))))
 	var requires_staff: bool = item_type == "spell_tome" and not game_state.has_weapon_class("staff")
 	shop_item_name_label.text = str(definition.get("name", selected_shop_item_id))
 	shop_item_description_label.text = "%s\n\nPRICE: %d GOLD" % [str(definition.get("description", "")), price]
+	if not town_vendor_id.is_empty():
+		shop_item_description_label.text += "\nSTOCK: %d purchase(s) left" % game_state.get_town_stock_remaining(town_vendor_id, selected_shop_item_id)
 	if str(definition.get("type", "")) == "weapon":
 		shop_item_description_label.text += "\nDAMAGE: %d  •  RANGE: %d  •  ATTACK: %.2fs" % [int(definition.get("damage", 1)), int(definition.get("range", 0)), float(definition.get("cooldown", 0.5))]
-	shop_buy_button.text = "Requires Runed Staff" if requires_staff else ("Already Owned" if already_owned else "Buy for %d Gold" % price)
-	shop_buy_button.disabled = already_owned or requires_staff or not game_state.can_afford(price)
+	var sold_out: bool = not town_vendor_id.is_empty() and game_state.get_town_stock_remaining(town_vendor_id, selected_shop_item_id) == 0
+	shop_buy_button.text = "Sold Out" if sold_out else ("Requires Runed Staff" if requires_staff else ("Already Owned" if already_owned else "Buy for %d Gold" % price))
+	shop_buy_button.disabled = sold_out or already_owned or requires_staff or not game_state.can_afford(price)
 
 
 func _on_shop_buy_pressed() -> void:
@@ -1014,6 +1176,17 @@ func _on_shop_buy_pressed() -> void:
 		if game_state.upgrade_weapon(selected_shop_item_id):
 			var weapon_name := str(game_state.get_item_definition(selected_shop_item_id).get("name", selected_shop_item_id)).to_upper()
 			_show_notification("FORGED  •  %s +%d" % [weapon_name, game_state.get_weapon_upgrade_level(selected_shop_item_id)])
+		_populate_shop()
+		return
+	if active_merchant != null and active_merchant.is_in_group("town_service"):
+		var town_vendor_id: String = str(active_merchant.get("service_id"))
+		var town_definition: Dictionary = game_state.get_item_definition(selected_shop_item_id)
+		var town_quantity: int = int(SHOP_QUANTITIES.get(selected_shop_item_id, 1))
+		var town_price: int = int(town_definition.get("base_price", 0)) * town_quantity
+		if game_state.purchase_town_item(town_vendor_id, selected_shop_item_id, town_quantity, town_price):
+			_show_notification("PURCHASED  •  %s x%d" % [str(town_definition.get("name", selected_shop_item_id)).to_upper(), town_quantity])
+		else:
+			_show_notification("NOT ENOUGH GOLD OR SOLD OUT")
 		_populate_shop()
 		return
 	if selected_shop_item_id == "resonance_shard" and game_state.get_zone_tier("echo_grotto") < 1:
@@ -1096,9 +1269,47 @@ func _update_dash_status() -> void:
 
 func _setup_friendly_npcs() -> void:
 	for npc in get_tree().get_nodes_in_group("friendly_npc"):
-		var callback := Callable(self, "_on_npc_interaction_requested")
-		if npc.has_signal("interaction_requested") and not npc.is_connected("interaction_requested", callback):
-			npc.connect("interaction_requested", callback)
+		_connect_runtime_node(npc)
+
+
+func _on_runtime_node_added(node: Node) -> void:
+	# `node_added` is emitted after the node has entered the tree, so its groups
+	# and script signals are already available. Connect immediately: a streamed
+	# encounter can also remove a short-lived child before a deferred call runs.
+	# Passing that freed object through call_deferred produced noisy conversion
+	# errors during long room-transition and boss tests.
+	_connect_runtime_node(node)
+
+
+func _connect_runtime_node(node: Node) -> void:
+	if not is_instance_valid(node):
+		return
+	if node.is_in_group("friendly_npc") and node.has_signal("interaction_requested"):
+		var npc_callback := Callable(self, "_on_npc_interaction_requested")
+		if not node.is_connected("interaction_requested", npc_callback):
+			node.connect("interaction_requested", npc_callback)
+	if node.is_in_group("life_pickup") and node.has_signal("collected"):
+		var pickup_callback := Callable(self, "_on_life_pickup_collected")
+		if not node.is_connected("collected", pickup_callback):
+			node.connect("collected", pickup_callback)
+	if node.is_in_group("room_door") and node.has_signal("access_denied"):
+		var denied_callback := Callable(self, "_on_access_denied")
+		if not node.is_connected("access_denied", denied_callback):
+			node.connect("access_denied", denied_callback)
+	if node.is_in_group("nest_brood") and node.has_signal("defeated"):
+		var brood_callback := Callable(self, "_on_nest_brood_defeated")
+		if not node.is_connected("defeated", brood_callback):
+			node.connect("defeated", brood_callback)
+	if node.is_in_group("enemy") and node.has_signal("defeated"):
+		if level_exit != null and node.is_in_group(level_exit.required_enemy_group):
+			var enemy_callback := Callable(self, "_on_enemy_defeated")
+			if not node.is_connected("defeated", enemy_callback):
+				total_enemies += 1
+				node.connect("defeated", enemy_callback)
+		if str(node.get("zone_id")) == "sunken_shaft":
+			var zone_callback := Callable(self, "_on_zone_enemy_defeated")
+			if not node.is_connected("defeated", zone_callback):
+				node.connect("defeated", zone_callback)
 
 
 func _setup_checkpoints() -> void:
@@ -1165,13 +1376,28 @@ func _on_shortcut_activated(shortcut_id: String) -> void:
 
 
 func _on_world_progress_changed(progress_id: String) -> void:
+	if progress_id in ["shaft_hollow_survey_ore", "shaft_hollow_survey_haul", "shaft_hollow_survey_seep"]:
+		var samples := 0
+		for event_id in ["shaft_hollow_survey_ore", "shaft_hollow_survey_haul", "shaft_hollow_survey_seep"]:
+			samples += int(bool(game_state.unlocked_shortcuts.get(event_id, false)))
+		_show_notification("ORE SURVEY %d/3 - %s" % [samples, "SUPPLIES READY AT DEREN'S CAMP" if samples == 3 else "SAMPLE RECORDED"])
+		return
+	for room_id in SHAFT_RETURN_REQUIREMENTS:
+		if progress_id == room_id + "_hidden_depth_cleared":
+			_update_objective_label()
+			call_deferred("_show_notification", "ALCOVE CLEARED - CACHE UNSEALED")
+			return
+		if progress_id == room_id + "_return_trial_cleared":
+			_update_objective_label()
+			call_deferred("_show_notification", "RETURN TRIAL CLEARED - CLAIM RESERVE")
+			return
 	if progress_id == "shaft_hollow_relay":
 		_update_objective_label()
 		_show_notification("HOLLOW RELAY ACTIVE  •  LOWER PASSAGE OPEN")
 	elif progress_id == "shaft_sluice_valve":
 		_update_objective_label()
-		_show_notification("SLUICE DRAINED  •  CROSSING SAFE")
-	elif progress_id.begins_with("shaft_gallery_"):
+		_show_notification("SLUICE DRAINED - FOES REMAIN")
+	elif progress_id in ["shaft_gallery_lower", "shaft_gallery_upper"]:
 		_update_objective_label()
 		var controls := int(bool(game_state.unlocked_shortcuts.get("shaft_gallery_lower", false))) + int(bool(game_state.unlocked_shortcuts.get("shaft_gallery_upper", false)))
 		_show_notification("WARDEN SHORTCUT OPEN" if controls == 2 else "GALLERY CONTROL TURNED  •  1/2")
@@ -1190,10 +1416,33 @@ func _on_world_progress_changed(progress_id: String) -> void:
 	elif progress_id == "ash_arena_cleared":
 		_update_objective_label()
 		_show_notification("CINDER COLISEUM CLEARED  •  EMBLEM EARNED")
+	elif progress_id == "ash_chapel_bells":
+		_update_objective_label()
+		_show_notification("CHAPEL BELLS ALIGNED  •  RELIQUARY OPEN")
 	elif progress_id.begins_with("ash_reservoir_"):
 		_update_objective_label()
 		var coolant_count := int(bool(game_state.unlocked_shortcuts.get("ash_reservoir_lower", false))) + int(bool(game_state.unlocked_shortcuts.get("ash_reservoir_upper", false)))
 		_show_notification("COOLANT FLOW RESTORED  •  FORGE LOOP OPEN" if coolant_count == 2 else "COOLANT VALVE OPEN  •  1/2")
+	elif progress_id.begins_with("starfall_silent_"):
+		_update_objective_label()
+		var relay_count := int(bool(game_state.unlocked_shortcuts.get("starfall_silent_high", false))) + int(bool(game_state.unlocked_shortcuts.get("starfall_silent_low", false)))
+		_show_notification("SILENT GATE OPEN  •  MEMORY VAULT ACCESSIBLE" if relay_count == 2 else "WARD RELAY ATTUNED  •  1/2")
+	elif progress_id == "starfall_root_channels":
+		_update_objective_label()
+		_show_notification("ROOT CHANNELS QUIET  •  VAULT SKYWAY OPEN")
+	elif progress_id == "starfall_court_cleared":
+		_update_objective_label()
+		_show_notification("COURT WARD BROKEN - RELIC CACHE OPEN")
+	elif progress_id == "starfall_crucible_stabilized":
+		_update_objective_label()
+		_show_notification("SOUL FLOW STABLE - PULSES QUIET - CACHE OPEN")
+	elif progress_id == "starfall_sunless_anchor":
+		_update_objective_label()
+		_show_notification("DAWN ANCHOR LIT - BRIDGES STABLE - CACHE OPEN")
+	elif progress_id.begins_with("starfall_crucible_"):
+		_update_objective_label()
+		var channels := int(bool(game_state.unlocked_shortcuts.get("starfall_crucible_high", false))) + int(bool(game_state.unlocked_shortcuts.get("starfall_crucible_low", false)))
+		_show_notification("SOUL FLOW STABLE - PULSES QUIET - CACHE OPEN" if channels == 2 else "SOUL CHANNEL ATTUNED - %d/2" % channels)
 	elif progress_id.begins_with("echo_resonator_"):
 		_update_objective_label()
 		_show_notification("RESONATOR ATTUNED  •  THE GROTTO RESPONDS")
@@ -1231,22 +1480,79 @@ func _on_gold_changed(current_gold: int) -> void:
 
 
 func _on_mode_changed(mode: String) -> void:
+	_clear_memory_reveals()
 	mode_label.text = "MODE: " + mode.to_upper()
 	mode_label.modulate = Color(1.0, 0.42, 0.42, 1.0) if mode == "hardcore" else Color(0.45, 0.9, 1.0, 1.0)
 
 
 func _on_item_acquired(item_id: String, amount: int) -> void:
 	var item_name := item_id.replace("_", " ").capitalize()
-	if item_id == "barracks_insignia":
+	if item_id.begins_with("memory_sigil_"):
+		_show_notification("MEMORY SIGIL FOUND  •  " + item_name.to_upper())
+		_queue_memory_reveal(item_id, amount)
+	elif item_id == "barracks_insignia":
 		_show_notification("BARRACKS CLEARED  •  INSIGNIA + 45 GOLD + 4 XP  •  LOOP OPEN")
 	elif item_id == "marshal_emblem":
 		_show_notification("MARSHAL DEFEATED  •  EMBLEM + 100 GOLD + 7 XP")
 	else:
 		_show_notification("TIDEGUARD MANTLE FOUND  •  EQUIP IN INVENTORY [I]" if item_id == "tideguard_mantle" else "ITEM ACQUIRED  •  %s x%d" % [item_name, amount])
-	if item_id == "echo_charm" or item_id == "gallery_prism" or item_id == "memory_sigil_echo" or item_id == "tide_core" or item_id == "nest_crest" or item_id == "matriarch_seal" or item_id == "tideguard_mantle" or item_id == "crucible_core":
+	if item_id == "echo_charm" or item_id == "gallery_prism" or item_id.begins_with("memory_sigil_") or item_id == "sovereign_crown" or item_id == "tide_core" or item_id == "nest_crest" or item_id == "matriarch_seal" or item_id == "tideguard_mantle" or item_id == "crucible_core":
 		_update_objective_label()
 	if shop_panel.visible:
 		_populate_shop()
+
+
+func _queue_memory_reveal(item_id: String, amount: int) -> void:
+	if game_state == null or not MEMORY_MOMENTS.has(item_id) or int(game_state.inventory.get(item_id, 0)) > amount:
+		return
+	var count := int(game_state.has_item("memory_sigil_shaft")) + int(game_state.has_item("memory_sigil_echo")) + int(game_state.has_item("memory_sigil_ash"))
+	_queue_story_moment(item_id, count)
+	if count == 3:
+		_queue_story_moment("memory_complete", count)
+
+
+func _queue_story_moment(moment_id: String, count: int) -> void:
+	if not MEMORY_MOMENTS.has(moment_id):
+		return
+	memory_reveal_queue.append({"id": moment_id, "count": count})
+	_show_next_memory_reveal()
+
+
+func _show_next_memory_reveal() -> void:
+	if memory_toast_panel.visible or memory_reveal_queue.is_empty():
+		return
+	var queued: Dictionary = memory_reveal_queue.pop_front()
+	var item_id: String = str(queued.get("id", ""))
+	var moment: Dictionary = MEMORY_MOMENTS[item_id]
+	memory_title_label.text = str(moment["title"])
+	memory_title_label.add_theme_color_override("font_color", moment["color"])
+	memory_text_label.text = str(moment["text"])
+	if item_id == "memory_complete":
+		var guardians := int(bool(game_state.defeated_bosses.get("abyss_warden", false))) + int(bool(game_state.defeated_bosses.get("echo_matriarch", false))) + int(bool(game_state.defeated_bosses.get("ash_castellan", false)))
+		memory_status_label.text = "THRONE PATH READY" if guardians == 3 else "THRONE PATH  -  GUARDIANS %d/3" % guardians
+	elif item_id.begins_with("dawn_echo_"):
+		memory_status_label.text = "DAWN ARCHIVE %d/3  -  %s" % [int(queued["count"]), str(moment["location"])]
+	else:
+		memory_status_label.text = "MEMORY %d/3  -  %s  -  SEE INVENTORY [I]" % [int(queued["count"]), str(moment["location"])]
+	memory_toast_panel.modulate.a = 0.0
+	memory_toast_panel.show()
+	memory_reveal_tween = create_tween()
+	memory_reveal_tween.tween_property(memory_toast_panel, "modulate:a", 1.0, 0.24)
+	memory_reveal_tween.tween_interval(5.0)
+	memory_reveal_tween.tween_property(memory_toast_panel, "modulate:a", 0.0, 0.45)
+	memory_reveal_tween.tween_callback(_finish_memory_reveal)
+
+
+func _finish_memory_reveal() -> void:
+	memory_toast_panel.hide()
+	_show_next_memory_reveal()
+
+
+func _clear_memory_reveals() -> void:
+	if memory_reveal_tween != null and memory_reveal_tween.is_valid():
+		memory_reveal_tween.kill()
+	memory_reveal_queue.clear()
+	memory_toast_panel.hide()
 
 
 func _on_inventory_changed() -> void:
@@ -1256,6 +1562,13 @@ func _on_inventory_changed() -> void:
 	_on_quest_updated()
 	if shop_panel.visible:
 		_populate_shop()
+
+
+func _on_cache_opened(cache_id: String) -> void:
+	if cache_id.ends_with("_trial_reserve") and SHAFT_RETURN_REQUIREMENTS.has(cache_id.trim_suffix("_trial_reserve")):
+		_update_objective_label()
+	if cache_id in ["ash_chapel_reliquary", "starfall_outer_watch", "starfall_silent_watch", "starfall_vault_bridge", "starfall_vault_depth", "starfall_root_crown", "starfall_court_victory"] or cache_id.begins_with("shaft_drift_") or cache_id.begins_with("echo_depths_") or cache_id.begins_with("ash_emberspine_") or cache_id.begins_with("starfall_ramparts_"):
+		_update_objective_label()
 
 
 func _on_merchant_changed() -> void:
@@ -1294,10 +1607,18 @@ func _update_weapon_status() -> void:
 
 
 func _on_room_changed(room_id: String) -> void:
+	boss_health_panel.hide()
 	var room_name := room_id.replace("_", " ").capitalize()
 	_show_notification("AREA DISCOVERED  •  " + room_name)
 	_show_zone_title(room_id)
 	_update_objective_label()
+
+
+func _on_timeline_advanced(stage: int, _room_id: String) -> void:
+	if main_menu_panel.visible:
+		return
+	var chapter_name: String = game_state.TIMELINE_STAGE_NAMES[stage].to_upper()
+	_show_zone_banner(zone_title_label.text, "NEW CHAPTER  %d/%d  -  %s" % [stage, game_state.TIMELINE_STAGE_NAMES.size() - 1, chapter_name], 2.5)
 
 
 func _setup_boss() -> void:
@@ -1322,6 +1643,8 @@ func _on_boss_battle_started(boss: Node) -> void:
 	boss_health_panel.show()
 	_on_boss_health_changed(boss.current_health, boss.max_health, boss)
 	_show_notification("BOSS ENCOUNTER  •  " + _boss_display_name(boss))
+	if str(boss.get("boss_id")) == "hollow_sovereign":
+		_show_zone_banner("HOLLOW SOVEREIGN", "THE THREE MEMORIES HAVE FOUND THEIR KEEPER", 2.0)
 
 
 func _on_boss_health_changed(current_health: int, maximum_health: int, boss: Node) -> void:
@@ -1336,9 +1659,38 @@ func _on_boss_phase_changed(new_phase: int, boss: Node) -> void:
 
 func _on_boss_defeated(boss: Node) -> void:
 	boss_health_panel.hide()
-	var suffix := "  •  PATH OPEN" if boss.get("is_rematch") != true and (str(boss.get("boss_id")) == "abyss_warden" or str(boss.get("boss_id")) == "echo_matriarch") else ""
+	if str(boss.get("boss_id")) == "hollow_sovereign":
+		_update_objective_label()
+		_show_final_ending()
+		return
+	var suffix := "  •  PATH OPEN" if boss.get("is_rematch") != true and str(boss.get("boss_id")) in ["abyss_warden", "echo_matriarch", "ash_castellan"] else ""
 	_show_notification(_boss_display_name(boss) + " DEFEATED" + suffix)
 	_update_objective_label()
+
+
+func _show_final_ending() -> void:
+	if ending_panel.visible:
+		return
+	_clear_memory_reveals()
+	if zone_title_tween != null and zone_title_tween.is_valid():
+		zone_title_tween.kill()
+	zone_title_panel.hide()
+	_close_side_panels()
+	inventory_panel.hide()
+	world_map_panel.hide()
+	shop_panel.hide()
+	_set_shop_dimmer_visible(false)
+	ending_backdrop.show()
+	ending_panel.show()
+	get_tree().paused = true
+	ending_continue_button.grab_focus()
+
+
+func _close_final_ending() -> void:
+	ending_panel.hide()
+	ending_backdrop.hide()
+	get_tree().paused = false
+	_show_notification("THE ROAD REMAINS OPEN - SAVE YOUR VICTORY AT A LAMP")
 
 
 func _on_checkpoint_activated() -> void:
@@ -1372,11 +1724,14 @@ func _on_lamps_changed() -> void:
 func _on_npc_interaction_requested(_npc: Area2D) -> void:
 	if player == null or player.is_dead or level_complete_panel.visible:
 		return
-	if _npc.is_in_group("merchant_npc"):
+	if _npc.is_in_group("merchant_npc") or _npc.is_in_group("town_service"):
 		_open_shop(_npc)
 		return
 
 	active_dialogue_npc = _npc
+	if _npc.has_method("set_player_dialogue_active"):
+		_npc.set_player_dialogue_active(true)
+	active_town_line = _npc.get_next_line() if _npc.is_in_group("town_resident") and not _npc.is_in_group("hearth_quest_npc") and not _npc.is_in_group("hearth_gate_quest_npc") and not _npc.is_in_group("starfall_route_npc") and not _npc.is_in_group("dawn_archive_npc") else ""
 	resume_player_after_dialogue = player.is_physics_processing()
 	player.velocity = Vector2.ZERO
 	player.set_physics_process(false)
@@ -1386,6 +1741,23 @@ func _on_npc_interaction_requested(_npc: Area2D) -> void:
 
 
 func _update_dialogue_content() -> void:
+	if active_dialogue_npc != null and active_dialogue_npc.is_in_group("hearth_quest_npc"):
+		_update_hearth_quest_dialogue()
+		return
+	if active_dialogue_npc != null and active_dialogue_npc.is_in_group("hearth_gate_quest_npc"):
+		_update_hearth_gate_dialogue()
+		return
+	if active_dialogue_npc != null and active_dialogue_npc.is_in_group("starfall_route_npc"):
+		_update_starfall_route_dialogue()
+		return
+	if active_dialogue_npc != null and active_dialogue_npc.is_in_group("dawn_archive_npc"):
+		_update_dawn_archive_dialogue()
+		return
+	if active_dialogue_npc != null and active_dialogue_npc.is_in_group("town_resident"):
+		speaker_label.text = str(active_dialogue_npc.get("resident_name")).to_upper()
+		dialogue_text.text = active_town_line
+		dialogue_primary_button.hide()
+		return
 	if quest_manager == null:
 		return
 	if active_dialogue_npc != null and active_dialogue_npc.is_in_group("surveyor_npc"):
@@ -1459,7 +1831,149 @@ func _update_surveyor_dialogue() -> void:
 			dialogue_primary_button.hide()
 
 
+func _update_hearth_quest_dialogue() -> void:
+	speaker_label.text = "MIRA"
+	match int(quest_manager.get("hearth_fan_state")):
+		0:
+			dialogue_text.text = "The Forge fan is still. Restore its airflow and make the road safer. Reward: 2 XP, 50 Gold and 2 Iron Fragments."
+			dialogue_primary_button.text = "Accept Task"
+			dialogue_primary_button.show()
+		1:
+			dialogue_text.text = "The cooling fan is high in Cinder Forge. Reach it and start the airflow, then come back to me."
+			dialogue_primary_button.hide()
+		2:
+			dialogue_text.text = "I heard the vents go quiet. Thank you! Take 2 XP, 50 Gold and 2 Iron Fragments."
+			dialogue_primary_button.text = "Claim Reward"
+			dialogue_primary_button.show()
+		_:
+			dialogue_text.text = "The road is quieter now. More people will make it home tonight."
+			dialogue_primary_button.hide()
+
+
+func _update_hearth_gate_dialogue() -> void:
+	speaker_label.text = "TARIN"
+	match int(quest_manager.get("hearth_gate_state")):
+		0:
+			dialogue_text.text = "Two foes stalk the road outside our gate. Drive them off, then report back. Reward: 1 XP, 25 Gold and an Iron Fragment."
+			dialogue_primary_button.text = "Accept Task"
+			dialogue_primary_button.show()
+		1:
+			dialogue_text.text = "The gate road is still dangerous. Foes defeated: %d/2." % quest_manager.get_hearth_gate_progress()
+			dialogue_primary_button.hide()
+		2:
+			dialogue_text.text = "The road is clear. Take 1 XP, 25 Gold and an Iron Fragment for your help."
+			dialogue_primary_button.text = "Claim Reward"
+			dialogue_primary_button.show()
+		_:
+			dialogue_text.text = "Travelers made it through the gate today. You gave them that chance."
+			dialogue_primary_button.hide()
+
+
+func _update_starfall_route_dialogue() -> void:
+	speaker_label.text = "ROOK"
+	match int(quest_manager.get("starfall_route_state")):
+		0:
+			dialogue_text.text = "Find reports on the watch walk, market balcony and garden skywalk. Reward: 1 SP, 4 XP, 100 Gold, 2 Ether Dust."
+			dialogue_primary_button.text = "Accept Route"
+			dialogue_primary_button.show()
+		1:
+			dialogue_text.text = "Reports found: %d/3. Check the watch walk, market balcony and garden skywalk." % quest_manager.get_starfall_route_progress()
+			dialogue_primary_button.hide()
+		2:
+			dialogue_text.text = "All three reports arrived safely. Claim 1 SP, 4 XP, 100 Gold and 2 Ether Dust."
+			dialogue_primary_button.text = "Claim Reward"
+			dialogue_primary_button.show()
+		_:
+			if starfall_route_claimed_this_talk:
+				dialogue_text.text = "The route is complete. Now the watch knows every lamp is still burning."
+				dialogue_primary_button.hide()
+			else:
+				_update_starfall_courier_dialogue()
+
+
+func _update_starfall_courier_dialogue() -> void:
+	match int(quest_manager.get("starfall_courier_state")):
+		0:
+			dialogue_text.text = "Will you carry the watch's news to Whisperlight Haven and Cinder Hearth? Rest at both town lamps, then return. Reward: 3 XP, 75 Gold and a Resonance Shard."
+			dialogue_primary_button.text = "Accept Courier Circuit"
+			dialogue_primary_button.show()
+		1:
+			dialogue_text.text = "The towns can send their replies through their lamps. Stops reached: %d/2. Visit Whisperlight and Cinder Hearth." % quest_manager.get_starfall_courier_progress()
+			dialogue_primary_button.hide()
+		2:
+			dialogue_text.text = "Both towns answered. Claim 3 XP, 75 Gold and a Resonance Shard for carrying the circuit."
+			dialogue_primary_button.text = "Claim Courier Reward"
+			dialogue_primary_button.show()
+		_:
+			dialogue_text.text = "The letters made it home. Now I have to carry the news that the throne is silent." if game_state != null and bool(game_state.defeated_bosses.get("hollow_sovereign", false)) else "Both havens know the city is open. Their letters are already on the return road."
+			dialogue_primary_button.hide()
+
+
+func _update_dawn_archive_dialogue() -> void:
+	speaker_label.text = "ATLEY"
+	if game_state == null or not bool(game_state.defeated_bosses.get("hollow_sovereign", false)):
+		dialogue_text.text = "The library keeps the old roads in its books. I hope one day we can write what lies beyond them."
+		dialogue_primary_button.hide()
+		return
+	match int(quest_manager.get("dawn_archive_state")):
+		0:
+			dialogue_text.text = "Record echoes in Blackwater Cistern, Prism Archive and Ashen Chapel. Clear nearby foes and stay close. Reward: 1 SP, 4 XP, 120G, Dawn Chronicle."
+			dialogue_primary_button.text = "Begin Dawn Archive"
+			dialogue_primary_button.show()
+		1:
+			dialogue_text.text = "Echoes recorded: %d/3. Revisit the Cistern, Archive and Chapel. Stay close to each echo until its voice is clear." % quest_manager.get_dawn_archive_progress()
+			dialogue_primary_button.hide()
+		2:
+			dialogue_text.text = "Three voices, three roads. Bring me your notes and I'll bind the first volume of the Dawn Archive."
+			dialogue_primary_button.text = "Complete Chronicle"
+			dialogue_primary_button.show()
+		_:
+			dialogue_text.text = "The Chronicle is yours. A city should remember those who kept its roads alive, not only its kings."
+			dialogue_primary_button.hide()
+
+
 func _on_dialogue_primary_pressed() -> void:
+	if active_dialogue_npc != null and active_dialogue_npc.is_in_group("hearth_quest_npc"):
+		var hearth_state := int(quest_manager.get("hearth_fan_state"))
+		if hearth_state == 0 and quest_manager.start_hearth_fan_quest():
+			_show_notification("NEW SIDE QUEST: COOL THE CINDER FORGE")
+		elif hearth_state == 2 and quest_manager.turn_in_hearth_fan_quest(player):
+			_show_notification("TASK COMPLETE  •  XP +2  •  GOLD +50  •  IRON x2")
+		_update_dialogue_content()
+		return
+	if active_dialogue_npc != null and active_dialogue_npc.is_in_group("hearth_gate_quest_npc"):
+		var gate_state := int(quest_manager.get("hearth_gate_state"))
+		if gate_state == 0 and quest_manager.start_hearth_gate_quest():
+			_show_notification("NEW SIDE QUEST: CLEAR THE HEARTH ROAD")
+		elif gate_state == 2 and quest_manager.turn_in_hearth_gate_quest(player):
+			_show_notification("TASK COMPLETE - XP +1 - GOLD +25 - IRON +1")
+		_update_dialogue_content()
+		return
+	if active_dialogue_npc != null and active_dialogue_npc.is_in_group("starfall_route_npc"):
+		var route_state := int(quest_manager.get("starfall_route_state"))
+		if route_state == 0 and quest_manager.start_starfall_route():
+			_show_notification("NEW SIDE QUEST: LANTERN ROUTE")
+		elif route_state == 2 and quest_manager.turn_in_starfall_route(player):
+			starfall_route_claimed_this_talk = true
+			_show_notification("LANTERN ROUTE COMPLETE  -  SP +1  -  XP +4  -  GOLD +100")
+		elif route_state == 3 and not starfall_route_claimed_this_talk:
+			var courier_state := int(quest_manager.get("starfall_courier_state"))
+			if courier_state == 0 and quest_manager.start_starfall_courier():
+				_show_notification("NEW SIDE QUEST: COURIER CIRCUIT")
+			elif courier_state == 2 and quest_manager.turn_in_starfall_courier(player):
+				_show_notification("COURIER CIRCUIT COMPLETE  -  XP +3  -  GOLD +75  -  SHARD +1")
+		_update_dialogue_content()
+		return
+	if active_dialogue_npc != null and active_dialogue_npc.is_in_group("dawn_archive_npc"):
+		var archive_state := int(quest_manager.get("dawn_archive_state"))
+		if archive_state == 0 and quest_manager.start_dawn_archive():
+			_show_notification("NEW SIDE QUEST: DAWN ARCHIVE")
+		elif archive_state == 2 and quest_manager.turn_in_dawn_archive(player):
+			_show_notification("DAWN ARCHIVE COMPLETE  -  SP +1  -  XP +4  -  GOLD +120")
+		_update_dialogue_content()
+		return
+	if active_dialogue_npc != null and active_dialogue_npc.is_in_group("town_resident"):
+		return
 	if quest_manager == null:
 		return
 	if active_dialogue_npc != null and active_dialogue_npc.is_in_group("surveyor_npc"):
@@ -1489,10 +2003,14 @@ func _on_dialogue_primary_pressed() -> void:
 
 func _close_dialogue() -> void:
 	dialogue_panel.hide()
+	if is_instance_valid(active_dialogue_npc) and active_dialogue_npc.has_method("set_player_dialogue_active"):
+		active_dialogue_npc.set_player_dialogue_active(false)
 	if resume_player_after_dialogue and player != null and not player.is_dead and not level_complete_panel.visible:
 		player.set_physics_process(true)
 	resume_player_after_dialogue = false
 	active_dialogue_npc = null
+	active_town_line = ""
+	starfall_route_claimed_this_talk = false
 
 
 func _on_quest_updated() -> void:
@@ -1507,9 +2025,26 @@ func _on_quest_updated() -> void:
 	var survey_text: String = quest_manager.get_echo_survey_tracker_text()
 	if not survey_text.is_empty():
 		quest_tracker_label.text += "\n\n" + survey_text
+	var hearth_text: String = quest_manager.get_hearth_fan_tracker_text()
+	if not hearth_text.is_empty():
+		quest_tracker_label.text += "\n\n" + hearth_text
+	var gate_text: String = quest_manager.get_hearth_gate_tracker_text()
+	if not gate_text.is_empty():
+		quest_tracker_label.text += "\n\n" + gate_text
+	var city_text: String = quest_manager.get_starfall_route_tracker_text()
+	if not city_text.is_empty():
+		quest_tracker_label.text += "\n\n" + city_text
+	var courier_text: String = quest_manager.get_starfall_courier_tracker_text()
+	if not courier_text.is_empty():
+		quest_tracker_label.text += "\n\n" + courier_text
+	var dawn_text: String = quest_manager.get_dawn_archive_tracker_text()
+	if not dawn_text.is_empty():
+		quest_tracker_label.text += "\n\n" + dawn_text
 	var return_text: String = quest_manager.get_return_contract_tracker_text()
 	if not return_text.is_empty():
 		quest_tracker_label.text += "\n\n" + return_text
+	if game_state != null and game_state.current_room_id == "starfall_citadel":
+		_update_objective_label()
 	if dialogue_panel.visible:
 		_update_dialogue_content()
 
@@ -1540,7 +2075,88 @@ func _on_zone_enemy_defeated() -> void:
 	_show_notification("SHAFT ENEMY DEFEATED  •  LOOT DROPPED")
 
 
+func _shaft_return_objective() -> String:
+	if game_state == null or not SHAFT_RETURN_REQUIREMENTS.has(game_state.current_room_id) or game_state.get_zone_tier("sunken_shaft") < 1:
+		return ""
+	var room_id: String = game_state.current_room_id
+	for event_id in SHAFT_RETURN_REQUIREMENTS[room_id]:
+		if not bool(game_state.unlocked_shortcuts.get(event_id, false)):
+			return ""
+	if not bool(game_state.unlocked_shortcuts.get(room_id + "_return_trial_cleared", false)):
+		return "RETURN TRIAL - LOWER BRANCH"
+	if not bool(game_state.opened_caches.get(room_id + "_trial_reserve", false)):
+		return "CLAIM RETURN RESERVE"
+	return "RETURN RESERVE CLAIMED"
+
+
 func _update_objective_label() -> void:
+	var return_objective := _shaft_return_objective()
+	if not return_objective.is_empty():
+		objective_label.text = return_objective
+		return
+	if game_state != null and game_state.current_room_id in ["shaft_drift", "echo_depths", "ash_emberspine", "starfall_ramparts"]:
+		var wing_name: String = str({"shaft_drift": "DRIFTWORKS", "echo_depths": "RESONANT DEPTHS", "ash_emberspine": "EMBERSPINE", "starfall_ramparts": "BROKEN RAMPARTS"}[game_state.current_room_id])
+		var found := int(bool(game_state.opened_caches.get(game_state.current_room_id + "_mid", false))) + int(bool(game_state.opened_caches.get(game_state.current_room_id + "_rim", false)))
+		objective_label.text = "DANGER  -  %s  -  HIGH EXIT  -  CACHES %d/2" % [wing_name, found]
+		return
+	if game_state != null and game_state.current_room_id == "starfall_hollow_throne":
+		objective_label.text = "HOLLOW SOVEREIGN DEFEATED - REST AT A LAMP TO SAVE" if bool(game_state.defeated_bosses.get("hollow_sovereign", false)) else "FINAL BOSS  -  HOLLOW SOVEREIGN  -  WATCH THE MARKS"
+		return
+	if game_state != null and game_state.current_room_id == "starfall_sunless_passage":
+		var anchored := bool(game_state.unlocked_shortcuts.get("starfall_sunless_anchor", false))
+		var sigils := int(game_state.has_item("memory_sigil_shaft")) + int(game_state.has_item("memory_sigil_echo")) + int(game_state.has_item("memory_sigil_ash"))
+		var bosses := int(bool(game_state.defeated_bosses.get("abyss_warden", false))) + int(bool(game_state.defeated_bosses.get("echo_matriarch", false))) + int(bool(game_state.defeated_bosses.get("ash_castellan", false)))
+		objective_label.text = "THRONE %s  -  BOSSES %d/3  -  SIGILS %d/3  -  BRIDGES %s" % ["OPEN" if sigils == 3 and bosses == 3 else "SEALED", bosses, sigils, "STABLE" if anchored else "FADING"]
+		return
+	if game_state != null and game_state.current_room_id == "starfall_soul_crucible":
+		var channels := int(bool(game_state.unlocked_shortcuts.get("starfall_crucible_high", false))) + int(bool(game_state.unlocked_shortcuts.get("starfall_crucible_low", false)))
+		objective_label.text = "DANGER  -  SOUL CHANNELS %d/2  -  PULSES %s  -  CACHE %s" % [channels, "QUIET" if bool(game_state.unlocked_shortcuts.get("starfall_crucible_stabilized", false)) else "ACTIVE", "FOUND" if bool(game_state.opened_caches.get("starfall_crucible_supply", false)) else "SEALED"]
+		return
+	if game_state != null and game_state.current_room_id == "starfall_empty_court":
+		if bool(game_state.defeated_bosses.get("starfall_guardian", false)):
+			objective_label.text = "COURT CLEAR  -  RELIC %s  -  RETURN OPEN" % ("CLAIMED" if bool(game_state.opened_caches.get("starfall_court_victory", false)) else "UNCLAIMED")
+		else:
+			objective_label.text = "DANGER  -  STARFALL GUARDIAN BELOW  -  SOUL CRUCIBLE ABOVE"
+		return
+	if game_state != null and game_state.current_room_id == "starfall_rooted_hall":
+		objective_label.text = "DANGER  -  ROOTED HALL  -  ROOTS %s  -  HIGH CACHE %s" % ["QUIET" if bool(game_state.unlocked_shortcuts.get("starfall_root_channels", false)) else "ACTIVE", "FOUND" if bool(game_state.opened_caches.get("starfall_root_crown", false)) else "UNCLAIMED"]
+		return
+	if game_state != null and game_state.current_room_id == "starfall_memory_vault":
+		var found := int(bool(game_state.opened_caches.get("starfall_vault_bridge", false))) + int(bool(game_state.opened_caches.get("starfall_vault_depth", false)))
+		objective_label.text = "DANGER  -  MEMORY VAULT  -  HIGH / LOW CACHES %d/2" % found
+		return
+	if game_state != null and game_state.current_room_id == "starfall_silent_gate":
+		var relays := int(bool(game_state.unlocked_shortcuts.get("starfall_silent_high", false))) + int(bool(game_state.unlocked_shortcuts.get("starfall_silent_low", false)))
+		objective_label.text = "DANGER  -  SILENT GATE  -  RELAYS %d/2  -  VAULT %s" % [relays, "OPEN" if relays == 2 else "SEALED"]
+		return
+	if game_state != null and game_state.current_room_id == "starfall_outskirts":
+		objective_label.text = "DANGER  -  OUTER WATCH  -  HIGH CACHE %s" % ("FOUND" if bool(game_state.opened_caches.get("starfall_outer_watch", false)) else "UNCLAIMED")
+		return
+	if game_state != null and game_state.current_room_id in ["starfall_citadel", "starfall_gate", "starfall_ward"]:
+		if quest_manager != null and int(quest_manager.starfall_route_state) == 1:
+			objective_label.text = "LANTERN ROUTE  -  REPORTS %d/3  [J] DETAILS" % quest_manager.get_starfall_route_progress()
+		elif quest_manager != null and int(quest_manager.starfall_route_state) == 2:
+			objective_label.text = "LANTERN ROUTE  -  RETURN TO ROOK"
+		elif quest_manager != null and int(quest_manager.starfall_courier_state) == 1:
+			objective_label.text = "COURIER CIRCUIT  -  TOWN LAMPS %d/2  [J]" % quest_manager.get_starfall_courier_progress()
+		elif quest_manager != null and int(quest_manager.starfall_courier_state) == 2:
+			objective_label.text = "COURIER CIRCUIT  -  RETURN TO ROOK"
+		elif quest_manager != null and int(quest_manager.dawn_archive_state) == 1:
+			objective_label.text = "DAWN ARCHIVE  -  ECHOES %d/3  [J] DETAILS" % quest_manager.get_dawn_archive_progress()
+		elif quest_manager != null and int(quest_manager.dawn_archive_state) == 2:
+			objective_label.text = "DAWN ARCHIVE  -  RETURN TO ATLEY"
+		else:
+			objective_label.text = "SAFE CITY  -  EXPLORE THE MARKET AND GARDENS"
+		return
+	if game_state != null and game_state.current_room_id in ["echo_haven", "ash_hearth"]:
+		objective_label.text = "SAFE HAVEN  •  REST, TRADE, FORGE"
+		return
+	if game_state != null and game_state.current_room_id == "echo_haven_outskirts":
+		objective_label.text = "DANGER  •  CROSS THE APPROACH TO WHISPERLIGHT"
+		return
+	if game_state != null and game_state.current_room_id == "ash_hearth_outskirts":
+		objective_label.text = "DANGER  •  CLEAR THE ROAD TO CINDER HEARTH"
+		return
 	if game_state != null and game_state.current_room_id == "echo_sanctum":
 		if bool(game_state.boss_rematches.get("echo_matriarch", false)):
 			objective_label.text = "ASHEN GATE OPEN  •  MATRIARCH DEFEATED"
@@ -1628,9 +2244,9 @@ func _update_objective_label() -> void:
 		if not bool(game_state.unlocked_shortcuts.get("shaft_sluice_valve", false)):
 			objective_label.text = "CROSS THE SURGE  •  DRAIN THE VALVE [E]"
 		elif not bool(game_state.unlocked_shortcuts.get("shaft_hollow_relay", false)):
-			objective_label.text = "CROSSING SAFE  •  HOLLOW RELAY SEALED"
+			objective_label.text = "CURRENTS CALMED - RELAY SEALED"
 		else:
-			objective_label.text = "CROSSING SAFE  •  HOLLOW LOOP OPEN"
+			objective_label.text = "CURRENTS CALMED - LOOP OPEN"
 		return
 	if game_state != null and game_state.current_room_id == "shaft_gallery":
 		var controls := int(bool(game_state.unlocked_shortcuts.get("shaft_gallery_lower", false))) + int(bool(game_state.unlocked_shortcuts.get("shaft_gallery_upper", false)))
@@ -1676,11 +2292,30 @@ func _update_objective_label() -> void:
 	if game_state != null and game_state.current_room_id == "ash_reservoir":
 		var coolant_count := int(bool(game_state.unlocked_shortcuts.get("ash_reservoir_lower", false))) + int(bool(game_state.unlocked_shortcuts.get("ash_reservoir_upper", false)))
 		if game_state.has_item("crucible_core"):
-			objective_label.text = "CRUCIBLE CORE SECURED  •  FORGE LOOP OPEN"
+			objective_label.text = "CRUCIBLE CORE SECURED  •  CHAPEL ABOVE"
 		elif coolant_count == 2:
 			objective_label.text = "COOLANT FLOW RESTORED  •  CLAIM THE HIGH CORE"
 		else:
 			objective_label.text = "OPEN COOLANT VALVES  %d/2" % coolant_count
+		return
+	if game_state != null and game_state.current_room_id == "ash_chapel":
+		if bool(game_state.defeated_bosses.get("ash_castellan", false)):
+			objective_label.text = "CASTELLAN DEFEATED  •  THRONE LOOP OPEN"
+		elif bool(game_state.opened_caches.get("ash_chapel_reliquary", false)):
+			objective_label.text = "RELIQUARY CLAIMED  •  THRONE GATE RIGHT"
+		elif bool(game_state.unlocked_shortcuts.get("ash_chapel_bells", false)):
+			objective_label.text = "BELLS ALIGNED  •  CLAIM THE RELIQUARY"
+		else:
+			var chapel := get_parent().get_node_or_null("AshChapel")
+			objective_label.text = "RING HIGH > LOW > FAR  %d/3" % (chapel.puzzle_progress if chapel != null else 0)
+		return
+	if game_state != null and game_state.current_room_id == "ash_throne":
+		if bool(game_state.boss_rematches.get("ash_castellan", false)):
+			objective_label.text = "AWAKENED CASTELLAN DEFEATED  •  HEARTH LOOP OPEN"
+		elif bool(game_state.defeated_bosses.get("ash_castellan", false)):
+			objective_label.text = "HEARTH LOOP OPEN  •  AWAKENED CASTELLAN OPTIONAL"
+		else:
+			objective_label.text = "DEFEAT THE ASH CASTELLAN"
 		return
 	if game_state != null and game_state.current_room_id == "sunken_shaft":
 		if bool(game_state.defeated_bosses.get("abyss_warden", false)):
@@ -1859,6 +2494,9 @@ func _on_staff_flow_pressed() -> void:
 
 
 func _on_player_died() -> void:
+	_clear_memory_reveals()
+	ending_panel.hide()
+	ending_backdrop.hide()
 	if get_tree().paused:
 		_resume_game()
 	dialogue_panel.hide()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" path="res://ShaftSentry.tscn" id="7_sentry"]
 [ext_resource type="PackedScene" path="res://ShaftCrawler.tscn" id="8_crawler"]
 [ext_resource type="Script" path="res://SpikeTrap.gd" id="9_spike"]
+[ext_resource type="Script" path="res://ShaftRoomExpansion.gd" id="10_expansion"]
 
 [sub_resource type="RectangleShape2D" id="FloorShape"]
 size = Vector2(300, 18)
@@ -292,15 +293,6 @@ lamp_name = "Warden Approach Lamp"
 room_id = "shaft_approach"
 enemy_block_radius = 115.0
 
-[node name="EntryCrawler" parent="." instance=ExtResource("8_crawler")]
-position = Vector2(185, 417)
-
-[node name="HighWisp" parent="." instance=ExtResource("6_wisp")]
-position = Vector2(603, 146)
-
-[node name="PitSentry" parent="." instance=ExtResource("7_sentry")]
-position = Vector2(782, 498)
-
 [node name="AreaTitle" type="Label" parent="."]
 position = Vector2(68, 78)
 size = Vector2(200, 24)
@@ -316,3 +308,6 @@ theme_override_colors/font_color = Color(0.72, 0.86, 0.9, 0.76)
 theme_override_font_sizes/font_size = 10
 text = "Climb the gantry. Lower the far counterweight for a faster return."
 autowrap_mode = 3
+
+[node name="ExpandedRoute" type="Node2D" parent="."]
+script = ExtResource("10_expansion")

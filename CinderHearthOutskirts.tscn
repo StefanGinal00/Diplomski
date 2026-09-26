@@ -1,0 +1,145 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
+[ext_resource type="PackedScene" path="res://AshFiend.tscn" id="2_fiend"]
+[ext_resource type="PackedScene" path="res://AshSentry.tscn" id="3_sentry"]
+[ext_resource type="PackedScene" path="res://NeutralCreature.tscn" id="4_neutral"]
+[ext_resource type="Script" path="res://AshSwitchback.gd" id="5_switchback"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(1100, 18)
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 2000)
+
+[node name="CinderHearthOutskirts" type="Node2D"]
+
+[node name="AshSwitchback" type="Node2D" parent="."]
+script = ExtResource("5_switchback")
+course_id = &"outskirts"
+course_width = 4000.0
+legacy_width = 1100.0
+ground_y = 390.0
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -6
+color = Color(0.11, 0.065, 0.071, 1)
+polygon = PackedVector2Array(0, -1420, 4000, -1420, 4000, 580, 0, 580)
+
+[node name="DistantRampart" type="Polygon2D" parent="."]
+z_index = -5
+color = Color(0.21, 0.115, 0.105, 1)
+polygon = PackedVector2Array(0, 343, 0, 169, 95, 128, 195, 202, 302, 92, 406, 190, 503, 136, 613, 205, 722, 101, 842, 189, 947, 117, 1100, 182, 1100, 343)
+
+[node name="AshHaze" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.86, 0.27, 0.13, 0.14)
+polygon = PackedVector2Array(48, 380, 245, 117, 424, 380, 588, 380, 735, 97, 941, 380)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(550, 390)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+color = Color(0.35, 0.2, 0.17, 1)
+polygon = PackedVector2Array(-550, -9, 550, -9, 550, 9, -550, 9)
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, -420)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(4000, -420)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="RuinLeft" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.29, 0.16, 0.15, 1)
+polygon = PackedVector2Array(187, 381, 187, 257, 202, 239, 232, 239, 237, 288, 254, 288, 254, 381)
+
+[node name="RuinRight" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.29, 0.16, 0.15, 1)
+polygon = PackedVector2Array(721, 381, 721, 273, 743, 246, 780, 260, 780, 381)
+
+[node name="RoadInlay" type="Line2D" parent="."]
+z_index = 0
+points = PackedVector2Array(69, 376, 193, 376, 317, 376, 441, 376, 565, 376, 689, 376, 813, 376, 937, 376, 1041, 376)
+width = 3.0
+default_color = Color(0.8, 0.36, 0.2, 0.53)
+
+[node name="GateGlow" type="Polygon2D" parent="."]
+position = Vector2(2730, -1360)
+z_index = -3
+color = Color(1, 0.46, 0.2, 0.17)
+polygon = PackedVector2Array(855, 381, 1007, 130, 1081, 381)
+
+[node name="GateLeftTower" type="Polygon2D" parent="."]
+position = Vector2(2730, -1360)
+z_index = -1
+color = Color(0.36, 0.22, 0.18, 1)
+polygon = PackedVector2Array(949, 381, 949, 197, 960, 181, 990, 181, 1002, 197, 1002, 381)
+
+[node name="GateRightTower" type="Polygon2D" parent="."]
+position = Vector2(2730, -1360)
+z_index = -1
+color = Color(0.36, 0.22, 0.18, 1)
+polygon = PackedVector2Array(1034, 381, 1034, 197, 1046, 181, 1076, 181, 1088, 197, 1088, 381)
+
+[node name="GateLintel" type="Polygon2D" parent="."]
+position = Vector2(2730, -1360)
+z_index = -1
+color = Color(0.5, 0.27, 0.19, 1)
+polygon = PackedVector2Array(944, 199, 1093, 199, 1081, 222, 956, 222)
+
+[node name="GateBanner" type="Polygon2D" parent="."]
+position = Vector2(2730, -1360)
+z_index = -1
+color = Color(0.79, 0.34, 0.2, 0.9)
+polygon = PackedVector2Array(1009, 214, 1031, 214, 1029, 258, 1019, 250, 1010, 258)
+
+[node name="GateSign" type="Label" parent="."]
+position = Vector2(3641, -1130)
+size = Vector2(189, 27)
+theme_override_colors/font_color = Color(1, 0.75, 0.51, 1)
+theme_override_font_sizes/font_size = 11
+text = "CINDER HEARTH GATE"
+horizontal_alignment = 1
+
+[node name="Entry" type="Marker2D" parent="." groups=["ash_hearth_outskirts_entry"]]
+position = Vector2(79, 357)
+
+[node name="GateReturn" type="Marker2D" parent="." groups=["ash_hearth_gate_return"]]
+position = Vector2(3580, -1023)
+
+[node name="ReturnDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(28, 357)
+target_marker_group = &"ash_causeway_hearth_return"
+target_room_id = "ash_causeway"
+door_label = "BROKEN CAUSEWAY"
+
+[node name="GateDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(3740, -1023)
+target_marker_group = &"ash_hearth_entry"
+target_room_id = "ash_hearth"
+door_label = "CINDER HEARTH"
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(73, 180)
+size = Vector2(264, 24)
+theme_override_colors/font_color = Color(1, 0.68, 0.45, 0.9)
+theme_override_font_sizes/font_size = 12
+text = "CINDER HEARTH OUTER ROAD"
+
+[node name="AreaSubtitle" type="Label" parent="."]
+position = Vector2(73, 207)
+size = Vector2(314, 22)
+theme_override_colors/font_color = Color(0.9, 0.73, 0.62, 0.8)
+theme_override_font_sizes/font_size = 9
+text = "The patrol ends where the watchfires begin."

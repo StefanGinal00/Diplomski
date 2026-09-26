@@ -6,6 +6,7 @@ extends Area2D
 @export var damage: int = 1
 @export var zone_id: String = "echo_grotto"
 @export var disabled_by_shortcut_id: String = ""
+@export var additional_disabled_event_ids: PackedStringArray = []
 @export var knockback: Vector2 = Vector2(0.0, -175.0)
 
 var phase: String = "idle"
@@ -24,6 +25,8 @@ func _ready() -> void:
 		game_state.shortcut_changed.connect(_on_shortcut_changed)
 		_on_zone_tier_changed(zone_id, game_state.get_zone_tier(zone_id))
 		disabled = not disabled_by_shortcut_id.is_empty() and bool(game_state.unlocked_shortcuts.get(disabled_by_shortcut_id, false))
+		for event_id in additional_disabled_event_ids:
+			disabled = disabled or bool(game_state.unlocked_shortcuts.get(event_id, false))
 	phase_remaining = idle_duration
 	monitoring = false
 	_update_visuals()
@@ -75,7 +78,7 @@ func _advance_phase() -> void:
 
 
 func _on_shortcut_changed(shortcut_id: String) -> void:
-	if shortcut_id != disabled_by_shortcut_id or disabled:
+	if (shortcut_id != disabled_by_shortcut_id and not additional_disabled_event_ids.has(shortcut_id)) or disabled:
 		return
 	disabled = true
 	phase = "disabled"

@@ -10,6 +10,8 @@ signal lift_blocked(message: String)
 @export var room_id: String = "sunken_shaft"
 @export var enemy_group: StringName = &"shaft_enemy"
 @export var lift_label: String = "SHAFT LIFT"
+@export var locked_prompt: String = "LIFT LOCKED BELOW"
+@export var locked_message: String = "The lift must be activated from below."
 
 var player_in_range: Player
 var in_transit: bool = false
@@ -22,7 +24,15 @@ func _ready() -> void:
 	prompt.hide()
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+	var game_state := get_node_or_null("/root/GameState")
+	if game_state != null:
+		game_state.shortcut_changed.connect(_on_shortcut_changed)
 	_update_visuals()
+
+
+func _on_shortcut_changed(event_id: String) -> void:
+	if event_id == shortcut_id:
+		_update_visuals()
 
 
 func _process(_delta: float) -> void:
@@ -30,7 +40,7 @@ func _process(_delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if player_in_range == null or in_transit or event.is_echo() or not event.is_action_pressed("interact"):
+	if not is_instance_valid(player_in_range) or player_in_range.is_dead or in_transit or event.is_echo() or not event.is_action_pressed("interact"):
 		return
 	if _has_nearby_enemy():
 		lift_blocked.emit("Clear nearby enemies before using the lift.")
@@ -39,9 +49,24 @@ func _unhandled_input(event: InputEvent) -> void:
 	var game_state := get_node_or_null("/root/GameState")
 	if game_state == null:
 		return
+	if game_state.is_boss_encounter_active():
+		lift_blocked.emit("The lift is sealed until the boss fight ends.")
+		get_viewport().set_input_as_handled()
+		return
+	# Validate transport before recording a permanent shortcut activation.
+	# A stale input during another transition, or an unresolved destination,
+	# must not unlock a lift that never accepted the interaction.
+	var transition_manager := get_node_or_null("/root/RoomTransition")
+	if transition_manager != null and transition_manager.is_transitioning:
+		return
+	var destination := get_tree().get_first_node_in_group(target_marker_group) as Node2D
+	if transition_manager == null or destination == null:
+		lift_blocked.emit("The lift mechanism is jammed.")
+		get_viewport().set_input_as_handled()
+		return
 	if not bool(game_state.unlocked_shortcuts.get(shortcut_id, false)):
 		if not activates_shortcut:
-			lift_blocked.emit("The lift must be activated from below.")
+			lift_blocked.emit(locked_message)
 			get_viewport().set_input_as_handled()
 			return
 		if game_state.unlock_shortcut(shortcut_id):
@@ -75,7 +100,7 @@ func _update_visuals() -> void:
 	var game_state := get_node_or_null("/root/GameState")
 	var unlocked: bool = game_state != null and bool(game_state.unlocked_shortcuts.get(shortcut_id, false))
 	core.color = Color(0.2, 1.0, 0.82, 1.0) if unlocked else Color(0.55, 0.45, 0.68, 1.0)
-	prompt.text = "[E] " + lift_label if unlocked else ("[E] ACTIVATE " + lift_label if activates_shortcut else "LIFT LOCKED BELOW")
+	prompt.text = "[E] " + lift_label if unlocked else ("[E] ACTIVATE " + lift_label if activates_shortcut else locked_prompt)
 
 
 func _on_body_entered(body: Node) -> void:

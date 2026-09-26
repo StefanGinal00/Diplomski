@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene format=3 uid="uid://cjbme5027it6h"]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_checkpoint"]
@@ -11,9 +11,13 @@
 [ext_resource type="PackedScene" path="res://AbyssWarden.tscn" id="9_warden"]
 [ext_resource type="PackedScene" path="res://ShaftLift.tscn" id="10_lift"]
 [ext_resource type="Script" path="res://ShaftAtmosphere.gd" id="11_atmosphere"]
+[ext_resource type="Script" path="res://VerticalHubExpansion.gd" id="12_expansion"]
 
 [sub_resource type="RectangleShape2D" id="WallShape"]
-size = Vector2(12, 600)
+size = Vector2(12, 1665)
+
+[sub_resource type="RectangleShape2D" id="RightUpperWallShape"]
+size = Vector2(12, 1785)
 
 [sub_resource type="RectangleShape2D" id="FloorLeftShape"]
 size = Vector2(120, 18)
@@ -24,17 +28,14 @@ size = Vector2(140, 18)
 [sub_resource type="RectangleShape2D" id="PlatformShape"]
 size = Vector2(100, 10)
 
+[sub_resource type="RectangleShape2D" id="TopShape"]
+size = Vector2(115, 10)
+
 [sub_resource type="RectangleShape2D" id="PlatformSmallShape"]
 size = Vector2(90, 10)
 
 [sub_resource type="RectangleShape2D" id="BottomShape"]
 size = Vector2(320, 18)
-
-[sub_resource type="RectangleShape2D" id="TopShape"]
-size = Vector2(115, 10)
-
-[sub_resource type="RectangleShape2D" id="RightUpperWallShape"]
-size = Vector2(12, 480)
 
 [sub_resource type="RectangleShape2D" id="ArenaFloorShape"]
 size = Vector2(500, 18)
@@ -42,246 +43,294 @@ size = Vector2(500, 18)
 [sub_resource type="RectangleShape2D" id="ArenaEndWallShape"]
 size = Vector2(12, 205)
 
-[node name="VerticalChamber" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="GalleryStepShape"]
+size = Vector2(100, 10)
+
+[sub_resource type="RectangleShape2D" id="GallerySpurShape"]
+size = Vector2(110, 10)
+
+[node name="VerticalChamber" type="Node2D" unique_id=683107668]
 script = ExtResource("11_atmosphere")
 
-[node name="Backdrop" type="Polygon2D" parent="."]
+[node name="DeepShaftTraversal" type="Node2D" parent="."]
+script = ExtResource("12_expansion")
+
+[node name="Backdrop" type="Polygon2D" parent="." unique_id=806440540]
 z_index = -2
 color = Color(0.035, 0.1, 0.15, 0.96)
 polygon = PackedVector2Array(0, 60, 320, 60, 320, 674, 0, 674)
 
-[node name="CentralGlow" type="Polygon2D" parent="."]
+[node name="CentralGlow" type="Polygon2D" parent="." unique_id=912904436]
 z_index = -1
 color = Color(0.08, 0.34, 0.38, 0.22)
 polygon = PackedVector2Array(125, 70, 195, 70, 195, 660, 125, 660)
 
-[node name="ArenaBackdrop" type="Polygon2D" parent="."]
+[node name="ArenaBackdrop" type="Polygon2D" parent="." unique_id=475480]
 z_index = -3
 color = Color(0.045, 0.075, 0.16, 1)
 polygon = PackedVector2Array(320, 450, 820, 450, 820, 675, 320, 675)
 
-[node name="ArenaGlow" type="Polygon2D" parent="."]
+[node name="ArenaGlow" type="Polygon2D" parent="." unique_id=1936261798]
 z_index = -2
 color = Color(0.2, 0.48, 0.52, 0.24)
 polygon = PackedVector2Array(420, 480, 730, 480, 785, 650, 365, 650)
 
-[node name="CrystalGlow" type="Polygon2D" parent="."]
+[node name="CrystalGlow" type="Polygon2D" parent="." unique_id=837540924]
 z_index = -1
 color = Color(0.28, 0.72, 0.79, 0.35)
 polygon = PackedVector2Array(39, 340, 112, 110, 179, 340, 220, 620, 54, 620)
 
-[node name="ShaftStrata" type="Polygon2D" parent="."]
+[node name="ShaftStrata" type="Polygon2D" parent="." unique_id=1827040384]
 z_index = -2
 color = Color(0.07, 0.16, 0.25, 0.9)
 polygon = PackedVector2Array(6, 65, 67, 85, 45, 165, 81, 225, 35, 310, 78, 382, 40, 525, 63, 655, 6, 655)
 
-[node name="CrystalCluster" type="Polygon2D" parent="."]
+[node name="CrystalCluster" type="Polygon2D" parent="." unique_id=1687218197]
 z_index = -1
 color = Color(0.21, 0.79, 0.84, 0.8)
 polygon = PackedVector2Array(16, 396, 30, 350, 38, 396, 48, 372, 55, 396)
 
-[node name="ArenaCrystal" type="Polygon2D" parent="."]
+[node name="ArenaCrystal" type="Polygon2D" parent="." unique_id=950035964]
 z_index = -1
 color = Color(0.3, 0.83, 0.92, 0.72)
 polygon = PackedVector2Array(722, 655, 740, 575, 755, 655, 768, 609, 780, 655)
 
-[node name="ShaftRimLight" type="Line2D" parent="."]
+[node name="ShaftRimLight" type="Line2D" parent="." unique_id=204240796]
 points = PackedVector2Array(11, 65, 11, 650)
 width = 3.0
 default_color = Color(0.19, 0.53, 0.61, 0.56)
 
-[node name="LeftWall" type="StaticBody2D" parent="."]
-position = Vector2(0, 365)
+[node name="LeftWall" type="StaticBody2D" parent="." unique_id=19983881]
+position = Vector2(0, -287.5)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=1773562229]
 shape = SubResource("WallShape")
 
-[node name="Visual" type="Polygon2D" parent="LeftWall"]
+[node name="Visual" type="Polygon2D" parent="LeftWall" unique_id=284153997]
 color = Color(0.07, 0.22, 0.28, 1)
-polygon = PackedVector2Array(-6, -300, 6, -300, 6, 300, -6, 300)
+polygon = PackedVector2Array(-6, -832.5, 6, -832.5, 6, 832.5, -6, 832.5)
 
-[node name="RightWall" type="StaticBody2D" parent="."]
-position = Vector2(320, 305)
+[node name="RightWall" type="StaticBody2D" parent="." unique_id=775226336]
+position = Vector2(320, -227.5)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall" unique_id=733051292]
 shape = SubResource("RightUpperWallShape")
 
-[node name="Visual" type="Polygon2D" parent="RightWall"]
+[node name="Visual" type="Polygon2D" parent="RightWall" unique_id=772409266]
 color = Color(0.07, 0.22, 0.28, 1)
-polygon = PackedVector2Array(-6, -240, 6, -240, 6, 240, -6, 240)
+polygon = PackedVector2Array(-6, -892.5, 6, -892.5, 6, 892.5, -6, 892.5)
 
-[node name="FloorLeft" type="StaticBody2D" parent="."]
+[node name="FloorLeft" type="StaticBody2D" parent="." unique_id=537253521]
 position = Vector2(60, 400)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorLeft"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorLeft" unique_id=1803543901]
 shape = SubResource("FloorLeftShape")
 
-[node name="Visual" type="Polygon2D" parent="FloorLeft"]
+[node name="Visual" type="Polygon2D" parent="FloorLeft" unique_id=2022628632]
 color = Color(0.08, 0.28, 0.32, 1)
 polygon = PackedVector2Array(-60, -9, 60, -9, 60, 9, -60, 9)
 
-[node name="FloorRight" type="StaticBody2D" parent="."]
+[node name="FloorRight" type="StaticBody2D" parent="." unique_id=1429754369]
 position = Vector2(250, 400)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorRight"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorRight" unique_id=1562186887]
 shape = SubResource("FloorRightShape")
 
-[node name="Visual" type="Polygon2D" parent="FloorRight"]
+[node name="Visual" type="Polygon2D" parent="FloorRight" unique_id=185243240]
 color = Color(0.08, 0.28, 0.32, 1)
 polygon = PackedVector2Array(-70, -9, 70, -9, 70, 9, -70, 9)
 
-[node name="UpperPlatform1" type="StaticBody2D" parent="."]
+[node name="UpperPlatform1" type="StaticBody2D" parent="." unique_id=1813618520]
 position = Vector2(230, 330)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperPlatform1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperPlatform1" unique_id=2059872117]
 shape = SubResource("PlatformShape")
 
-[node name="Visual" type="Polygon2D" parent="UpperPlatform1"]
+[node name="Visual" type="Polygon2D" parent="UpperPlatform1" unique_id=762639754]
 color = Color(0.1, 0.34, 0.38, 1)
 polygon = PackedVector2Array(-50, -5, 50, -5, 50, 5, -50, 5)
 
-[node name="UpperPlatform2" type="StaticBody2D" parent="."]
+[node name="UpperPlatform2" type="StaticBody2D" parent="." unique_id=761272587]
 position = Vector2(105, 265)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperPlatform2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperPlatform2" unique_id=599098923]
 shape = SubResource("PlatformShape")
 
-[node name="Visual" type="Polygon2D" parent="UpperPlatform2"]
+[node name="Visual" type="Polygon2D" parent="UpperPlatform2" unique_id=1844144907]
 color = Color(0.1, 0.34, 0.38, 1)
 polygon = PackedVector2Array(-50, -5, 50, -5, 50, 5, -50, 5)
 
-[node name="UpperPlatform3" type="StaticBody2D" parent="."]
+[node name="UpperPlatform3" type="StaticBody2D" parent="." unique_id=344735079]
 position = Vector2(225, 200)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperPlatform3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperPlatform3" unique_id=1465874851]
 shape = SubResource("PlatformShape")
 
-[node name="Visual" type="Polygon2D" parent="UpperPlatform3"]
+[node name="Visual" type="Polygon2D" parent="UpperPlatform3" unique_id=748955267]
 color = Color(0.1, 0.34, 0.38, 1)
 polygon = PackedVector2Array(-50, -5, 50, -5, 50, 5, -50, 5)
 
-[node name="UpperPlatform4" type="StaticBody2D" parent="."]
+[node name="UpperPlatform4" type="StaticBody2D" parent="." unique_id=296115326]
 position = Vector2(105, 135)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperPlatform4"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperPlatform4" unique_id=1359033367]
 shape = SubResource("PlatformShape")
 
-[node name="Visual" type="Polygon2D" parent="UpperPlatform4"]
+[node name="Visual" type="Polygon2D" parent="UpperPlatform4" unique_id=666141918]
 color = Color(0.1, 0.34, 0.38, 1)
 polygon = PackedVector2Array(-50, -5, 50, -5, 50, 5, -50, 5)
 
-[node name="TopPlatform" type="StaticBody2D" parent="."]
+[node name="TopPlatform" type="StaticBody2D" parent="." unique_id=121900125]
 position = Vector2(235, 80)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TopPlatform"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopPlatform" unique_id=976603929]
 shape = SubResource("TopShape")
 
-[node name="Visual" type="Polygon2D" parent="TopPlatform"]
+[node name="Visual" type="Polygon2D" parent="TopPlatform" unique_id=1049272107]
 color = Color(0.12, 0.42, 0.43, 1)
 polygon = PackedVector2Array(-57.5, -5, 57.5, -5, 57.5, 5, -57.5, 5)
 
-[node name="LowerPlatform1" type="StaticBody2D" parent="."]
+[node name="LowerPlatform1" type="StaticBody2D" parent="." unique_id=187477250]
 position = Vector2(155, 475)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LowerPlatform1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LowerPlatform1" unique_id=2109986140]
 shape = SubResource("PlatformSmallShape")
 
-[node name="Visual" type="Polygon2D" parent="LowerPlatform1"]
+[node name="Visual" type="Polygon2D" parent="LowerPlatform1" unique_id=576707154]
 color = Color(0.1, 0.3, 0.38, 1)
 polygon = PackedVector2Array(-45, -5, 45, -5, 45, 5, -45, 5)
 
-[node name="LowerPlatform2" type="StaticBody2D" parent="."]
+[node name="LowerPlatform2" type="StaticBody2D" parent="." unique_id=1967283665]
 position = Vector2(65, 545)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LowerPlatform2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LowerPlatform2" unique_id=908254151]
 shape = SubResource("PlatformSmallShape")
 
-[node name="Visual" type="Polygon2D" parent="LowerPlatform2"]
+[node name="Visual" type="Polygon2D" parent="LowerPlatform2" unique_id=574833467]
 color = Color(0.1, 0.3, 0.38, 1)
 polygon = PackedVector2Array(-45, -5, 45, -5, 45, 5, -45, 5)
 
-[node name="LowerPlatform3" type="StaticBody2D" parent="."]
+[node name="LowerPlatform3" type="StaticBody2D" parent="." unique_id=42104740]
 position = Vector2(205, 610)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LowerPlatform3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LowerPlatform3" unique_id=915762514]
 shape = SubResource("PlatformShape")
 
-[node name="Visual" type="Polygon2D" parent="LowerPlatform3"]
+[node name="Visual" type="Polygon2D" parent="LowerPlatform3" unique_id=11557232]
 color = Color(0.1, 0.3, 0.38, 1)
 polygon = PackedVector2Array(-50, -5, 50, -5, 50, 5, -50, 5)
 
-[node name="BottomFloor" type="StaticBody2D" parent="."]
+[node name="BottomFloor" type="StaticBody2D" parent="." unique_id=613106462]
 position = Vector2(160, 665)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomFloor"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomFloor" unique_id=726915319]
 shape = SubResource("BottomShape")
 
-[node name="Visual" type="Polygon2D" parent="BottomFloor"]
+[node name="Visual" type="Polygon2D" parent="BottomFloor" unique_id=85127993]
 color = Color(0.065, 0.22, 0.3, 1)
 polygon = PackedVector2Array(-160, -9, 160, -9, 160, 9, -160, 9)
 
-[node name="ArenaFloor" type="StaticBody2D" parent="."]
+[node name="ArenaFloor" type="StaticBody2D" parent="." unique_id=813786072]
 position = Vector2(570, 665)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ArenaFloor"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArenaFloor" unique_id=1305147544]
 shape = SubResource("ArenaFloorShape")
 
-[node name="Visual" type="Polygon2D" parent="ArenaFloor"]
+[node name="Visual" type="Polygon2D" parent="ArenaFloor" unique_id=651555574]
 color = Color(0.07, 0.25, 0.35, 1)
 polygon = PackedVector2Array(-250, -9, 250, -9, 250, 9, -250, 9)
 
-[node name="ArenaEndWall" type="StaticBody2D" parent="."]
+[node name="GalleryStep" type="StaticBody2D" parent="."]
+position = Vector2(485, 610)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GalleryStep"]
+shape = SubResource("GalleryStepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="GalleryStep"]
+color = Color(0.13, 0.42, 0.47, 1)
+polygon = PackedVector2Array(-50, -5, 50, -5, 50, 5, -50, 5)
+
+[node name="GallerySpur" type="StaticBody2D" parent="."]
+position = Vector2(395, 555)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GallerySpur"]
+shape = SubResource("GallerySpurShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="GallerySpur"]
+color = Color(0.17, 0.48, 0.51, 1)
+polygon = PackedVector2Array(-55, -5, 55, -5, 55, 5, -55, 5)
+
+[node name="ArenaEndWall" type="StaticBody2D" parent="." unique_id=1134261770]
 position = Vector2(820, 570)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ArenaEndWall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArenaEndWall" unique_id=667896849]
 shape = SubResource("ArenaEndWallShape")
 
-[node name="Visual" type="Polygon2D" parent="ArenaEndWall"]
+[node name="Visual" type="Polygon2D" parent="ArenaEndWall" unique_id=1376091468]
 color = Color(0.09, 0.27, 0.34, 1)
 polygon = PackedVector2Array(-6, -102, 6, -102, 6, 103, -6, 103)
 
-[node name="EntryMarker" type="Marker2D" parent="." groups=["vertical_entry"]]
+[node name="EntryMarker" type="Marker2D" parent="." unique_id=1415058502 groups=["vertical_entry"]]
 position = Vector2(62, 376)
 
-[node name="ReturnDoor" parent="." instance=ExtResource("1_door")]
+[node name="ReturnDoor" parent="." unique_id=2080078693 instance=ExtResource("1_door")]
 position = Vector2(22, 366)
 target_marker_group = &"passage_return"
-target_room_id = "training_passage"
 door_label = "PASSAGE"
 
-[node name="ShaftReturnMarker" type="Marker2D" parent="." groups=["shaft_return"]]
+[node name="ShaftReturnMarker" type="Marker2D" parent="." unique_id=1002785981 groups=["shaft_return"]]
 position = Vector2(745, 630)
 
-[node name="GrottoGate" parent="." instance=ExtResource("1_door")]
+[node name="ShaftArenaEntry" type="Marker2D" parent="." groups=["shaft_arena_entry"]]
+position = Vector2(400, 630)
+
+[node name="ShaftHubReturn" type="Marker2D" parent="." groups=["shaft_hub_return"]]
+position = Vector2(110, 630)
+
+[node name="ShaftArenaDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(-122, -938)
+target_marker_group = &"shaft_arena_entry"
+target_room_id = "sunken_shaft"
+door_label = "WARDEN ANTECHAMBER"
+
+[node name="ArenaHubReturnDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(368, 630)
+target_marker_group = &"shaft_hub_return"
+target_room_id = "sunken_shaft"
+door_label = "SHAFT RETURN"
+
+[node name="GrottoGate" parent="." unique_id=1126095389 instance=ExtResource("1_door")]
 position = Vector2(789, 626)
 target_marker_group = &"grotto_entry"
 target_room_id = "echo_grotto"
 door_label = "ECHO GROTTO"
 required_item_id = "warden_seal"
 required_boss_ids = PackedStringArray("abyss_warden")
-locked_hint = "Defeat the Abyss Warden to open this path."
 locked_label = "WARDEN SEAL"
+locked_hint = "Defeat the Abyss Warden to open this path."
 
-[node name="UpperCheckpoint" parent="." instance=ExtResource("2_checkpoint")]
+[node name="UpperCheckpoint" parent="." unique_id=999045083 instance=ExtResource("2_checkpoint")]
 position = Vector2(235, 55)
 lamp_id = "sunken_shaft_lamp"
 lamp_name = "Sunken Shaft Lamp"
 room_id = "sunken_shaft"
 
-[node name="HollowUpperReturn" type="Marker2D" parent="." groups=["shaft_hollow_upper_return"]]
+[node name="HollowUpperReturn" type="Marker2D" parent="." unique_id=1399383038 groups=["shaft_hollow_upper_return"]]
 position = Vector2(198, 55)
 
-[node name="HollowUpperDoor" parent="." instance=ExtResource("1_door")]
+[node name="HollowUpperDoor" parent="." unique_id=1015436571 instance=ExtResource("1_door")]
 position = Vector2(282, 55)
 target_marker_group = &"shaft_hollow_upper_entry"
 target_room_id = "shaft_hollow"
 door_label = "WISP HOLLOW"
 
-[node name="HollowLowerReturn" type="Marker2D" parent="." groups=["shaft_hollow_lower_return"]]
+[node name="HollowLowerReturn" type="Marker2D" parent="." unique_id=1440385417 groups=["shaft_hollow_lower_return"]]
 position = Vector2(240, 638)
 
-[node name="HollowLowerDoor" parent="." instance=ExtResource("1_door")]
-position = Vector2(289, 638)
+[node name="HollowLowerDoor" parent="." unique_id=2075963392 instance=ExtResource("1_door")]
+position = Vector2(280, 638)
 target_marker_group = &"shaft_hollow_lower_entry"
 target_room_id = "shaft_hollow"
 door_label = "WISP HOLLOW"
@@ -289,20 +338,20 @@ required_event_ids = PackedStringArray("shaft_hollow_relay")
 locked_label = "RELAY SEALED"
 locked_hint = "Explore Wisp Hollow from the upper shaft."
 
-[node name="CrossingReturn" type="Marker2D" parent="." groups=["shaft_crossing_return"]]
-position = Vector2(215, 630)
+[node name="CrossingReturn" type="Marker2D" parent="." unique_id=835991230 groups=["shaft_crossing_return"]]
+position = Vector2(96, 513)
 
-[node name="CrossingDoor" parent="." instance=ExtResource("1_door")]
-position = Vector2(172, 630)
+[node name="CrossingDoor" parent="." unique_id=152084989 instance=ExtResource("1_door")]
+position = Vector2(30, 513)
 target_marker_group = &"crossing_shaft_entry"
 target_room_id = "shaft_crossing"
 door_label = "DROWNED CROSSING"
 
-[node name="GalleryReturn" type="Marker2D" parent="." groups=["shaft_gallery_return"]]
-position = Vector2(472, 630)
+[node name="GalleryReturn" type="Marker2D" parent="." unique_id=1064210914 groups=["shaft_gallery_return"]]
+position = Vector2(425, 523)
 
-[node name="GalleryShortcutDoor" parent="." instance=ExtResource("1_door")]
-position = Vector2(421, 630)
+[node name="GalleryShortcutDoor" parent="." unique_id=1031615064 instance=ExtResource("1_door")]
+position = Vector2(350, 523)
 target_marker_group = &"approach_shaft_entry"
 target_room_id = "shaft_approach"
 door_label = "WARDEN APPROACH"
@@ -310,54 +359,56 @@ required_event_ids = PackedStringArray("shaft_gallery_lower", "shaft_gallery_upp
 locked_label = "CONDUITS SEALED"
 locked_hint = "Find and turn both controls in the Flooded Gallery."
 
-[node name="UpperLiftMarker" type="Marker2D" parent="." groups=["shaft_lift_upper"]]
+[node name="UpperLiftMarker" type="Marker2D" parent="." unique_id=266258938 groups=["shaft_lift_upper"]]
 position = Vector2(65, 100)
 
-[node name="LowerLiftMarker" type="Marker2D" parent="." groups=["shaft_lift_lower"]]
+[node name="LowerLiftMarker" type="Marker2D" parent="." unique_id=542675477 groups=["shaft_lift_lower"]]
 position = Vector2(65, 630)
 
-[node name="UpperLift" parent="." instance=ExtResource("10_lift")]
-position = Vector2(58, 105)
+[node name="UpperLift" parent="." unique_id=1680586295 instance=ExtResource("10_lift")]
+position = Vector2(85, 105)
 target_marker_group = &"shaft_lift_lower"
 
-[node name="LowerLift" parent="." instance=ExtResource("10_lift")]
+[node name="LowerLift" parent="." unique_id=185304342 instance=ExtResource("10_lift")]
 position = Vector2(58, 630)
 target_marker_group = &"shaft_lift_upper"
 activates_shortcut = true
 
-[node name="LowerCrate" parent="." instance=ExtResource("3_crate")]
+[node name="LowerCrate" parent="." unique_id=1724694052 instance=ExtResource("3_crate")]
 position = Vector2(205, 593)
 
-[node name="HiddenLifeBloom" parent="." instance=ExtResource("4_life")]
+[node name="HiddenLifeBloom" parent="." unique_id=1102892394 instance=ExtResource("4_life")]
 position = Vector2(60, 520)
 
-[node name="MerchantIronFragment" parent="." instance=ExtResource("6_item")]
+[node name="MerchantIronFragment" parent="." unique_id=363450964 instance=ExtResource("6_item")]
 position = Vector2(105, 244)
 item_id = "iron_fragment"
 display_name = "Iron Fragment"
 
-[node name="UpperShaftWisp" parent="." instance=ExtResource("5_wisp")]
+[node name="UpperShaftWisp" parent="." unique_id=1211933631 instance=ExtResource("5_wisp")]
 position = Vector2(170, 245)
 
-[node name="LowerShaftWisp" parent="." instance=ExtResource("5_wisp")]
+[node name="LowerShaftWisp" parent="." unique_id=569103880 instance=ExtResource("5_wisp")]
 position = Vector2(235, 515)
 ether_dust_chance = 0.5
 
-[node name="UpperShaftSentry" parent="." instance=ExtResource("7_sentry")]
+[node name="UpperShaftSentry" parent="." unique_id=609257252 instance=ExtResource("7_sentry")]
 position = Vector2(265, 309)
 
-[node name="LowerShaftSentry" parent="." instance=ExtResource("7_sentry")]
-position = Vector2(110, 518)
+[node name="LowerShaftSentry" parent="." unique_id=1114255277 instance=ExtResource("7_sentry")]
+position = Vector2(75, 518)
 
-[node name="ShaftCrawler" parent="." instance=ExtResource("8_crawler")]
+[node name="ShaftCrawler" parent="." unique_id=814307096 instance=ExtResource("8_crawler")]
 position = Vector2(136, 641)
 
-[node name="AbyssWarden" parent="." instance=ExtResource("9_warden")]
+[node name="AbyssWarden" parent="." unique_id=1177185428 instance=ExtResource("9_warden")]
 position = Vector2(585, 630)
 
-[node name="AreaTitle" type="Label" parent="."]
-position = Vector2(95, 91)
-size = Vector2(130, 24)
+[node name="AreaTitle" type="Label" parent="." unique_id=770405901]
+offset_left = 95.0
+offset_top = 91.0
+offset_right = 225.0
+offset_bottom = 115.0
 theme_override_colors/font_color = Color(0.42, 0.92, 0.88, 0.72)
 theme_override_font_sizes/font_size = 11
 text = "THE SUNKEN SHAFT"

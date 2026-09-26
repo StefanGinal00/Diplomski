@@ -12,6 +12,7 @@ var age: float = 0.0
 
 @onready var lid: Polygon2D = $Lid
 @onready var core: Polygon2D = $Core
+@onready var rune_halo: Line2D = $RuneHalo
 @onready var prompt: Label = $Prompt
 
 
@@ -31,6 +32,8 @@ func _process(delta: float) -> void:
 		return
 	age += delta
 	core.modulate.a = 0.7 + sin(age * 3.4) * 0.25
+	if rune_halo.visible:
+		rune_halo.rotation += delta * 0.55
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -65,10 +68,16 @@ func open(player: Player) -> bool:
 func _refresh_visuals() -> void:
 	var game_state := get_node_or_null("/root/GameState")
 	var sealed: bool = not opened and not _requirements_met(game_state)
+	var is_memory := reward_item_id.begins_with("memory_sigil_")
+	var memory_color := Color(1.0, 0.62, 0.36, 1.0) if reward_item_id == "memory_sigil_ash" else Color(0.55, 0.79, 1.0, 1.0)
 	lid.position.y = -9.0 if opened else -2.0
 	lid.rotation = -0.3 if opened else 0.0
-	lid.color = Color(0.22, 0.42, 0.46, 1.0) if opened else (Color(0.42, 0.37, 0.63, 1.0) if sealed else Color(0.28, 0.82, 0.82, 1.0))
+	lid.color = Color(0.22, 0.42, 0.46, 1.0) if opened else (Color(0.42, 0.37, 0.63, 1.0) if sealed else (memory_color if is_memory else Color(0.28, 0.82, 0.82, 1.0)))
 	core.visible = not opened and not sealed
+	core.color = memory_color if is_memory else Color(0.75, 1.0, 0.78, 0.95)
+	rune_halo.visible = is_memory and not opened
+	rune_halo.default_color = memory_color
+	rune_halo.modulate.a = 0.28 if sealed else 0.87
 	prompt.text = "CACHE EMPTY" if opened else ("SEALS %d/%d" % [required_event_ids.size() - _remaining_seals(game_state), required_event_ids.size()] if sealed else "[E] OPEN " + cache_name.to_upper())
 
 

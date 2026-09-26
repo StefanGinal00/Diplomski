@@ -12,6 +12,8 @@ signal dash_state_changed(is_unlocked: bool)
 signal weapon_changed(weapon_id: String, arrow_type: String)
 signal respawned
 signal died
+## Presentation event: emitted only after the original attack succeeds.
+signal attack_performed(weapon_class: String, direction: Vector2)
 
 @export_category("Movement")
 @export var move_speed: float = 165.0
@@ -84,6 +86,7 @@ var mana_regen_delay_remaining: float = 0.0
 var mana_regen_progress: float = 0.0
 var facing_direction: float = 1.0
 var respawn_position: Vector2
+var drop_through_floors: Array[Dictionary] = []
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var player_collision: CollisionShape2D = $CollisionShape2D
@@ -132,6 +135,7 @@ func _process(_delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	_update_drop_through(delta)
 	if is_dead:
 		return
 
@@ -167,8 +171,11 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, friction * delta)
 
-	if Input.is_action_just_pressed("ui_accept") and not is_crouching:
-		jump_buffer_remaining = jump_buffer_time
+	if Input.is_action_just_pressed("ui_accept"):
+		if is_crouching:
+			_try_drop_through()
+		else:
+			jump_buffer_remaining = jump_buffer_time
 	if Input.is_action_just_released("ui_accept"):
 		_cut_jump_short()
 	_try_buffered_jump()
@@ -176,6 +183,77 @@ func _physics_process(delta: float) -> void:
 		try_attack()
 
 	move_and_slide()
+
+
+func _try_drop_through() -> bool:
+	if is_dead or is_dashing or not is_on_floor():
+		return false
+	# Inspect all supports under the feet: overlapping one-way planks must
+	# release together, but a solid floor must never be made passable.
+	var half: Vector2 = player_collision.shape.size * 0.5
+	var feet := RectangleShape2D.new()
+	feet.size = Vector2(maxf(half.x * 2.0 - 2.0, 2.0), 4.0)
+	var query := PhysicsShapeQueryParameters2D.new()
+	query.shape = feet
+	query.transform = Transform2D(0, global_position + Vector2(0, half.y + 1))
+	query.collision_mask = collision_mask
+	query.exclude = [get_rid()]
+	# A previous plank may still overlap the player's head while the feet
+	# already rest on a lower plank. A second deliberate drop must be allowed.
+	var excluded := query.exclude
+	for entry in drop_through_floors:
+		if is_instance_valid(entry.body):
+			excluded.append(entry.body.get_rid())
+	query.exclude = excluded
+	var supports := get_world_2d().direct_space_state.intersect_shape(query, 16)
+	if supports.size() >= 16:
+		return false # Do not ignore a possible solid support beyond the query cap.
+	var candidates: Dictionary = {}
+	for hit in supports:
+		var body := hit.collider as StaticBody2D
+		if body == null:
+			return false
+		# Exceptions apply to a whole body; reject compound terrain that also
+		# contains solid collision, even if the contacted shape is one-way.
+		for owner_id in body.get_shape_owners():
+			var shape := body.shape_owner_get_owner(owner_id) as CollisionShape2D
+			if shape == null or not shape.one_way_collision or not shape.shape is RectangleShape2D:
+				return false
+		var support := body.shape_owner_get_owner(body.shape_find_owner(hit.shape)) as CollisionShape2D
+		candidates[body] = support
+	if candidates.is_empty():
+		return false
+	for body in candidates:
+		add_collision_exception_with(body)
+		drop_through_floors.append({"body": body, "rid": body.get_rid(), "shape": candidates[body]})
+	jump_buffer_remaining = 0
+	coyote_time_remaining = 0
+	jump_count = 1
+	velocity.y = maxf(velocity.y, 80.0)
+	return true
+
+
+func _update_drop_through(_delta: float) -> void:
+	for index in range(drop_through_floors.size() - 1, -1, -1):
+		var entry := drop_through_floors[index]
+		var body = entry.body
+		var support = entry.shape
+		var cleared := true
+		if is_instance_valid(body) and is_instance_valid(support):
+			var platform_rect: Rect2 = support.global_transform * Rect2(-support.shape.size * 0.5, support.shape.size)
+			var player_rect: Rect2 = player_collision.global_transform * Rect2(-player_collision.shape.size * 0.5, player_collision.shape.size)
+			# Restore only once the body is clear (below, above or to the side),
+			# not on a timer that can re-enable collision through its head.
+			cleared = not player_rect.intersects(platform_rect.grow(2.0))
+		if cleared:
+			PhysicsServer2D.body_remove_collision_exception(get_rid(), entry.rid)
+			drop_through_floors.remove_at(index)
+
+
+func _clear_drop_through() -> void:
+	for entry in drop_through_floors:
+		PhysicsServer2D.body_remove_collision_exception(get_rid(), entry.rid)
+	drop_through_floors.clear()
 
 
 func _update_dash_timers(delta: float) -> void:
@@ -325,7 +403,7 @@ func _try_melee_attack(definition: Dictionary) -> bool:
 		var target := attack_cast.get_collider(collision_index) as Node
 		if target == null or not is_instance_valid(target) or target.is_queued_for_deletion():
 			continue
-		if not target.is_in_group("enemy") and not target.is_in_group("breakable"):
+		if not target.is_in_group("enemy") and not target.is_in_group("neutral_creature") and not target.is_in_group("breakable"):
 			continue
 
 		var target_id := target.get_instance_id()
@@ -340,6 +418,7 @@ func _try_melee_attack(definition: Dictionary) -> bool:
 		var target_bonus: int = game_state.get_weapon_target_bonus(weapon_id, target) if game_state != null else 0
 		target.take_damage(damage + target_bonus, knockback)
 
+	attack_performed.emit("sword", Vector2(facing_direction, 0))
 	return true
 
 
@@ -363,12 +442,15 @@ func _try_bow_attack(definition: Dictionary) -> bool:
 	arrow.setup(aim_direction, self, arrow_type, (1 if bow_mastery_unlocked else 0) + upgrade_bonus, 1 if bow_piercing_unlocked and arrow_type == "basic_arrow" else 0, weapon_id, int(definition.get("damage", 1)), float(definition.get("range", 520.0)))
 	attack_cooldown_timer.start(float(definition.get("cooldown", 0.58)) * cooldown_multiplier)
 	attack_visual.hide()
+	if staff_visual != null:
+		staff_visual.hide()
 	if bow_visual != null:
 		bow_visual.scale = Vector2.ONE
 		bow_visual.rotation = aim_direction.angle()
 		bow_visual.show()
 	attack_visual_timer.start(0.16)
 	weapon_changed.emit(weapon_id, game_state.selected_arrow_type if game_state != null else "basic_arrow")
+	attack_performed.emit("bow", aim_direction)
 	return true
 
 
@@ -407,6 +489,7 @@ func _try_staff_attack(definition: Dictionary) -> bool:
 		staff_visual.show()
 	attack_visual_timer.start(0.18)
 	weapon_changed.emit(weapon_id, spell_id)
+	attack_performed.emit("staff", cast_direction)
 	return true
 
 
@@ -597,6 +680,7 @@ func die() -> void:
 	if is_dead:
 		return
 
+	_clear_drop_through()
 	is_dead = true
 	is_dashing = false
 	dash_visual.hide()
@@ -620,6 +704,7 @@ func respawn() -> void:
 	if not is_dead:
 		return
 
+	_clear_drop_through()
 	for projectile in get_tree().get_nodes_in_group("enemy_projectile"):
 		projectile.queue_free()
 

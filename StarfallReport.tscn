@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://QuestItem.gd" id="1_item"]
+
+[sub_resource type="CircleShape2D" id="ReportShape"]
+radius = 11.0
+
+[node name="StarfallReport" type="Area2D" groups=["quest_item"]]
+script = ExtResource("1_item")
+bob_speed = 2.2
+bob_height = 2.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("ReportShape")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Glow" type="Polygon2D" parent="Visual"]
+color = Color(0.38, 0.88, 0.94, 0.25)
+polygon = PackedVector2Array(-14, -11, 14, -11, 17, 12, -17, 12)
+
+[node name="Paper" type="Polygon2D" parent="Visual"]
+color = Color(0.87, 0.85, 0.7, 1)
+polygon = PackedVector2Array(-9, -10, 7, -10, 9, 10, -9, 10)
+
+[node name="Seal" type="Polygon2D" parent="Visual"]
+color = Color(0.23, 0.74, 0.81, 1)
+polygon = PackedVector2Array(-5, 3, 5, 3, 5, 8, -5, 8)
+
+[node name="Caption" type="Label" parent="Visual"]
+offset_left = -48.0
+offset_top = -32.0
+offset_right = 48.0
+offset_bottom = -16.0
+theme_override_colors/font_color = Color(0.76, 0.95, 1, 0.9)
+theme_override_font_sizes/font_size = 9
+text = "CITY REPORT"
+horizontal_alignment = 1

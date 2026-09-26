@@ -34,7 +34,7 @@ func _run() -> void:
 	_check(not tide_door._requirements_met() and not reverse_door._requirements_met(), "Tide loop opened before anchor")
 	state.add_item("gallery_prism")
 	state.set_current_room("echo_gallery")
-	gallery.get_node("CausewayDoor")._on_body_entered(player)
+	gallery.get_node("CausewayDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_causeway" and bool(state.discovered_rooms.get("echo_causeway", false)), "Gallery did not discover Crystal Causeway")
 	_check(player.global_position.distance_to(causeway.get_node("GalleryEntry").global_position) < 45.0, "Causeway entry marker is wrong")
@@ -57,17 +57,17 @@ func _run() -> void:
 	_check(anchor.activate(player), "Crystal anchor did not activate")
 	_check(tide_door._requirements_met() and reverse_door._requirements_met(), "Anchor did not open both Tide doors")
 	_check("TIDE LOOP OPEN" in game.get_node("UI").objective_label.text, "Anchor objective did not update")
-	tide_door._on_body_entered(player)
+	tide_door.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_tide_well" and player.global_position.distance_to(tide.get_node("CausewayReturn").global_position) < 45.0, "Causeway did not reach the upper Tide Well")
-	reverse_door._on_body_entered(player)
+	reverse_door.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_causeway" and player.global_position.distance_to(causeway.get_node("TideEntry").global_position) < 45.0, "Tide Well could not return to Causeway")
 	state.set_zone_tier("echo_grotto", 1)
 	_check(near_bridge.cycle_speed > 1.0 and causeway.has_node("Cache_causeway_afterglow"), "Awakened Causeway timing or cache is missing")
-	tide_door._on_body_entered(player)
+	tide_door.activate(player)
 	await create_timer(0.5).timeout
-	reverse_door._on_body_entered(player)
+	reverse_door.activate(player)
 	await create_timer(0.5).timeout
 	_check(causeway.has_node("causeway_echo_wisp"), "Awakened Causeway encounter did not spawn on return")
 	var awakened_cache = causeway.get_node("Cache_causeway_afterglow")
@@ -93,7 +93,7 @@ func _run() -> void:
 	_check(game.get_node("TideWell/CausewayDoor")._requirements_met(), "Saved return door from Tide Well closed")
 	_check(causeway.get_node("CausewayCache").opened and causeway.get_node("Cache_causeway_afterglow").opened, "Saved Causeway caches reopened")
 	game.get_node("UI")._update_route_summary()
-	_check("3/8 PLAYABLE ROOMS" in game.get_node("UI").map_route_label.text and "CACHES 2/10" in game.get_node("UI").map_route_label.text, "Map did not track Causeway progress")
+	_check("3/11 PLAYABLE ROOMS" in game.get_node("UI").map_route_label.text and "CACHES 2/19" in game.get_node("UI").map_route_label.text, "Map did not track Causeway progress")
 	_check(game.get_node("UI/WorldMapPanel/RouteScroll").get_global_rect().intersection(game.get_node("UI").map_travel_button.get_global_rect()).get_area() <= 0.0, "World-map route viewport overlaps travel button")
 	state.delete_save()
 	game.queue_free()

@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://SoulPulse.gd" id="1_pulse"]
+
+[sub_resource type="RectangleShape2D" id="PulseShape"]
+size = Vector2(94, 84)
+
+[node name="SoulPulse" type="Area2D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_pulse")
+disabled_by_shortcut_id = "starfall_crucible_stabilized"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("PulseShape")
+
+[node name="PulseBase" type="Polygon2D" parent="."]
+color = Color(0.33, 0.25, 0.48, 1)
+polygon = PackedVector2Array(-50, 39, -32, 30, -9, 36, 12, 29, 36, 35, 50, 39, 50, 48, -50, 48)
+
+[node name="Flame" type="Polygon2D" parent="."]
+color = Color(0.55, 0.3, 0.76, 0.1)
+polygon = PackedVector2Array(-43, 38, -30, 12, -20, -26, -8, 10, 3, -39, 16, 7, 30, -23, 43, 38)
+
+[node name="WarningLine" type="Line2D" parent="."]
+points = PackedVector2Array(-46, 40, -30, 12, -20, -26, -8, 10, 3, -39, 16, 7, 30, -23, 46, 40)
+width = 2.0
+default_color = Color(0.7, 0.48, 0.87, 0.28)

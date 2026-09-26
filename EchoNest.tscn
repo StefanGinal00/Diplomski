@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
 [ext_resource type="PackedScene" path="res://EchoBroodling.tscn" id="3_brood"]
 [ext_resource type="PackedScene" path="res://NestSeal.tscn" id="4_seal"]
 [ext_resource type="PackedScene" path="res://ItemPickup.tscn" id="5_item"]
+[ext_resource type="Script" path="res://EchoTraversal.gd" id="6_traversal"]
 
 [sub_resource type="RectangleShape2D" id="FloorShape"]
 size = Vector2(920, 18)
@@ -22,6 +23,10 @@ size = Vector2(130, 10)
 size = Vector2(130, 10)
 
 [node name="EchoNest" type="Node2D"]
+
+[node name="LongTraversal" type="Node2D" parent="."]
+script = ExtResource("6_traversal")
+route_id = "nest"
 
 [node name="Backdrop" type="Polygon2D" parent="."]
 z_index = -4
@@ -54,7 +59,7 @@ color = Color(0.19, 0.2, 0.34, 1)
 polygon = PackedVector2Array(-460, -9, 460, -9, 460, 9, -460, 9)
 
 [node name="EndWall" type="StaticBody2D" parent="."]
-position = Vector2(920, 0)
+position = Vector2(3500, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EndWall"]
 shape = SubResource("EndWallShape")
@@ -100,7 +105,7 @@ polygon = PackedVector2Array(-65, -5, 65, -5, 65, 5, -65, 5)
 position = Vector2(65, 130)
 
 [node name="SanctumReturn" type="Marker2D" parent="." groups=["nest_sanctum_return"]]
-position = Vector2(748, 64)
+position = Vector2(3300, -967)
 
 [node name="ReturnDoor" parent="." instance=ExtResource("1_door")]
 position = Vector2(25, 130)
@@ -115,19 +120,6 @@ lamp_name = "Echo Nest Lamp"
 room_id = "echo_nest"
 enemy_block_radius = 125.0
 
-[node name="BroodlingOne" parent="." instance=ExtResource("3_brood")]
-position = Vector2(280, 146)
-
-[node name="BroodlingTwo" parent="." instance=ExtResource("3_brood")]
-position = Vector2(465, 146)
-max_health = 4
-gold_reward = 16
-
-[node name="BroodlingThree" parent="." instance=ExtResource("3_brood")]
-position = Vector2(610, 146)
-max_health = 4
-gold_reward = 18
-
 [node name="NestVeil" parent="." instance=ExtResource("4_seal")]
 position = Vector2(690, 0)
 
@@ -138,7 +130,7 @@ display_name = "Nest Crest"
 unique = true
 
 [node name="SanctumDoor" parent="." instance=ExtResource("1_door")]
-position = Vector2(810, 63)
+position = Vector2(4090, -1627)
 target_marker_group = &"sanctum_entry"
 target_room_id = "echo_sanctum"
 door_label = "SANCTUM"
@@ -148,7 +140,7 @@ locked_label = "SEALED"
 locked_hint = "Claim the Tide Core and Nest Crest."
 
 [node name="ShortcutDoor" parent="." instance=ExtResource("1_door")]
-position = Vector2(878, 130)
+position = Vector2(455, 3)
 target_marker_group = &"tide_nest_shortcut_return"
 target_room_id = "echo_tide_well"
 door_label = "WELL UPPER"

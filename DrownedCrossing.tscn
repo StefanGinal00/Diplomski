@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://ShaftWisp.tscn" id="6_wisp"]
 [ext_resource type="PackedScene" path="res://ShaftSentry.tscn" id="7_sentry"]
 [ext_resource type="PackedScene" path="res://ShaftCrawler.tscn" id="8_crawler"]
+[ext_resource type="Script" path="res://ShaftRoomExpansion.gd" id="9_expansion"]
 
 [sub_resource type="RectangleShape2D" id="WallShape"]
 size = Vector2(12, 420)
@@ -194,15 +195,6 @@ cache_name = "Crossing Supply"
 gold_reward = 30
 reward_item_id = "iron_fragment"
 
-[node name="ChannelCrawler" parent="." instance=ExtResource("8_crawler")]
-position = Vector2(312, 329)
-
-[node name="AqueductWisp" parent="." instance=ExtResource("6_wisp")]
-position = Vector2(500, 216)
-
-[node name="FarSentry" parent="." instance=ExtResource("7_sentry")]
-position = Vector2(634, 329)
-
 [node name="AreaTitle" type="Label" parent="."]
 position = Vector2(86, 80)
 size = Vector2(188, 24)
@@ -210,3 +202,6 @@ theme_override_colors/font_color = Color(0.55, 0.9, 0.94, 0.8)
 theme_override_font_sizes/font_size = 12
 text = "DROWNED CROSSING"
 horizontal_alignment = 1
+
+[node name="ExpandedRoute" type="Node2D" parent="."]
+script = ExtResource("9_expansion")

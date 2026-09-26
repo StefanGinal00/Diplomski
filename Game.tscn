@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://d25wjjihdqoeb"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_xkndl"]
+[ext_resource type="Script" path="res://PlayerAppearance.gd" id="player_appearance"]
+[ext_resource type="Script" path="res://WeaponAppearance.gd" id="weapon_appearance"]
 [ext_resource type="Texture2D" uid="uid://gb1r7s7q6tf4" path="res://icon.svg" id="2_u44n3"]
 [ext_resource type="Script" path="res://SpikeTrap.gd" id="3_u44n3"]
 [ext_resource type="PackedScene" path="res://XPOrb.tscn" id="5_t88pq"]
@@ -40,6 +42,27 @@
 [ext_resource type="PackedScene" path="res://EmberBarracks.tscn" id="39_ash_barracks"]
 [ext_resource type="PackedScene" path="res://AshArena.tscn" id="40_ash_arena"]
 [ext_resource type="PackedScene" path="res://SlagReservoir.tscn" id="41_ash_reservoir"]
+[ext_resource type="PackedScene" path="res://EchoHaven.tscn" id="42_echo_haven"]
+[ext_resource type="PackedScene" path="res://CinderHearth.tscn" id="43_ash_hearth"]
+[ext_resource type="PackedScene" path="res://EchoHavenOutskirts.tscn" id="44_echo_outskirts"]
+[ext_resource type="PackedScene" path="res://CinderHearthOutskirts.tscn" id="45_ash_outskirts"]
+[ext_resource type="PackedScene" path="res://AshChapel.tscn" id="46_ash_chapel"]
+[ext_resource type="PackedScene" path="res://CastellanThrone.tscn" id="47_ash_throne"]
+[ext_resource type="PackedScene" path="res://StarfallCitadel.tscn" id="48_starfall_citadel"]
+[ext_resource type="PackedScene" path="res://StarfallOutskirts.tscn" id="49_starfall_outskirts"]
+[ext_resource type="PackedScene" path="res://StarfallSilentGate.tscn" id="50_starfall_silent"]
+[ext_resource type="PackedScene" path="res://StarfallMemoryVault.tscn" id="51_starfall_vault"]
+[ext_resource type="PackedScene" path="res://StarfallRootedHall.tscn" id="52_starfall_rooted"]
+[ext_resource type="PackedScene" path="res://StarfallEmptyCourt.tscn" id="53_starfall_court"]
+[ext_resource type="PackedScene" path="res://StarfallSoulCrucible.tscn" id="54_starfall_crucible"]
+[ext_resource type="PackedScene" path="res://StarfallSunlessPassage.tscn" id="55_starfall_sunless"]
+[ext_resource type="PackedScene" path="res://StarfallHollowThrone.tscn" id="56_starfall_throne"]
+[ext_resource type="PackedScene" path="res://ExpeditionWing.tscn" id="57_wing"]
+[ext_resource type="Script" path="res://WorldPopulation.gd" id="58_population"]
+[ext_resource type="Script" path="res://RoomActivityDirector.gd" id="59_activity"]
+[ext_resource type="Script" path="res://BiomeBackdrop.gd" id="60_backdrop"]
+[ext_resource type="Script" path="res://TrainingPassageDecor.gd" id="61_training_decor"]
+[ext_resource type="Script" path="res://WorldSceneLayout.gd" id="62_world_scene_layout"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sb48q"]
 
@@ -58,7 +81,7 @@ size = Vector2(100, 10)
 size = Vector2(130, 10)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
-size = Vector2(24, 44)
+size = Vector2(44, 64)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_npc_interaction"]
 radius = 32.0
@@ -126,66 +149,137 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="Game" type="Node2D" unique_id=535081610]
+script = ExtResource("62_world_scene_layout")
 
 [node name="PassageReturnMarker" type="Marker2D" parent="." groups=["passage_return"]]
 position = Vector2(1288, 376)
 
 [node name="VerticalChamber" parent="." instance=ExtResource("18_vertical")]
-position = Vector2(1500, 0)
+position = Vector2(10000, -22000)
 
 [node name="ShaftHollow" parent="." instance=ExtResource("30_hollow")]
-position = Vector2(1500, -600)
+position = Vector2(20000, -22000)
 
 [node name="DrownedCrossing" parent="." instance=ExtResource("31_crossing")]
-position = Vector2(2500, -600)
+position = Vector2(30000, -22000)
 
 [node name="FloodedGallery" parent="." instance=ExtResource("32_gallery")]
-position = Vector2(2500, -1200)
+position = Vector2(40000, -22000)
 
 [node name="BlackwaterCistern" parent="." instance=ExtResource("35_cistern")]
-position = Vector2(3500, -600)
+position = Vector2(50000, -22000)
 
 [node name="WardenApproach" parent="." instance=ExtResource("36_approach")]
-position = Vector2(3500, -1200)
+position = Vector2(60000, -22000)
 
 [node name="EchoGrotto" parent="." instance=ExtResource("22_grotto")]
-position = Vector2(2600, 500)
+position = Vector2(10000, -15000)
+
+[node name="EchoHaven" parent="." instance=ExtResource("42_echo_haven")]
+position = Vector2(20000, -9000)
+
+[node name="EchoHavenOutskirts" parent="." instance=ExtResource("44_echo_outskirts")]
+position = Vector2(30000, -9000)
 
 [node name="EchoGallery" parent="." instance=ExtResource("24_gallery")]
-position = Vector2(3700, 500)
+position = Vector2(20000, -15000)
 
 [node name="PrismArchive" parent="." instance=ExtResource("25_archive")]
-position = Vector2(4700, 350)
+position = Vector2(30000, -15000)
 
 [node name="TideWell" parent="." instance=ExtResource("26_tide")]
-position = Vector2(2600, 850)
+position = Vector2(40000, -15000)
 
 [node name="CrystalCauseway" parent="." instance=ExtResource("33_causeway")]
-position = Vector2(3700, 1900)
+position = Vector2(50000, -15000)
 
 [node name="UndertowVault" parent="." instance=ExtResource("34_vault")]
-position = Vector2(2200, 1900)
+position = Vector2(60000, -15000)
 
 [node name="EchoNest" parent="." instance=ExtResource("27_nest")]
-position = Vector2(3300, 1350)
+position = Vector2(70000, -15000)
 
 [node name="ResonanceSanctum" parent="." instance=ExtResource("28_sanctum")]
-position = Vector2(4400, 1350)
+position = Vector2(10000, -9000)
 
 [node name="BrokenCauseway" parent="." instance=ExtResource("37_ash_causeway")]
-position = Vector2(5500, 1350)
+position = Vector2(10000, -3000)
+
+[node name="CinderHearth" parent="." instance=ExtResource("43_ash_hearth")]
+position = Vector2(10000, 3000)
+
+[node name="CinderHearthOutskirts" parent="." instance=ExtResource("45_ash_outskirts")]
+position = Vector2(20000, 3000)
 
 [node name="CinderForge" parent="." instance=ExtResource("38_ash_forge")]
-position = Vector2(6800, 1350)
+position = Vector2(20000, -3000)
 
 [node name="EmberBarracks" parent="." instance=ExtResource("39_ash_barracks")]
-position = Vector2(7900, 1350)
+position = Vector2(30000, -3000)
 
 [node name="AshArena" parent="." instance=ExtResource("40_ash_arena")]
-position = Vector2(9400, 1350)
+position = Vector2(40000, -3000)
 
 [node name="SlagReservoir" parent="." instance=ExtResource("41_ash_reservoir")]
-position = Vector2(11000, 1350)
+position = Vector2(50000, -3000)
+
+[node name="AshChapel" parent="." instance=ExtResource("46_ash_chapel")]
+position = Vector2(60000, -3000)
+
+[node name="CastellanThrone" parent="." instance=ExtResource("47_ash_throne")]
+position = Vector2(70000, -3000)
+
+[node name="StarfallCitadel" parent="." instance=ExtResource("48_starfall_citadel")]
+position = Vector2(10000, 10000)
+
+[node name="StarfallOutskirts" parent="." instance=ExtResource("49_starfall_outskirts")]
+position = Vector2(20000, 10000)
+
+[node name="StarfallSilentGate" parent="." instance=ExtResource("50_starfall_silent")]
+position = Vector2(30000, 10000)
+
+[node name="StarfallMemoryVault" parent="." instance=ExtResource("51_starfall_vault")]
+position = Vector2(40000, 10000)
+
+[node name="StarfallRootedHall" parent="." instance=ExtResource("52_starfall_rooted")]
+position = Vector2(50000, 10000)
+
+[node name="StarfallEmptyCourt" parent="." instance=ExtResource("53_starfall_court")]
+position = Vector2(60000, 10000)
+
+[node name="StarfallSoulCrucible" parent="." instance=ExtResource("54_starfall_crucible")]
+position = Vector2(70000, 10000)
+
+[node name="StarfallSunlessPassage" parent="." instance=ExtResource("55_starfall_sunless")]
+position = Vector2(80000, 10000)
+
+[node name="StarfallHollowThrone" parent="." instance=ExtResource("56_starfall_throne")]
+position = Vector2(10000, 16000)
+
+[node name="ShaftDriftworks" parent="." instance=ExtResource("57_wing")]
+position = Vector2(70000, -22000)
+region = "shaft"
+
+[node name="EchoDepths" parent="." instance=ExtResource("57_wing")]
+position = Vector2(80000, -15000)
+region = "echo"
+
+[node name="AshEmberspine" parent="." instance=ExtResource("57_wing")]
+position = Vector2(80000, -3000)
+region = "ash"
+
+[node name="StarfallRamparts" parent="." instance=ExtResource("57_wing")]
+position = Vector2(20000, 16000)
+region = "starfall"
+
+[node name="WorldPopulation" type="Node2D" parent="."]
+script = ExtResource("58_population")
+
+[node name="RoomActivityDirector" type="Node" parent="."]
+script = ExtResource("59_activity")
+
+[node name="TrainingPassageDecor" type="Node2D" parent="."]
+script = ExtResource("61_training_decor")
 
 [node name="QuestManager" type="Node" parent="." groups=["quest_manager"]]
 script = ExtResource("9_quest")
@@ -219,6 +313,16 @@ grow_vertical = 0
 mouse_filter = 2
 color = Color(0.065, 0.12, 0.18, 1)
 
+[node name="BiomeBackdrop" type="Control" parent="Background"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("60_backdrop")
+
 [node name="Player" type="CharacterBody2D" parent="." unique_id=1179743779 groups=["player"]]
 position = Vector2(234, 342)
 script = ExtResource("1_xkndl")
@@ -226,10 +330,14 @@ arrow_scene = ExtResource("19_arrow")
 magic_projectile_scene = ExtResource("21_magic")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=721759141]
+visible = false
 position = Vector2(7.1525574e-07, -7.1525574e-07)
 scale = Vector2(0.15234375, 0.16015626)
 modulate = Color(0.45, 0.95, 1, 1)
 texture = ExtResource("2_u44n3")
+
+[node name="Appearance" type="Sprite2D" parent="Player"]
+script = ExtResource("player_appearance")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1397834662]
 shape = SubResource("RectangleShape2D_sb48q")
@@ -251,6 +359,7 @@ collide_with_bodies = true
 collide_with_areas = false
 
 [node name="AttackVisual" type="Polygon2D" parent="Player/AttackCast"]
+self_modulate = Color(1, 1, 1, 0)
 visible = false
 color = Color(1, 0.78, 0.16, 0.82)
 polygon = PackedVector2Array(-16, -10, 10, -8, 18, 0, 10, 8, -16, 10, -8, 0)
@@ -270,16 +379,22 @@ color = Color(0.18, 0.95, 1, 0.55)
 polygon = PackedVector2Array(-32, -8, 6, -5, 12, 0, 6, 5, -32, 8, -20, 0)
 
 [node name="BowVisual" type="Polygon2D" parent="Player"]
+self_modulate = Color(1, 1, 1, 0)
 visible = false
 z_index = 2
 color = Color(0.82, 0.58, 0.25, 1)
 polygon = PackedVector2Array(-3, -13, 2, -10, 5, -5, 6, 0, 5, 5, 2, 10, -3, 13, 0, 8, 2, 3, 3, 0, 2, -3, 0, -8)
 
 [node name="StaffVisual" type="Polygon2D" parent="Player"]
+self_modulate = Color(1, 1, 1, 0)
 visible = false
 z_index = 2
 color = Color(0.72, 0.42, 1, 1)
 polygon = PackedVector2Array(-2, -16, 2, -16, 2, 7, 7, 12, 0, 16, -7, 12, -2, 7)
+
+[node name="WeaponAppearance" type="Node2D" parent="Player"]
+z_index = 2
+script = ExtResource("weapon_appearance")
 
 [node name="WeaponAura" type="Polygon2D" parent="Player"]
 visible = false
@@ -1018,7 +1133,7 @@ offset_top = 68.0
 offset_right = 356.0
 offset_bottom = 118.0
 theme_override_font_sizes/font_size = 12
-text = "Move: arrows   Jump: Space   Attack: F   Interact: E\nSkills: K   Quests: J   Bag: I   Map: M\nDash: X   Weapon: Q   Spell/Ammo: R   Travel: T"
+text = "Arrows: move/crouch  Space: jump  Down+Space: drop\nF: attack  E: interact  X: dash  Q: weapon  R: mode\nK: skills  J: quests  I: bag  M: map  T: travel"
 horizontal_alignment = 1
 autowrap_mode = 2
 
@@ -1496,6 +1611,137 @@ theme_override_font_sizes/font_size = 12
 text = "The journey begins"
 horizontal_alignment = 1
 
+[node name="MemoryToastPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -274.0
+offset_top = 77.0
+offset_right = 274.0
+offset_bottom = 201.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBox_overlay")
+
+[node name="MemoryTitle" type="Label" parent="UI/MemoryToastPanel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 9.0
+offset_right = 532.0
+offset_bottom = 32.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.61, 0.89, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "A DROWNED MEMORY"
+horizontal_alignment = 1
+
+[node name="MemoryText" type="Label" parent="UI/MemoryToastPanel"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 37.0
+offset_right = 526.0
+offset_bottom = 91.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 14
+text = "The oldest bell kept ringing beneath the flood."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="MemoryStatus" type="Label" parent="UI/MemoryToastPanel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 99.0
+offset_right = 532.0
+offset_bottom = 116.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.85, 0.77, 0.58, 1)
+theme_override_font_sizes/font_size = 11
+text = "MEMORY 1/3  -  SEE INVENTORY [I]"
+horizontal_alignment = 1
+
+[node name="EndingBackdrop" type="ColorRect" parent="UI"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.015, 0.012, 0.035, 0.96)
+
+[node name="EndingPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -310.0
+offset_top = -218.0
+offset_right = 310.0
+offset_bottom = 218.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_overlay")
+
+[node name="TitleLabel" type="Label" parent="UI/EndingPanel"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 22.0
+offset_right = 590.0
+offset_bottom = 62.0
+theme_override_colors/font_color = Color(0.87, 0.79, 1, 1)
+theme_override_font_sizes/font_size = 25
+text = "THE THRONE FALLS SILENT"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="UI/EndingPanel"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 66.0
+offset_right = 575.0
+offset_bottom = 91.0
+theme_override_colors/font_color = Color(0.6, 0.89, 0.87, 1)
+theme_override_font_sizes/font_size = 13
+text = "A first ending - the world remains open"
+horizontal_alignment = 1
+
+[node name="StoryScroll" type="ScrollContainer" parent="UI/EndingPanel"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 105.0
+offset_right = 576.0
+offset_bottom = 300.0
+horizontal_scroll_mode = 0
+
+[node name="StoryLabel" type="Label" parent="UI/EndingPanel/StoryScroll"]
+layout_mode = 2
+custom_minimum_size = Vector2(508, 0)
+theme_override_colors/font_color = Color(0.87, 0.86, 0.94, 1)
+theme_override_font_sizes/font_size = 17
+text = "The Sovereign's hold breaks, but the city does not fall.\n\nThree memories answer beneath Starfall: the drowned bell, the echoing crystal, and the ember that refused to die. Their light reaches the streets above.\n\nThe people of the Citadel will decide what grows in that light. Your road through the world is still yours to walk."
+autowrap_mode = 2
+
+[node name="SaveHint" type="Label" parent="UI/EndingPanel"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 318.0
+offset_right = 575.0
+offset_bottom = 357.0
+theme_override_colors/font_color = Color(1, 0.78, 0.52, 1)
+theme_override_font_sizes/font_size = 13
+text = "Victory is not saved yet. Rest at a Save Lamp before leaving."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ContinueButton" type="Button" parent="UI/EndingPanel"]
+layout_mode = 0
+offset_left = 177.0
+offset_top = 370.0
+offset_right = 443.0
+offset_bottom = 412.0
+text = "Continue Exploring"
+
 [node name="Enemy" parent="." groups=["enemy", "passage_enemy", "family_demon"] instance=ExtResource("7_enemy")]
 position = Vector2(507, 380)
 
@@ -1537,6 +1783,7 @@ horizontal_alignment = 1
 [node name="ExitPortal" type="Area2D" parent="."]
 z_index = 1
 position = Vector2(1335, 366)
+input_pickable = true
 script = ExtResource("8_exit")
 target_marker_group = &"vertical_entry"
 target_room_id = "sunken_shaft"
@@ -1561,6 +1808,18 @@ offset_bottom = -23.0
 theme_override_font_sizes/font_size = 10
 text = "LOCKED"
 horizontal_alignment = 1
+mouse_filter = 2
+
+[node name="InteractionPrompt" type="Label" parent="ExitPortal"]
+offset_left = -95.0
+offset_top = -71.0
+offset_right = 95.0
+offset_bottom = -50.0
+theme_override_colors/font_color = Color(1, 0.91, 0.65, 1)
+theme_override_font_sizes/font_size = 10
+text = "DEFEAT ENEMIES"
+horizontal_alignment = 1
+mouse_filter = 2
 
 [node name="XPOrb" parent="." unique_id=109054762 instance=ExtResource("5_t88pq")]
 position = Vector2(252, 381)

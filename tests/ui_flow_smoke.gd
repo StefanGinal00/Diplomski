@@ -22,6 +22,11 @@ func _run() -> void:
 	current_scene = game
 	await process_frame
 	var ui = game.get_node("UI")
+	var controls: Label = ui.get_node("PausePanel/HintLabel")
+	_check(controls.text.contains("Down+Space: drop"), "Pause help is missing drop-through controls")
+	_check(controls.get_minimum_size().y <= controls.size.y, "Pause control hints overflow vertically")
+	for line in controls.text.split("\n"):
+		_check(controls.get_theme_font("font").get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, controls.get_theme_font_size("font_size")).x <= controls.size.x, "Pause control hint requires extra wrapping")
 	var soundscape = game.get_node("AmbientSoundscape")
 	_check(ui.main_menu_panel.visible, "Start menu missing")
 	_check(soundscape.current_track.is_empty(), "Music started before selecting a mode")

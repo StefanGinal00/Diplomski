@@ -35,7 +35,10 @@ func _run() -> void:
 	state.set_current_room("echo_gallery")
 	var gallery_lamp = gallery.get_node("GalleryLamp/RespawnPoint")
 	_check(state.save_at_checkpoint(player, game.get_node("QuestManager"), gallery_lamp.global_position, "echo_gallery_lamp", "Whispering Gallery Lamp", "echo_gallery"), "Pre-puzzle save failed")
-	archive_door._on_body_entered(player)
+	archive_door.activate(player)
+	await create_timer(0.5).timeout
+	_check(state.current_room_id == "echo_depths", "First Archive approach skipped Resonant Depths")
+	game.get_node("EchoDepths/UpperShortcutDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_archive", "Archive entry transition failed")
 	_check(game.get_node("AmbientSoundscape").current_track == "echo_archive", "Archive ambience did not start")
@@ -62,12 +65,15 @@ func _run() -> void:
 	gallery = game.get_node("EchoGallery")
 	archive = game.get_node("PrismArchive")
 	_check(not archive.solved and archive.step == 0, "Archive did not reset to last lamp state")
-	gallery.get_node("ArchiveDoor")._on_body_entered(player)
+	gallery.get_node("ArchiveDoor").activate(player)
+	await create_timer(0.5).timeout
+	_check(state.current_room_id == "echo_depths", "Unsaved first-visit route did not reset with the lamp")
+	game.get_node("EchoDepths/UpperShortcutDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(archive.get_node("RootMirror").activate(player), "Root mirror failed after reload")
 	_check(archive.get_node("StarMirror").activate(player), "Star mirror failed after reload")
 	_check(archive.get_node("EchoMirror").activate(player), "Echo mirror failed after reload")
-	archive.get_node("ShortcutDoor")._on_body_entered(player)
+	archive.get_node("ShortcutDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_grotto", "Archive shortcut did not return to Grotto")
 	_check(player.global_position.distance_to(game.get_node("EchoGrotto/ArchiveReturn").global_position) < 45.0, "Archive shortcut reached wrong marker")

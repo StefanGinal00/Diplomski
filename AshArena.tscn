@@ -18,7 +18,7 @@ size = Vector2(1340, 12)
 [sub_resource type="RectangleShape2D" id="StepShape"]
 size = Vector2(170, 10)
 
-[node name="AshArena" type="Node2D"]
+[node name="AshArena" type="Node2D" groups=["boss_wave_encounter"]]
 script = ExtResource("1_encounter")
 
 [node name="Backdrop" type="Polygon2D" parent="."]
@@ -50,6 +50,21 @@ polygon = PackedVector2Array(286, 248, 278, 214, 291, 229, 300, 192, 306, 244)
 z_index = -1
 color = Color(1, 0.42, 0.13, 0.72)
 polygon = PackedVector2Array(1041, 245, 1033, 208, 1046, 225, 1054, 188, 1061, 246)
+
+[node name="BackRows" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.42, 0.17, 0.15, 0.46)
+polygon = PackedVector2Array(45, 372, 45, 245, 195, 245, 195, 273, 315, 273, 315, 225, 470, 225, 470, 377, 870, 377, 870, 225, 1025, 225, 1025, 272, 1145, 272, 1145, 245, 1295, 245, 1295, 372)
+
+[node name="WestBoundaryFlare" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.92, 0.35, 0.16, 0.28)
+polygon = PackedVector2Array(18, 420, 18, 110, 78, 140, 92, 420)
+
+[node name="EastBoundaryFlare" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.92, 0.35, 0.16, 0.28)
+polygon = PackedVector2Array(1322, 420, 1322, 110, 1262, 140, 1248, 420)
 
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(670, 430)
@@ -110,6 +125,28 @@ one_way_collision = true
 
 [node name="Visual" type="Polygon2D" parent="EastStand"]
 color = Color(0.46, 0.2, 0.18, 1)
+polygon = PackedVector2Array(-85, -5, 85, -5, 85, 5, -85, 5)
+
+[node name="WestEvasion" type="StaticBody2D" parent="."]
+position = Vector2(535, 385)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WestEvasion"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WestEvasion"]
+color = Color(0.49, 0.22, 0.19, 1)
+polygon = PackedVector2Array(-85, -5, 85, -5, 85, 5, -85, 5)
+
+[node name="EastEvasion" type="StaticBody2D" parent="."]
+position = Vector2(895, 380)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EastEvasion"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="EastEvasion"]
+color = Color(0.49, 0.22, 0.19, 1)
 polygon = PackedVector2Array(-85, -5, 85, -5, 85, 5, -85, 5)
 
 [node name="ArenaEntry" type="Marker2D" parent="." groups=["ash_arena_entry"]]

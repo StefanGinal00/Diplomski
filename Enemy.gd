@@ -202,7 +202,7 @@ func die() -> void:
 
 	is_dead = true
 	var quest_manager := get_tree().get_first_node_in_group("quest_manager")
-	if quest_manager != null and quest_manager.has_method("report_enemy_defeated"):
+	if is_in_group("enemy") and quest_manager != null and quest_manager.has_method("report_enemy_defeated"):
 		quest_manager.report_enemy_defeated()
 	defeated.emit()
 	_drop_xp_reward()

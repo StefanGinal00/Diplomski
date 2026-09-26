@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://RootSnare.gd" id="1_snare"]
+
+[sub_resource type="RectangleShape2D" id="SnareShape"]
+size = Vector2(94, 84)
+
+[node name="RootSnare" type="Area2D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_snare")
+idle_duration = 2.0
+warning_duration = 0.9
+active_duration = 0.55
+disabled_by_shortcut_id = "starfall_root_channels"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("SnareShape")
+
+[node name="RootBed" type="Polygon2D" parent="."]
+color = Color(0.18, 0.36, 0.25, 1)
+polygon = PackedVector2Array(-50, 40, -40, 30, -20, 37, 0, 28, 24, 37, 43, 29, 50, 40, 48, 49, -48, 49)
+
+[node name="Flame" type="Polygon2D" parent="."]
+color = Color(0.26, 0.55, 0.32, 0.12)
+polygon = PackedVector2Array(-43, 38, -31, -11, -20, 19, -8, -39, 4, 18, 18, -31, 31, 9, 44, 38)
+
+[node name="WarningLine" type="Line2D" parent="."]
+points = PackedVector2Array(-46, 40, -31, -11, -20, 19, -8, -39, 4, 18, 18, -31, 31, 9, 46, 40)
+width = 2.0
+default_color = Color(0.5, 0.74, 0.43, 0.3)

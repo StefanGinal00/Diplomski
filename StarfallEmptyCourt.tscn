@@ -1,0 +1,219 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
+[ext_resource type="PackedScene" path="res://StarfallGuardian.tscn" id="3_guardian"]
+[ext_resource type="PackedScene" path="res://ResonanceCache.tscn" id="4_cache"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(1600, 18)
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 520)
+
+[sub_resource type="RectangleShape2D" id="RoofShape"]
+size = Vector2(1600, 12)
+
+[sub_resource type="RectangleShape2D" id="StepShape"]
+size = Vector2(160, 10)
+
+[sub_resource type="RectangleShape2D" id="SmallStepShape"]
+size = Vector2(120, 10)
+
+[node name="StarfallEmptyCourt" type="Node2D"]
+
+[node name="Sky" type="Polygon2D" parent="."]
+z_index = -9
+color = Color(0.06, 0.065, 0.13, 1)
+polygon = PackedVector2Array(0, 0, 1600, 0, 1600, 520, 0, 520)
+
+[node name="CourtWalls" type="Polygon2D" parent="."]
+z_index = -8
+color = Color(0.19, 0.2, 0.32, 1)
+polygon = PackedVector2Array(0, 395, 0, 145, 170, 145, 170, 298, 370, 298, 370, 112, 555, 112, 555, 280, 735, 280, 735, 65, 900, 65, 900, 275, 1080, 275, 1080, 112, 1270, 112, 1270, 295, 1450, 295, 1450, 145, 1600, 145, 1600, 395)
+
+[node name="BrokenHalo" type="Line2D" parent="."]
+z_index = -6
+points = PackedVector2Array(470, 260, 545, 130, 705, 68, 880, 120, 1045, 58, 1235, 138, 1315, 260)
+width = 5.0
+default_color = Color(0.57, 0.66, 0.94, 0.35)
+
+[node name="RearPortals" type="Polygon2D" parent="."]
+z_index = -7
+color = Color(0.35, 0.39, 0.56, 0.37)
+polygon = PackedVector2Array(120, 375, 120, 195, 175, 145, 265, 145, 320, 195, 320, 375, 555, 375, 555, 155, 610, 105, 700, 105, 755, 155, 755, 375, 845, 375, 845, 150, 900, 100, 990, 100, 1045, 150, 1045, 375, 1290, 375, 1290, 185, 1345, 135, 1435, 135, 1490, 185, 1490, 375)
+
+[node name="WestBoundaryStars" type="Line2D" parent="."]
+z_index = -6
+points = PackedVector2Array(12, 105, 68, 135, 32, 190, 68, 255, 18, 303, 62, 370)
+width = 3.0
+default_color = Color(0.62, 0.7, 0.99, 0.48)
+
+[node name="EastBoundaryStars" type="Line2D" parent="."]
+z_index = -6
+points = PackedVector2Array(1588, 105, 1532, 135, 1568, 190, 1532, 255, 1582, 303, 1538, 370)
+width = 3.0
+default_color = Color(0.62, 0.7, 0.99, 0.48)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(800, 400)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+color = Color(0.32, 0.32, 0.43, 1)
+polygon = PackedVector2Array(-800, -9, 800, -9, 800, 9, -800, 9)
+
+[node name="Roof" type="StaticBody2D" parent="."]
+position = Vector2(800, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
+shape = SubResource("RoofShape")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1600, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="WestStep" type="StaticBody2D" parent="."]
+position = Vector2(590, 325)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WestStep"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WestStep"]
+color = Color(0.45, 0.48, 0.64, 1)
+polygon = PackedVector2Array(-80, -5, 80, -5, 80, 5, -80, 5)
+
+[node name="MiddleStep" type="StaticBody2D" parent="."]
+position = Vector2(740, 280)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MiddleStep"]
+shape = SubResource("SmallStepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="MiddleStep"]
+color = Color(0.49, 0.53, 0.68, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="HighStand" type="StaticBody2D" parent="."]
+position = Vector2(910, 235)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HighStand"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="HighStand"]
+color = Color(0.54, 0.58, 0.74, 1)
+polygon = PackedVector2Array(-80, -5, 80, -5, 80, 5, -80, 5)
+
+[node name="EastStep" type="StaticBody2D" parent="."]
+position = Vector2(1120, 325)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EastStep"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="EastStep"]
+color = Color(0.45, 0.48, 0.64, 1)
+polygon = PackedVector2Array(-80, -5, 80, -5, 80, 5, -80, 5)
+
+[node name="WestEvasion" type="StaticBody2D" parent="."]
+position = Vector2(390, 350)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WestEvasion"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="WestEvasion"]
+color = Color(0.49, 0.52, 0.68, 1)
+polygon = PackedVector2Array(-80, -5, 80, -5, 80, 5, -80, 5)
+
+[node name="EastEvasion" type="StaticBody2D" parent="."]
+position = Vector2(1350, 350)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EastEvasion"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="EastEvasion"]
+color = Color(0.49, 0.52, 0.68, 1)
+polygon = PackedVector2Array(-80, -5, 80, -5, 80, 5, -80, 5)
+
+[node name="EastHighEvasion" type="StaticBody2D" parent="."]
+position = Vector2(1260, 275)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EastHighEvasion"]
+shape = SubResource("SmallStepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="EastHighEvasion"]
+color = Color(0.54, 0.58, 0.75, 1)
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 5, -60, 5)
+
+[node name="Entry" type="Marker2D" parent="." groups=["starfall_court_entry"]]
+position = Vector2(115, 367)
+
+[node name="CrucibleReturn" type="Marker2D" parent="." groups=["starfall_court_crucible_return"]]
+position = Vector2(615, 292)
+
+[node name="RootReturnDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(28, 367)
+target_marker_group = &"starfall_root_court_return"
+target_room_id = "starfall_rooted_hall"
+door_label = "ROOTED HALL"
+
+[node name="CrucibleDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(755, 247)
+target_marker_group = &"starfall_crucible_entry"
+target_room_id = "starfall_soul_crucible"
+door_label = "SOUL CRUCIBLE"
+
+[node name="CourtLamp" parent="." instance=ExtResource("2_lamp")]
+position = Vector2(245, 367)
+lamp_id = "starfall_court_lamp"
+lamp_name = "Empty Court Lamp"
+room_id = "starfall_empty_court"
+enemy_block_radius = 140.0
+
+[node name="Guardian" parent="." instance=ExtResource("3_guardian")]
+position = Vector2(1035, 370)
+
+[node name="VictoryCache" parent="." instance=ExtResource("4_cache")]
+position = Vector2(905, 201)
+cache_id = "starfall_court_victory"
+cache_name = "Guardian's Relic"
+gold_reward = 70
+reward_item_id = "resonance_shard"
+required_event_ids = PackedStringArray("starfall_court_cleared")
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(115, 72)
+size = Vector2(360, 26)
+theme_override_colors/font_color = Color(0.78, 0.83, 1, 0.94)
+theme_override_font_sizes/font_size = 13
+text = "EMPTY COURT"
+
+[node name="AreaHint" type="Label" parent="."]
+position = Vector2(115, 102)
+size = Vector2(460, 26)
+theme_override_colors/font_color = Color(0.71, 0.74, 0.86, 0.86)
+theme_override_font_sizes/font_size = 10
+text = "Climb to the Crucible, or face the Guardian below."
+
+[node name="FarWarning" type="Label" parent="."]
+position = Vector2(1315, 295)
+size = Vector2(250, 28)
+theme_override_colors/font_color = Color(0.74, 0.78, 0.91, 0.85)
+theme_override_font_sizes/font_size = 10
+text = "GUARDIAN'S COURT"
+horizontal_alignment = 1

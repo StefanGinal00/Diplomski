@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" path="res://ShaftWisp.tscn" id="7_wisp"]
 [ext_resource type="PackedScene" path="res://EchoBroodling.tscn" id="8_brood"]
 [ext_resource type="PackedScene" path="res://DestructibleCrate.tscn" id="9_crate"]
+[ext_resource type="Script" path="res://EchoTraversal.gd" id="10_traversal"]
 
 [sub_resource type="RectangleShape2D" id="FloorShape"]
 size = Vector2(1050, 18)
@@ -23,6 +24,10 @@ size = Vector2(1050, 12)
 size = Vector2(120, 10)
 
 [node name="UndertowVault" type="Node2D"]
+
+[node name="LongTraversal" type="Node2D" parent="."]
+script = ExtResource("10_traversal")
+route_id = "vault"
 
 [node name="Backdrop" type="Polygon2D" parent="."]
 z_index = -4
@@ -68,7 +73,7 @@ position = Vector2(0, 260)
 shape = SubResource("WallShape")
 
 [node name="RightWall" type="StaticBody2D" parent="."]
-position = Vector2(1050, 260)
+position = Vector2(3800, 260)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
 shape = SubResource("WallShape")
@@ -149,7 +154,7 @@ inactive_prompt = "[E] ATTUNE UPPER SEAL"
 active_prompt = "UPPER CURRENT STABLE"
 
 [node name="FarSeal" parent="." instance=ExtResource("3_seal")]
-position = Vector2(824, 377)
+position = Vector2(2540, -455)
 shortcut_id = "echo_vault_far"
 inactive_label = "FAR SEAL"
 active_label = "FAR ATTUNED"
@@ -164,31 +169,12 @@ room_id = "echo_vault"
 enemy_block_radius = 120.0
 
 [node name="VaultCache" parent="." instance=ExtResource("5_cache")]
-position = Vector2(996, 377)
+position = Vector2(4290, -1383)
 cache_id = "vault_mantle"
 cache_name = "Tideguard Reliquary"
 gold_reward = 42
 reward_item_id = "tideguard_mantle"
 required_event_ids = PackedStringArray("echo_vault_upper", "echo_vault_far")
-
-[node name="VaultWisp" parent="." instance=ExtResource("7_wisp")]
-position = Vector2(360, 153)
-zone_id = "echo_grotto"
-xp_reward = 2
-gold_reward = 14
-
-[node name="MidShade" parent="." instance=ExtResource("6_shade")]
-position = Vector2(472, 377)
-gold_reward = 18
-
-[node name="FarBroodling" parent="." instance=ExtResource("8_brood")]
-position = Vector2(690, 377)
-max_health = 4
-gold_reward = 19
-counts_for_nest = false
-
-[node name="VaultCrate" parent="." instance=ExtResource("9_crate")]
-position = Vector2(586, 378)
 
 [node name="AreaTitle" type="Label" parent="."]
 position = Vector2(80, 95)

@@ -1,0 +1,91 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://NeutralCreature.gd" id="1_neutral"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_icon"]
+[ext_resource type="PackedScene" path="res://XPOrb.tscn" id="3_xp"]
+[ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="4_gold"]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(22, 18)
+
+[sub_resource type="RectangleShape2D" id="ContactShape"]
+size = Vector2(25, 19)
+
+[sub_resource type="CircleShape2D" id="AwarenessShape"]
+radius = 165.0
+
+[node name="NeutralCreature" type="CharacterBody2D" groups=["neutral_creature", "family_beast"]]
+script = ExtResource("1_neutral")
+move_speed = 19.0
+chase_speed = 65.0
+damage = 1
+max_health = 3
+xp_orb_scene = ExtResource("3_xp")
+xp_reward = 1
+gold_pickup_scene = ExtResource("4_gold")
+gold_reward = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.145, 0.115)
+texture = ExtResource("2_icon")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BodyShape")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+z_index = 2
+offset_left = -16.0
+offset_top = -31.0
+offset_right = 16.0
+offset_bottom = -26.0
+mouse_filter = 2
+max_value = 3.0
+value = 3.0
+show_percentage = false
+
+[node name="DetectionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("ContactShape")
+
+[node name="AwarenessArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AwarenessArea"]
+shape = SubResource("AwarenessShape")
+
+[node name="LeftPoint" type="Marker2D" parent="."]
+position = Vector2(-62, 0)
+
+[node name="RightPoint" type="Marker2D" parent="."]
+position = Vector2(62, 0)
+
+[node name="TopHitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopHitbox"]
+position = Vector2(0, -12)
+shape = SubResource("BodyShape")
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -45.0
+offset_top = -48.0
+offset_right = 45.0
+offset_bottom = -33.0
+theme_override_font_sizes/font_size = 9
+text = "Mossling"
+horizontal_alignment = 1
+
+[node name="SleepLabel" type="Label" parent="."]
+offset_left = -30.0
+offset_top = -65.0
+offset_right = 30.0
+offset_bottom = -48.0
+theme_override_colors/font_color = Color(0.68, 0.89, 0.73, 0.9)
+theme_override_font_sizes/font_size = 10
+text = "z z z"
+horizontal_alignment = 1

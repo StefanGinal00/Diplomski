@@ -35,7 +35,7 @@ func _run() -> void:
 	var tide_lamp_position: Vector2 = tide.get_node("TideLamp/RespawnPoint").global_position
 	player.global_position = tide_lamp_position
 	_check(tide.get_node("TideLamp")._save_progress(player), "Tide Well lamp did not register before Vault exploration")
-	vault_door._on_body_entered(player)
+	vault_door.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_vault" and bool(state.discovered_rooms.get("echo_vault", false)), "Tide Well did not discover Undertow Vault")
 	_check(player.global_position.distance_to(vault.get_node("VaultEntry").global_position) < 45.0, "Vault entry marker is wrong")
@@ -85,10 +85,10 @@ func _run() -> void:
 	player.set_physics_process(true)
 	state.set_zone_tier("echo_grotto", 1)
 	_check(vault.has_node("Cache_vault_undertow"), "Awakened Vault cache is missing")
-	vault.get_node("ReturnDoor")._on_body_entered(player)
+	vault.get_node("ReturnDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_tide_well" and player.global_position.distance_to(tide.get_node("VaultReturn").global_position) < 45.0, "Vault return door did not reach Tide Well")
-	vault_door._on_body_entered(player)
+	vault_door.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_vault" and vault.has_node("vault_echo_wisp"), "Awakened Vault encounter did not appear on return")
 	var awakened_cache = vault.get_node("Cache_vault_undertow")
@@ -118,7 +118,7 @@ func _run() -> void:
 	_check(state.has_item("tideguard_mantle") and state.get_equipped_defense_id() == "tideguard_mantle", "Saved Tideguard Mantle or equipment choice was lost")
 	_check(vault.get_node("VaultLamp").is_active and game.get_node("TideWell/TideLamp").is_active, "Saved Vault or Tide lamp did not relight")
 	ui._update_route_summary()
-	_check("2/8 PLAYABLE ROOMS" in ui.map_route_label.text and "CACHES 2/10" in ui.map_route_label.text, "Map did not track Undertow Vault")
+	_check("2/11 PLAYABLE ROOMS" in ui.map_route_label.text and "CACHES 2/19" in ui.map_route_label.text, "Map did not track Undertow Vault")
 	_check(ui.get_node("WorldMapPanel/RouteScroll").get_global_rect().intersection(ui.map_travel_button.get_global_rect()).get_area() <= 0.0, "World-map route viewport overlaps travel button")
 	ui._open_world_map(true, vault.get_node("VaultLamp"))
 	ui.selected_lamp_id = "tide_well_lamp"

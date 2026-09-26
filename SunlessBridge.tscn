@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://SunlessBridge.gd" id="1_bridge"]
+
+[sub_resource type="RectangleShape2D" id="BridgeShape"]
+size = Vector2(150, 10)
+
+[node name="SunlessBridge" type="StaticBody2D"]
+script = ExtResource("1_bridge")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BridgeShape")
+one_way_collision = true
+
+[node name="Span" type="Polygon2D" parent="."]
+color = Color(0.55, 0.64, 0.92, 0.94)
+polygon = PackedVector2Array(-75, -5, 75, -5, 75, 5, -75, 5)
+
+[node name="Edge" type="Line2D" parent="."]
+points = PackedVector2Array(-75, -5, 75, -5)
+width = 3.0
+default_color = Color(0.83, 0.87, 1.0, 0.96)

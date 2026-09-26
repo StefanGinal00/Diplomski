@@ -39,7 +39,7 @@ func _run() -> void:
 	var crossing_lamp_position: Vector2 = crossing.get_node("CrossingLamp/RespawnPoint").global_position
 	player.global_position = crossing_lamp_position
 	_check(crossing.get_node("CrossingLamp")._save_progress(player), "Crossing lamp did not save before Cistern exploration")
-	crossing.get_node("CisternDoor")._on_body_entered(player)
+	crossing.get_node("CisternDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "shaft_cistern" and bool(state.discovered_rooms.get("shaft_cistern", false)), "Crossing did not discover Blackwater Cistern")
 	_check(player.global_position.distance_to(cistern.get_node("CrossingEntry").global_position) < 45.0, "Cistern entrance marker is wrong")
@@ -59,17 +59,17 @@ func _run() -> void:
 	var gold_before: int = state.gold
 	_check(supply.open(player) and state.has_item("life_bloom") and state.gold >= gold_before + 38, "Cistern supply did not award the Life Bloom and gold")
 	_check(not supply.open(player), "Cistern supply paid twice")
-	cistern.get_node("GalleryShortcutDoor")._on_body_entered(player)
+	cistern.get_node("GalleryShortcutDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "shaft_gallery" and player.global_position.distance_to(gallery.get_node("CisternReturn").global_position) < 45.0, "Cistern passage did not reach Gallery")
-	gallery.get_node("CisternDoor")._on_body_entered(player)
+	gallery.get_node("CisternDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "shaft_cistern" and player.global_position.distance_to(cistern.get_node("GalleryEntry").global_position) < 45.0, "Gallery could not return through Cistern")
 	state.set_zone_tier("sunken_shaft", 1)
 	_check(cistern.has_node("Cache_cistern_echo"), "Awakened Cistern cache is missing")
-	cistern.get_node("GalleryShortcutDoor")._on_body_entered(player)
+	cistern.get_node("GalleryShortcutDoor").activate(player)
 	await create_timer(0.5).timeout
-	gallery.get_node("CisternDoor")._on_body_entered(player)
+	gallery.get_node("CisternDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(cistern.has_node("cistern_echo_wisp"), "Awakened Cistern encounter did not appear on return")
 	_check(cistern.get_node("Cache_cistern_echo").open(player), "Awakened Cistern cache did not open")
@@ -98,7 +98,7 @@ func _run() -> void:
 	_check(cistern.get_node("CisternCache").opened and cistern.get_node("Cache_cistern_echo").opened, "Saved Cistern caches reopened")
 	_check(cistern.get_node("CisternLamp").is_active, "Saved Cistern lamp went dark")
 	ui._update_route_summary()
-	_check("3/6 PLAYABLE ROOMS" in ui.map_route_label.text and "CACHES 2/11" in ui.map_route_label.text, "World map did not track Cistern room and caches")
+	_check("3/7 PLAYABLE ROOMS" in ui.map_route_label.text and "CACHES 2/14" in ui.map_route_label.text, "World map did not track Cistern room and caches")
 	_check(ui.get_node("WorldMapPanel/RouteScroll").get_global_rect().intersection(ui.map_travel_button.get_global_rect()).get_area() <= 0.0, "World-map route viewport overlaps travel button")
 	ui._open_world_map(true, cistern.get_node("CisternLamp"))
 	ui.selected_lamp_id = "drowned_crossing_lamp"

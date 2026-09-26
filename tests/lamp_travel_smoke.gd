@@ -40,16 +40,14 @@ func _run() -> void:
 	ui.selected_lamp_id = "sunken_shaft_lamp"
 	ui._update_map_details()
 	_check(not ui.map_travel_button.disabled, "Upper Shaft is not selectable for travel from Crossing")
-	ui._on_map_travel_pressed()
-	await create_timer(0.5).timeout
+	await ui._on_map_travel_pressed()
 	_check(state.current_room_id == "sunken_shaft" and state.checkpoint_lamp_id == "sunken_shaft_lamp", "Travel to Upper Shaft failed")
 	_check(player.global_position.distance_to(upper_position) < 45.0, "Upper Shaft travel placed the player incorrectly")
 	ui._open_world_map(true, upper)
 	ui.selected_lamp_id = "drowned_crossing_lamp"
 	ui._update_map_details()
 	_check(not ui.map_travel_button.disabled, "Crossing is not selectable for return travel")
-	ui._on_map_travel_pressed()
-	await create_timer(0.5).timeout
+	await ui._on_map_travel_pressed()
 	_check(state.current_room_id == "shaft_crossing" and state.checkpoint_lamp_id == "drowned_crossing_lamp", "Return travel to Crossing failed")
 	_check(player.global_position.distance_to(crossing_position) < 45.0, "Crossing return travel placed the player incorrectly")
 	_check(state.load_game(), "Lamp travel save did not reload")

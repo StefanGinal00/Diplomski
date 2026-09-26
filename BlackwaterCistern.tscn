@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://CisternPuzzle.gd" id="1_puzzle"]
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="2_door"]
@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" path="res://ShaftCrawler.tscn" id="8_crawler"]
 [ext_resource type="PackedScene" path="res://DestructibleCrate.tscn" id="9_crate"]
 [ext_resource type="PackedScene" path="res://CisternDial.tscn" id="10_dial"]
+[ext_resource type="PackedScene" path="res://DawnEcho.tscn" id="11_dawn_echo"]
+[ext_resource type="Script" path="res://ShaftRoomExpansion.gd" id="12_expansion"]
 
 [sub_resource type="RectangleShape2D" id="FloorShape"]
 size = Vector2(1000, 18)
@@ -191,24 +193,26 @@ gold_reward = 38
 reward_item_id = "life_bloom"
 required_event_ids = PackedStringArray("shaft_cistern_pump")
 
+[node name="MemoryReliquary" parent="." instance=ExtResource("5_cache")]
+position = Vector2(400, 187)
+cache_id = "cistern_memory_sigil"
+cache_name = "Drowned Memory"
+gold_reward = 20
+reward_item_id = "memory_sigil_shaft"
+required_event_ids = PackedStringArray("shaft_cistern_pump")
+
+[node name="DawnEcho" parent="." instance=ExtResource("11_dawn_echo")]
+position = Vector2(310, 241)
+echo_id = "shaft"
+echo_name = "Flood Echo"
+echo_color = Color(0.55, 0.82, 1, 1)
+
 [node name="CisternLamp" parent="." instance=ExtResource("3_lamp")]
 position = Vector2(905, 367)
 lamp_id = "blackwater_cistern_lamp"
 lamp_name = "Blackwater Cistern Lamp"
 room_id = "shaft_cistern"
 enemy_block_radius = 120.0
-
-[node name="ChannelCrawler" parent="." instance=ExtResource("8_crawler")]
-position = Vector2(350, 367)
-
-[node name="PressureWisp" parent="." instance=ExtResource("6_wisp")]
-position = Vector2(496, 117)
-
-[node name="FarSentry" parent="." instance=ExtResource("7_sentry")]
-position = Vector2(713, 367)
-
-[node name="CisternCrate" parent="." instance=ExtResource("9_crate")]
-position = Vector2(438, 368)
 
 [node name="AreaTitle" type="Label" parent="."]
 position = Vector2(88, 75)
@@ -225,3 +229,6 @@ theme_override_colors/font_color = Color(0.72, 0.9, 0.94, 0.82)
 theme_override_font_sizes/font_size = 10
 text = "PRESSURE ORDER: NEAR  >  HIGH  >  FAR  |  0/3"
 horizontal_alignment = 1
+
+[node name="ExpandedRoute" type="Node2D" parent="."]
+script = ExtResource("12_expansion")

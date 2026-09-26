@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://ShaftWisp.gd" id="1_wisp"]
+[ext_resource type="Script" path="res://WispAppearance.gd" id="wisp_appearance"]
 [ext_resource type="PackedScene" path="res://XPOrb.tscn" id="2_xp"]
 [ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="3_gold"]
 [ext_resource type="PackedScene" path="res://ItemPickup.tscn" id="4_item"]
@@ -23,22 +24,29 @@ item_pickup_scene = ExtResource("4_item")
 shape = SubResource("BodyShape")
 
 [node name="LeftWing" type="Polygon2D" parent="."]
+visible = false
 position = Vector2(-9, 0)
 color = Color(0.22, 0.78, 0.86, 0.72)
 polygon = PackedVector2Array(0, -4, -15, -10, -11, 2, -17, 10, 0, 5)
 
 [node name="RightWing" type="Polygon2D" parent="."]
+visible = false
 position = Vector2(9, 0)
 color = Color(0.22, 0.78, 0.86, 0.72)
 polygon = PackedVector2Array(0, -4, 15, -10, 11, 2, 17, 10, 0, 5)
 
 [node name="BodyVisual" type="Polygon2D" parent="."]
+visible = false
 color = Color(0.48, 0.24, 0.78, 1)
 polygon = PackedVector2Array(0, -13, 10, -5, 9, 7, 0, 13, -9, 7, -10, -5)
 
 [node name="Eye" type="Polygon2D" parent="."]
+visible = false
 color = Color(0.72, 1, 0.92, 1)
 polygon = PackedVector2Array(-5, -2, 5, -2, 3, 3, -3, 3)
+
+[node name="Appearance" type="Sprite2D" parent="."]
+script = ExtResource("wisp_appearance")
 
 [node name="ContactArea" type="Area2D" parent="."]
 collision_layer = 0

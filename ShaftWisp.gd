@@ -70,7 +70,15 @@ func _physics_process(delta: float) -> void:
 		return
 
 	var player_distance := global_position.distance_to(target_player.global_position)
-	if player_distance > detection_range and state == State.HOVER:
+	var acquiring := state == State.HOVER or state == State.TELEGRAPH
+	if acquiring and (player_distance > detection_range or not _has_clear_view()):
+		# Adjacent galleries are close in world space, but solid terrain must
+		# separate their encounters. Losing sight cancels an unlaunched dive;
+		# an already launched dive still follows its committed direction.
+		if state == State.TELEGRAPH:
+			state = State.HOVER
+			state_time = 0.75
+			body_visual.scale = Vector2.ONE
 		_hover_near_anchor(delta)
 	else:
 		_update_attack_state(delta)
@@ -80,6 +88,26 @@ func _physics_process(delta: float) -> void:
 		state_time = recover_duration
 		body_visual.color = Color(0.35, 0.7, 0.82, 1.0)
 	_try_contact_damage()
+
+
+func _has_clear_view() -> bool:
+	var excluded: Array[RID] = [get_rid()]
+	# One-way scaffold planks and other actors are not opaque walls. Resolve
+	# past them, but stop at the first solid terrain/crate collider.
+	for pass_index in range(16):
+		var query := PhysicsRayQueryParameters2D.create(global_position, target_player.global_position, 1, excluded)
+		query.hit_from_inside = true
+		var hit := get_world_2d().direct_space_state.intersect_ray(query)
+		if hit.is_empty() or hit.collider == target_player:
+			return true
+		var body := hit.collider as CollisionObject2D
+		if body is StaticBody2D:
+			var owner_id := body.shape_find_owner(hit.shape)
+			var shape_owner := body.shape_owner_get_owner(owner_id) as CollisionShape2D
+			if shape_owner == null or not shape_owner.one_way_collision:
+				return false
+		excluded.append(body.get_rid())
+	return false
 
 
 func _hover_near_anchor(delta: float) -> void:

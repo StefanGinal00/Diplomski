@@ -38,6 +38,9 @@ func _run() -> void:
 	_check(not ash_gate._requirements_met(), "Matriarch defeat without seal bypassed the Ashen gate")
 	state.add_item("matriarch_seal")
 	_check(ash_gate._requirements_met(), "Ashen gate stayed locked after Matriarch defeat and seal")
+	# This test grants the defeat flag directly; remove the still-living first-visit boss.
+	sanctum.get_node("EchoMatriarch").queue_free()
+	await process_frame
 	_check(not vent.disabled and not forge.get_node("ForgeVent").disabled, "Ashen vents began disabled")
 	_check(not forge_cache.open(player), "Forge cache opened before cooling fan")
 	for index in range(1, 6):
@@ -51,7 +54,7 @@ func _run() -> void:
 	var sanctum_lamp_position: Vector2 = sanctum.get_node("SanctumLamp/RespawnPoint").global_position
 	player.global_position = sanctum_lamp_position
 	_check(sanctum.get_node("SanctumLamp")._save_progress(player), "Sanctum lamp did not save before Ashen gate")
-	ash_gate._on_body_entered(player)
+	ash_gate.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "ash_causeway" and bool(state.discovered_rooms.get("ash_causeway", false)), "Ashen gate did not discover Broken Causeway")
 	_check(player.global_position.distance_to(causeway.get_node("CausewayEntry").global_position) < 45.0, "Causeway entry marker is wrong")
@@ -89,7 +92,10 @@ func _run() -> void:
 	var causeway_lamp_position: Vector2 = causeway.get_node("CausewayLamp/RespawnPoint").global_position
 	player.global_position = causeway_lamp_position
 	_check(causeway.get_node("CausewayLamp")._save_progress(player), "Causeway lamp did not save after entry")
-	causeway.get_node("ForgeDoor")._on_body_entered(player)
+	causeway.get_node("ForgeDoor").activate(player)
+	await create_timer(0.5).timeout
+	_check(state.current_room_id == "ash_emberspine", "First Forge approach skipped Emberspine")
+	game.get_node("AshEmberspine/UpperShortcutDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "ash_forge" and bool(state.discovered_rooms.get("ash_forge", false)), "Causeway did not discover Cinder Forge")
 	_check(player.global_position.distance_to(forge.get_node("ForgeEntry").global_position) < 45.0, "Forge entry marker is wrong")
@@ -108,17 +114,17 @@ func _run() -> void:
 	gold_before = state.gold
 	_check(forge_cache.open(player) and state.gold >= gold_before + 48 and state.has_item("resonance_shard"), "Forge cache did not award shard and gold")
 	_check(not forge_cache.open(player), "Forge cache paid twice")
-	forge.get_node("ReturnDoor")._on_body_entered(player)
+	forge.get_node("ReturnDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "ash_causeway" and player.global_position.distance_to(causeway.get_node("ForgeReturn").global_position) < 45.0, "Forge could not return to Causeway")
 	_check("VENTS QUIET" in ui.objective_label.text, "Causeway did not show fan effect on return")
-	causeway.get_node("SanctumReturnDoor")._on_body_entered(player)
+	causeway.get_node("SanctumReturnDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_sanctum" and player.global_position.distance_to(sanctum.get_node("AshenReturn").global_position) < 45.0, "Causeway could not return to Sanctum")
-	ash_gate._on_body_entered(player)
+	ash_gate.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "ash_causeway", "Sanctum gate closed after Ashen return")
-	causeway.get_node("ForgeDoor")._on_body_entered(player)
+	causeway.get_node("ForgeDoor").activate(player)
 	await create_timer(0.5).timeout
 	var forge_lamp_position: Vector2 = forge.get_node("ForgeLamp/RespawnPoint").global_position
 	player.global_position = forge_lamp_position
@@ -145,7 +151,7 @@ func _run() -> void:
 	_check(causeway.get_node("UpperCache").opened and forge.get_node("ForgeCache").opened, "Saved Ashen caches reopened")
 	_check(causeway.get_node("CausewayLamp").is_active and forge.get_node("ForgeLamp").is_active, "Saved Ashen lamps went dark")
 	ui._update_route_summary()
-	_check("ASHEN BASTION  2/5 OPENING ROOMS" in ui.map_route_label.text and "CACHES 2/5" in ui.map_route_label.text and "FAN ON" in ui.map_route_label.text, "World map did not track Ashen opening")
+	_check("ASHEN BASTION  3/10 PLAYABLE ROOMS" in ui.map_route_label.text and "CACHES 2/15" in ui.map_route_label.text and "FAN ON" in ui.map_route_label.text, "World map did not track Ashen opening")
 	ui._open_world_map(true, forge.get_node("ForgeLamp"))
 	await process_frame
 	var route_scroll: ScrollContainer = ui.get_node("WorldMapPanel/RouteScroll")

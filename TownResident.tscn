@@ -1,0 +1,68 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://TownResident.gd" id="1_resident"]
+[ext_resource type="Script" path="res://ResidentMotion.gd" id="2_motion"]
+
+[sub_resource type="CircleShape2D" id="TalkReach"]
+radius = 34.0
+
+[node name="TownResident" type="Area2D" groups=["friendly_npc", "town_resident"]]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_resident")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("TalkReach")
+
+[node name="Coat" type="Polygon2D" parent="."]
+color = Color(0.35, 0.44, 0.58, 1)
+polygon = PackedVector2Array(-13, 15, -10, -10, 0, -17, 10, -10, 13, 15)
+
+[node name="Face" type="Polygon2D" parent="."]
+color = Color(0.87, 0.69, 0.54, 1)
+polygon = PackedVector2Array(-7, -11, -5, -20, 0, -23, 5, -20, 7, -11, 0, -7)
+
+[node name="Accent" type="Polygon2D" parent="."]
+color = Color(0.72, 0.83, 0.9, 1)
+polygon = PackedVector2Array(-12, -2, 0, 3, 12, -2, 9, 7, 0, 10, -9, 7)
+
+[node name="ResidentMotion" type="Node2D" parent="."]
+script = ExtResource("2_motion")
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -58.0
+offset_top = -44.0
+offset_right = 58.0
+offset_bottom = -26.0
+theme_override_font_sizes/font_size = 10
+text = "Resident"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="."]
+offset_left = -53.0
+offset_top = 20.0
+offset_right = 53.0
+offset_bottom = 40.0
+theme_override_font_sizes/font_size = 10
+text = "[E] Talk"
+horizontal_alignment = 1
+
+[node name="BubbleBackdrop" type="ColorRect" parent="."]
+offset_left = -80.0
+offset_top = -90.0
+offset_right = 80.0
+offset_bottom = -51.0
+color = Color(0.035, 0.07, 0.1, 0.88)
+mouse_filter = 2
+
+[node name="SocialBubble" type="Label" parent="."]
+offset_left = -76.0
+offset_top = -87.0
+offset_right = 76.0
+offset_bottom = -53.0
+theme_override_colors/font_color = Color(0.88, 0.96, 0.95, 1)
+theme_override_font_sizes/font_size = 9
+text = "Good to see you."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2

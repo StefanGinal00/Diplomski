@@ -1,0 +1,328 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
+[ext_resource type="PackedScene" path="res://TownResident.tscn" id="3_resident"]
+[ext_resource type="PackedScene" path="res://TownService.tscn" id="4_service"]
+[ext_resource type="PackedScene" path="res://LyraSurveyor.tscn" id="5_lyra"]
+[ext_resource type="Script" path="res://SettlementTimeline.gd" id="6_timeline"]
+[ext_resource type="Script" path="res://TownLifeExpansion.gd" id="7_life"]
+[ext_resource type="Script" path="res://EchoSettlementExpansion.gd" id="8_district"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(1180, 18)
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(12, 300)
+
+[node name="EchoHaven" type="Node2D"]
+script = ExtResource("6_timeline")
+changed_at_stage = 3
+changed_subtitle = "Ash caravans reach the haven once more."
+changed_market_sign = "ASH TRADE OPEN"
+changed_glow_color = Color(0.2, 0.62, 0.62, 0.3)
+glow_path = NodePath("HavenGlow")
+
+[node name="UpperVillage" type="Node2D" parent="."]
+script = ExtResource("7_life")
+settlement = "echo"
+
+[node name="NewDistricts" type="Node2D" parent="."]
+script = ExtResource("8_district")
+district = "haven"
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -5
+color = Color(0.032, 0.073, 0.13, 1)
+polygon = PackedVector2Array(0, -210, 1180, -210, 1180, 182, 0, 182)
+
+[node name="DistantCavern" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.08, 0.16, 0.23, 1)
+polygon = PackedVector2Array(0, 156, 0, -20, 73, -139, 189, -189, 336, -181, 463, -206, 692, -188, 803, -156, 1008, -177, 1132, -89, 1180, 34, 1180, 156)
+
+[node name="HavenGlow" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.14, 0.46, 0.54, 0.18)
+polygon = PackedVector2Array(120, 152, 243, -86, 383, 152, 589, 152, 767, -111, 957, 152)
+
+[node name="CrystalCanopy" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.2, 0.61, 0.64, 0.34)
+polygon = PackedVector2Array(170, -174, 213, -99, 282, -182, 330, -92, 462, -199, 536, -103, 655, -179, 743, -98, 864, -185, 919, -95, 1045, -154, 1011, -202, 767, -210, 455, -210)
+
+[node name="CrystalVeins" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(70, 117, 180, -62, 349, -125, 505, -65, 680, -153, 833, -61, 1040, 49)
+width = 3.0
+default_color = Color(0.33, 0.8, 0.82, 0.38)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(590, 166)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+color = Color(0.09, 0.3, 0.35, 1)
+polygon = PackedVector2Array(-590, -9, 590, -9, 590, 9, -590, 9)
+
+[node name="WalkwayInlay" type="Line2D" parent="."]
+z_index = 0
+points = PackedVector2Array(82, 154, 187, 154, 265, 151, 343, 154, 438, 152, 533, 154, 639, 152, 742, 154, 836, 152, 952, 154, 1090, 154)
+width = 2.0
+default_color = Color(0.38, 0.76, 0.72, 0.5)
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(4300, 10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="Visual" type="Polygon2D" parent="RightWall"]
+color = Color(0.13, 0.3, 0.35, 1)
+polygon = PackedVector2Array(-6, -150, 6, -150, 6, 150, -6, 150)
+
+[node name="HouseLeft" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.14, 0.24, 0.31, 1)
+polygon = PackedVector2Array(190, 150, 190, 66, 214, 45, 291, 45, 315, 66, 315, 150)
+
+[node name="RoofLeft" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.24, 0.41, 0.45, 1)
+polygon = PackedVector2Array(180, 68, 252, 16, 324, 68, 312, 74, 252, 34, 192, 74)
+
+[node name="WindowLeft" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.41, 0.86, 0.78, 0.75)
+polygon = PackedVector2Array(236, 76, 267, 76, 267, 107, 236, 107)
+
+[node name="LeftHomeDoorVisual" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.045, 0.09, 0.13, 1)
+polygon = PackedVector2Array(279, 150, 279, 107, 284, 101, 300, 101, 305, 107, 305, 150)
+
+[node name="LeftHomeDoorFrame" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(279, 150, 279, 107, 284, 101, 300, 101, 305, 107, 305, 150)
+width = 2.0
+default_color = Color(0.4, 0.78, 0.73, 0.68)
+
+[node name="HouseMiddle" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.13, 0.22, 0.29, 1)
+polygon = PackedVector2Array(504, 150, 504, 45, 538, 27, 648, 27, 678, 45, 678, 150)
+
+[node name="RoofMiddle" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.23, 0.39, 0.43, 1)
+polygon = PackedVector2Array(493, 50, 593, -16, 690, 50, 676, 58, 593, 3, 507, 58)
+
+[node name="WindowMiddle" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.45, 0.88, 0.81, 0.7)
+polygon = PackedVector2Array(572, 65, 610, 65, 610, 107, 572, 107)
+
+[node name="MarketDoorVisual" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.045, 0.09, 0.13, 1)
+polygon = PackedVector2Array(636, 150, 636, 91, 643, 84, 661, 84, 668, 91, 668, 150)
+
+[node name="MarketDoorFrame" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(636, 150, 636, 91, 643, 84, 661, 84, 668, 91, 668, 150)
+width = 2.0
+default_color = Color(0.47, 0.89, 0.75, 0.7)
+
+[node name="HouseRight" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.14, 0.24, 0.31, 1)
+polygon = PackedVector2Array(898, 150, 898, 55, 925, 31, 1033, 31, 1062, 55, 1062, 150)
+
+[node name="RoofRight" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.26, 0.42, 0.44, 1)
+polygon = PackedVector2Array(886, 59, 979, -9, 1074, 59, 1059, 67, 979, 8, 901, 67)
+
+[node name="WindowRight" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.49, 0.88, 0.78, 0.7)
+polygon = PackedVector2Array(963, 69, 999, 69, 999, 106, 963, 106)
+
+[node name="RightHomeDoorVisual" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.045, 0.09, 0.13, 1)
+polygon = PackedVector2Array(1021, 150, 1021, 104, 1028, 97, 1045, 97, 1052, 104, 1052, 150)
+
+[node name="RightHomeDoorFrame" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(1021, 150, 1021, 104, 1028, 97, 1045, 97, 1052, 104, 1052, 150)
+width = 2.0
+default_color = Color(0.46, 0.83, 0.76, 0.7)
+
+[node name="HangingLampLeft" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(375, -103, 375, 64)
+width = 2.0
+default_color = Color(0.27, 0.6, 0.61, 1)
+
+[node name="HangingGlowLeft" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.43, 0.96, 0.81, 0.72)
+polygon = PackedVector2Array(367, 64, 383, 64, 387, 85, 375, 93, 363, 85)
+
+[node name="HangingLampRight" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(824, -131, 824, 57)
+width = 2.0
+default_color = Color(0.27, 0.6, 0.61, 1)
+
+[node name="HangingGlowRight" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.43, 0.96, 0.81, 0.72)
+polygon = PackedVector2Array(816, 57, 832, 57, 836, 78, 824, 86, 812, 78)
+
+[node name="LeftHomeDoor" type="Marker2D" parent="." groups=["town_interior"]]
+position = Vector2(292, 129)
+
+[node name="MarketDoor" type="Marker2D" parent="." groups=["town_interior"]]
+position = Vector2(652, 129)
+
+[node name="RightHomeDoor" type="Marker2D" parent="." groups=["town_interior"]]
+position = Vector2(1036, 129)
+
+[node name="WestGatheringNeris" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(465, 129)
+
+[node name="WestGatheringCalen" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(520, 129)
+
+[node name="EastGatheringIvara" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(790, 129)
+
+[node name="EastGatheringVey" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(845, 129)
+
+[node name="Entry" type="Marker2D" parent="." groups=["echo_haven_entry"]]
+position = Vector2(79, 131)
+
+[node name="ReturnDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(25, 130)
+target_marker_group = &"echo_haven_gate_return"
+target_room_id = "echo_haven_outskirts"
+door_label = "HAVEN GATE"
+
+[node name="HavenLamp" parent="." instance=ExtResource("2_lamp")]
+position = Vector2(145, 128)
+lamp_id = "echo_haven_lamp"
+lamp_name = "Whisperlight Haven Lamp"
+room_id = "echo_haven"
+enemy_block_radius = 130.0
+
+[node name="Neris" parent="." instance=ExtResource("3_resident")]
+position = Vector2(245, 129)
+resident_name = "Neris"
+dialogue_lines = PackedStringArray("The crystals hum differently when both resonators are awake.", "My mother taught me to listen for the quiet notes. They mean the path is safe.")
+timeline_dialogue_stage = 3
+timeline_dialogue_lines = PackedStringArray("Word reached us that someone crossed into the Ashen Bastion. Even the crystals sound restless tonight.", "Calen is drawing a safe route for anyone returning from the ash. I keep the lamp burning for them.")
+coat_color = Color(0.26, 0.41, 0.54, 1)
+accent_color = Color(0.44, 0.86, 0.81, 1)
+route_marker_names = PackedStringArray("WestGatheringNeris", "LeftHomeDoor", "WestGatheringNeris", "MarketDoor")
+talk_partner = NodePath("../Calen")
+social_lines = PackedStringArray("Calen, did you hear the bright crystals singing again?", "I left a lantern burning for everyone coming home.")
+walk_speed = 32.0
+pause_seconds = 4.0
+
+[node name="LyraSurveyor" parent="." instance=ExtResource("5_lyra")]
+position = Vector2(350, 129)
+
+[node name="Calen" parent="." instance=ExtResource("3_resident")]
+position = Vector2(450, 129)
+resident_name = "Calen"
+dialogue_lines = PackedStringArray("We used to trade stories by the lamp. Now we trade routes through the dark.", "If a passage grows too dangerous, there is no shame in coming home to rest.")
+coat_color = Color(0.38, 0.36, 0.52, 1)
+accent_color = Color(0.6, 0.75, 0.91, 1)
+route_marker_names = PackedStringArray("WestGatheringCalen", "MarketDoor", "WestGatheringCalen", "LeftHomeDoor")
+talk_partner = NodePath("../Neris")
+social_lines = PackedStringArray("The glowing path is clear tonight, Neris.", "The market is quiet. Let's keep it that way.")
+walk_speed = 27.0
+pause_seconds = 5.5
+
+[node name="GlowmarketTrader" parent="." instance=ExtResource("4_service")]
+position = Vector2(590, 129)
+service_kind = "shop"
+service_id = "echo_haven_shop"
+service_name = "Nalim's Glowmarket"
+service_color = Color(0.39, 0.86, 0.71, 1)
+
+[node name="Ivara" parent="." instance=ExtResource("3_resident")]
+position = Vector2(760, 129)
+resident_name = "Ivara"
+dialogue_lines = PackedStringArray("The people above us call this place a ruin. They have never seen it lit at night.", "The Matriarch guarded the deep halls. Whatever comes after her still frightens me.")
+timeline_dialogue_stage = 3
+timeline_dialogue_lines = PackedStringArray("The Matriarch is gone, but the road into the Bastion has opened. That is not the end of our worries.", "Travelers from Cinder Hearth have begun trading here again. Perhaps these halls can be a home, not a refuge.")
+coat_color = Color(0.41, 0.3, 0.44, 1)
+accent_color = Color(0.78, 0.65, 0.87, 1)
+route_marker_names = PackedStringArray("EastGatheringIvara", "MarketDoor", "EastGatheringIvara", "RightHomeDoor")
+talk_partner = NodePath("../Vey")
+social_lines = PackedStringArray("Vey, the newcomers made it back safely.", "One day this whole cavern may be bright again.")
+walk_speed = 26.0
+pause_seconds = 5.0
+
+[node name="CrystalAnvil" parent="." instance=ExtResource("4_service")]
+position = Vector2(875, 129)
+service_kind = "anvil"
+service_id = "echo_haven_anvil"
+service_name = "Lumen Anvil"
+service_color = Color(0.48, 0.8, 0.92, 1)
+
+[node name="Vey" parent="." instance=ExtResource("3_resident")]
+position = Vector2(990, 129)
+resident_name = "Vey"
+dialogue_lines = PackedStringArray("No one here asks you to be a hero. You can sit with us for a while.", "The Grotto remembers every footstep. I hope it remembers yours kindly.")
+coat_color = Color(0.3, 0.42, 0.41, 1)
+accent_color = Color(0.65, 0.87, 0.74, 1)
+route_marker_names = PackedStringArray("EastGatheringVey", "RightHomeDoor", "EastGatheringVey", "MarketDoor")
+talk_partner = NodePath("../Ivara")
+social_lines = PackedStringArray("Ivara, I saved you a place by the light.", "I heard footsteps from the Grotto. Someone is coming home.")
+walk_speed = 36.0
+pause_seconds = 5.0
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(79, -142)
+size = Vector2(260, 28)
+theme_override_colors/font_color = Color(0.55, 0.96, 0.88, 0.9)
+theme_override_font_sizes/font_size = 14
+text = "WHISPERLIGHT HAVEN"
+
+[node name="AreaSubtitle" type="Label" parent="."]
+position = Vector2(80, -114)
+size = Vector2(280, 26)
+theme_override_colors/font_color = Color(0.67, 0.79, 0.81, 0.8)
+theme_override_font_sizes/font_size = 10
+text = "A quiet refuge beneath the crystal vault."
+
+[node name="MarketSign" type="Label" parent="."]
+position = Vector2(505, -46)
+size = Vector2(178, 22)
+theme_override_colors/font_color = Color(0.64, 0.91, 0.82, 0.78)
+theme_override_font_sizes/font_size = 10
+text = "THE GLOWMARKET"
+horizontal_alignment = 1
+
+[node name="HomeSign" type="Label" parent="."]
+position = Vector2(912, -41)
+size = Vector2(142, 22)
+theme_override_colors/font_color = Color(0.64, 0.91, 0.82, 0.78)
+theme_override_font_sizes/font_size = 10
+text = "HOLLOW HOMES"
+horizontal_alignment = 1
+
+[node name="FarEndSign" type="Label" parent="."]
+position = Vector2(1049, 89)
+size = Vector2(118, 32)
+theme_override_colors/font_color = Color(0.59, 0.77, 0.78, 0.72)
+theme_override_font_sizes/font_size = 9
+text = "Upper terraces\nbeyond this arch."
+horizontal_alignment = 1

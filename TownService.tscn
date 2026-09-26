@@ -1,0 +1,61 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://TownService.gd" id="1_service"]
+
+[sub_resource type="CircleShape2D" id="ServiceReach"]
+radius = 36.0
+
+[node name="TownService" type="Area2D" groups=["friendly_npc", "town_service"]]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_service")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("ServiceReach")
+
+[node name="Stand" type="Polygon2D" parent="."]
+color = Color(0.2, 0.22, 0.27, 1)
+polygon = PackedVector2Array(-21, 17, 21, 17, 23, 25, -23, 25)
+
+[node name="Body" type="Polygon2D" parent="."]
+color = Color(0.38, 0.34, 0.42, 1)
+polygon = PackedVector2Array(-13, 16, -10, -13, 0, -20, 10, -13, 13, 16)
+
+[node name="Face" type="Polygon2D" parent="."]
+color = Color(0.87, 0.67, 0.5, 1)
+polygon = PackedVector2Array(-7, -14, -5, -22, 0, -25, 5, -22, 7, -14, 0, -9)
+
+[node name="Sign" type="Polygon2D" parent="."]
+color = Color(0.46, 0.72, 0.66, 1)
+polygon = PackedVector2Array(-16, -33, 16, -33, 14, -25, -14, -25)
+
+[node name="Goods" type="Polygon2D" parent="."]
+color = Color(0.66, 0.5, 0.31, 1)
+polygon = PackedVector2Array(17, 2, 43, 2, 43, 20, 17, 20)
+
+[node name="Anvil" type="Polygon2D" parent="."]
+color = Color(0.48, 0.58, 0.66, 1)
+polygon = PackedVector2Array(18, -2, 47, -2, 43, 5, 36, 6, 36, 20, 26, 20, 26, 6, 18, 5)
+
+[node name="Hammer" type="Line2D" parent="."]
+points = PackedVector2Array(29, -14, 34, 1)
+width = 3.0
+default_color = Color(0.73, 0.48, 0.29, 1)
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -66.0
+offset_top = -52.0
+offset_right = 66.0
+offset_bottom = -34.0
+theme_override_font_sizes/font_size = 10
+text = "Quartermaster"
+horizontal_alignment = 1
+
+[node name="InteractionPrompt" type="Label" parent="."]
+offset_left = -52.0
+offset_top = 29.0
+offset_right = 52.0
+offset_bottom = 47.0
+theme_override_font_sizes/font_size = 10
+text = "[E] Trade"
+horizontal_alignment = 1

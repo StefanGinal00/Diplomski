@@ -1,0 +1,161 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
+[ext_resource type="PackedScene" path="res://TownResident.tscn" id="3_resident"]
+[ext_resource type="PackedScene" path="res://TownService.tscn" id="4_service"]
+[ext_resource type="PackedScene" path="res://ResonanceCache.tscn" id="5_cache"]
+
+[node name="StarfallWard" type="Node2D"]
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -7
+color = Color(0.055, 0.075, 0.14, 1)
+polygon = PackedVector2Array(0, 0, 1350, 0, 1350, 500, 0, 500)
+
+[node name="DistantTerraces" type="Polygon2D" parent="."]
+z_index = -6
+color = Color(0.16, 0.2, 0.3, 1)
+polygon = PackedVector2Array(0, 350, 0, 175, 130, 175, 130, 240, 245, 240, 245, 135, 365, 135, 365, 240, 470, 240, 470, 185, 610, 185, 610, 240, 750, 240, 750, 120, 880, 120, 880, 220, 980, 220, 980, 170, 1100, 170, 1100, 238, 1230, 238, 1230, 190, 1350, 190, 1350, 400, 0, 400)
+
+[node name="HouseWest" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.31, 0.32, 0.43, 1)
+polygon = PackedVector2Array(235, 390, 235, 240, 265, 204, 420, 204, 450, 240, 450, 390)
+
+[node name="WestRoof" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.55, 0.51, 0.61, 1)
+polygon = PackedVector2Array(210, 245, 340, 168, 475, 245, 455, 254, 340, 190, 230, 254)
+
+[node name="HouseEast" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.35, 0.32, 0.44, 1)
+polygon = PackedVector2Array(835, 390, 835, 224, 875, 190, 1055, 190, 1095, 224, 1095, 390)
+
+[node name="EastRoof" type="Polygon2D" parent="."]
+z_index = -3
+color = Color(0.61, 0.51, 0.59, 1)
+polygon = PackedVector2Array(810, 228, 965, 145, 1120, 228, 1095, 239, 965, 168, 835, 239)
+
+[node name="LanternLine" type="Line2D" parent="."]
+z_index = -2
+points = PackedVector2Array(190, 250, 490, 265, 795, 245, 1160, 260)
+width = 2.0
+default_color = Color(0.75, 0.73, 0.76, 0.75)
+
+[node name="LanternWest" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(1, 0.81, 0.46, 0.77)
+polygon = PackedVector2Array(470, 265, 484, 265, 480, 284, 474, 284)
+
+[node name="LanternEast" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(1, 0.81, 0.46, 0.77)
+polygon = PackedVector2Array(788, 245, 802, 245, 798, 264, 792, 264)
+
+[node name="WardLamp" parent="." instance=ExtResource("2_lamp")]
+position = Vector2(160, 367)
+lamp_id = "starfall_ward_lamp"
+lamp_name = "Lantern Ward Lamp"
+room_id = "starfall_citadel"
+enemy_block_radius = 120.0
+
+[node name="WardCache" parent="." instance=ExtResource("5_cache")]
+position = Vector2(1220, 367)
+cache_id = "starfall_ward_supply"
+cache_name = "Lantern Ward Supply"
+gold_reward = 28
+reward_item_id = "ether_dust"
+
+[node name="WestDoorway" type="Marker2D" parent="." groups=["town_interior"]]
+position = Vector2(360, 367)
+
+[node name="EastDoorway" type="Marker2D" parent="." groups=["town_interior"]]
+position = Vector2(920, 367)
+
+[node name="WestMeeting" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(485, 367)
+
+[node name="EastMeeting" type="Marker2D" parent="." groups=["town_social_spot"]]
+position = Vector2(780, 367)
+
+[node name="FarWalk" type="Marker2D" parent="."]
+position = Vector2(1115, 367)
+
+[node name="Seren" parent="." instance=ExtResource("3_resident")]
+position = Vector2(310, 367)
+resident_name = "Seren"
+dialogue_lines = PackedStringArray("The lanterns burn all night here. No one has to cross the ward in darkness.", "The market is farther inside the Citadel. For now, we share what comes through the gate.")
+route_marker_names = PackedStringArray("WestDoorway", "WestMeeting")
+talk_partner = NodePath("../Ilya")
+social_lines = PackedStringArray("Ilya, the lamps need oil before dusk.", "Another traveler made it safely through the gate.")
+coat_color = Color(0.43, 0.36, 0.54, 1)
+accent_color = Color(0.93, 0.78, 0.53, 1)
+walk_speed = 22.0
+
+[node name="Ilya" parent="." instance=ExtResource("3_resident")]
+position = Vector2(555, 367)
+resident_name = "Ilya"
+dialogue_lines = PackedStringArray("The watch calls this the Lantern Ward. Everyone knows everyone by the glow of their doorway.", "We had no smith for weeks. Aster set up a small anvil beside the supply stall.")
+route_marker_names = PackedStringArray("EastMeeting", "WestMeeting", "EastDoorway")
+talk_partner = NodePath("../Seren")
+social_lines = PackedStringArray("I'll take the east row, Seren.", "The workshop is still open.")
+coat_color = Color(0.32, 0.42, 0.52, 1)
+accent_color = Color(0.72, 0.88, 0.84, 1)
+walk_speed = 20.0
+
+[node name="Vey" parent="." instance=ExtResource("3_resident")]
+position = Vector2(1075, 367)
+resident_name = "Vey"
+dialogue_lines = PackedStringArray("I take this road each morning, just to hear the city wake.", "Past the houses, the high terraces look over the old Bastion.")
+route_marker_names = PackedStringArray("EastDoorway", "FarWalk")
+social_lines = PackedStringArray("A quiet morning is worth keeping.", "Mind the lamps on the way home.")
+coat_color = Color(0.42, 0.41, 0.5, 1)
+accent_color = Color(0.81, 0.71, 0.9, 1)
+walk_speed = 18.0
+
+[node name="SupplyStall" parent="." instance=ExtResource("4_service")]
+position = Vector2(650, 367)
+service_kind = "shop"
+service_id = "starfall_ward_shop"
+service_name = "Nerin - Supplies"
+service_color = Color(0.82, 0.71, 0.52, 1)
+
+[node name="WardAnvil" parent="." instance=ExtResource("4_service")]
+position = Vector2(987, 367)
+service_kind = "anvil"
+service_id = "starfall_ward_anvil"
+service_name = "Aster - Anvil"
+service_color = Color(0.75, 0.66, 0.84, 1)
+
+[node name="AreaTitle" type="Label" parent="."]
+position = Vector2(82, 78)
+size = Vector2(320, 28)
+theme_override_colors/font_color = Color(1, 0.87, 0.62, 0.94)
+theme_override_font_sizes/font_size = 14
+text = "LANTERN WARD"
+horizontal_alignment = 1
+
+[node name="AreaSubtitle" type="Label" parent="."]
+position = Vector2(85, 110)
+size = Vector2(350, 22)
+theme_override_colors/font_color = Color(0.78, 0.85, 1, 0.88)
+theme_override_font_sizes/font_size = 10
+text = "A quiet street beneath the Citadel spires."
+horizontal_alignment = 1
+
+[node name="SupplySign" type="Label" parent="."]
+position = Vector2(590, 273)
+size = Vector2(135, 22)
+theme_override_colors/font_color = Color(1, 0.83, 0.59, 0.9)
+theme_override_font_sizes/font_size = 10
+text = "WARD SUPPLIES"
+horizontal_alignment = 1
+
+[node name="ForgeSign" type="Label" parent="."]
+position = Vector2(928, 272)
+size = Vector2(110, 22)
+theme_override_colors/font_color = Color(0.91, 0.78, 1, 0.9)
+theme_override_font_sizes/font_size = 10
+text = "WARD ANVIL"
+horizontal_alignment = 1

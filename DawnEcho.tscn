@@ -1,0 +1,58 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://DawnEcho.gd" id="1_echo"]
+
+[sub_resource type="CircleShape2D" id="InteractionShape"]
+radius = 36.0
+
+[node name="DawnEcho" type="Area2D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_echo")
+
+[node name="Halo" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(0, -20, 15, -14, 21, 0, 15, 14, 0, 20, -15, 14, -21, 0, -15, -14, 0, -20)
+width = 2.0
+default_color = Color(0.66, 0.91, 1, 1)
+
+[node name="Core" type="Polygon2D" parent="."]
+color = Color(0.66, 0.91, 1, 1)
+polygon = PackedVector2Array(0, -13, 9, 0, 0, 13, -9, 0)
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -85.0
+offset_top = -49.0
+offset_right = 85.0
+offset_bottom = -29.0
+theme_override_colors/font_color = Color(0.8, 0.89, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "DAWN ECHO"
+horizontal_alignment = 1
+
+[node name="Prompt" type="Label" parent="."]
+visible = false
+offset_left = -102.0
+offset_top = 24.0
+offset_right = 102.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(1, 0.9, 0.68, 1)
+theme_override_font_sizes/font_size = 11
+text = "[E] RECORD DAWN ECHO"
+horizontal_alignment = 1
+
+[node name="AttuneBar" type="ProgressBar" parent="."]
+visible = false
+offset_left = -43.0
+offset_top = 46.0
+offset_right = 43.0
+offset_bottom = 53.0
+mouse_filter = 2
+show_percentage = false
+
+[node name="EchoChime" type="AudioStreamPlayer2D" parent="."]
+volume_db = -15.0
+max_distance = 800.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("InteractionShape")

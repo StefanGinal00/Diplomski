@@ -1,0 +1,83 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://StarfallGuardian.gd" id="1_guardian"]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(40, 44)
+
+[sub_resource type="RectangleShape2D" id="ContactShape"]
+size = Vector2(52, 46)
+
+[node name="StarfallGuardian" type="CharacterBody2D" groups=["enemy", "boss", "mini_boss", "family_construct"]]
+script = ExtResource("1_guardian")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BodyShape")
+
+[node name="Mantle" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.22, 0.29, 0.47, 0.9)
+polygon = PackedVector2Array(-25, -15, -31, 20, 0, 17, 30, 20, 25, -15)
+
+[node name="Armor" type="Polygon2D" parent="."]
+color = Color(0.39, 0.46, 0.68, 1)
+polygon = PackedVector2Array(-19, -14, -10, -24, 10, -24, 19, -14, 18, 18, 0, 22, -18, 18)
+
+[node name="Crown" type="Polygon2D" parent="."]
+color = Color(0.72, 0.82, 1, 1)
+polygon = PackedVector2Array(-19, -16, -15, -37, -5, -25, 0, -43, 7, -26, 17, -37, 19, -16, 0, -23)
+
+[node name="Eye" type="Polygon2D" parent="."]
+color = Color(0.83, 0.98, 1, 1)
+polygon = PackedVector2Array(-10, -6, -3, -6, -3, -2, -10, -2, 3, -6, 10, -6, 10, -2, 3, -2)
+
+[node name="ChargeLine" type="Line2D" parent="."]
+visible = false
+points = PackedVector2Array(0, 9, -220, 9)
+width = 4.0
+default_color = Color(0.83, 0.6, 1, 0.9)
+
+[node name="VolleyLine" type="Line2D" parent="."]
+visible = false
+points = PackedVector2Array(-25, -12, -230, -12)
+width = 2.0
+default_color = Color(0.55, 0.84, 1, 0.82)
+
+[node name="FloorMarkLeft" type="Polygon2D" parent="."]
+visible = false
+z_index = -1
+color = Color(0.61, 0.72, 1, 0.52)
+polygon = PackedVector2Array(-72, 0, -50, -8, 50, -8, 72, 0, 50, 8, -50, 8)
+
+[node name="FloorMarkCenter" type="Polygon2D" parent="."]
+visible = false
+z_index = -1
+color = Color(0.61, 0.72, 1, 0.52)
+polygon = PackedVector2Array(-72, 0, -50, -8, 50, -8, 72, 0, 50, 8, -50, 8)
+
+[node name="FloorMarkRight" type="Polygon2D" parent="."]
+visible = false
+z_index = -1
+color = Color(0.61, 0.72, 1, 0.52)
+polygon = PackedVector2Array(-72, 0, -50, -8, 50, -8, 72, 0, 50, 8, -50, 8)
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(-26, -11)
+
+[node name="ContactArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContactArea"]
+shape = SubResource("ContactShape")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+z_index = 2
+offset_left = -32.0
+offset_top = -57.0
+offset_right = 32.0
+offset_bottom = -51.0
+mouse_filter = 2
+max_value = 20.0
+value = 20.0
+show_percentage = false

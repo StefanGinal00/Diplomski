@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3]
 
-[ext_resource type="Script" path="res://Enemy.gd" id="1_enemy"]
+[ext_resource type="Script" path="res://AshFiend.gd" id="1_enemy"]
 [ext_resource type="Texture2D" path="res://icon.svg" id="2_icon"]
 [ext_resource type="PackedScene" path="res://XPOrb.tscn" id="3_xp"]
 [ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="4_gold"]

@@ -35,7 +35,7 @@ func _run() -> void:
 	_check(get_first_node_in_group("nest_entry") != null and get_first_node_in_group("tide_nest_return") != null and get_first_node_in_group("tide_nest_shortcut_return") != null, "Nest route marker missing")
 	state.add_item("tide_core")
 	_check(nest_door._requirements_met(), "Tide Core did not unlock Nest")
-	nest_door._on_body_entered(player)
+	nest_door.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_nest", "Nest entry transition failed")
 	_check(game.get_node("AmbientSoundscape").current_track == "echo_nest", "Nest ambience missing")
@@ -68,11 +68,11 @@ func _run() -> void:
 	_check(state.has_item("nest_crest"), "Nest Crest not collected")
 	_check(shortcut._requirements_met(), "Nest shortcut stayed locked")
 	_check("ENTER SANCTUM" in ui.objective_label.text, "Nest reward objective missing")
-	nest.get_node("ReturnDoor")._on_body_entered(player)
+	nest.get_node("ReturnDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_tide_well", "Nest return did not reach Well")
 	_check(player.global_position.distance_to(well.get_node("NestReturn").global_position) < 45.0, "Nest return reached wrong marker")
-	nest_door._on_body_entered(player)
+	nest_door.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_nest", "Well could not re-enter Nest")
 	var lamp = nest.get_node("NestLamp/RespawnPoint")
@@ -94,7 +94,7 @@ func _run() -> void:
 	_check(not nest.has_node("NestCrest"), "Unique Nest Crest respawned")
 	_check(nest.get_node("ShortcutDoor")._requirements_met(), "Saved Nest shortcut not restored")
 	player = game.get_node("Player")
-	nest.get_node("ShortcutDoor")._on_body_entered(player)
+	nest.get_node("ShortcutDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_tide_well", "Nest shortcut did not reach Well")
 	_check(player.global_position.distance_to(game.get_node("TideWell/NestShortcutReturn").global_position) < 45.0, "Nest shortcut reached wrong marker")

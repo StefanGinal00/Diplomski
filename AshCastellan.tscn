@@ -1,0 +1,89 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://AshCastellan.gd" id="1_boss"]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(38, 54)
+
+[sub_resource type="RectangleShape2D" id="ContactShape"]
+size = Vector2(50, 54)
+
+[node name="AshCastellan" type="CharacterBody2D" groups=["boss", "enemy", "family_demon"]]
+script = ExtResource("1_boss")
+
+[node name="Cape" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.72, 0.17, 0.12, 0.85)
+polygon = PackedVector2Array(-24, -11, 22, -11, 32, 28, 3, 22, -30, 28)
+
+[node name="Armor" type="Polygon2D" parent="."]
+color = Color(0.54, 0.21, 0.18, 1)
+polygon = PackedVector2Array(-19, -18, -10, -28, 10, -28, 19, -18, 19, 20, 7, 28, -7, 28, -19, 20)
+
+[node name="Crown" type="Polygon2D" parent="."]
+color = Color(0.91, 0.6, 0.27, 1)
+polygon = PackedVector2Array(-22, -25, -18, -43, -8, -33, 0, -51, 8, -33, 18, -43, 22, -25)
+
+[node name="Eye" type="Polygon2D" parent="."]
+color = Color(1, 0.84, 0.36, 1)
+polygon = PackedVector2Array(-10, -16, -2, -18, 0, -13, 2, -18, 10, -16, 8, -11, -8, -11)
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(-26, -8)
+
+[node name="ChargeLine" type="Line2D" parent="."]
+visible = false
+points = PackedVector2Array(0, 10, -200, 10)
+width = 4.0
+default_color = Color(1, 0.65, 0.25, 0.92)
+
+[node name="EruptionLeft" type="Polygon2D" parent="."]
+visible = false
+z_index = 1
+position = Vector2(-150, 0)
+color = Color(1, 0.58, 0.18, 0.5)
+polygon = PackedVector2Array(-30, 19, 30, 19, 30, 37, -30, 37)
+
+[node name="EruptionMiddle" type="Polygon2D" parent="."]
+visible = false
+z_index = 1
+color = Color(1, 0.58, 0.18, 0.5)
+polygon = PackedVector2Array(-30, 19, 30, 19, 30, 37, -30, 37)
+
+[node name="EruptionRight" type="Polygon2D" parent="."]
+visible = false
+z_index = 1
+position = Vector2(150, 0)
+color = Color(1, 0.58, 0.18, 0.5)
+polygon = PackedVector2Array(-30, 19, 30, 19, 30, 37, -30, 37)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BodyShape")
+
+[node name="ContactArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContactArea"]
+shape = SubResource("ContactShape")
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -80.0
+offset_top = -76.0
+offset_right = 80.0
+offset_bottom = -55.0
+theme_override_colors/font_color = Color(1, 0.7, 0.42, 1)
+theme_override_font_sizes/font_size = 10
+text = "ASH CASTELLAN"
+horizontal_alignment = 1
+
+[node name="ChallengePrompt" type="Label" parent="."]
+visible = false
+offset_left = -88.0
+offset_top = -97.0
+offset_right = 88.0
+offset_bottom = -77.0
+theme_override_colors/font_color = Color(1, 0.79, 0.62, 1)
+theme_override_font_sizes/font_size = 9
+text = "ATTACK TO CHALLENGE"
+horizontal_alignment = 1

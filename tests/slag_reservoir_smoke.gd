@@ -39,8 +39,7 @@ func _run() -> void:
 	_check(entry_door._requirements_met(), "Arena victory did not open Reservoir")
 	state.set_current_room("ash_arena")
 	player.global_position = arena.get_node("ReservoirReturn").global_position
-	entry_door._on_body_entered(player)
-	await create_timer(0.5).timeout
+	await entry_door.activate(player)
 	_check(state.current_room_id == "ash_reservoir" and bool(state.discovered_rooms.get("ash_reservoir", false)), "Reservoir entry failed")
 	_check(player.global_position.distance_to(reservoir.get_node("ReservoirEntry").global_position) < 45.0, "Reservoir entry marker is wrong")
 	_check(game.get_node("AmbientSoundscape").current_track == "ash_reservoir", "Reservoir ambience did not start")
@@ -66,7 +65,7 @@ func _run() -> void:
 	_check(not cache.open(player), "Crucible Core cache paid twice")
 	_check("CRUCIBLE CORE SECURED" in ui.objective_label.text, "Core acquisition did not update HUD")
 	ui._update_route_summary()
-	_check("COOLANT 2/2" in ui.map_route_label.text and "CACHES 1/5" in ui.map_route_label.text, "World map did not track Reservoir progress")
+	_check("COOLANT 2/2" in ui.map_route_label.text and "CACHES 1/15" in ui.map_route_label.text, "World map did not track Reservoir progress")
 	player.global_position = reservoir.get_node("ReservoirLamp/RespawnPoint").global_position
 	_check(reservoir.get_node("ReservoirLamp")._save_progress(player), "Reservoir lamp did not save progress")
 	_check(state.get_discovered_lamps().has("slag_reservoir_lamp"), "Reservoir lamp did not enter travel network")
@@ -87,11 +86,9 @@ func _run() -> void:
 	_check(state.has_item("crucible_core") and reservoir.get_node("CoreCache").opened, "Saved Crucible Core did not restore")
 	_check(reservoir.get_node("LowerValve").is_active and reservoir.get_node("UpperValve").is_active and reservoir.get_node("LowerVent").disabled and reservoir.get_node("UpperVent").disabled, "Saved coolant state did not restore")
 	_check(reservoir.get_node("ForgeLoopDoor")._requirements_met() and forge.get_node("ReservoirLoopDoor")._requirements_met(), "Saved Forge loop closed")
-	reservoir.get_node("ForgeLoopDoor")._on_body_entered(player)
-	await create_timer(0.5).timeout
+	await reservoir.get_node("ForgeLoopDoor").activate(player)
 	_check(state.current_room_id == "ash_forge" and player.global_position.distance_to(forge.get_node("ReservoirReturn").global_position) < 45.0, "Reservoir-to-Forge loop failed")
-	forge.get_node("ReservoirLoopDoor")._on_body_entered(player)
-	await create_timer(0.5).timeout
+	await forge.get_node("ReservoirLoopDoor").activate(player)
 	_check(state.current_room_id == "ash_reservoir" and player.global_position.distance_to(reservoir.get_node("ForgeLoopEntry").global_position) < 45.0, "Forge-to-Reservoir loop failed")
 	state.delete_save()
 	game.queue_free()

@@ -11,3 +11,7 @@ debug.log
 # Headless smoke-test output
 _tmp_*.log
 _tmp_*save*.json*
+
+# Local ad-hoc screenshots (curated art/ previews are versioned)
+_tmp_*.png
+_tmp_*.png.import

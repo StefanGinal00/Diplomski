@@ -36,7 +36,7 @@ func _run() -> void:
 		_check(well.get_node("Step%d/CollisionShape2D" % index).one_way_collision, "Tide step %d blocks upward jumps" % index)
 		if index > 1:
 			_check(well.get_node("Step%d" % index).position.y - well.get_node("Step%d" % (index - 1)).position.y <= 70.0, "Tide step %d is too far apart" % index)
-	grotto.get_node("TideDoor")._on_body_entered(player)
+	grotto.get_node("TideDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_tide_well", "Tide door did not enter well")
 	_check(game.get_node("AmbientSoundscape").current_track == "echo_tide_well", "Tide ambience missing")
@@ -94,7 +94,7 @@ func _run() -> void:
 	player = game.get_node("Player")
 	well.get_node("LowerLift")._use_lift(player)
 	await create_timer(0.5).timeout
-	well.get_node("ReturnDoor")._on_body_entered(player)
+	well.get_node("ReturnDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_grotto", "Tide return door did not reach Grotto")
 	_check(player.global_position.distance_to(game.get_node("EchoGrotto/TideReturn").global_position) < 45.0, "Tide return reached wrong marker")

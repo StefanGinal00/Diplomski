@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://EchoPhaseBridge.tscn" id="2_bridge"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://ShaftWisp.tscn" id="6_wisp"]
 [ext_resource type="PackedScene" path="res://ResonanceCache.tscn" id="7_cache"]
 [ext_resource type="PackedScene" path="res://DestructibleCrate.tscn" id="8_crate"]
+[ext_resource type="Script" path="res://EchoTraversal.gd" id="9_traversal"]
 
 [sub_resource type="RectangleShape2D" id="WallShape"]
 size = Vector2(12, 530)
@@ -28,6 +29,10 @@ size = Vector2(415, 18)
 size = Vector2(110, 10)
 
 [node name="CrystalCauseway" type="Node2D"]
+
+[node name="LongTraversal" type="Node2D" parent="."]
+script = ExtResource("9_traversal")
+route_id = "causeway"
 
 [node name="Backdrop" type="Polygon2D" parent="."]
 z_index = -4
@@ -93,7 +98,7 @@ position = Vector2(0, 265)
 shape = SubResource("WallShape")
 
 [node name="RightWall" type="StaticBody2D" parent="."]
-position = Vector2(900, 265)
+position = Vector2(3420, 265)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
 shape = SubResource("WallShape")
@@ -156,7 +161,7 @@ position = Vector2(442, 472)
 position = Vector2(82, 357)
 
 [node name="TideEntry" type="Marker2D" parent="." groups=["causeway_tide_entry"]]
-position = Vector2(808, 357)
+position = Vector2(3230, -963)
 
 [node name="GalleryReturnDoor" parent="." instance=ExtResource("1_door")]
 position = Vector2(27, 357)
@@ -165,7 +170,7 @@ target_room_id = "echo_gallery"
 door_label = "GALLERY"
 
 [node name="TideLoopDoor" parent="." instance=ExtResource("1_door")]
-position = Vector2(861, 357)
+position = Vector2(4090, -1403)
 target_marker_group = &"tide_causeway_return"
 target_room_id = "echo_tide_well"
 door_label = "TIDE WELL"
@@ -174,7 +179,7 @@ locked_label = "ANCHOR SEALED"
 locked_hint = "Stabilize the crystal anchor on the far side."
 
 [node name="Anchor" parent="." instance=ExtResource("3_anchor")]
-position = Vector2(767, 357)
+position = Vector2(3240, -963)
 
 [node name="CausewayCache" parent="." instance=ExtResource("7_cache")]
 position = Vector2(630, 296)
@@ -182,19 +187,6 @@ cache_id = "causeway_supply"
 cache_name = "Causeway Supply"
 gold_reward = 34
 reward_item_id = "ether_dust"
-
-[node name="CausewayWisp" parent="." instance=ExtResource("6_wisp")]
-position = Vector2(420, 204)
-zone_id = "echo_grotto"
-xp_reward = 2
-gold_reward = 13
-
-[node name="FarShade" parent="." instance=ExtResource("5_shade")]
-position = Vector2(701, 357)
-gold_reward = 18
-
-[node name="LeftCrate" parent="." instance=ExtResource("8_crate")]
-position = Vector2(155, 360)
 
 [node name="AreaTitle" type="Label" parent="."]
 position = Vector2(88, 94)

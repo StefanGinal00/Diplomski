@@ -8,8 +8,10 @@ signal item_acquired(item_id: String, amount: int)
 signal zone_tier_changed(zone_id: String, tier: int)
 signal cache_opened(cache_id: String)
 signal room_changed(room_id: String)
+signal timeline_advanced(stage: int, room_id: String)
 signal mode_changed(mode: String)
 signal save_completed
+signal checkpoint_resting(lamp_id: String)
 signal lamps_changed
 signal save_recovered
 signal merchant_changed
@@ -18,9 +20,24 @@ signal boss_progress_changed(boss_id: String)
 
 const MODE_NORMAL := "normal"
 const MODE_HARDCORE := "hardcore"
+const WORLD_LAYOUT = preload("res://WorldLayout.gd")
+const SAVE_VERSION := 10
 const STARTING_WEAPON := "worn_sword"
 const MAX_WEAPON_UPGRADE := 5
 const ENEMY_FAMILIES := ["spirit", "demon", "beast", "construct"]
+const TIMELINE_STAGE_NAMES := ["Prologue", "Sunken Shaft", "Echo Grotto", "Ashen Bastion", "Starfall Citadel"]
+const TOWN_VENDOR_STOCK := {
+	"echo_haven_shop": {"healing_herb": 3, "life_bloom": 1, "ember_arrow": 2, "ether_dust": 3, "iron_fragment": 2},
+	"ash_haven_shop": {"healing_herb": 3, "life_bloom": 1, "ember_arrow": 3, "iron_fragment": 4, "ether_dust": 2, "resonance_shard": 1},
+	"starfall_ward_shop": {"healing_herb": 3, "life_bloom": 1, "ember_arrow": 2, "ether_dust": 3, "iron_fragment": 3, "resonance_shard": 1},
+	"starfall_market_shop": {"healing_herb": 2, "life_bloom": 1, "ember_arrow": 3, "iron_fragment": 3, "ether_dust": 2, "resonance_shard": 1},
+	"starfall_apothecary_shop": {"healing_herb": 4, "life_bloom": 1, "ether_dust": 4},
+}
+const TOWN_VENDOR_BATCH_AMOUNTS := {"ember_arrow": 3}
+const TOWN_VENDOR_CHAPTER_SUPPLIES := {
+	"echo_haven_shop": {"stage": 3, "items": {"healing_herb": 2, "ether_dust": 1}},
+	"ash_haven_shop": {"stage": 4, "items": {"healing_herb": 2, "iron_fragment": 2}},
+}
 const FORGE_RECIPES := {
 	"worn_sword": [{"gold": 50, "iron_fragment": 2}, {"gold": 90, "iron_fragment": 3, "ether_dust": 1}, {"gold": 130, "iron_fragment": 4, "ether_dust": 2}, {"gold": 180, "iron_fragment": 4, "resonance_shard": 1}, {"gold": 260, "iron_fragment": 5, "resonance_shard": 2}],
 	"spiritglass_blade": [{"gold": 65, "iron_fragment": 2, "ether_dust": 1}, {"gold": 110, "iron_fragment": 3, "ether_dust": 2}, {"gold": 155, "iron_fragment": 4, "ether_dust": 2}, {"gold": 210, "iron_fragment": 4, "resonance_shard": 1}, {"gold": 290, "iron_fragment": 5, "resonance_shard": 2}],
@@ -50,13 +67,19 @@ const ITEM_DEFINITIONS := {
 	"warden_seal": {"name": "Warden Seal", "type": "key_item", "description": "Taken from the Abyss Warden. Opens the sealed path into the Echo Grotto.", "droppable": false},
 	"echo_charm": {"name": "Echo Charm", "type": "key_item", "description": "A relic awakened by both Grotto resonators. Permanently increases mana regeneration by 50% while carried.", "droppable": false},
 	"gallery_prism": {"name": "Gallery Prism", "type": "key_item", "description": "A cut crystal from the Whispering Gallery. It unlocks the gallery's far passage and will be needed deeper in the Echo Grotto.", "droppable": false},
-	"memory_sigil_echo": {"name": "Echo Memory Sigil", "type": "key_item", "description": "A memory awakened in the Prism Archive. One of the sigils needed to face the final boss.", "droppable": false},
+	"memory_sigil_echo": {"name": "Echo Memory Sigil", "type": "key_item", "description": "Prism Archive. The mirrors held many faces, but one voice asked us to remember the people, not the throne. One of three keys to the Hollow Throne.", "droppable": false},
+	"memory_sigil_shaft": {"name": "Shaft Memory Sigil", "type": "key_item", "description": "Blackwater Cistern. A bell kept ringing beneath the flood while someone guided the last travelers out. One of three keys to the Hollow Throne.", "droppable": false},
+	"memory_sigil_ash": {"name": "Ash Memory Sigil", "type": "key_item", "description": "Ashen Chapel. When the fires died, a keeper saved one ember for a road no map could name. One of three keys to the Hollow Throne.", "droppable": false},
+	"sovereign_crown": {"name": "Sovereign Crown", "type": "key_item", "description": "Proof that the Hollow Sovereign fell. The Citadel has begun to change; its people have new stories to tell.", "droppable": false},
+	"dawn_chronicle": {"name": "Dawn Chronicle", "type": "key_item", "description": "Atley's record of three voices heard after the Sovereign fell: a guide beneath the flood, a witness in the mirrors, and a keeper of the last ember. The world's next chapter belongs to its people.", "droppable": false},
 	"tide_core": {"name": "Tide Core", "type": "key_item", "description": "A living core recovered from the Tide Well. It will be needed to reach the Echo Matriarch.", "droppable": false},
 	"nest_crest": {"name": "Nest Crest", "type": "key_item", "description": "A crest revealed when the Echo Nest brood is cleared. It will open the path to the Echo Matriarch.", "droppable": false},
 	"matriarch_seal": {"name": "Matriarch Seal", "type": "key_item", "description": "Taken from the Echo Matriarch. Together with her defeat, it opens the path into Ashen Bastion.", "droppable": false},
 	"barracks_insignia": {"name": "Barracks Insignia", "type": "key_item", "description": "Proof of surviving the Ember Barracks trial. The Ashen Castellan's guard will recognize it.", "droppable": false},
 	"marshal_emblem": {"name": "Marshal Emblem", "type": "key_item", "description": "Won in the Cinder Coliseum. One of the marks required to challenge the Ashen Castellan.", "droppable": false},
 	"crucible_core": {"name": "Crucible Core", "type": "key_item", "description": "Recovered after balancing both Slag Reservoir coolant valves. It may power the path to the Ashen Castellan.", "droppable": false},
+	"castellan_seal": {"name": "Castellan Seal", "type": "key_item", "description": "Taken from the Ash Castellan. Its fall awakens Ashen Bastion and opens the old return passage to Cinder Hearth.", "droppable": false},
+	"castellan_heart": {"name": "Castellan Heart", "type": "key_item", "description": "Earned by defeating the awakened Ash Castellan. Permanently grants +1 maximum HP.", "droppable": false},
 	"warden_heart": {"name": "Warden Heart", "type": "key_item", "description": "Earned by defeating the awakened Warden. Permanently grants +1 maximum HP.", "droppable": false},
 	"matriarch_heart": {"name": "Matriarch Heart", "type": "key_item", "description": "Earned by defeating the awakened Matriarch. Permanently grants +1 maximum mana.", "droppable": false},
 }
@@ -80,6 +103,7 @@ var unlocked_shortcuts: Dictionary = {}
 var opened_caches: Dictionary = {}
 var current_room_path: String = "res://Game.tscn"
 var current_room_id: String = "training_passage"
+var timeline_stage: int = 0
 var discovered_rooms: Dictionary = {"training_passage": true}
 var target_entrance_id: String = "default"
 var has_player_state: bool = false
@@ -94,6 +118,7 @@ var last_saved_unix_time: int = 0
 var last_load_used_backup: bool = false
 var merchant_quest_state: int = 0
 var merchant_discount_unlocked: bool = false
+var town_purchase_counts: Dictionary = {}
 
 
 func start_new_game(mode: String = MODE_NORMAL) -> void:
@@ -114,6 +139,7 @@ func start_new_game(mode: String = MODE_NORMAL) -> void:
 	opened_caches.clear()
 	current_room_path = "res://Game.tscn"
 	current_room_id = "training_passage"
+	timeline_stage = 0
 	discovered_rooms = {"training_passage": true}
 	target_entrance_id = "default"
 	has_player_state = false
@@ -128,6 +154,7 @@ func start_new_game(mode: String = MODE_NORMAL) -> void:
 	last_load_used_backup = false
 	merchant_quest_state = 0
 	merchant_discount_unlocked = false
+	town_purchase_counts.clear()
 	delete_save()
 	_emit_full_state()
 	mode_changed.emit(game_mode)
@@ -302,6 +329,38 @@ func get_shop_price(base_price: int) -> int:
 	return maxi(base_price, 0)
 
 
+func get_town_vendor_items(vendor_id: String) -> Dictionary:
+	if not TOWN_VENDOR_STOCK.has(vendor_id):
+		return {}
+	return Dictionary(TOWN_VENDOR_STOCK[vendor_id]).duplicate()
+
+
+func get_town_stock_remaining(vendor_id: String, item_id: String) -> int:
+	var stock: Dictionary = get_town_vendor_items(vendor_id)
+	if not stock.has(item_id):
+		return 0
+	var chapter_supply: Dictionary = TOWN_VENDOR_CHAPTER_SUPPLIES.get(vendor_id, {})
+	var bonus := 0
+	if timeline_stage >= int(chapter_supply.get("stage", 99)):
+		bonus = int(Dictionary(chapter_supply.get("items", {})).get(item_id, 0))
+	var bought: Dictionary = Dictionary(town_purchase_counts.get(vendor_id, {}))
+	return maxi(int(stock[item_id]) + bonus - int(bought.get(item_id, 0)), 0)
+
+
+func purchase_town_item(vendor_id: String, item_id: String, amount: int, price: int) -> bool:
+	if amount != int(TOWN_VENDOR_BATCH_AMOUNTS.get(item_id, 1)) or price <= 0 or get_town_stock_remaining(vendor_id, item_id) <= 0 or not ITEM_DEFINITIONS.has(item_id):
+		return false
+	if price != int(ITEM_DEFINITIONS[item_id].get("base_price", 0)) * amount:
+		return false
+	if not spend_gold(price):
+		return false
+	var bought: Dictionary = Dictionary(town_purchase_counts.get(vendor_id, {})).duplicate()
+	bought[item_id] = int(bought.get(item_id, 0)) + 1
+	town_purchase_counts[vendor_id] = bought
+	add_item(item_id, amount)
+	return true
+
+
 func get_weapon_upgrade_level(weapon_id: String) -> int:
 	return clampi(int(weapon_upgrades.get(weapon_id, 0)), 0, MAX_WEAPON_UPGRADE)
 
@@ -404,6 +463,16 @@ func get_zone_tier(zone_id: String) -> int:
 	return int(zone_tiers.get(zone_id, 0))
 
 
+func is_boss_encounter_active() -> bool:
+	for boss in get_tree().get_nodes_in_group("boss"):
+		if is_instance_valid(boss) and not boss.is_queued_for_deletion() and bool(boss.get("active")) and not bool(boss.get("is_dead")):
+			return true
+	for encounter in get_tree().get_nodes_in_group("boss_wave_encounter"):
+		if is_instance_valid(encounter) and not encounter.is_queued_for_deletion() and bool(encounter.get("active")):
+			return true
+	return false
+
+
 func unlock_shortcut(shortcut_id: String) -> bool:
 	if shortcut_id.is_empty() or bool(unlocked_shortcuts.get(shortcut_id, false)):
 		return false
@@ -443,7 +512,33 @@ func set_current_room(room_id: String) -> void:
 	if current_room_id == room_id:
 		return
 	current_room_id = room_id
+	var new_stage := _timeline_stage_for_room(room_id)
+	var stage_advanced := new_stage > timeline_stage
+	if stage_advanced:
+		timeline_stage = new_stage
 	room_changed.emit(room_id)
+	if stage_advanced:
+		timeline_advanced.emit(timeline_stage, room_id)
+
+
+func _timeline_stage_for_room(room_id: String) -> int:
+	if room_id.begins_with("starfall_") or room_id.begins_with("hollow_"):
+		return 4
+	if room_id.begins_with("ash_"):
+		return 3
+	if room_id.begins_with("echo_"):
+		return 2
+	if room_id == "sunken_shaft" or room_id.begins_with("shaft_"):
+		return 1
+	return 0
+
+
+func _infer_timeline_stage() -> int:
+	var highest := _timeline_stage_for_room(current_room_id)
+	for room_id in discovered_rooms:
+		if bool(discovered_rooms[room_id]):
+			highest = maxi(highest, _timeline_stage_for_room(str(room_id)))
+	return highest
 
 
 func capture_player(player) -> void:
@@ -532,6 +627,8 @@ func get_lamp_position(lamp_id: String) -> Vector2:
 
 func save_at_checkpoint(player, quest_manager, position: Vector2, lamp_id: String = "", lamp_name: String = "Save Lamp", room_id: String = "") -> bool:
 	capture_player(player)
+	if not lamp_id.is_empty():
+		checkpoint_resting.emit(lamp_id)
 	capture_quest(quest_manager)
 	has_checkpoint = true
 	checkpoint_position = position
@@ -595,7 +692,7 @@ func get_save_summary() -> Dictionary:
 	return {
 		"mode": str(data.get("game_mode", MODE_NORMAL)),
 		"lamp_name": str(data.get("checkpoint_lamp_name", "Save Lamp")),
-		"room_id": str(data.get("current_room_id", "unknown_area")),
+		"room_id": "starfall_citadel" if str(data.get("current_room_id", "")) in ["starfall_gate", "starfall_ward"] else str(data.get("current_room_id", "unknown_area")),
 		"saved_at": int(data.get("last_saved_unix_time", 0)),
 	}
 
@@ -619,22 +716,24 @@ func prepare_room_transition(room_path: String, entrance_id: String, player) -> 
 
 func _build_save_data() -> Dictionary:
 	return {
-		"version": 7, "game_mode": game_mode, "gold": gold, "inventory": inventory,
+		"version": SAVE_VERSION, "game_mode": game_mode, "gold": gold, "inventory": inventory,
 		"equipped_items": equipped_items, "weapon_upgrades": weapon_upgrades, "active_weapon_slot": active_weapon_slot,
 		"selected_arrow_type": selected_arrow_type, "selected_spell": selected_spell, "unlocked_spells": unlocked_spells,
 		"zone_tiers": zone_tiers, "defeated_bosses": defeated_bosses, "boss_rematches": boss_rematches,
 		"unlocked_shortcuts": unlocked_shortcuts, "opened_caches": opened_caches, "current_room_path": current_room_path,
-		"current_room_id": current_room_id, "target_entrance_id": target_entrance_id,
+		"current_room_id": current_room_id, "timeline_stage": timeline_stage, "target_entrance_id": target_entrance_id,
 		"discovered_rooms": discovered_rooms,
 		"player_state": player_state, "quest_state": quest_state,
 		"has_checkpoint": has_checkpoint, "checkpoint_position": [checkpoint_position.x, checkpoint_position.y],
 		"checkpoint_lamp_id": checkpoint_lamp_id, "checkpoint_lamp_name": checkpoint_lamp_name,
 		"discovered_lamps": discovered_lamps, "last_saved_unix_time": last_saved_unix_time,
 		"merchant_quest_state": merchant_quest_state, "merchant_discount_unlocked": merchant_discount_unlocked,
+		"town_purchase_counts": town_purchase_counts,
 	}
 
 
 func _apply_save_data(data: Dictionary) -> void:
+	var saved_version := int(data.get("version", 0))
 	game_mode = str(data.get("game_mode", MODE_NORMAL))
 	gold = int(data.get("gold", 0))
 	inventory = Dictionary(data.get("inventory", {STARTING_WEAPON: 1})).duplicate(true)
@@ -651,9 +750,13 @@ func _apply_save_data(data: Dictionary) -> void:
 	opened_caches = Dictionary(data.get("opened_caches", {})).duplicate(true)
 	current_room_path = str(data.get("current_room_path", "res://Game.tscn"))
 	current_room_id = str(data.get("current_room_id", "training_passage"))
+	if current_room_id in ["starfall_gate", "starfall_ward"]:
+		current_room_id = "starfall_citadel"
 	discovered_rooms = Dictionary(data.get("discovered_rooms", {"training_passage": true})).duplicate(true)
 	discovered_rooms["training_passage"] = true
 	discovered_rooms[current_room_id] = true
+	if bool(discovered_rooms.get("starfall_gate", false)) or bool(discovered_rooms.get("starfall_ward", false)):
+		discovered_rooms["starfall_citadel"] = true
 	target_entrance_id = str(data.get("target_entrance_id", "default"))
 	player_state = Dictionary(data.get("player_state", {})).duplicate(true)
 	quest_state = Dictionary(data.get("quest_state", {})).duplicate(true)
@@ -661,18 +764,54 @@ func _apply_save_data(data: Dictionary) -> void:
 	has_checkpoint = bool(data.get("has_checkpoint", false))
 	checkpoint_lamp_id = str(data.get("checkpoint_lamp_id", ""))
 	checkpoint_lamp_name = str(data.get("checkpoint_lamp_name", "Save Lamp"))
+	var moved_wings := {
+		"shaft_drift_lamp": [Vector2(40000, 650), Vector2(1500, -2300)],
+		"echo_depths_lamp": [Vector2(43000, 650), Vector2(3600, 3200)],
+		"ash_emberspine_lamp": [Vector2(46000, 650), Vector2(6800, 2700)],
+		"starfall_ramparts_lamp": [Vector2(49000, 650), Vector2(22000, 1900)],
+	}
 	discovered_lamps = Dictionary(data.get("discovered_lamps", {})).duplicate(true)
-	for lamp_data in discovered_lamps.values():
+	var checkpoint_room_id := current_room_id
+	for lamp_id in discovered_lamps.keys():
+		var lamp_data: Variant = discovered_lamps[lamp_id]
 		if lamp_data is Dictionary:
 			var lamp_room := str(lamp_data.get("room_id", ""))
+			if lamp_room in ["starfall_gate", "starfall_ward"]:
+				lamp_room = "starfall_citadel"
+				lamp_data["room_id"] = lamp_room
 			if not lamp_room.is_empty():
 				discovered_rooms[lamp_room] = true
+			if lamp_id == checkpoint_lamp_id and not lamp_room.is_empty():
+				checkpoint_room_id = lamp_room
+			if saved_version < SAVE_VERSION and moved_wings.has(lamp_id):
+				var old_lamp_position: Array = lamp_data.get("position", [])
+				if old_lamp_position.size() >= 2:
+					var origins: Array = moved_wings[lamp_id]
+					var old_position := Vector2(float(old_lamp_position[0]), float(old_lamp_position[1]))
+					if old_position.distance_to(origins[0] + Vector2(245, 647)) < 160.0:
+						var new_position: Vector2 = old_position + origins[1] - origins[0]
+						lamp_data["position"] = [new_position.x, new_position.y]
+			if saved_version < SAVE_VERSION:
+				var saved_lamp_position: Array = lamp_data.get("position", [])
+				if saved_lamp_position.size() >= 2:
+					var migrated_lamp: Vector2 = WORLD_LAYOUT.migrate_position(lamp_room, str(lamp_id), Vector2(float(saved_lamp_position[0]), float(saved_lamp_position[1])))
+					lamp_data["position"] = [migrated_lamp.x, migrated_lamp.y]
+	timeline_stage = maxi(clampi(int(data.get("timeline_stage", 0)), 0, TIMELINE_STAGE_NAMES.size() - 1), _infer_timeline_stage())
 	last_saved_unix_time = int(data.get("last_saved_unix_time", 0))
 	merchant_quest_state = int(data.get("merchant_quest_state", 0))
 	merchant_discount_unlocked = bool(data.get("merchant_discount_unlocked", false))
+	town_purchase_counts = Dictionary(data.get("town_purchase_counts", {})).duplicate(true)
 	var saved_position: Array = data.get("checkpoint_position", [0.0, 0.0])
 	if saved_position.size() >= 2:
 		checkpoint_position = Vector2(float(saved_position[0]), float(saved_position[1]))
+		# Earlier builds placed the four expedition rooms far to the right. Keep
+		# lamps saved there usable after moving those rooms beside their zones.
+		if saved_version < SAVE_VERSION and moved_wings.has(checkpoint_lamp_id):
+			var origins: Array = moved_wings[checkpoint_lamp_id]
+			if checkpoint_position.distance_to(origins[0] + Vector2(245, 647)) < 160.0:
+				checkpoint_position += origins[1] - origins[0]
+		if saved_version < SAVE_VERSION:
+			checkpoint_position = WORLD_LAYOUT.migrate_position(checkpoint_room_id, checkpoint_lamp_id, checkpoint_position)
 
 
 func _emit_full_state() -> void:

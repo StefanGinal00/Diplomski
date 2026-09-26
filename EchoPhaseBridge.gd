@@ -8,6 +8,7 @@ extends StaticBody2D
 var phase: String = "solid"
 var phase_remaining: float = 1.0
 var cycle_speed: float = 1.0
+var stabilized := false
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var crystal: Polygon2D = $Crystal
@@ -24,11 +25,26 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	if stabilized:
+		return
 	phase_remaining -= delta * cycle_speed
 	if phase_remaining <= 0.0:
 		_advance_phase()
 	if phase == "warning":
 		crystal.modulate.a = 0.45 + 0.38 * sin(Time.get_ticks_msec() * 0.027)
+
+
+func set_stabilized(value: bool) -> void:
+	if stabilized == value:
+		return
+	stabilized = value
+	phase = "solid"
+	phase_remaining = solid_duration
+	collision_shape.set_deferred("disabled", false)
+	_update_visuals()
+	if stabilized:
+		crystal.color = Color(0.38, 0.95, 0.69, 0.95)
+		edge.default_color = Color(0.72, 1.0, 0.83)
 
 
 func _advance_phase() -> void:

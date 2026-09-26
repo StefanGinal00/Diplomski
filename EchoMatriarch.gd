@@ -35,6 +35,7 @@ var contact_cooldown: float = 0.0
 @onready var pulse_ring: Line2D = $PulseRing
 @onready var contact_area: Area2D = $ContactArea
 @onready var muzzle: Marker2D = $Muzzle
+@onready var challenge_prompt: Label = $ChallengePrompt
 
 
 func _ready() -> void:
@@ -54,6 +55,7 @@ func _ready() -> void:
 	current_health = max_health
 	target_player = get_tree().get_first_node_in_group("player") as Player
 	pulse_ring.hide()
+	challenge_prompt.visible = is_rematch
 
 
 func _physics_process(delta: float) -> void:
@@ -69,7 +71,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 	if not active:
-		if global_position.distance_to(target_player.global_position) > activation_range:
+		if is_rematch or global_position.distance_to(target_player.global_position) > activation_range:
 			return
 		active = true
 		battle_started.emit()
@@ -163,6 +165,13 @@ func _try_contact_damage() -> void:
 func take_damage(amount: int, _knockback: Vector2 = Vector2.ZERO) -> void:
 	if is_dead or amount <= 0:
 		return
+	if is_rematch and not active:
+		var game_state := get_node_or_null("/root/GameState")
+		if game_state == null or game_state.current_room_id != "echo_sanctum":
+			return
+		active = true
+		challenge_prompt.hide()
+		battle_started.emit()
 	current_health = maxi(current_health - amount, 0)
 	health_changed.emit(current_health, max_health)
 	if current_health <= 0:

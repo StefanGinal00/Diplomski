@@ -35,6 +35,7 @@ var echo_charge_ready: bool = false
 @onready var warning_icon: Polygon2D = $WarningIcon
 @onready var contact_area: Area2D = $ContactArea
 @onready var health_bar: ProgressBar = $HealthBar
+@onready var body_collision: CollisionShape2D = $CollisionShape2D
 
 
 func _ready() -> void:
@@ -91,10 +92,34 @@ func _physics_process(delta: float) -> void:
 			if is_zero_approx(state_remaining):
 				state = State.PATROL
 				body_visual.color = Color(0.42, 0.45, 0.7, 1.0)
+	_avoid_ledge(delta)
 	move_and_slide()
 	if state == State.CHARGE and (is_on_wall() or absf(global_position.x - start_x) > patrol_distance + 85.0):
 		_begin_recovery()
 	_try_contact_damage()
+
+
+func _avoid_ledge(delta: float) -> void:
+	if not is_on_floor() or is_zero_approx(velocity.x):
+		return
+	var half: Vector2 = body_collision.shape.size * 0.5
+	var heading := signf(velocity.x)
+	# Look beyond the leading foot, including this tick's charge movement.
+	# This also works on one-way niche floors; airborne crawlers still fall
+	# normally and no invisible wall is added for the player.
+	var foot := global_position + Vector2(heading * (half.x + maxf(6.0, absf(velocity.x) * delta)), half.y)
+	var query := PhysicsRayQueryParameters2D.create(foot + Vector2(0, -5), foot + Vector2(0, 18), collision_mask, [get_rid()])
+	var hit := get_world_2d().direct_space_state.intersect_ray(query)
+	if not hit.is_empty() and hit.normal.y < -0.5 and hit.collider is StaticBody2D and not hit.collider.is_in_group("enemy"):
+		return
+	if state == State.PATROL:
+		direction = -heading
+		velocity.x = direction * patrol_speed
+		body_visual.scale.x = direction
+	else:
+		if state == State.CHARGE:
+			_begin_recovery()
+		velocity.x = 0.0
 
 
 func _patrol() -> void:

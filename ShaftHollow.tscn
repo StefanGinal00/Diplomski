@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://ShaftRelay.tscn" id="2_relay"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://ShaftSentry.tscn" id="4_sentry"]
 [ext_resource type="PackedScene" path="res://DestructibleCrate.tscn" id="5_crate"]
 [ext_resource type="Script" path="res://SpikeTrap.gd" id="6_spikes"]
+[ext_resource type="Script" path="res://ShaftRoomExpansion.gd" id="7_expansion"]
 
 [sub_resource type="RectangleShape2D" id="WallShape"]
 size = Vector2(12, 420)
@@ -138,6 +139,17 @@ shape = SubResource("PlatformShape")
 color = Color(0.17, 0.5, 0.48, 1)
 polygon = PackedVector2Array(-55, -5, 55, -5, 55, 5, -55, 5)
 
+[node name="DriftSpur" type="StaticBody2D" parent="."]
+position = Vector2(685, 205)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DriftSpur"]
+shape = SubResource("PlatformShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="DriftSpur"]
+color = Color(0.19, 0.54, 0.52, 1)
+polygon = PackedVector2Array(-55, -5, 55, -5, 55, 5, -55, 5)
+
 [node name="PitSpikes" type="Area2D" parent="."]
 position = Vector2(380, 375)
 collision_layer = 0
@@ -160,6 +172,18 @@ position = Vector2(645, 299)
 [node name="CrossingEntry" type="Marker2D" parent="." groups=["hollow_crossing_entry"]]
 position = Vector2(220, 299)
 
+[node name="DriftReturn" type="Marker2D" parent="." groups=["shaft_drift_return"]]
+position = Vector2(650, 172)
+
+[node name="DriftDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(700, 172)
+target_marker_group = &"shaft_drift_entry"
+target_room_id = "shaft_drift"
+door_label = "DRIFTWORKS"
+required_event_ids = PackedStringArray("shaft_hollow_relay")
+locked_label = "RELAY SEALED"
+locked_hint = "Activate the Hollow relay to reach the Driftworks."
+
 [node name="UpperReturnDoor" parent="." instance=ExtResource("1_door")]
 position = Vector2(38, 299)
 target_marker_group = &"shaft_hollow_upper_return"
@@ -180,24 +204,15 @@ position = Vector2(280, 299)
 target_marker_group = &"crossing_hollow_entry"
 target_room_id = "shaft_crossing"
 door_label = "DROWNED CROSSING"
+first_visit_marker_group = &"shaft_drift_entry"
+first_visit_room_id = "shaft_drift"
+first_visit_label = "DRIFTWORKS ROUTE"
 required_event_ids = PackedStringArray("shaft_hollow_relay")
 locked_label = "RELAY SEALED"
 locked_hint = "Activate the Hollow relay to open the Crossing route."
 
 [node name="Relay" parent="." instance=ExtResource("2_relay")]
 position = Vector2(555, 174)
-
-[node name="HollowWispNear" parent="." groups=["enemy", "family_spirit", "hollow_guardian"] instance=ExtResource("3_wisp")]
-position = Vector2(282, 171)
-
-[node name="HollowWispFar" parent="." groups=["enemy", "family_spirit", "hollow_guardian"] instance=ExtResource("3_wisp")]
-position = Vector2(572, 136)
-
-[node name="HollowSentry" parent="." instance=ExtResource("4_sentry")]
-position = Vector2(469, 305)
-
-[node name="HollowCrate" parent="." instance=ExtResource("5_crate")]
-position = Vector2(167, 302)
 
 [node name="AreaTitle" type="Label" parent="."]
 position = Vector2(112, 47)
@@ -206,3 +221,6 @@ theme_override_colors/font_color = Color(0.55, 0.95, 0.89, 0.78)
 theme_override_font_sizes/font_size = 13
 text = "WISP HOLLOW"
 horizontal_alignment = 1
+
+[node name="ExpandedRoute" type="Node2D" parent="."]
+script = ExtResource("7_expansion")

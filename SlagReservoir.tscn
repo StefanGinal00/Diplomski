@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
@@ -7,25 +7,33 @@
 [ext_resource type="PackedScene" path="res://ResonanceCache.tscn" id="5_cache"]
 [ext_resource type="PackedScene" path="res://AshFiend.tscn" id="6_fiend"]
 [ext_resource type="PackedScene" path="res://AshSentry.tscn" id="7_sentry"]
+[ext_resource type="Script" path="res://AshSwitchback.gd" id="8_switchback"]
 
 [sub_resource type="RectangleShape2D" id="FloorShape"]
 size = Vector2(1200, 18)
 
 [sub_resource type="RectangleShape2D" id="WallShape"]
-size = Vector2(12, 520)
+size = Vector2(12, 2000)
 
 [sub_resource type="RectangleShape2D" id="RoofShape"]
-size = Vector2(1200, 12)
+size = Vector2(4200, 12)
 
 [sub_resource type="RectangleShape2D" id="StepShape"]
 size = Vector2(132, 10)
 
 [node name="SlagReservoir" type="Node2D"]
 
+[node name="AshSwitchback" type="Node2D" parent="."]
+script = ExtResource("8_switchback")
+course_id = &"reservoir"
+course_width = 4200.0
+legacy_width = 1200.0
+ground_y = 420.0
+
 [node name="Backdrop" type="Polygon2D" parent="."]
 z_index = -5
 color = Color(0.055, 0.05, 0.065, 1)
-polygon = PackedVector2Array(0, 0, 1200, 0, 1200, 520, 0, 520)
+polygon = PackedVector2Array(0, -1390, 4200, -1390, 4200, 610, 0, 610)
 
 [node name="CoolingBasin" type="Polygon2D" parent="."]
 z_index = -4
@@ -54,19 +62,19 @@ color = Color(0.24, 0.16, 0.18, 1)
 polygon = PackedVector2Array(-600, -9, 600, -9, 600, 9, -600, 9)
 
 [node name="Roof" type="StaticBody2D" parent="."]
-position = Vector2(600, 0)
+position = Vector2(2100, -1390)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
 shape = SubResource("RoofShape")
 
 [node name="LeftWall" type="StaticBody2D" parent="."]
-position = Vector2(0, 260)
+position = Vector2(0, -390)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
 shape = SubResource("WallShape")
 
 [node name="RightWall" type="StaticBody2D" parent="."]
-position = Vector2(1200, 260)
+position = Vector2(4200, -390)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
 shape = SubResource("WallShape")
@@ -126,11 +134,25 @@ one_way_collision = true
 color = Color(0.33, 0.3, 0.28, 1)
 polygon = PackedVector2Array(-66, -5, 66, -5, 66, 5, -66, 5)
 
+[node name="ChapelSpur" type="StaticBody2D" parent="."]
+position = Vector2(3930, -1040)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChapelSpur"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="ChapelSpur"]
+color = Color(0.44, 0.34, 0.31, 1)
+polygon = PackedVector2Array(-66, -5, 66, -5, 66, 5, -66, 5)
+
 [node name="ReservoirEntry" type="Marker2D" parent="." groups=["ash_reservoir_entry"]]
 position = Vector2(82, 387)
 
 [node name="ForgeLoopEntry" type="Marker2D" parent="." groups=["ash_reservoir_forge_entry"]]
-position = Vector2(1070, 387)
+position = Vector2(1690, -313)
+
+[node name="ChapelReturn" type="Marker2D" parent="." groups=["ash_reservoir_chapel_return"]]
+position = Vector2(3875, -1073)
 
 [node name="ArenaReturnDoor" parent="." instance=ExtResource("1_door")]
 position = Vector2(28, 387)
@@ -139,13 +161,22 @@ target_room_id = "ash_arena"
 door_label = "CINDER COLISEUM"
 
 [node name="ForgeLoopDoor" parent="." instance=ExtResource("1_door")]
-position = Vector2(1165, 387)
+position = Vector2(1790, -313)
 target_marker_group = &"ash_forge_reservoir_return"
 target_room_id = "ash_forge"
 door_label = "FORGE LOOP"
 required_event_ids = PackedStringArray("ash_reservoir_lower", "ash_reservoir_upper")
 locked_label = "PRESSURE SEALED"
 locked_hint = "Open both coolant valves to release the Forge loop."
+
+[node name="ChapelDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(3930, -1073)
+target_marker_group = &"ash_chapel_entry"
+target_room_id = "ash_chapel"
+door_label = "ASHEN CHAPEL"
+required_item_id = "crucible_core"
+locked_label = "CORE SEALED"
+locked_hint = "Claim the Crucible Core after opening both coolant valves."
 
 [node name="ReservoirLamp" parent="." instance=ExtResource("2_lamp")]
 position = Vector2(155, 387)
@@ -159,7 +190,7 @@ position = Vector2(325, 369)
 disabled_by_shortcut_id = "ash_reservoir_lower"
 
 [node name="UpperVent" parent="." instance=ExtResource("4_vent")]
-position = Vector2(920, 369)
+position = Vector2(2860, -331)
 initial_offset = 0.75
 disabled_by_shortcut_id = "ash_reservoir_upper"
 
@@ -172,7 +203,7 @@ inactive_prompt = "[E] OPEN LOWER VALVE"
 active_prompt = "LOWER FLOW ACTIVE"
 
 [node name="UpperValve" parent="." instance=ExtResource("3_valve")]
-position = Vector2(795, 193)
+position = Vector2(2050, -313)
 shortcut_id = "ash_reservoir_upper"
 inactive_label = "UPPER COOLANT"
 active_label = "UPPER VENT QUIET"
@@ -180,18 +211,12 @@ inactive_prompt = "[E] OPEN UPPER VALVE"
 active_prompt = "UPPER FLOW ACTIVE"
 
 [node name="CoreCache" parent="." instance=ExtResource("5_cache")]
-position = Vector2(1055, 307)
+position = Vector2(3440, -653)
 cache_id = "ash_reservoir_core"
 cache_name = "Crucible Core"
 gold_reward = 45
 reward_item_id = "crucible_core"
 required_event_ids = PackedStringArray("ash_reservoir_lower", "ash_reservoir_upper")
-
-[node name="NearFiend" parent="." instance=ExtResource("6_fiend")]
-position = Vector2(252, 387)
-
-[node name="UpperSentry" parent="." instance=ExtResource("7_sentry")]
-position = Vector2(925, 248)
 
 [node name="AreaTitle" type="Label" parent="."]
 position = Vector2(95, 86)
@@ -206,5 +231,5 @@ position = Vector2(459, 91)
 size = Vector2(440, 28)
 theme_override_colors/font_color = Color(0.78, 0.9, 0.88, 0.8)
 theme_override_font_sizes/font_size = 10
-text = "Two coolant valves calm the vents and open the Forge loop."
+text = "Coolant opens the Forge loop; the Core reveals the upper Chapel."
 horizontal_alignment = 1

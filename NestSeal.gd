@@ -20,9 +20,24 @@ func _restore_or_watch() -> void:
 	if game_state != null and bool(game_state.unlocked_shortcuts.get(completion_event, false)):
 		_open(false)
 		return
+	var traversal := get_parent().get_node_or_null("LongTraversal")
+	if traversal != null and traversal.has_method("is_population_loaded") and not bool(traversal.call("is_population_loaded")):
+		status_label.text = "BROOD DORMANT"
+		return
+	refresh_brood_watch()
+
+
+func refresh_brood_watch() -> void:
+	var game_state := get_node_or_null("/root/GameState")
+	if game_state != null and bool(game_state.unlocked_shortcuts.get(completion_event, false)):
+		_open(false)
+		return
 	for brood in get_tree().get_nodes_in_group("nest_brood"):
-		if brood.has_signal("defeated") and not brood.defeated.is_connected(_on_brood_defeated):
-			brood.defeated.connect(_on_brood_defeated)
+		if not get_parent().is_ancestor_of(brood):
+			continue
+		var callback := Callable(self, "_on_brood_defeated")
+		if brood.has_signal("defeated") and not brood.is_connected("defeated", callback):
+			brood.connect("defeated", callback)
 	_on_brood_defeated()
 
 
@@ -31,7 +46,7 @@ func _on_brood_defeated() -> void:
 		return
 	var remaining := 0
 	for brood in get_tree().get_nodes_in_group("nest_brood"):
-		if is_instance_valid(brood) and not bool(brood.get("is_dead")):
+		if is_instance_valid(brood) and get_parent().is_ancestor_of(brood) and not bool(brood.get("is_dead")):
 			remaining += 1
 	if remaining == 0:
 		_open(true)

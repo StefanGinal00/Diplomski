@@ -46,7 +46,7 @@ func _ready() -> void:
 	target_player = get_tree().get_first_node_in_group("player") as Player
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
 	if not is_instance_valid(target_player):
@@ -55,7 +55,7 @@ func _process(delta: float) -> void:
 		_cancel_windup()
 		return
 	var distance := global_position.distance_to(target_player.global_position)
-	if distance > detection_range:
+	if distance > detection_range or not _has_clear_shot():
 		_cancel_windup()
 		cooldown_remaining = minf(cooldown_remaining + delta, shot_cooldown)
 		return
@@ -63,10 +63,9 @@ func _process(delta: float) -> void:
 	if windup_remaining > 0.0:
 		windup_remaining = maxf(windup_remaining - delta, 0.0)
 		aim_direction = target_direction
-		warning_ray.points = PackedVector2Array([Vector2.ZERO, aim_direction * 160.0])
+		_update_warning_rays()
 		warning_ray.modulate.a = 0.45 + sin(Time.get_ticks_msec() * 0.025) * 0.3
 		for index in spread_rays.size():
-			spread_rays[index].points = PackedVector2Array([Vector2.ZERO, aim_direction.rotated(-0.16 if index == 0 else 0.16) * 160.0])
 			spread_rays[index].modulate.a = warning_ray.modulate.a
 		eye.color = Color(1.0, 0.35, 0.28, 1.0)
 		if is_zero_approx(windup_remaining):
@@ -75,10 +74,29 @@ func _process(delta: float) -> void:
 	cooldown_remaining = maxf(cooldown_remaining - delta, 0.0)
 	if is_zero_approx(cooldown_remaining):
 		windup_remaining = windup_time
+		aim_direction = target_direction
+		_update_warning_rays()
 		warning_ray.show()
 		for ray in spread_rays:
 			ray.show()
 		eye.color = Color(1.0, 0.52, 0.3, 1.0)
+
+
+func _has_clear_shot() -> bool:
+	# Match projectile blockers: bodies on the projectile's world/player layer,
+	# not trigger areas. A new clear view always begins a fresh full telegraph.
+	var query := PhysicsRayQueryParameters2D.create(muzzle.global_position, target_player.global_position, 1, [get_rid()])
+	query.hit_from_inside = true
+	var hit := get_world_2d().direct_space_state.intersect_ray(query)
+	return hit.is_empty() or hit.collider == target_player
+
+
+func _update_warning_rays() -> void:
+	var origin := to_local(muzzle.global_position)
+	warning_ray.points = PackedVector2Array([origin, to_local(muzzle.global_position + aim_direction * 160.0)])
+	for index in spread_rays.size():
+		var direction := aim_direction.rotated(-0.16 if index == 0 else 0.16)
+		spread_rays[index].points = PackedVector2Array([origin, to_local(muzzle.global_position + direction * 160.0)])
 
 
 func _cancel_windup() -> void:

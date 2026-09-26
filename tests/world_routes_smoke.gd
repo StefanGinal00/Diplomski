@@ -42,7 +42,7 @@ func _run() -> void:
 	_check(get_first_node_in_group("gallery_entry") != null, "Gallery entrance marker missing")
 	_check(get_first_node_in_group("grotto_gallery_return") != null, "Gallery return marker missing")
 	_check(get_first_node_in_group("grotto_shortcut_return") != null, "Shortcut return marker missing")
-	gallery_door._on_body_entered(player)
+	gallery_door.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_gallery", "Gallery transition failed")
 	_check(soundscape.current_track == "echo_gallery", "Gallery ambience missing")
@@ -53,13 +53,13 @@ func _run() -> void:
 	_check(state.has_item("gallery_prism"), "Gallery Prism not collected")
 	_check(shortcut._requirements_met(), "Gallery shortcut stayed locked after prism")
 	_check("ENTER THE ARCHIVE" in game.get_node("UI").objective_label.text, "Gallery objective did not update")
-	shortcut._on_body_entered(player)
+	shortcut.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_grotto", "Shortcut did not return to Grotto")
 	_check(player.global_position.distance_to(grotto.get_node("ShortcutReturn").global_position) < 45.0, "Shortcut arrived at wrong marker")
-	gallery_door._on_body_entered(player)
+	gallery_door.activate(player)
 	await create_timer(0.5).timeout
-	gallery.get_node("ReturnDoor")._on_body_entered(player)
+	gallery.get_node("ReturnDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "echo_grotto", "Gallery's near return door did not work")
 	_check(player.global_position.distance_to(grotto.get_node("GalleryReturn").global_position) < 45.0, "Gallery's near return reached wrong marker")
@@ -87,6 +87,8 @@ func _run() -> void:
 	await process_frame
 	await process_frame
 	_check(not reloaded_game.get_node("EchoGallery").has_node("GalleryPrism"), "Unique prism respawned after loading")
+	state.set_current_room("echo_gallery")
+	await process_frame
 	_check(reloaded_game.get_node("EchoGallery/NearShade").zone_id == "echo_grotto", "Gallery enemy belongs to wrong zone")
 	state.delete_save()
 	reloaded_game.queue_free()

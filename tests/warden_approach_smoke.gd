@@ -49,7 +49,7 @@ func _run() -> void:
 	state.unlock_shortcut("shaft_gallery_upper")
 	_check(gallery_door._requirements_met() and shaft_door._requirements_met(), "Gallery controls did not open both Approach entrances")
 	state.set_current_room("shaft_gallery")
-	gallery_door._on_body_entered(player)
+	gallery_door.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "shaft_approach" and bool(state.discovered_rooms.get("shaft_approach", false)), "Gallery did not discover Warden Approach")
 	_check(player.global_position.distance_to(approach.get_node("GalleryEntry").global_position) < 45.0, "Approach Gallery entry marker is wrong")
@@ -63,18 +63,18 @@ func _run() -> void:
 	await process_frame
 	_check(bridge.is_active and not bridge.get_node("CollisionShape2D").disabled, "Counterweight did not create a solid return bridge")
 	_check("BRIDGE LOWERED" in ui.objective_label.text and not crank.activate(player), "Bridge objective or one-time activation is wrong")
-	approach.get_node("ArenaDoor")._on_body_entered(player)
+	approach.get_node("ArenaDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "sunken_shaft" and player.global_position.distance_to(shaft.get_node("GalleryReturn").global_position) < 45.0, "Approach did not reach Warden arena")
-	shaft_door._on_body_entered(player)
+	shaft_door.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "shaft_approach" and player.global_position.distance_to(approach.get_node("ShaftEntry").global_position) < 45.0, "Warden arena could not return to Approach")
 	state.set_zone_tier("sunken_shaft", 1)
 	_check(approach.has_node("Cache_approach_afterglow"), "Awakened Approach cache is missing")
-	approach.get_node("GalleryReturnDoor")._on_body_entered(player)
+	approach.get_node("GalleryReturnDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "shaft_gallery", "Approach could not return to Gallery")
-	gallery_door._on_body_entered(player)
+	gallery_door.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "shaft_approach" and approach.has_node("approach_echo_wisp"), "Awakened Approach encounter did not appear on return")
 	_check(approach.get_node("Cache_approach_afterglow").open(player), "Awakened Approach cache did not open")
@@ -101,7 +101,7 @@ func _run() -> void:
 	_check(approach.get_node("CounterweightCrank").is_active and approach.get_node("UpperCache").opened and approach.get_node("Cache_approach_afterglow").opened, "Saved Approach crank or caches reset")
 	_check(approach.get_node("ApproachLamp").is_active, "Saved Approach lamp went dark")
 	ui._update_route_summary()
-	_check("3/6 PLAYABLE ROOMS" in ui.map_route_label.text and "CACHES 2/11" in ui.map_route_label.text, "Map did not track Approach room and caches")
+	_check("3/7 PLAYABLE ROOMS" in ui.map_route_label.text and "CACHES 2/14" in ui.map_route_label.text, "Map did not track Approach room and caches")
 	_check(ui.get_node("WorldMapPanel/RouteScroll").get_global_rect().intersection(ui.map_travel_button.get_global_rect()).get_area() <= 0.0, "World-map route viewport overlaps travel button")
 	ui._open_world_map(true, approach.get_node("ApproachLamp"))
 	ui.selected_lamp_id = "sunken_shaft_lamp"

@@ -36,6 +36,33 @@ points = PackedVector2Array(165, 135, 235, -54, 463, -135, 703, -58, 775, 135)
 width = 4.0
 default_color = Color(0.71, 0.43, 0.77, 0.45)
 
+[node name="RearRibs" type="Polygon2D" parent="."]
+z_index = -2
+color = Color(0.26, 0.16, 0.39, 0.52)
+polygon = PackedVector2Array(95, 145, 135, -89, 171, -89, 195, 145, 348, 145, 383, -139, 418, -139, 446, 145, 560, 145, 595, -139, 630, -139, 656, 145, 760, 145, 800, -81, 835, -81, 864, 145)
+
+[node name="SanctumCrown" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.61, 0.29, 0.68, 0.22)
+polygon = PackedVector2Array(332, 151, 362, -36, 414, 27, 462, -166, 505, -45, 552, -166, 600, 27, 648, -36, 680, 151)
+
+[node name="CoreShard" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.88, 0.48, 0.88, 0.55)
+polygon = PackedVector2Array(470, 150, 500, -118, 532, 150)
+
+[node name="PulseRail" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(118, 128, 224, 72, 305, 95, 390, 30, 500, -14, 610, 30, 695, 95, 780, 72, 875, 128)
+width = 3.0
+default_color = Color(0.86, 0.57, 0.91, 0.42)
+
+[node name="BoundaryGleam" type="Line2D" parent="."]
+z_index = -1
+points = PackedVector2Array(8, -178, 8, 148, 82, 148)
+width = 3.0
+default_color = Color(0.57, 0.43, 0.75, 0.55)
+
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(460, 166)
 
@@ -53,6 +80,16 @@ position = Vector2(920, -5)
 shape = SubResource("WallShape")
 
 [node name="Visual" type="Polygon2D" parent="EndWall"]
+color = Color(0.2, 0.15, 0.33, 1)
+polygon = PackedVector2Array(-6, -175, 6, -175, 6, 175, -6, 175)
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, -5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="Visual" type="Polygon2D" parent="LeftWall"]
 color = Color(0.2, 0.15, 0.33, 1)
 polygon = PackedVector2Array(-6, -175, 6, -175, 6, 175, -6, 175)
 
@@ -78,6 +115,50 @@ one_way_collision = true
 color = Color(0.31, 0.3, 0.5, 1)
 polygon = PackedVector2Array(-72, -5, 73, -5, 73, 5, -72, 5)
 
+[node name="UpperLeftPerch" type="StaticBody2D" parent="."]
+position = Vector2(390, 30)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperLeftPerch"]
+shape = SubResource("PlatformShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="UpperLeftPerch"]
+color = Color(0.42, 0.34, 0.58, 1)
+polygon = PackedVector2Array(-72, -5, 73, -5, 73, 5, -72, 5)
+
+[node name="UpperRightPerch" type="StaticBody2D" parent="."]
+position = Vector2(610, 30)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperRightPerch"]
+shape = SubResource("PlatformShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="UpperRightPerch"]
+color = Color(0.42, 0.34, 0.58, 1)
+polygon = PackedVector2Array(-72, -5, 73, -5, 73, 5, -72, 5)
+
+[node name="LeftEvasion" type="StaticBody2D" parent="."]
+position = Vector2(145, 105)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftEvasion"]
+shape = SubResource("PlatformShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="LeftEvasion"]
+color = Color(0.35, 0.32, 0.51, 1)
+polygon = PackedVector2Array(-72, -5, 73, -5, 73, 5, -72, 5)
+
+[node name="RightEvasion" type="StaticBody2D" parent="."]
+position = Vector2(805, 105)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightEvasion"]
+shape = SubResource("PlatformShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="RightEvasion"]
+color = Color(0.35, 0.32, 0.51, 1)
+polygon = PackedVector2Array(-72, -5, 73, -5, 73, 5, -72, 5)
+
 [node name="SanctumEntry" type="Marker2D" parent="." groups=["sanctum_entry"]]
 position = Vector2(65, 130)
 
@@ -93,6 +174,7 @@ lamp_id = "sanctum_lamp"
 lamp_name = "Resonance Sanctum Lamp"
 room_id = "echo_sanctum"
 enemy_block_radius = 200.0
+reveal_after_boss_id = "echo_matriarch"
 
 [node name="EchoMatriarch" parent="." instance=ExtResource("3_boss")]
 position = Vector2(500, 34)
@@ -108,10 +190,10 @@ locked_label = "MATRIARCH"
 locked_hint = "Defeat the Echo Matriarch."
 
 [node name="AshenReturn" type="Marker2D" parent="." groups=["sanctum_ash_return"]]
-position = Vector2(807, 130)
+position = Vector2(675, 63)
 
 [node name="AshenGate" parent="." instance=ExtResource("1_door")]
-position = Vector2(750, 130)
+position = Vector2(750, 63)
 target_marker_group = &"ash_causeway_entry"
 target_room_id = "ash_causeway"
 door_label = "ASHEN BASTION"

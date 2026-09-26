@@ -32,7 +32,7 @@ func _run() -> void:
 	var reverse_door = shaft.get_node("GalleryShortcutDoor")
 	_check(not far_door._requirements_met() and not reverse_door._requirements_met(), "Gallery shortcut opened before both controls")
 	state.set_current_room("shaft_crossing")
-	crossing.get_node("GalleryDoor")._on_body_entered(player)
+	crossing.get_node("GalleryDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "shaft_gallery" and bool(state.discovered_rooms.get("shaft_gallery", false)), "Crossing did not discover Flooded Gallery")
 	_check(player.global_position.distance_to(gallery.get_node("CrossingEntry").global_position) < 45.0, "Gallery entry marker is wrong")
@@ -48,23 +48,23 @@ func _run() -> void:
 	_check(supply.open(player), "Gallery supply cache did not open")
 	_check(state.gold >= gold_before + 27 and state.has_item("ether_dust"), "Gallery supply payout is missing")
 	_check(not supply.open(player), "Gallery supply cache paid twice")
-	far_door._on_body_entered(player)
+	far_door.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "shaft_approach" and player.global_position.distance_to(approach.get_node("GalleryEntry").global_position) < 45.0, "Gallery did not reach Warden Approach")
-	approach.get_node("ArenaDoor")._on_body_entered(player)
+	approach.get_node("ArenaDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "sunken_shaft" and player.global_position.distance_to(shaft.get_node("GalleryReturn").global_position) < 45.0, "Approach did not reach Warden arena")
-	reverse_door._on_body_entered(player)
+	reverse_door.activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "shaft_approach" and player.global_position.distance_to(approach.get_node("ShaftEntry").global_position) < 45.0, "Warden arena could not return to Approach")
-	approach.get_node("GalleryReturnDoor")._on_body_entered(player)
+	approach.get_node("GalleryReturnDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "shaft_gallery" and player.global_position.distance_to(gallery.get_node("ShaftEntry").global_position) < 45.0, "Warden Approach could not return to Gallery")
 	state.set_zone_tier("sunken_shaft", 1)
 	_check(gallery.has_node("Cache_gallery_afterglow"), "Awakened Gallery cache is missing")
-	far_door._on_body_entered(player)
+	far_door.activate(player)
 	await create_timer(0.5).timeout
-	approach.get_node("GalleryReturnDoor")._on_body_entered(player)
+	approach.get_node("GalleryReturnDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(gallery.has_node("gallery_echo_wisp"), "Awakened Gallery encounter did not spawn on return")
 	var awakened_cache = gallery.get_node("Cache_gallery_afterglow")
@@ -90,7 +90,7 @@ func _run() -> void:
 	_check(gallery.get_node("WardenShortcutDoor")._requirements_met() and game.get_node("VerticalChamber/GalleryShortcutDoor")._requirements_met(), "Saved Gallery shortcut closed")
 	_check(gallery.get_node("GalleryCache").opened and gallery.get_node("Cache_gallery_afterglow").opened, "Saved Gallery caches reopened")
 	game.get_node("UI")._update_route_summary()
-	_check("4/6 PLAYABLE ROOMS" in game.get_node("UI").map_route_label.text and "CACHES 2/11" in game.get_node("UI").map_route_label.text, "Map did not track Gallery progress")
+	_check("4/7 PLAYABLE ROOMS" in game.get_node("UI").map_route_label.text and "CACHES 2/14" in game.get_node("UI").map_route_label.text, "Map did not track Gallery progress")
 	_check(game.get_node("UI/WorldMapPanel/RouteScroll").get_global_rect().intersection(game.get_node("UI").map_travel_button.get_global_rect()).get_area() <= 0.0, "World-map route viewport overlaps travel button")
 	state.delete_save()
 	game.queue_free()

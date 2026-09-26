@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Diplomski"
-run/main_scene="uid://d25wjjihdqoeb"
+run/main_scene="res://Game.tscn"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
 

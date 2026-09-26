@@ -10,6 +10,8 @@ var damage: int = 2
 var speed: float = 345.0
 var remaining_hits: int = 1
 var hit_targets: Dictionary = {}
+var pending_hits: int = 0
+var stopped: bool = false
 
 @onready var aura: Polygon2D = $Aura
 @onready var core: Polygon2D = $Core
@@ -51,16 +53,22 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_body_entered(body: Node) -> void:
-	if body == source:
+	if body == source or stopped or is_queued_for_deletion():
 		return
-	if (body.is_in_group("enemy") or body.is_in_group("breakable")) and body.has_method("take_damage"):
+	if (body.is_in_group("enemy") or body.is_in_group("neutral_creature") or body.is_in_group("breakable")) and body.has_method("take_damage"):
 		var target_id := body.get_instance_id()
-		if hit_targets.has(target_id):
+		if hit_targets.has(target_id) or pending_hits >= remaining_hits:
 			return
 		hit_targets[target_id] = true
+		# Reserve each contact before deferred damage resolves, so overlapping
+		# enemies cannot exceed this spell's single-hit / piercing budget.
+		pending_hits += 1
 		set_deferred("monitoring", false)
+		if pending_hits >= remaining_hits:
+			visible = false
 		call_deferred("_damage_target", body)
 		return
+	stopped = true
 	queue_free()
 
 
@@ -69,8 +77,10 @@ func _damage_target(body: Node) -> void:
 		var game_state := get_node_or_null("/root/GameState")
 		var target_bonus: int = game_state.get_weapon_target_bonus(weapon_id, body) if game_state != null else 0
 		body.take_damage(damage + target_bonus, direction * 90.0 + Vector2(0.0, -28.0))
+	pending_hits -= 1
 	remaining_hits -= 1
 	if remaining_hits <= 0:
+		stopped = true
 		queue_free()
-	else:
+	elif pending_hits == 0 and not stopped:
 		set_deferred("monitoring", true)

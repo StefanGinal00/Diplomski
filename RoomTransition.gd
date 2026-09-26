@@ -23,6 +23,9 @@ func _ready() -> void:
 func transition_player(player: Player, target_position: Vector2, target_room_id: String) -> bool:
 	if is_transitioning or player == null or player.is_dead:
 		return false
+	var game_state := get_node_or_null("/root/GameState")
+	if game_state != null and game_state.is_boss_encounter_active():
+		return false
 	is_transitioning = true
 	transition_started.emit(target_room_id)
 	player.velocity = Vector2.ZERO
@@ -31,10 +34,20 @@ func transition_player(player: Player, target_position: Vector2, target_room_id:
 	var fade_out := create_tween()
 	fade_out.tween_property(overlay, "color:a", 1.0, 0.18)
 	await fade_out.finished
+	if not is_instance_valid(player) or not player.is_inside_tree():
+		overlay.hide()
+		overlay.color.a = 0.0
+		is_transitioning = false
+		return false
+	if game_state != null and game_state.is_boss_encounter_active():
+		overlay.hide()
+		overlay.color.a = 0.0
+		player.set_physics_process(true)
+		is_transitioning = false
+		return false
 
 	player.global_position = target_position
 	player.velocity = Vector2.ZERO
-	var game_state := get_node_or_null("/root/GameState")
 	if game_state != null:
 		game_state.set_current_room(target_room_id)
 	await get_tree().process_frame
@@ -43,6 +56,9 @@ func transition_player(player: Player, target_position: Vector2, target_room_id:
 	fade_in.tween_property(overlay, "color:a", 0.0, 0.22)
 	await fade_in.finished
 	overlay.hide()
+	if not is_instance_valid(player) or not player.is_inside_tree():
+		is_transitioning = false
+		return false
 	player.set_physics_process(true)
 	is_transitioning = false
 	transition_finished.emit(target_room_id)

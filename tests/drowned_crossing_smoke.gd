@@ -31,7 +31,7 @@ func _run() -> void:
 	_check(not valve.is_active and not surge.disabled, "Crossing valve or surge started in the wrong state")
 	_check(not crossing.get_node("HollowDoor")._requirements_met(), "Hollow loop opened before its relay")
 	state.set_current_room("sunken_shaft")
-	shaft.get_node("CrossingDoor")._on_body_entered(player)
+	shaft.get_node("CrossingDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "shaft_crossing" and bool(state.discovered_rooms.get("shaft_crossing", false)), "Lower Shaft did not discover Drowned Crossing")
 	_check(player.global_position.distance_to(crossing.get_node("ShaftEntry").global_position) < 45.0, "Crossing Shaft entry marker is wrong")
@@ -50,20 +50,20 @@ func _run() -> void:
 	await physics_frame
 	_check(valve.is_active and surge.disabled and not surge.monitoring, "Valve did not disable the surge")
 	_check(not valve.activate(player), "Crossing valve activated twice")
-	_check("CROSSING SAFE" in game.get_node("UI").objective_label.text, "Drained Crossing objective is missing")
+	_check("CURRENTS CALMED" in game.get_node("UI").objective_label.text and "SAFE" not in game.get_node("UI").objective_label.text, "Drained Crossing objective is missing or falsely promises safety")
 	state.unlock_shortcut("shaft_hollow_relay")
 	_check(crossing.get_node("HollowDoor")._requirements_met() and hollow.get_node("CrossingDoor")._requirements_met(), "Relay did not unlock both Crossing-Hollow doors")
-	crossing.get_node("HollowDoor")._on_body_entered(player)
+	crossing.get_node("HollowDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "shaft_hollow" and player.global_position.distance_to(hollow.get_node("CrossingEntry").global_position) < 45.0, "Crossing to Hollow transition failed")
-	hollow.get_node("CrossingDoor")._on_body_entered(player)
+	hollow.get_node("CrossingDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(state.current_room_id == "shaft_crossing" and player.global_position.distance_to(crossing.get_node("HollowEntry").global_position) < 45.0, "Hollow to Crossing transition failed")
 	state.set_zone_tier("sunken_shaft", 1)
 	_check(crossing.has_node("Cache_crossing_dregs"), "Awakened Crossing cache did not appear")
-	crossing.get_node("HollowDoor")._on_body_entered(player)
+	crossing.get_node("HollowDoor").activate(player)
 	await create_timer(0.5).timeout
-	hollow.get_node("CrossingDoor")._on_body_entered(player)
+	hollow.get_node("CrossingDoor").activate(player)
 	await create_timer(0.5).timeout
 	_check(crossing.has_node("Cache_crossing_dregs") and crossing.has_node("crossing_echo_wisp"), "Awakened Crossing cache or encounter is missing")
 	var awakened_cache = crossing.get_node("Cache_crossing_dregs")
@@ -88,7 +88,7 @@ func _run() -> void:
 	_check(crossing.get_node("Valve").is_active and crossing.get_node("SluiceSurge").disabled, "Saved valve did not restore the drained surge")
 	_check(crossing.get_node("CrossingCache").opened and crossing.get_node("Cache_crossing_dregs").opened, "Saved Crossing caches reopened")
 	game.get_node("UI")._update_route_summary()
-	_check("3/6 PLAYABLE ROOMS" in game.get_node("UI").map_route_label.text and "CACHES 2/11" in game.get_node("UI").map_route_label.text, "Map did not track Crossing progress")
+	_check("3/7 PLAYABLE ROOMS" in game.get_node("UI").map_route_label.text and "CACHES 2/14" in game.get_node("UI").map_route_label.text, "Map did not track Crossing progress")
 	_check(game.get_node("UI/WorldMapPanel/RouteScroll").get_global_rect().intersection(game.get_node("UI").map_travel_button.get_global_rect()).get_area() <= 0.0, "World-map route viewport overlaps travel button")
 	state.delete_save()
 	game.queue_free()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://ItemPickup.tscn" id="6_item"]
 [ext_resource type="PackedScene" path="res://TidePulse.tscn" id="7_pulse"]
 [ext_resource type="PackedScene" path="res://EchoTrace.tscn" id="8_trace"]
+[ext_resource type="Script" path="res://EchoTraversal.gd" id="9_traversal"]
 
 [sub_resource type="RectangleShape2D" id="WallShape"]
 size = Vector2(12, 690)
@@ -25,6 +26,10 @@ size = Vector2(500, 18)
 size = Vector2(500, 12)
 
 [node name="TideWell" type="Node2D"]
+
+[node name="LongTraversal" type="Node2D" parent="."]
+script = ExtResource("9_traversal")
+route_id = "tide"
 
 [node name="Backdrop" type="Polygon2D" parent="."]
 z_index = -4
@@ -58,7 +63,7 @@ color = Color(0.07, 0.25, 0.32, 1)
 polygon = PackedVector2Array(-6, -345, 6, -345, 6, 345, -6, 345)
 
 [node name="RightWall" type="StaticBody2D" parent="."]
-position = Vector2(500, 335)
+position = Vector2(3200, 335)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
 shape = SubResource("WallShape")
@@ -206,7 +211,7 @@ position = Vector2(101, 130)
 position = Vector2(320, 630)
 
 [node name="NestReturn" type="Marker2D" parent="." groups=["tide_nest_return"]]
-position = Vector2(400, 630)
+position = Vector2(1830, -1348)
 
 [node name="NestShortcutReturn" type="Marker2D" parent="." groups=["tide_nest_shortcut_return"]]
 position = Vector2(65, 130)
@@ -234,17 +239,6 @@ lift_label = "TIDE LIFT"
 [node name="Surge" parent="." instance=ExtResource("7_pulse")]
 position = Vector2(250, 402)
 
-[node name="MidWisp" parent="." instance=ExtResource("5_wisp")]
-position = Vector2(300, 319)
-zone_id = "echo_grotto"
-xp_reward = 2
-gold_reward = 12
-
-[node name="DeepShade" parent="." instance=ExtResource("4_shade")]
-position = Vector2(325, 637)
-max_health = 5
-gold_reward = 20
-
 [node name="TideLamp" parent="." instance=ExtResource("2_lamp")]
 position = Vector2(92, 628)
 lamp_id = "tide_well_lamp"
@@ -268,7 +262,7 @@ locked_label = "CORE LOCK"
 locked_hint = "Recover the Tide Core before exploring the Vault."
 
 [node name="NestDoor" parent="." instance=ExtResource("1_door")]
-position = Vector2(465, 630)
+position = Vector2(2690, -2008)
 target_marker_group = &"nest_entry"
 target_room_id = "echo_nest"
 door_label = "ECHO NEST"
