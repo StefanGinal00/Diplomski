@@ -5,10 +5,12 @@ const ROOMS := {"grotto": "Grotto Choir", "gallery": "Gallery", "archive": "Arch
 var state: Node
 var board: Label
 var curator: Area2D
+var backing: Polygon2D
 
 
 func _ready() -> void:
-	var backing := Polygon2D.new()
+	backing = Polygon2D.new()
+	backing.name = "BoardBacking"
 	backing.z_index = -1
 	backing.color = Color(0.025, 0.11, 0.16, 0.96)
 	backing.polygon = PackedVector2Array([Vector2(-180, -218), Vector2(220, -218), Vector2(220, -65), Vector2(-180, -65)])

@@ -1,0 +1,239 @@
+{
+  "date": "2026-10-04",
+  "scope": "Inhabited town floor decoration and native-preview-discovered scenery fixes. Focused continuation, not completion of the whole visual/gameplay backlog.",
+  "implementation": {
+    "original_sheets": 3,
+    "cutouts": 18,
+    "manifest": "art/visual_slice/town_verge_manifest_v1.json",
+    "decoded_texture_bytes_with_mipmaps": 2790756,
+    "towns": {
+      "echo_haven": {
+        "rigid": 25,
+        "soft": 121,
+        "home_zones": 20
+      },
+      "ash_hearth": {
+        "rigid": 8,
+        "soft": 71,
+        "home_zones": 15
+      },
+      "starfall_citadel": {
+        "rigid": 26,
+        "soft": 245,
+        "home_zones": 13
+      }
+    },
+    "visible_new_cutout_placements": 496,
+    "placement": "Replace existing PathDressing floor cutouts only in the three core towns. Rigid supplies appear near house bases on the same tier; open bridges use low grass. Homes and doorways use actual presentation bounds. Outside towns and on ceilings, original cutouts remain.",
+    "response": "Only soft grass bends with existing wind and signed player-contact spring; root stays fixed. Full +/-0.445 skew envelope reserves walls, doors and ledge clearance. Hidden props reset both motion and spring state.",
+    "height_caps_world_units": {
+      "foreground": 15,
+      "rear": 22
+    },
+    "unchanged_budgets": {
+      "animated_normal": 18,
+      "animated_low": 8,
+      "contact_normal": 12,
+      "contact_low": 6
+    },
+    "added_per_prop_callbacks": 0,
+    "changed_gameplay_colliders": 0,
+    "repairs": [
+      "Echo records backing now retires together with its old label. Live 0/8 -> 1/8 report still opens in reader, retains gold/pause semantics and does not duplicate on revisit.",
+      "Two Starfall plain zigzag rails become supported, 20-unit-high textured rails; native owning balconies prevent duplicate supports from same-height neighbors. One flat archive window becomes a contained, uniformly scaled atlas window.",
+      "Late terrain rebuild skips freed previous decoration references in the held finish snapshot. Scaled fixture adds/removes a narrow wall and verifies soft flex and separately attached hanging art clearance."
+    ]
+  },
+  "verification": {
+    "focused_passes": [
+      {
+        "test": "town_verge_smoke.gd",
+        "status": "PASS",
+        "seconds": 11.72,
+        "errors": [],
+        "folder": ".tmp-smoke-suite-20261004-165403-433-5cb9561a"
+      },
+      {
+        "test": "town_balcony_finish_smoke.gd",
+        "status": "PASS",
+        "seconds": 9.69,
+        "errors": [],
+        "folder": ".tmp-smoke-suite-20261004-164650-716-5ad86de7"
+      },
+      {
+        "test": "route_richness_smoke.gd",
+        "status": "PASS",
+        "seconds": 30.81,
+        "errors": [],
+        "folder": ".tmp-smoke-suite-20261004-165457-787-1088c4d0"
+      },
+      {
+        "test": "settlement_reading_occlusion_smoke.gd",
+        "status": "PASS",
+        "seconds": 11.04,
+        "errors": [],
+        "folder": ".tmp-smoke-suite-20261004-164157-968-ae03aada"
+      },
+      {
+        "test": "reactive_foliage_smoke.gd",
+        "status": "PASS",
+        "seconds": 2.12,
+        "errors": [],
+        "folder": ".tmp-smoke-suite-20261004-164444-633-b93afa30"
+      },
+      {
+        "test": "ambient_fauna_smoke.gd",
+        "status": "PASS",
+        "seconds": 27.09,
+        "errors": [],
+        "folder": ".tmp-smoke-suite-20261004-164447-253-72435f24"
+      },
+      {
+        "test": "world_readables_smoke.gd",
+        "status": "PASS",
+        "seconds": 30.52,
+        "errors": [],
+        "folder": ".tmp-smoke-suite-20261004-164457-425-aaa8b287"
+      },
+      {
+        "test": "settlement_motion_budget_smoke.gd",
+        "status": "PASS",
+        "seconds": 10.79,
+        "errors": [],
+        "folder": ".tmp-smoke-suite-20261004-164700-963-31312f11"
+      },
+      {
+        "test": "residential_facade_smoke.gd",
+        "status": "PASS",
+        "seconds": 2.89,
+        "errors": [],
+        "folder": ".tmp-smoke-suite-20261004-164711-093-f9bd9067"
+      },
+      {
+        "test": "readable_support_footprint_smoke.gd",
+        "status": "PASS",
+        "seconds": 29.21,
+        "errors": [],
+        "folder": ".tmp-smoke-suite-20261004-164844-220-c5532fb5"
+      },
+      {
+        "test": "city_parallax_runtime_smoke.gd",
+        "status": "PASS",
+        "seconds": 9.83,
+        "errors": [],
+        "folder": ".tmp-smoke-suite-20261004-164854-375-b2683067"
+      },
+      {
+        "test": "starfall_upper_art_smoke.gd",
+        "status": "PASS",
+        "seconds": 1.69,
+        "errors": [],
+        "folder": ".tmp-smoke-suite-20261004-164904-636-15934534"
+      },
+      {
+        "test": "foreground_placement_lifecycle_smoke.gd",
+        "status": "PASS",
+        "seconds": 30.81,
+        "errors": [],
+        "folder": ".tmp-smoke-suite-20261004-164942-378-9c8348ca"
+      },
+      {
+        "test": "town_havens_smoke.gd",
+        "status": "PASS",
+        "seconds": 11.68,
+        "errors": [],
+        "folder": ".tmp-smoke-suite-20261004-164952-602-3a7fd2ea"
+      },
+      {
+        "test": "ambient_contact_priority_smoke.gd",
+        "status": "PASS",
+        "seconds": 1.92,
+        "errors": [],
+        "folder": ".tmp-smoke-suite-20261004-165002-855-e98fe0b5"
+      }
+    ],
+    "world_route_audit": {
+      "rooms": 39,
+      "floor": 7161,
+      "hanging": 3499,
+      "foreground": 2778,
+      "understory": 1367,
+      "seeps": 131,
+      "vaults": 22,
+      "original_cutout_variants": 48
+    },
+    "readable_coverage": {
+      "rooms": 39,
+      "notices": 596
+    },
+    "source_audit": "tests/audit_town_verge_sources.gd (read-only alpha/crop inspection; custom rectangles, not nominal grid)",
+    "key_fixtures": [
+      "All 18 cached cutouts, uniform scale under non-uniform room transform, alpha contact and size caps",
+      "Both contact directions and exact spring rest after settling",
+      "No town assets leaked into outskirts or Sunken Shaft",
+      "Door/device/solid/ledge clearance, late service hide/reset/restore",
+      "Late wall rebuild with freed old nodes in finish snapshot, then disabled wall restoration",
+      "Native and separately scaled Starfall railing/window owner/support/containment",
+      "Stable revisit IDs and unchanged collider snapshots"
+    ]
+  },
+  "native_preview": {
+    "script": "tests/preview_town_verges.gd",
+    "engine": "Godot 4.6.2.stable",
+    "renderer": "D3D12 Forward Mobile / NVIDIA RTX 4050 Laptop GPU",
+    "dimensions": [
+      1280,
+      720
+    ],
+    "captures": [
+      "art/characters/preview_town_verge_echo_haven_home.png",
+      "art/characters/preview_town_verge_echo_haven_calm.png",
+      "art/characters/preview_town_verge_echo_haven_brushed.png",
+      "art/characters/preview_town_verge_echo_haven_settled.png",
+      "art/characters/preview_town_verge_ash_hearth_home.png",
+      "art/characters/preview_town_verge_ash_hearth_calm.png",
+      "art/characters/preview_town_verge_ash_hearth_brushed.png",
+      "art/characters/preview_town_verge_ash_hearth_settled.png",
+      "art/characters/preview_town_verge_starfall_citadel_home.png",
+      "art/characters/preview_town_verge_starfall_citadel_calm.png",
+      "art/characters/preview_town_verge_starfall_citadel_brushed.png",
+      "art/characters/preview_town_verge_starfall_citadel_settled.png",
+      "art/characters/preview_town_verge_echo_records_roof.png"
+    ],
+    "all_final_captures_visually_inspected": true,
+    "actual_controller_walks": 3,
+    "controller_physics": "30 physics settling frames per site; real 18-frame right-input walks with collision enabled; no direct position tween for walking.",
+    "contacts": [
+      {
+        "room": "echo_haven",
+        "grounded": true,
+        "bend": 0.26843794872166
+      },
+      {
+        "room": "ash_hearth",
+        "grounded": true,
+        "bend": 0.26666793006994
+      },
+      {
+        "room": "starfall_citadel",
+        "grounded": true,
+        "bend": 0.26666793006994
+      }
+    ],
+    "recovery": "240 shared idle contact samples per town; bend returns to zero.",
+    "preview_limits": "Encounters/other simulation are frozen for deterministic review; settling uses stepped contact simulation. Captures are not a real-time performance benchmark or campaign playthrough."
+  },
+  "iterations": "Early typed-array and audit inference errors were corrected. Exact floating-point fixture comparison became approximate while retaining signed direction checks. Deterministic hard-prop cycling fixed missing eighteenth variant. Owner-specific balcony support eliminated duplicate rails. Late-wall fixture exposed freed-instance access; hanging attachments are separately tested against unrelated solids instead of falsely rejecting their own attachment.",
+  "environment_warnings": [
+    "Windows root certificate store unavailable in sandbox",
+    "Native shader-cache save warning (_save_to_cache / f.is_null), not shader compilation failure",
+    "Headless editor cannot save global editor_settings-4.6.tres outside workspace; import exits 0"
+  ],
+  "limits": [
+    "No full smoke-suite run, exported-build sign-off or complete campaign test",
+    "No new enemy/boss/NPC movement clips or AI changes in this pass",
+    "Existing non-PathDressing scenery can still be refined; this does not claim every prototype is removed",
+    "No terrain-profile or ceiling-geometry changes in this pass; existing 39-room route/vault regression remains passing"
+  ],
+  "git": "Local commit only. Prior external-push approval rejection remains in force; no push retry performed."
+}

@@ -124,7 +124,8 @@ func _run() -> void:
 				_check(bounds.size.y <= (15.01 if prop.z_index > 0 else 30.01),"Oversized route detail: "+id)
 				_check(bounds.position.x >= prop.support.position.x and bounds.end.x <= prop.support.end.x,"Unsupported ledge detail: "+id)
 				var sheet := "route_%s_floor_v1"%prop.family
-				var foot: Vector2 = prop.art.to_global(Vector2(0,prop.art.get_rect().position.y+Atlas.contact(sheet,prop.variant,false)))
+				var contact: float = Atlas.contact(sheet,prop.variant,false) if prop.town_family.is_empty() else preload("res://TownVergeAtlas.gd").contact(prop.town_family,prop.variant)
+				var foot: Vector2 = prop.art.to_global(Vector2(0,prop.art.get_rect().position.y+contact))
 				_check(absf(foot.y-prop.support.position.y-0.65)<0.01,"Floating route detail: "+id)
 				bounds.size.y = maxf(0,prop.support.position.y-0.25-bounds.position.y)
 				_check(Placement.clear(bounds,solids),"Route art inside solid: "+id)

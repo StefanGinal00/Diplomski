@@ -1,5 +1,19 @@
 # Automated smoke tests
 
+The 2026-10-04 inhabited-town continuation is recorded in
+`town_verge_verification_v1.json`: 15 focused passes and 13 inspected native
+views. `town_verge_smoke.gd` checks 18 alpha-registered cutouts, all three towns,
+same-tier house placement, door/solid/ledge and full-flex clearance, signed
+player response, quality caps, stable revisits and late service/wall refresh.
+`town_balcony_finish_smoke.gd` covers native/scaled Starfall railing support,
+single-owner placement and archive-window containment without collider edits.
+The reading-occlusion test now verifies Echo's removed blank billboard while
+retaining its live report. `preview_town_verges.gd` uses three real controller
+walks plus calm/brushed/settled captures; encounters are frozen for review.
+`audit_town_verge_sources.gd` measures raw PNG alpha and per-object bounds
+without changing source pixels. These checks do not constitute a full campaign,
+whole-suite run or physical-device benchmark.
+
 The 2026-10-04 ground-contact continuation is recorded in
 `ground_dust_verification_v1.json`: 13 focused passes and 16 inspected final
 native captures. `ground_dust_animation_smoke.gd` covers all 24 shared phases,

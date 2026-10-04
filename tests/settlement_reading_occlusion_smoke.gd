@@ -25,6 +25,23 @@ func _run() -> void:
 			if node.has_meta("camera_backdrop_retired"):
 				masks += 1
 				_check(not node.visible and node.get_child_count()==0,"Retired mask still covers scenery")
+		if id=="echo_haven":
+			var records := room.get_node("NewDistricts/DiscoveryBoard")
+			_check(not records.backing.visible,"Blank Echo record billboard covers a roof")
+			var index := -1
+			for i in reader.entries.size():
+				if reader.entries[i].text==records.board: index=i
+			_check(index>=0,"Echo records lost when backdrop retired")
+			if index>=0:
+				player.global_position=reader.entries[index].at
+				var gold: int=state.gold
+				reader.open_nearest()
+				_check(reader.is_open() and reader.body.text.contains("RECORDS 0/8"),"Echo report no longer readable")
+				state.unlock_shortcut("echo_grotto_field_complete"); reader._refresh_text()
+				_check(reader.body.text.contains("RECORDS 1/8"),"Echo report becomes stale")
+				reader.close(); _check(state.gold==gold and not paused,"Echo reading awards/spends gold or leaks pause")
+				var count: int=reader.entries.size(); finish.finish_room(id)
+				_check(reader.entries.size()==count and not records.backing.visible,"Echo revisit revives/duplicates billboard")
 		if id=="ash_hearth":
 			_check(not room.get_node("StoneWalk").visible,"Flat walk backdrop hides timber footings")
 			_check(room.get_node("WalkwayArt").surfaces.size()==44,"Lost textured walk surfaces")

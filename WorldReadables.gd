@@ -198,6 +198,11 @@ func _is_route_notice(label: Label) -> bool:
 func _retire(label: Label) -> void:
 	label.set_meta("world_readable", true)
 	label.modulate.a = 0
+	# The Echo records retain their live source label, but its old billboard
+	# must retire with the text; otherwise a blank slab cuts across the houses.
+	var author := label.get_parent()
+	if author.get_script()==preload("res://EchoDiscoveryBoard.gd") and label==author.board:
+		author.backing.hide()
 
 func _supported_anchor(label: Label, nodes: Array) -> Vector2:
 	var at: Vector2 = label.get_global_transform()*Vector2(label.size.x*.5,0)

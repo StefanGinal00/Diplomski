@@ -1,5 +1,21 @@
 # Smoke-suite checkpoints - latest 2026-10-04
 
+## Inhabited town verges and scenery fixes - 2026-10-04
+
+15 focused tests pass; all 13 final native 1280x720 captures were inspected.
+Three original transparent sheets supply 18 small props at 496 placements in
+Echo Haven, Ash Hearth and Starfall. Supplies sit near same-tier house bases;
+open bridges use low grass with signed contact response, fixed roots and full
+flex-envelope clearance. All sources retain their original pixels; custom
+alpha crops account for imperfect generated grid alignment. The three 512px
+mipmapped imports total 2,790,756 decoded bytes. Shared 18/8 animation and 12/6
+contact caps remain unchanged, with no new colliders or per-prop callbacks.
+Native review also exposed and fixed Echo's blank record-board backdrop and
+Starfall's flat archive window/two rails. A late-wall fixture catches stale
+freed decoration references during refresh. The 39-room route regression and
+all 596 readable notices remain passing. Scope, iterations and evidence:
+[town_verge_verification_v1.json](town_verge_verification_v1.json).
+
 ## Material-aware footstep and landing dust - 2026-10-04
 
 13 focused tests pass; all 16 final native views were inspected. Four original

@@ -4,6 +4,7 @@ extends Node2D
 const Placement := preload("res://RouteDressingPlacement.gd")
 const Support := preload("res://WorldSupport.gd")
 const Detail := preload("res://RouteDetail.gd")
+const Town := preload("res://TownVergeAtlas.gd")
 const MAX_FLOOR := 600
 const MAX_HANGING := 150
 var details: Array[Node2D] = []
@@ -11,6 +12,8 @@ var terrain_signature: Array[Rect2] = []
 var room_id := ""
 var understory: Array[Node2D] = []
 var seeps: Array[Node2D] = []
+var town_family := ""
+var home_zones: Array[Rect2] = []
 
 static func install(room: Node2D, id: String, nodes: Array[Node]) -> Node2D:
 	var prior := room.get_node_or_null("PathDressing")
@@ -27,22 +30,26 @@ func refresh(nodes: Array[Node]) -> void:
 		for seep in seeps: seep.free()
 		seeps.clear()
 		details.clear(); understory.clear(); _build(nodes)
-	var reserved := Placement.reservations(nodes)
+	var reserved := _reservations(nodes)
 	for detail in details:
-		detail.visible = Placement.clear(detail.footprint,reserved)
-		if not detail.visible: detail.rest()
+		detail.visible = Placement.clear(detail.placement_bounds(),reserved)
+		if not detail.visible: detail.reset_response(); detail.rest()
 	for seep in seeps:
 		seep.visible = is_instance_valid(seep.source) and seep.source.visible and Placement.clear(seep.footprint,reserved)
 		if not seep.visible: seep.rest()
 
 func _build(nodes: Array[Node]) -> void:
+	town_family=Town.ROOMS.get(room_id,"")
+	home_zones.clear()
+	if not town_family.is_empty(): home_zones=Town.home_zones(nodes)
 	terrain_signature = Support.solids(nodes)
 	var floors := Placement.floors(nodes)
-	var reserved := Placement.reservations(nodes)
+	var reserved := _reservations(nodes)
 	var palette := Placement.family(room_id)
 	var settled := room_id in ["echo_haven","echo_haven_outskirts","ash_hearth","ash_hearth_outskirts","starfall_citadel"]
 	var seed_value := absi(room_id.hash())%997
 	var created := 0
+	var domestic_count := 0
 	# Round-robin placement prevents the budget being consumed by one long floor.
 	for step in 150:
 		for floor_rect in floors:
@@ -53,18 +60,25 @@ func _build(nodes: Array[Node]) -> void:
 			var index := seed_index%6
 			var front := step%3 == 1
 			if front: index = 5
+			# Supplies belong by homes on this tier, not halfway across a bare
+			# skybridge or below an unrelated house. Open verges carry only grass.
+			if not town_family.is_empty():
+				index=domestic_count%5 if not front and Town.near_home(Vector2(x,floor_rect.position.y),home_zones) else 5
 			var width := 75.0+float(seed_index%31)
 			var cap := 15.0 if front else (22.0 if settled else 30.0)
 			var prop := _detail(palette,"floor",index,width,cap,Vector2(x,floor_rect.position.y+0.65),floor_rect,front)
-			var tested: Rect2 = prop.footprint
+			var envelope: Rect2 = prop.placement_bounds()
+			var tested: Rect2 = envelope
 			tested.size.y = maxf(0,floor_rect.position.y-0.25-tested.position.y)
-			if prop.footprint.position.x < floor_rect.position.x+3 or prop.footprint.end.x > floor_rect.end.x-3 or not Placement.clear(tested,terrain_signature) or not Placement.clear(prop.footprint,reserved):
+			if envelope.position.x < floor_rect.position.x+3 or envelope.end.x > floor_rect.end.x-3 or not Placement.clear(tested,terrain_signature) or not Placement.clear(envelope,reserved):
 				prop.free(); continue
 			details.append(prop); created += 1
+			if not town_family.is_empty() and index<5: domestic_count+=1
 	_add_understory(palette,settled,reserved)
 	var hanging_count := 0
 	var existing_canopies: Array[Rect2] = []
 	for node in nodes:
+		if not is_instance_valid(node): continue
 		if node is Sprite2D and node.name.begins_with("CeilingLip") and node.texture != null:
 			existing_canopies.append((node.global_transform*node.get_rect()).grow(12))
 	for step in 35:
@@ -104,6 +118,7 @@ func _build(nodes: Array[Node]) -> void:
 			details.append(prop); existing_canopies.append(bounds.grow(12))
 	# New collidable pockets carry their own cap; add only short free-hanging tips.
 	for node in nodes:
+		if not is_instance_valid(node): continue
 		if not node is StaticBody2D or not node.has_meta("route_vault") or not node.visible: continue
 		var plan: Dictionary = node.get_meta("vault_plan")
 		for at in node.get_meta("hanging_anchors",[]):
@@ -149,16 +164,22 @@ func _add_understory(palette: String, settled: bool, reserved: Array[Rect2]) -> 
 			var height := 12.0+float(seed_value%3) if front else (18.0 if settled else 23.0+float(seed_value%4))
 			var at := Vector2(base.global_position.x+side*(29.0+seed_value%9),base.support.position.y+.65)
 			var prop := _detail(palette,"floor",5,38+seed_value%13,height,at,base.support,front)
-			var probe: Rect2 = prop.footprint
+			var envelope: Rect2 = prop.placement_bounds()
+			var probe: Rect2 = envelope
 			probe.size.y = maxf(0,base.support.position.y-.25-probe.position.y)
-			if prop.footprint.position.x<base.support.position.x+10 or prop.footprint.end.x>base.support.end.x-10 or not Placement.clear(probe,terrain_signature) or not Placement.clear(prop.footprint,reserved) or not Placement.clear(prop.footprint.grow(5),occupied):
+			if envelope.position.x<base.support.position.x+10 or envelope.end.x>base.support.end.x-10 or not Placement.clear(probe,terrain_signature) or not Placement.clear(envelope,reserved) or not Placement.clear(envelope.grow(5),occupied):
 				prop.free(); continue
 			prop.art.flip_h = (seed_value+side)%2==0
 			prop.art.modulate = Color(.68,.78,.73) if front else Color(.72,.82,.8)
 			prop.set_meta("route_understory",true)
-			details.append(prop); understory.append(prop); occupied.append(prop.footprint)
+			details.append(prop); understory.append(prop); occupied.append(envelope)
+
+func _reservations(nodes: Array[Node]) -> Array[Rect2]:
+	var result := Placement.reservations(nodes)
+	if not town_family.is_empty(): result.append_array(Town.openings(nodes))
+	return result
 
 func _detail(palette: String, kind: String, index: int, width: float, height: float, at: Vector2, floor_rect: Rect2, front := false) -> Node2D:
 	var prop := Detail.new(); prop.name = "Route%s%03d"%[kind,details.size()]
-	add_child(prop); prop.configure(palette,kind,index,width,height,at,floor_rect,front)
+	add_child(prop); prop.configure(palette,kind,index,width,height,at,floor_rect,front,town_family)
 	return prop

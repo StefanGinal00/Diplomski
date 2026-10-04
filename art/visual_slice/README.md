@@ -1,6 +1,19 @@
 # Visual style pilot — Echo Grotto / Starfall market
 
-Latest material-aware ground contact (2026-10-04): [four original transparent sheets, 24 dust phases, saved paths and exact built-in ImageGen prompts](ground_dust_manifest_v1.json),
+Latest inhabited town verges (2026-10-04): [three original transparent sheets, 18 cutouts, saved paths and exact built-in ImageGen prompts](town_verge_manifest_v1.json),
+with [15 focused passes and 13 inspected native views](../../tests/town_verge_verification_v1.json).
+Echo, Ash and Starfall have distinct low planters, jars, working baskets,
+firewood, flower troughs and rooted grass. Rigid supplies stay near actual
+same-tier house bases; open routes use only soft vegetation. Grass shares
+the existing contact/wind springs and reserves its full flex envelope.
+496 town floor placements use the new art; wilderness and ceiling assets
+are unchanged. Custom measured alpha crops accommodate imperfect atlas cell
+spacing without pixel edits. Three 512px mipmapped imports total 2,790,756
+decoded bytes. Native review also removed a blank Echo board overlay and
+replaced two Starfall prototype rails plus one flat archive window using
+existing architecture textures. No new gameplay colliders or prop callbacks.
+
+Previous material-aware ground contact (2026-10-04): [four original transparent sheets, 24 dust phases, saved paths and exact built-in ImageGen prompts](ground_dust_manifest_v1.json),
 with [13 focused passes and 16 inspected native views](../../tests/ground_dust_verification_v1.json).
 Soil, slate, ash and limestone powder briefly react to actual walking and jump
 landings. The full animation stays above the measured floor tangent and shrinks

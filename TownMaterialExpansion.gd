@@ -54,6 +54,7 @@ func _build() -> void:
 			elif plate.name == &"Roof":
 				_paint(plate, secondary_texture, 110, Color(0.85, 0.84, 0.96))
 	built = true
+	if theme=="starfall": preload("res://TownBalconyFinish.gd").install(town)
 	queue_redraw()
 
 

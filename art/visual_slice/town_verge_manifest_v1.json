@@ -1,0 +1,239 @@
+{
+  "version": 1,
+  "date": "2026-10-04",
+  "mode": "built-in image_gen",
+  "intent": "generate",
+  "use_case": "stylized-concept",
+  "built_in_calls": 3,
+  "subject": "18 small lived-in street props across Echo Haven, Ash Hearth and Starfall Citadel",
+  "source_pixels_edited": false,
+  "reference_images_used": false,
+  "transparent_background": true,
+  "acceptance_note": "The requested exact 512px cell margins were not achieved. Assets were accepted using measured per-object, non-overlapping alpha bounds, not nominal grid crops. Whole generated PNGs remain byte-identical to tool originals; no pixel cleanup or painting was performed. Native gameplay captures were inspected for cutout borders and registration.",
+  "sources": [
+    {
+      "family": "echo",
+      "source_path": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-85a3079e-7a56-415f-871f-141d84311c6c.png",
+      "workspace_path": "art/visual_slice/town_verge_echo_v1.png",
+      "sha256": "8FC4F575484400DA7F27EBF523EB725BA894E729B73E1C13FA34735D7F0A0D1D",
+      "workspace_sha256": "8FC4F575484400DA7F27EBF523EB725BA894E729B73E1C13FA34735D7F0A0D1D",
+      "source_size": [
+        1536,
+        1024
+      ],
+      "fully_transparent_fraction": 0.633402506510417,
+      "alpha_crop_threshold": 0.02,
+      "crop_boxes_xywh": [
+        [
+          41,
+          114,
+          489,
+          339
+        ],
+        [
+          577,
+          131,
+          379,
+          318
+        ],
+        [
+          1042,
+          166,
+          444,
+          282
+        ],
+        [
+          40,
+          670,
+          455,
+          254
+        ],
+        [
+          536,
+          606,
+          451,
+          294
+        ],
+        [
+          1020,
+          603,
+          487,
+          310
+        ]
+      ],
+      "row_partition_x": [
+        [
+          0,
+          544,
+          960,
+          1536
+        ],
+        [
+          0,
+          498,
+          998,
+          1536
+        ]
+      ],
+      "nominal_grid_gutter_max_alpha": 0.992156863212585,
+      "exact_prompt": "Use case: stylized-concept. Asset type: production transparent cutout atlas for a painterly side-view 2D dark fantasy town. Landscape 1536x1024 canvas, exactly SIX separate small environment props, in a regular THREE columns by TWO rows grid. Each object fully contained inside its 512x512 cell with at least 45px transparent margin on ALL sides. Side-on game camera, near orthographic, no isometric floor. Rich weathered hand-painted material detail, natural asymmetry, coherent subdued lighting, restrained colors, crisp organic silhouettes. Entire complete objects with grounded flat lower contact and no detached pieces. These are ordinary small lived-in street details, not epic monuments. Row-major props: (1) a low wide hand-built herb planter with a compact leafy plant, (2) a pair of modest water jars nestled together, (3) a low basket with folded working cloth and simple gardening tools tucked inside, (4) a short tidy stack of split firewood with rope, (5) a low wide planted flower trough with modest blossoms, (6) a low WIDE dense clump of fine soft grasses, small leaves and sparse tiny flowers, with joined roots at one flat lower edge, NO pot or hard container for this sixth object so it can bend in wind. Consistent low, broad shapes, maximum height roughly 60 percent of width for the grass. Genuinely transparent RGBA background. No scenery, buildings, floor planes, detached shadows, halos, text, labels, cell borders, people, large weapons, ruins or broken masonry. Echo Haven: damp underground refuge. Moss-flecked grey driftwood planters, dark bark, earthen blue-grey jars with rope necks, muted sea-green fernlike leaves and cream-white tiny flowers. A few moss touches, no luminescence."
+    },
+    {
+      "family": "ash",
+      "source_path": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-77ee0a71-8a4d-4e5b-9817-4c3a4e28517a.png",
+      "workspace_path": "art/visual_slice/town_verge_ash_v1.png",
+      "sha256": "4653B12DDFBA5E97A712A518A91674DA6EE0823B7D2AF6110CBE45B93404964A",
+      "workspace_sha256": "4653B12DDFBA5E97A712A518A91674DA6EE0823B7D2AF6110CBE45B93404964A",
+      "source_size": [
+        1536,
+        1024
+      ],
+      "fully_transparent_fraction": 0.632483164469401,
+      "alpha_crop_threshold": 0.02,
+      "crop_boxes_xywh": [
+        [
+          56,
+          150,
+          468,
+          340
+        ],
+        [
+          573,
+          170,
+          401,
+          327
+        ],
+        [
+          1048,
+          206,
+          433,
+          287
+        ],
+        [
+          52,
+          681,
+          447,
+          236
+        ],
+        [
+          538,
+          643,
+          470,
+          259
+        ],
+        [
+          1019,
+          657,
+          487,
+          257
+        ]
+      ],
+      "row_partition_x": [
+        [
+          0,
+          530,
+          976,
+          1536
+        ],
+        [
+          0,
+          504,
+          1014,
+          1536
+        ]
+      ],
+      "nominal_grid_gutter_max_alpha": 0.91372549533844,
+      "exact_prompt": "Use case: stylized-concept. Asset type: production transparent cutout atlas for a painterly side-view 2D dark fantasy town. Landscape 1536x1024 canvas, exactly SIX separate small environment props, in a regular THREE columns by TWO rows grid. Each object fully contained inside its 512x512 cell with at least 45px transparent margin on ALL sides. Side-on game camera, near orthographic, no isometric floor. Rich weathered hand-painted material detail, natural asymmetry, coherent subdued lighting, restrained colors, crisp organic silhouettes. Entire complete objects with grounded flat lower contact and no detached pieces. These are ordinary small lived-in street details, not epic monuments. Row-major props: (1) a low wide hand-built herb planter with a compact leafy plant, (2) a pair of modest water jars nestled together, (3) a low basket with folded working cloth and simple gardening tools tucked inside, (4) a short tidy stack of split firewood with rope, (5) a low wide planted flower trough with modest blossoms, (6) a low WIDE dense clump of fine soft grasses, small leaves and sparse tiny flowers, with joined roots at one flat lower edge, NO pot or hard container for this sixth object so it can bend in wind. Consistent low, broad shapes, maximum height roughly 60 percent of width for the grass. Genuinely transparent RGBA background. No scenery, buildings, floor planes, detached shadows, halos, text, labels, cell borders, people, large weapons, ruins or broken masonry. Ash Hearth: inhabited volcanic workers town. Heat-weathered dark wood and simple black iron bands, warm charcoal earthen jars, dry pale sage and rosemary leaves, small dusty amber flowers, russet working cloth. No flames, lava, smoke or glowing embers; these are cared-for everyday supplies."
+    },
+    {
+      "family": "star",
+      "source_path": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-36501a37-10c0-4c36-9279-3cbc7415f5ef.png",
+      "workspace_path": "art/visual_slice/town_verge_star_v1.png",
+      "sha256": "2AAEF372D64E6386AFAAEF3560A941BF472B7EBDA5115DFC5FA2C40300874E57",
+      "workspace_sha256": "2AAEF372D64E6386AFAAEF3560A941BF472B7EBDA5115DFC5FA2C40300874E57",
+      "source_size": [
+        1536,
+        1024
+      ],
+      "fully_transparent_fraction": 0.613887151082357,
+      "alpha_crop_threshold": 0.02,
+      "crop_boxes_xywh": [
+        [
+          37,
+          89,
+          459,
+          375
+        ],
+        [
+          581,
+          128,
+          380,
+          345
+        ],
+        [
+          1057,
+          176,
+          419,
+          297
+        ],
+        [
+          47,
+          663,
+          440,
+          249
+        ],
+        [
+          527,
+          612,
+          469,
+          291
+        ],
+        [
+          1020,
+          630,
+          491,
+          290
+        ]
+      ],
+      "row_partition_x": [
+        [
+          0,
+          500,
+          980,
+          1536
+        ],
+        [
+          0,
+          492,
+          1008,
+          1536
+        ]
+      ],
+      "nominal_grid_gutter_max_alpha": 0.811764717102051,
+      "exact_prompt": "Use case: stylized-concept. Asset type: production transparent cutout atlas for a painterly side-view 2D dark fantasy town. Landscape 1536x1024 canvas, exactly SIX separate small environment props, in a regular THREE columns by TWO rows grid. Each object fully contained inside its 512x512 cell with at least 45px transparent margin on ALL sides. Side-on game camera, near orthographic, no isometric floor. Rich weathered hand-painted material detail, natural asymmetry, coherent subdued lighting, restrained colors, crisp organic silhouettes. Entire complete objects with grounded flat lower contact and no detached pieces. These are ordinary small lived-in street details, not epic monuments. Row-major props: (1) a low wide hand-built herb planter with a compact leafy plant, (2) a pair of modest water jars nestled together, (3) a low basket with folded working cloth and simple gardening tools tucked inside, (4) a short tidy stack of split firewood with rope, (5) a low wide planted flower trough with modest blossoms, (6) a low WIDE dense clump of fine soft grasses, small leaves and sparse tiny flowers, with joined roots at one flat lower edge, NO pot or hard container for this sixth object so it can bend in wind. Consistent low, broad shapes, maximum height roughly 60 percent of width for the grass. Genuinely transparent RGBA background. No scenery, buildings, floor planes, detached shadows, halos, text, labels, cell borders, people, large weapons, ruins or broken masonry. Starfall Citadel: old high city cared for by its residents. Shallow pale grey carved limestone planters, blue-grey glazed ceramic jars with subtle tarnished brass rims, muted silver-green herbs, sparse pale lavender and ivory blossoms, faded blue working cloth. Quiet late-evening cool lighting, no magic or glitter."
+    }
+  ],
+  "cutout_order": [
+    "herb planter",
+    "water jars",
+    "working basket",
+    "split firewood",
+    "flower trough",
+    "rooted soft grass"
+  ],
+  "consumption": {
+    "script": "TownVergeAtlas.gd",
+    "import_size_limit": 512,
+    "mipmaps": true,
+    "total_decoded_bytes": 2790756,
+    "contact_rule": "Last occupied alpha row of each crop; root seam buried by 0.65 world units.",
+    "world_height_caps": {
+      "foreground": 15,
+      "rear": 22
+    },
+    "texture_cache": "18 shared AtlasTexture instances; filter_clip enabled",
+    "placement": "Rigid containers/supplies only near actual house base on same tier; open routes only use soft grass. Doors, devices, hazards, actors, solids and ledge boundaries reserve clearance. Soft grass reserves the complete contact/wind skew envelope."
+  },
+  "animation": "Only sixth cutout (soft grass) uses existing shared wind/contact spring. Rigid containers do not deform. No per-prop callbacks, colliders or save changes.",
+  "evidence": "tests/town_verge_verification_v1.json"
+}
