@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "date": "2026-10-04",
+  "purpose": "Small regional ambient moth wingbeat sheets for existing supported vegetation, not enemies or pickups",
+  "generation": {
+    "mode": "built-in image_gen",
+    "intent": "generate",
+    "transparent_background": true,
+    "calls": 4,
+    "source_pixels_edited": false,
+    "references": "Original production art; no game screenshot or third-party character asset is copied."
+  },
+  "source_size": [
+    1536,
+    1024
+  ],
+  "grid": [
+    3,
+    2
+  ],
+  "poses_per_family": 6,
+  "animation": {
+    "registration": "AmbientMothAtlas.gd: per-pose crop and thorax pivot in original source coordinates",
+    "sequence": [
+      0,
+      1,
+      2,
+      3,
+      5,
+      4,
+      2,
+      1
+    ],
+    "world_scale": "4.5, 5.05 and 5.6 world units per 436 original pixels; same scale through the wingbeat",
+    "flight_envelope": [
+      -52,
+      -48,
+      104,
+      76
+    ],
+    "behavior": "Bounded orbit, eased retreat from passing player, recovery to habitat, room-scoped selection and contact budgets"
+  },
+  "import": {
+    "size_limit": 512,
+    "mipmaps": true,
+    "compression": "lossless",
+    "decoded_bytes_including_mipmaps": 3721008,
+    "texture_cache": "Four shared sheets and 24 clipped AtlasTextures; no per-frame loads"
+  },
+  "alpha_audit": {
+    "tool": "tests/audit_moth_sources.gd",
+    "trim_threshold": 0.02,
+    "transparent_threshold": 0.01,
+    "maximum_8px_cell_gutter_alpha": 0.00392156885936856,
+    "note": "Source alpha is preserved. Atlas crops register opaque subject bounds rather than editing image pixels."
+  },
+  "assets": [
+    {
+      "family": "cave",
+      "path": "art/visual_slice/ambient_moth_cave_v1.png",
+      "source": "$CODEX_HOME/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-a92913b3-80ae-40d4-b63d-0aa3be47401d.png",
+      "sha256": "853C3EC16C8F085D578BFB1081986B3B6E583D24167A205710C94339243C3368",
+      "source_hash_matches_saved": true,
+      "transparent_fraction": 0.77846972,
+      "prompt": "Use case: stylized-concept. Asset type: production animation sprite sheet for tiny ambient moths in a painterly 2D side-view dark fantasy cavern game. Genuinely transparent RGBA background. Landscape canvas, exactly SIX complete isolated drawings in a regular 3-column by 2-row grid. Each cell contains the SAME single small moth, side elevation facing RIGHT, full body with antennae and legs, equal body size, thorax at the exact center of the cell and horizontal body aligned across all frames. Six successive wingbeat poses in row-major order: wings raised high, diagonally raised, half spread, fully down, half raised again, softly folded at rest. Fine hand-painted material detail, restrained soft edges and readable silhouette; no external halo or motion blur. Leave generous transparent padding all around every drawing. Keep identity and body shape consistent, vary only the wing pose. NO scenery, perches, shadows under moths, glow aura, speckles outside insects, labels, text, numbers, outlines around cells, borders, watermark or extra insects. One delicate pale mint-and-ivory cave moth, short furry slate thorax, lightly veined broad powdery wings with muted moss-grey edges, two tiny silver markings. Cool indirect cave light, quiet natural creature, not an enemy."
+    },
+    {
+      "family": "mine",
+      "path": "art/visual_slice/ambient_moth_mine_v1.png",
+      "source": "$CODEX_HOME/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-2619e4d8-16a5-4af3-ba07-afcdc9a66b27.png",
+      "sha256": "9FC476EFBC6B9348064DA544E86D2276FFD42F16D7B583A8B308393F0C82357F",
+      "source_hash_matches_saved": true,
+      "transparent_fraction": 0.83214315,
+      "prompt": "Use case: stylized-concept. Asset type: production animation sprite sheet for tiny ambient moths in a painterly 2D side-view dark fantasy cavern game. Genuinely transparent RGBA background. Landscape canvas, exactly SIX complete isolated drawings in a regular 3-column by 2-row grid. Each cell contains the SAME single small moth, side elevation facing RIGHT, full body with antennae and legs, equal body size, thorax at the exact center of the cell and horizontal body aligned across all frames. Six successive wingbeat poses in row-major order: wings raised high, diagonally raised, half spread, fully down, half raised again, softly folded at rest. Fine hand-painted material detail, restrained soft edges and readable silhouette; no external halo or motion blur. Leave generous transparent padding all around every drawing. Keep identity and body shape consistent, vary only the wing pose. NO scenery, perches, shadows under moths, glow aura, speckles outside insects, labels, text, numbers, outlines around cells, borders, watermark or extra insects. One compact dusty ochre cave moth, short dark charcoal furry thorax, narrow layered wings with warm grey and tarnished copper banding, subtle chipped/scalloped wing edge. Muted mine-lantern light, earth pigments, not metallic machinery or an enemy."
+    },
+    {
+      "family": "ash",
+      "path": "art/visual_slice/ambient_moth_ash_v1.png",
+      "source": "$CODEX_HOME/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-e643070c-6a47-4ccb-869e-22e61cf14b86.png",
+      "sha256": "5C677737DD053621C035B60ED5E88F0BFAD1780203CDCE11DDCEEF1A3BACF2ED",
+      "source_hash_matches_saved": true,
+      "transparent_fraction": 0.84529495,
+      "prompt": "Use case: stylized-concept. Asset type: production animation sprite sheet for tiny ambient moths in a painterly 2D side-view dark fantasy cavern game. Genuinely transparent RGBA background. Landscape canvas, exactly SIX complete isolated drawings in a regular 3-column by 2-row grid. Each cell contains the SAME single small moth, side elevation facing RIGHT, full body with antennae and legs, equal body size, thorax at the exact center of the cell and horizontal body aligned across all frames. Six successive wingbeat poses in row-major order: wings raised high, diagonally raised, half spread, fully down, half raised again, softly folded at rest. Fine hand-painted material detail, restrained soft edges and readable silhouette; no external halo or motion blur. Leave generous transparent padding all around every drawing. Keep identity and body shape consistent, vary only the wing pose. NO scenery, perches, shadows under moths, glow aura, speckles outside insects, labels, text, numbers, outlines around cells, borders, watermark or extra insects. One small soot-and-russet nocturnal moth, short dark umber furry thorax, russet brown feathered wings with restrained amber vein accents and near-black wing tips. Warm cinder-region palette but no flames, no bloom, no glowing particles, a real gentle insect not a projectile."
+    },
+    {
+      "family": "star",
+      "path": "art/visual_slice/ambient_moth_star_v1.png",
+      "source": "$CODEX_HOME/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-43e94d9e-25ff-4bfb-83f6-ebbafb970c73.png",
+      "sha256": "3B6C895032E66D6B27946828CB5B554E60E6C105A6CC0F74EEB67D115B691359",
+      "source_hash_matches_saved": true,
+      "transparent_fraction": 0.7832826,
+      "prompt": "Use case: stylized-concept. Asset type: production animation sprite sheet for tiny ambient moths in a painterly 2D side-view dark fantasy cavern game. Genuinely transparent RGBA background. Landscape canvas, exactly SIX complete isolated drawings in a regular 3-column by 2-row grid. Each cell contains the SAME single small moth, side elevation facing RIGHT, full body with antennae and legs, equal body size, thorax at the exact center of the cell and horizontal body aligned across all frames. Six successive wingbeat poses in row-major order: wings raised high, diagonally raised, half spread, fully down, half raised again, softly folded at rest. Fine hand-painted material detail, restrained soft edges and readable silhouette; no external halo or motion blur. Leave generous transparent padding all around every drawing. Keep identity and body shape consistent, vary only the wing pose. NO scenery, perches, shadows under moths, glow aura, speckles outside insects, labels, text, numbers, outlines around cells, borders, watermark or extra insects. One small pearl-and-lavender night moth, dark blue furry thorax, rounded silvery wings with thin dusty violet veins and tiny pale-gold crescent markings. Cool old-city moonlight, muted luminous pale paint but no glow aura, gentle insect not a magical projectile."
+    }
+  ],
+  "verification": "tests/ambient_fauna_verification_v1.json"
+}

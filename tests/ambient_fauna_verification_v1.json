@@ -1,0 +1,159 @@
+{
+  "date": "2026-10-04",
+  "scope": "Regional ambient moths: additional small living scenery using existing supported vegetation. This pass does not change gameplay collision, combat, saves or progression.",
+  "implementation": {
+    "rooms_audited": 39,
+    "roosts": 196,
+    "roosts_by_family": {
+      "cave": 74,
+      "mine": 24,
+      "ash": 49,
+      "star": 49
+    },
+    "maximum_roosts_per_room": 6,
+    "minimum_roost_spacing_world_units": 380,
+    "new_raster_sources": 4,
+    "registered_poses": 24,
+    "manifest": "art/visual_slice/ambient_fauna_manifest_v1.json",
+    "decoded_source_bytes_with_mipmaps": 3721008,
+    "motion": {
+      "normal_animation_budget": 18,
+      "low_animation_budget": 8,
+      "normal_contact_budget": 12,
+      "low_contact_budget": 6,
+      "insects_per_selected_group_normal": 3,
+      "insects_per_selected_group_low": 2,
+      "mixed_fixture_normal": {
+        "foliage": 13,
+        "flames": 2,
+        "rotors": 2,
+        "fauna": 1
+      },
+      "mixed_fixture_low": {
+        "foliage": 5,
+        "flames": 1,
+        "rotors": 1,
+        "fauna": 1
+      },
+      "new_per_decoration_callbacks": 0
+    },
+    "notes": [
+      "Six original wing poses per region share registered thorax pivots and fixed scale, avoiding whole-body resizing with wing extent.",
+      "Whole swept orbit/retreat volumes clear native solid geometry and interaction reservations; groups use existing supported floor vegetation only.",
+      "Late walls, disabled/restored floor support and freed habitat are revalidated without changing native colliders. Stable reentry retains group identity.",
+      "Player passage eases moths away, then they recover while stationary. Contact does not teleport them or emit a grass-particle burst.",
+      "All groups share four source sheets and 24 cached atlas regions. No runtime source-image alpha scans or per-frame texture loads.",
+      "Room changes and warps clear contact response. Culled groups settle, hidden/removed habitat hides its insects."
+    ]
+  },
+  "verification": {
+    "passed": 12,
+    "total": 12,
+    "tests": [
+      {
+        "test": "ambient_fauna_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-154453-671-81fe3d47"
+      },
+      {
+        "test": "ambient_contact_priority_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-154057-096-329897ab"
+      },
+      {
+        "test": "reactive_foliage_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-153349-239-36f1adc3"
+      },
+      {
+        "test": "ambient_continuity_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-153350-597-f40a386a"
+      },
+      {
+        "test": "world_grounding_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-153417-347-f46b67a6"
+      },
+      {
+        "test": "readable_support_footprint_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-153427-515-5302cfb1"
+      },
+      {
+        "test": "world_ambience_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-153931-138-f037cf74"
+      },
+      {
+        "test": "route_richness_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-153941-294-fc099a58"
+      },
+      {
+        "test": "foreground_placement_lifecycle_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-154127-844-0bd80199"
+      },
+      {
+        "test": "route_vault_traversal_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-154137-971-07872fee"
+      },
+      {
+        "test": "boss_lamp_reveal_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-154243-728-a97ad3ef"
+      },
+      {
+        "test": "canopy_seep_source_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-154245-295-ca8db97b"
+      }
+    ],
+    "source_alpha_audit": "tests/audit_moth_sources.gd",
+    "source_hashes": "All four workspace PNG SHA256 values match their original built-in ImageGen outputs; see manifest.",
+    "native_previews": {
+      "script": "tests/preview_ambient_fauna.gd",
+      "log": ".tmp-ambient-fauna-preview.log",
+      "renderer": "D3D12 Forward Mobile / RTX 4050, native 1280x720",
+      "captures_reviewed": 12,
+      "rooms": [
+        "echo_depths",
+        "shaft_drift",
+        "ash_emberspine",
+        "starfall_rooted_hall"
+      ],
+      "phases": [
+        "calm",
+        "startled",
+        "settled"
+      ],
+      "paths": "art/characters/preview_ambient_fauna_<room>_<phase>.png",
+      "grounded_player_contacts": 4,
+      "measured_contact_flight": 0.90666666666667,
+      "notes": [
+        "Actual player controller walks through each habitat; static terrain collision stays enabled.",
+        "Room simulation and enemy/area collision are frozen in previews to isolate the scenery, not in production.",
+        "Reviewed all twelve frames for scale, framing, transparency, habitat position and regional contrast. Ash moths intentionally remain subdued against warm backgrounds."
+      ]
+    },
+    "traversal": {
+      "existing_vaults": 22,
+      "actual_player_checks": 110
+    },
+    "editor_import": {
+      "log": ".tmp-ambient-fauna-final-import.log",
+      "completed_asset_import_and_class_registration": true,
+      "script_errors": 0,
+      "notes": "Sandbox denied saving global Godot editor settings outside the workspace."
+    },
+    "limitations": [
+      "Focused regression selection, not a complete suite, full campaign, exported-build certification or physical-device/FPS benchmark.",
+      "No full-game art completion or complete NPC/boss animation overhaul is claimed in this continuation.",
+      "The shared animation cap counts props/groups; contact responses keep their separate pre-existing 12/6 limit.",
+      "Windows root-certificate warning remains; native previews report sandbox shader-cache write denials rather than shader compilation errors.",
+      "Run folders/logs are ignored local artifacts; source/tests/report and reviewed screenshots are versioned."
+    ]
+  }
+}

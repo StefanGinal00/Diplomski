@@ -1,6 +1,17 @@
 # Visual style pilot — Echo Grotto / Starfall market
 
-Latest reactive follow-through (2026-10-04): [18 focused passes and 12 inspected native captures](../../tests/reactive_followthrough_verification_v1.json).
+Latest regional ambient fauna (2026-10-04): [four original transparent sheets, 24 wing poses, saved paths and exact built-in ImageGen prompts](ambient_fauna_manifest_v1.json),
+with [12 focused passes and 12 inspected native captures](../../tests/ambient_fauna_verification_v1.json).
+Tiny cave, mine, ash and Starfall moths use fixed-scale registered thorax pivots,
+bounded orbits and eased retreat when the player passes their vegetation.
+The 39-room audit retains 196 safe habitats, capped at six per room. Their full
+flight envelope clears solids and interaction reservations; no collider is
+added. Groups share the existing ambient/contact budgets with grass, lamps and
+machinery, with two insects per selected group in low-cost mode and three in
+normal mode. Four byte-preserved source PNGs import at 512px with mipmaps,
+totaling 3,721,008 decoded bytes. This is small living scenery, not new enemies.
+
+Previous reactive follow-through (2026-10-04): [18 focused passes and 12 inspected native captures](../../tests/reactive_followthrough_verification_v1.json).
 Existing painted foliage now reserves its full four-pose/contact envelope and
 retains world scale inside scaled rooms. New nearby contacts and upward root
 brushes stay responsive within the original budgets. Eight alpha-registered

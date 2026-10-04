@@ -1,5 +1,18 @@
 # Automated smoke tests
 
+The 2026-10-04 regional fauna continuation is recorded in
+`ambient_fauna_verification_v1.json`: 12 focused passes and 12 inspected native
+views. `ambient_fauna_smoke.gd` checks all 24 generated wing poses, registered
+thorax pivots, source transparency, the sub-4-MiB mipmapped import budget,
+scaled rooms, eased contact motion, both flight directions, quality toggles,
+warps, culling, late walls and removed/restored habitat support. Its 39-room
+audit retains 196 groups with unchanged native collision and stable reentry.
+`ambient_contact_priority_smoke.gd` now combines grass, lamps, rotors and moths
+inside the existing 18/8 animation cap. `preview_ambient_fauna.gd` walks the
+actual player through four regional habitats and captures calm/startled/settled
+phases. Combat simulation is frozen only in that preview. This is not a full
+campaign, whole-suite pass or physical-device benchmark.
+
 The 2026-10-04 reactive follow-through is recorded in
 `reactive_followthrough_verification_v1.json`: 18 latest unique focused passes
 and 12 inspected native 1280x720 captures. Across 39 rooms the corrected

@@ -102,6 +102,7 @@ func finish_room(id: String) -> void:
 		preload("res://WorldCorridorDressing.gd").install(room, id, current_nodes)
 		preload("res://WorldPathDressing.gd").install(room, id, _members(room))
 		preload("res://WorldTerrainJoints.gd").install(room, id, _members(room))
+		preload("res://WorldAmbientFauna.gd").install(room, id, _members(room))
 		current_nodes = _members(room)
 		reader.register_room(id, current_nodes)
 		ambience.register_room(id, current_nodes)
@@ -165,6 +166,7 @@ func finish_room(id: String) -> void:
 	preload("res://WorldCorridorDressing.gd").install(room, id, _members(room))
 	preload("res://WorldPathDressing.gd").install(room, id, _members(room))
 	preload("res://WorldTerrainJoints.gd").install(room, id, _members(room))
+	preload("res://WorldAmbientFauna.gd").install(room, id, _members(room))
 	# Early registration retires source labels before presentation fitting;
 	# now validate their pedestals against the final portal/vault/relief solids.
 	var final_nodes := _members(room)

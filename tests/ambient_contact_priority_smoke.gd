@@ -115,25 +115,34 @@ func _run() -> void:
 		var site := Node2D.new(); stage.add_child(site); site.position = Vector2(-120-index*15,400)
 		machines.append(preload("res://FieldMachineryArt.gd").attach(site,"flywheel"))
 	mixed.append_array(lamps); mixed.append_array(machines)
+	var fauna: Array[Node2D] = []
+	for index in 3:
+		var roost := preload("res://AmbientMothRoost.gd").new(); stage.add_child(roost)
+		roost.configure("cave",mixed[0],Vector2(175+index*6,400),Rect2(0,450,400,12))
+		fauna.append(roost); mixed.append(roost)
 	var mixed_view := Rect2(-200,340,400,120)
 	for low in [false,true]:
 		manager.set_low_quality(low); manager.register_room("fixture",mixed)
 		manager.select_visible(mixed_view)
-		var lamp_count := 0; var machine_count := 0; var foliage_count := 0
+		var lamp_count := 0; var machine_count := 0; var foliage_count := 0; var fauna_count := 0
 		for prop in manager.active:
 			if prop in lamps: lamp_count += 1
 			elif prop in machines: machine_count += 1
+			elif prop in fauna: fauna_count += 1
 			else: foliage_count += 1
 		var quota := 1 if low else 2
 		_check(manager.active.size()==manager.animation_budget(),"Category reservations increase the combined 18/8 budget")
 		_check(lamp_count==quota and machine_count==quota and foliage_count>0,"Dense foliage starves flame / machinery, or reservations starve foliage")
+		_check(fauna_count==1,"Dense foliage starves fauna or fauna takes too many reserved slots")
+		fauna[0].animate(.28)
+		_check(fauna[0].insects[2].visible==not low,"Mixed registration fails to propagate fauna quality")
 		motion.animate(.28); frame = motion.current_frame
 		var alpha: float = motion.flame.modulate.a
 		for refresh in 4: manager.select_visible(mixed_view)
 		_check(motion.current_frame==frame and motion.flame.modulate.a==alpha,"Mixed camera refresh resets a retained real flame")
 		manager.select_visible(Rect2(5000,5000,20,20))
 		_check(motion.current_frame==frame,"Retiring a lamp resets its painted pose")
-		print("AMBIENT MIXED BUDGET low=",low," foliage=",foliage_count," lamps=",lamp_count," rotors=",machine_count)
+		print("AMBIENT MIXED BUDGET low=",low," foliage=",foliage_count," lamps=",lamp_count," rotors=",machine_count," fauna=",fauna_count)
 	stage.free(); state.delete_save()
 	print("AMBIENT CONTACT PRIORITY TEST PASSED: upward roots, nearest 12/6 contacts, long seep visibility, real lamp state, mixed 18/8 budgets" if failures.is_empty() else "AMBIENT CONTACT PRIORITY TEST FAILED: "+str(failures))
 	quit(0 if failures.is_empty() else 1)

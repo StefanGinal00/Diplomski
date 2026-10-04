@@ -1,5 +1,19 @@
 # Smoke-suite checkpoints - latest 2026-10-04
 
+## Regional reactive moth habitats - 2026-10-04
+
+12 focused tests pass; all 12 native 1280x720 captures were inspected. Four
+new transparent sheets provide 24 thorax-registered wing poses. The 39-room
+audit retains 196 bounded moth habitats (at most six per room), using existing
+supported vegetation without adding collision. Passing players cause eased
+retreat and recovery; hidden/removed habitats, room warps and quality changes
+are covered. Lamps, rotors, fauna and grass share the unchanged 18/8 animation
+cap and 12/6 contact pool. Imports total 3,721,008 decoded bytes with mipmaps.
+Actual controller contact was verified in four regions, and all 110 existing
+low-vault traversal checks still pass. This is a focused continuation, not a
+full campaign or whole-suite run. Evidence and preview limitations:
+[ambient_fauna_verification_v1.json](ambient_fauna_verification_v1.json).
+
 ## Reactive scenery and grounded reading signs - 2026-10-04
 
 18 focused tests pass; 12 native camera captures were inspected. Grass uses

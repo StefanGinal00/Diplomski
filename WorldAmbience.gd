@@ -59,6 +59,7 @@ func register_room(id: String, nodes: Array[Node]) -> void:
 	var found: Array[Node2D] = []
 	parallax_architecture = null
 	for node in nodes:
+		if node is Node2D and node.has_meta("ambient_fauna"): node.set_low_quality(low_quality)
 		if node is Node2D and node.name=="ParallaxArchitecture" and node.has_method("set_low_quality"):
 			parallax_architecture = node
 			parallax_architecture.set_low_quality(low_quality)
@@ -101,6 +102,8 @@ func _prepare_vine(vine: Sprite2D) -> void:
 
 func set_low_quality(value: bool) -> void:
 	low_quality = value
+	for node in candidates:
+		if is_instance_valid(node) and node.has_meta("ambient_fauna"): node.set_low_quality(value)
 	if is_instance_valid(ground_contacts): ground_contacts.set_low_quality(value)
 	while brushing.size()>brush_budget():
 		var retired: Node2D = brushing.pop_back()
@@ -204,6 +207,7 @@ func _animation_distance_squared(node: Node2D, point: Vector2) -> float:
 	return point.distance_squared_to(Vector2(clampf(point.x,bounds.position.x,bounds.end.x),clampf(point.y,bounds.position.y,bounds.end.y)))
 
 func _animation_category(node: Node2D) -> int:
+	if node.has_meta("ambient_fauna"): return 3
 	if node is LampFlame and node.lamp.is_revealed and (node.lamp.is_active or node.lamp.is_resting): return 1
 	if node is Machinery and is_instance_valid(node.wheel): return 2
 	if node is IndustrialMachine and is_instance_valid(node.rotor) and node.enabled: return 2
@@ -221,13 +225,13 @@ func select_visible(world_view: Rect2) -> void:
 	visible.sort_custom(func(a: Node2D, b: Node2D): return _animation_distance_squared(a,center) < _animation_distance_squared(b,center))
 	var next_active: Array[Node2D] = []
 	# A dense grass band must not monopolize every visible animation slot.
-	# Lit lamps and moving rotors share small reservations, not extra budgets.
-	for category in [1,2]:
+	# Lit lamps, rotors and a nearby flock share reservations, not extra budgets.
+	for category in [1,2,3]:
 		var reserved := 0
 		for node in visible:
 			if _animation_category(node)!=category: continue
 			next_active.append(node); reserved += 1
-			if reserved>=(1 if low_quality else 2): break
+			if reserved>=(1 if low_quality or category==3 else 2): break
 	for node in visible:
 		if node in next_active: continue
 		next_active.append(node)
