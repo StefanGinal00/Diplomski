@@ -1,0 +1,158 @@
+{
+  "date": "2026-10-04",
+  "scope": "Painted Starfall task stations, registers, branch furnishings and shared ambient response. Incremental polish, not a whole-game completion claim.",
+  "engine": "Godot 4.6.2 stable (Windows)",
+  "art_manifest": "art/visual_slice/starfall_task_art_manifest_v1.json",
+  "new_cutouts": 18,
+  "new_atlases": 3,
+  "coverage": {
+    "registers": 7,
+    "stations": 9,
+    "landmarks": 5,
+    "caravans": 4,
+    "barricades": 6,
+    "branch_pockets": 30
+  },
+  "invariants": [
+    "Original task flags, station positions, interaction reach and physics remain authoritative.",
+    "Painted props use registered contact rows and uniform scale, with headroom fitting for both task states.",
+    "No duplicate generic station receivers or extra readable signs over physical registers.",
+    "Reading panel reports stay stable across repeated refreshes without mutating the source clue.",
+    "Shared ambient driver animates lit props and rooted foliage; no per-prop process callbacks."
+  ],
+  "tests": [
+    {
+      "Test": "painted_tasks_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 12.89,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261004-001504-992-f2acc816/painted_tasks_smoke.log"
+    },
+    {
+      "Test": "starfall_task_art_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 11.97,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261004-001541-867-38d4622d/starfall_task_art_smoke.log"
+    },
+    {
+      "Test": "starfall_prop_art_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 3.43,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261004-000754-798-b6cc38c7/starfall_prop_art_smoke.log"
+    },
+    {
+      "Test": "starfall_branch_art_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 4.19,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261004-000758-248-35379265/starfall_branch_art_smoke.log"
+    },
+    {
+      "Test": "world_readables_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 23.84,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261004-001517-983-8d9b8d79/world_readables_smoke.log"
+    },
+    {
+      "Test": "world_device_finish_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 21.19,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261004-000815-482-1c3cd293/world_device_finish_smoke.log"
+    },
+    {
+      "Test": "starfall_field_operations_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 25.82,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261004-000836-698-70a0711b/starfall_field_operations_smoke.log"
+    },
+    {
+      "Test": "route_relief_world_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 24.49,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261004-001128-321-1c41320f/route_relief_world_smoke.log"
+    },
+    {
+      "Test": "reactive_foliage_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 0.75,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261004-001152-829-649b85b7/reactive_foliage_smoke.log"
+    },
+    {
+      "Test": "starfall_scenery_art_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 12.16,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261004-001326-291-569de920/starfall_scenery_art_smoke.log"
+    },
+    {
+      "Test": "world_grounding_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 23.64,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261004-001338-544-0d7be219/world_grounding_smoke.log"
+    }
+  ],
+  "test_total": 11,
+  "passed": 11,
+  "native_preview": {
+    "script": "tests/preview_painted_tasks.gd",
+    "log": ".tmp-painted-tasks-preview-delivery.log",
+    "exit_code": 0,
+    "renderer": "D3D12 / Mobile, NVIDIA GeForce RTX 4050 Laptop GPU",
+    "resolution": [
+      1280,
+      720
+    ],
+    "captures_reviewed": 11,
+    "areas": 4,
+    "images": [
+      "art/characters/preview_painted_task_starfall_outskirts_initial.png",
+      "art/characters/preview_painted_task_starfall_outskirts_done.png",
+      "art/characters/preview_painted_task_starfall_silent_gate_initial.png",
+      "art/characters/preview_painted_task_starfall_silent_gate_done.png",
+      "art/characters/preview_painted_task_starfall_rooted_hall_initial.png",
+      "art/characters/preview_painted_task_starfall_rooted_hall_done.png",
+      "art/characters/preview_painted_task_starfall_sunless_passage_initial.png",
+      "art/characters/preview_painted_task_starfall_sunless_passage_done.png",
+      "art/characters/preview_painted_register_starfall_outskirts.png",
+      "art/characters/preview_painted_register_starfall_sunless_passage.png",
+      "art/characters/preview_painted_register_report.png"
+    ],
+    "observations": [
+      "Reviewed actual player scale, planted feet, station clearance under platforms, status indicators and original interaction prompts.",
+      "Viewed all four station families before/after completion, both register layouts and the live reading panel.",
+      "Native preview reported sandbox shader-cache write failures (f.is_null in _save_to_cache) and root certificate warnings; image captures completed. No script errors were observed.",
+      "No frame-rate benchmark performed; wider unfinished scenery outside this focused pass remains."
+    ]
+  },
+  "validation": "Targeted git diff --check passed. Test-owned Godot processes exited."
+}

@@ -4,6 +4,7 @@
 
 # Local temporary analysis files
 .tmp*
+.VSCodeCounter/
 
 # Local Godot validation logs
 debug.log

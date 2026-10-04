@@ -53,6 +53,7 @@ func _spawn_wave() -> void:
 		enemy.position = layout[index][1] + Vector2(offset, 0)
 		enemy.set("xp_orb_scene", null)
 		enemy.set("gold_pickup_scene", null)
+		enemy.set_meta("checkpoint_persistence_exempt", true)
 		wave_enemies.add_child(enemy)
 		enemy.defeated.connect(_on_enemy_defeated)
 

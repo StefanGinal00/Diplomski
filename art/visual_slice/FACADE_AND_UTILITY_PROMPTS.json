@@ -1,0 +1,38 @@
+{
+  "mode": "built-in image_gen",
+  "date": "2026-09-30",
+  "intent": "generate",
+  "source_directory": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9",
+  "assets": [
+    {
+      "source": "exec-5f3d415b-4766-45f5-8001-0e8574ba1e10.png",
+      "saved_path": "art/visual_slice/residential_doors_v1.png",
+      "sha256": "38566799068A28A7735051DDA6E6A99B3A2C8A07630E868B59ED0F1925B20AF0",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "variants": 6,
+      "prompt": "Use case: stylized-concept\nAsset type: transparent 2D game architecture sprite atlas, SIX CLOSED residential doors in a precise three-column by two-row grid on a 1536x1024 canvas.\nPrimary request: six original hand-painted dark fantasy house entrances, FRONT ORTHOGRAPHIC view, for facade decoration in a side-scrolling 2D game. Each complete closed door includes a narrow inset frame and shallow stone threshold, no wall panel, no landscape, no open tunnel. Top row: (left) damp weathered teal plank door with pale stone arch and worn bronze latch; (middle) muted rust-red oak door framed in soot-dark basalt with iron straps; (right) indigo-grey double door with carved pale limestone arch and restrained brass star detail. Bottom row: (left) round-topped grey-green village door with mossy timber jambs; (middle) rectangular warm brown smithy door with rugged dark lintel and iron hinges; (right) narrow arched blue-slate scholarly door with fine old brass hardware.\nStyle: detailed painterly game sprites, tactile chipped masonry, wood grain and iron patina, muted natural colors, soft top-left light. Doors remain fully closed and solid, no bright portal glow. Each has matching scale, about 280 pixels wide and 440 pixels tall, centered independently in its 512x512 cell, clear transparent margins on every side, no touching adjacent assets. All contact thresholds horizontally level. No separate props, no labels, letters, captions, watermark, no perspective scene. GENUINELY TRANSPARENT RGBA background, no ground plane, no baked background or cast shadow outside the object."
+    },
+    {
+      "source": "exec-82d81fe4-8df4-4d49-80e4-bc1a21ad8a89.png",
+      "saved_path": "art/visual_slice/settlement_utilities_v1.png",
+      "sha256": "D3548735195C2848DFFA960C0D433FA207BC6E769F97F92AE054E54D302BE666",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "variants": 6,
+      "prompt": "Use case: stylized-concept\nAsset type: transparent 2D side-scroller environment sprite atlas, six separate utility objects, three equal columns by two equal rows, 1536x1024 canvas.\nPrimary request: original hand-painted dark fantasy settlement props. Top row left: stout wooden storage barrel with iron hoops, front view, closed lid. Top row middle: worn closed supply crate, diagonal timber brace and small iron corners, front view. Top row right: low tidy stack of split firewood with two short wooden end supports, front view. Bottom row left: hanging bronze town bell, ornate but believable iron top mounting eye, no stand, opening rim and clapper visible. Bottom row middle: weathered brass astronomer's telescope on a compact three-legged dark timber tripod, side view pointing diagonally up-right, include complete feet. Bottom row right: short cottage chimney stack of soot-dark rough bricks with a broad stone cap, NO smoke, straight front view.\nStyle: detailed painterly 2D game art, chipped materials and careful light from upper left, restrained cool grey, warm aged wood and tarnished metal, no magical glow. Separate cutouts, one complete object inside each 512x512 cell with generous transparent gutters. Keep all silhouettes complete with nothing cut off. Each object centered independently, low wood stack remains wide, telescope and bell taller. No characters, no text, labels, watermark, scenery or terrain. GENUINELY TRANSPARENT RGBA background, no visible backdrop or ground plane, no detached shadows. Not isometric, no 3D scene."
+    }
+  ],
+  "source_preservation": "Both generated PNGs copied unchanged; genuine alpha, crops through shared AtlasTexture regions only.",
+  "import_settings": {
+    "max_edge": 1024,
+    "mipmaps": true,
+    "fix_alpha_border": true,
+    "total_decoded_bytes_including_mips": 7447448
+  },
+  "limitations": "Memory is only the two new atlases. This is not total game VRAM, export size, or a native phone profile."
+}

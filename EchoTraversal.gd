@@ -148,6 +148,10 @@ var population_loaded := false
 
 func _ready() -> void:
 	profile = PROFILES[route_id]
+	var scenery := Node2D.new()
+	scenery.name = "SceneryArt"
+	scenery.set_script(preload("res://EchoSceneryArt.gd"))
+	add_child(scenery)
 	if _use_schematic_editor_preview():
 		# Game.tscn still gets a lightweight preview, but it must resemble the
 		# authored room rather than an empty collision diagram.
@@ -281,6 +285,24 @@ func _floor_point(tier: int, x: float, clearance: float = 33.0, margin: float = 
 	return FLOOR_PLACEMENT.on_floor(self, "Chamber%02dFloor" % tier, x, clearance, margin)
 
 
+func _entry_fauna_point(desired_x: float) -> Vector2:
+	# Keep the full +/-62 native patrol away from portal frames and supplies.
+	# Resolve before add_child so native patrol limits use the final anchor.
+	for shift in [0, 180, -180, 280, -280, 380, -380, 480, -480]:
+		var candidate := _floor_point(0, desired_x + shift, 32.0, 100.0)
+		var clear := true
+		for node in get_parent().get_children() + get_children():
+			if not node is Node2D or not (node.is_in_group("room_door") or node.is_in_group("breakable")):
+				continue
+			var at := to_local(node.global_position)
+			var distance := 160.0 if node.is_in_group("room_door") else 115.0
+			if absf(candidate.y - at.y) < 100 and absf(candidate.x - at.x) < distance:
+				clear = false
+		if clear:
+			return candidate
+	return _floor_point(0, desired_x, 32.0)
+
+
 func _move_room_node(node_name: String, at: Vector2) -> void:
 	var target := get_parent().get_node_or_null(node_name) as Node2D
 	if target != null:
@@ -289,9 +311,15 @@ func _move_room_node(node_name: String, at: Vector2) -> void:
 
 func _place_portal(door_name: String, marker_name: String, tier: int, ratio: float, marker_side: float = 1.0) -> void:
 	var door_at := _portal_anchor(tier, ratio)
+	var original:=door_at
+	if not _use_schematic_editor_preview(): door_at=FLOOR_PLACEMENT.clear_passage(self,door_at)
 	_move_room_node(door_name, door_at)
+	var native:=get_parent().get_node_or_null(door_name)
+	if native!=null: native.set_meta("portal_landing_shift",door_at-original)
 	if not marker_name.is_empty():
-		_move_room_node(marker_name, door_at + Vector2(78.0 * marker_side, 0.0))
+		var arrival:=door_at+Vector2(78.0*marker_side,0)
+		if not _use_schematic_editor_preview(): arrival=_floor_point(tier,arrival.x,33,32)
+		_move_room_node(marker_name,arrival)
 
 
 func _relocate_room_portals() -> void:
@@ -918,6 +946,8 @@ func _build_life() -> void:
 		var creature := NEUTRAL.instantiate()
 		creature.name = creature_node_name
 		creature.position = _floor_point(tier, landing_points[tier][0 if index % 2 == 0 else landing_points[tier].size() - 1].x, 32.0)
+		if index == 0:
+			creature.position = _entry_fauna_point(landing_points[0][0].x)
 		creature.creature_name = FAUNA_NAMES[route_id]
 		creature.zone_id = "echo_grotto"
 		creature.start_resting = index % 2 == 0

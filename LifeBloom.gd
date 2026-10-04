@@ -13,6 +13,10 @@ var elapsed: float = 0.0
 
 
 func _ready() -> void:
+	preload("res://PickupMaterialArt.gd").attach(self, 1, Vector2(23, 25))
+	$Bloom.hide()
+	$Core.hide()
+	$Glow.hide()
 	start_y = position.y
 	body_entered.connect(_on_body_entered)
 

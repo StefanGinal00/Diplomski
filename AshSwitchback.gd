@@ -10,6 +10,7 @@ extends Node2D
 @export_range(3600.0, 4600.0, 10.0) var course_width: float = 4200.0
 @export_range(900.0, 1300.0, 10.0) var legacy_width: float = 1100.0
 @export var ground_y: float = 420.0
+var painted_depth_enabled := false
 
 const GALLERY_COUNT := 6
 const GALLERY_RISE := 260.0
@@ -1052,7 +1053,8 @@ func _draw() -> void:
 		var chamber := _chamber_rect(index)
 		var silhouette := _chamber_silhouette(chamber, index)
 		if _preview_only:
-			draw_colored_polygon(silhouette, Color(palette[0], 0.94))
+			if not painted_depth_enabled:
+				draw_colored_polygon(silhouette, Color(palette[0], 0.94))
 			var outline := silhouette.duplicate()
 			outline.append(silhouette[0])
 			draw_polyline(outline, palette[2], 5.0, true)
@@ -1062,13 +1064,15 @@ func _draw() -> void:
 				draw_rect(Rect2(preview_x - 22.0, chamber.position.y + 35.0, 44.0, chamber.size.y - 44.0), Color(palette[1], 0.72))
 			draw_rect(Rect2(chamber.position.x, chamber.end.y - 10.0, chamber.size.x, 10.0), palette[2])
 		else:
-			draw_colored_polygon(silhouette, palette[0])
-			# Broad piers make these read as ruins/rooms rather than floating
-			# platform rows; identity landmarks add the course-specific layer.
-			var pier_count := maxi(2, int(chamber.size.x / 520.0))
-			for pier in range(pier_count):
-				var x := chamber.position.x + 110.0 + float(pier) * (chamber.size.x - 220.0) / float(maxi(1, pier_count - 1))
-				draw_rect(Rect2(x - 22.0, chamber.position.y + 35.0, 44.0, chamber.size.y - 44.0), palette[1].darkened(0.24))
+			if not painted_depth_enabled:
+				draw_colored_polygon(silhouette, palette[0])
+			# The finished painting already contains masonry depth. Keep these
+			# schematic piers only for the unpainted fallback, not over that art.
+			if not painted_depth_enabled:
+				var pier_count := maxi(2, int(chamber.size.x / 520.0))
+				for pier in range(pier_count):
+					var x := chamber.position.x + 110.0 + float(pier) * (chamber.size.x - 220.0) / float(maxi(1, pier_count - 1))
+					draw_rect(Rect2(x - 22.0, chamber.position.y + 35.0, 44.0, chamber.size.y - 44.0), palette[1].darkened(0.24))
 		if index < layout.size() - 1:
 			var next := _chamber_rect(index + 1)
 			var overlap_left := maxf(chamber.position.x, next.position.x)
@@ -1078,7 +1082,8 @@ func _draw() -> void:
 			var bottom_y := maxf(chamber.end.y, next.end.y)
 			var shaft_rect := Rect2(shaft_x - 112.0, top_y, 224.0, bottom_y - top_y)
 			if _preview_only:
-				draw_rect(shaft_rect, Color(palette[0], 0.94))
+				if not painted_depth_enabled:
+					draw_rect(shaft_rect, Color(palette[0], 0.94))
 				draw_rect(shaft_rect, palette[2], false, 5.0)
 				var rung_count := maxi(2, int(absf(next.end.y - chamber.end.y) / 58.0))
 				for rung in range(1, rung_count):
@@ -1086,7 +1091,8 @@ func _draw() -> void:
 					var rung_x := shaft_x + (-42.0 if (rung + index) % 2 == 0 else 42.0)
 					draw_rect(Rect2(rung_x - 56.0, rung_y - 5.0, 112.0, 10.0), palette[3])
 			else:
-				draw_rect(shaft_rect, palette[0])
+				if not painted_depth_enabled:
+					draw_rect(shaft_rect, palette[0])
 	if _preview_only:
 		return
 	for rect in _solid_rects:

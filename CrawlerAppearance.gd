@@ -5,6 +5,7 @@ extends Sprite2D
 const SHEET = preload("res://art/characters/shaft_crawler_v1.png")
 const PIXEL_SCALE := 0.07
 const PIVOTS := [Vector2(274, 462), Vector2(270, 462), Vector2(258, 464), Vector2(254, 404), Vector2(266, 404), Vector2(254, 402)]
+const CONTACT_ROWS := [463, 464, 465, 405, 405, 403]
 var previous_position := Vector2.ZERO
 var previous_health := -1
 var hurt_remaining := 0.0
@@ -19,6 +20,8 @@ func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	previous_position = get_parent().global_position
 	_apply_pose(0, false, Color.WHITE)
+	preload("res://MobDefeatEcho.gd").hook(self, "crawler")
+	visibility_changed.connect(_on_visibility_changed)
 	if Engine.is_editor_hint():
 		set_process(false)
 	else:
@@ -28,6 +31,14 @@ func _ready() -> void:
 
 func _initialize_health() -> void:
 	previous_health = get_parent().current_health
+
+func _on_visibility_changed() -> void:
+	if not Engine.is_editor_hint() and not is_visible_in_tree():
+		hurt_remaining = 0
+		walk_grace = 0
+		stride_distance = 0
+		previous_position = get_parent().global_position
+		_apply_pose(0, flip_h, Color.WHITE)
 
 
 func _on_health_changed(current: int, _maximum: int) -> void:
@@ -74,6 +85,7 @@ func _apply_pose(pose: int, face_left: bool, tint: Color) -> void:
 	frame = pose
 	flip_h = face_left
 	offset = Vector2(256, 256) - PIVOTS[pose]
+	offset.y = 256 - CONTACT_ROWS[pose]
 	if face_left:
 		offset.x = -offset.x
 	position = Vector2(0, 9)

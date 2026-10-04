@@ -2,6 +2,10 @@
 
 ## Delivered
 
+Continuation: [gait reset fixes and blocked walk-art attempt](WALK_CYCLE_ATTEMPT.md).
+Direction changes and interrupted locomotion now reset stride history. New
+four-frame art is not integrated: all three generated candidates lacked alpha.
+
 `wayfarer_movement_v1.png` adds four registered movement poses: crouch,
 downward fall, horizontal dash and landing compression. The original
 `wayfarer_v1.png` remains unchanged for idle, walking, jump, attack and hurt.

@@ -1,0 +1,71 @@
+# INACTIVE DRAFT: requires an accepted transparent WALK_SHEET and _apply_walk_pose.
+extends "res://tests/preview_characters.gd"
+
+
+func _render() -> void:
+	root.size = Vector2i(1280, 720)
+	root.content_scale_size = Vector2i(1280, 720)
+	var state := root.get_node("GameState")
+	state.save_path = "res://_tmp_player_walk_preview_save.json"
+	state.start_new_game("normal")
+	var gallery := Node2D.new()
+	root.add_child(gallery)
+	var background := Polygon2D.new()
+	background.polygon = PackedVector2Array([Vector2.ZERO, Vector2(1280, 0), Vector2(1280, 720), Vector2(0, 720)])
+	background.color = Color("172b38")
+	gallery.add_child(background)
+	_label(gallery, "WAYFARER / four walking phases, both directions / enlarged", Vector2(30, 22), 24)
+	for row in range(2):
+		for index in range(5):
+			var presenter := Sprite2D.new()
+			presenter.set_script(load("res://PlayerAppearance.gd"))
+			if index == 0:
+				presenter._apply_pose(0, row == 1, false)
+			else:
+				presenter._apply_walk_pose(index - 1, row == 1)
+			var sprite := Sprite2D.new()
+			sprite.texture = presenter.texture
+			sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+			sprite.hframes = presenter.hframes
+			sprite.vframes = presenter.vframes
+			sprite.frame = presenter.frame
+			sprite.flip_h = presenter.flip_h
+			sprite.offset = presenter.offset
+			sprite.scale = presenter.scale * 5
+			sprite.position = Vector2(145 + index * 245, 290 + row * 310)
+			gallery.add_child(sprite)
+			presenter.free()
+			_label(gallery, "Idle reference" if index == 0 else "Walk %d" % index, sprite.position + Vector2(-65, 25))
+	await _capture("player_walk_phases")
+	gallery.queue_free()
+	await process_frame
+	var room: Node2D = load("res://EchoGrotto.tscn").instantiate()
+	root.add_child(room)
+	await process_frame
+	await process_frame
+	room.process_mode = Node.PROCESS_MODE_DISABLED
+	var actors: Array[Player] = []
+	for index in range(4):
+		var template := load("res://Game.tscn").instantiate() as Node
+		var actor := template.get_node("Player") as Player
+		template.remove_child(actor)
+		template.free()
+		root.add_child(actor)
+		actor.get_node("Camera2D").enabled = false
+		actor.process_mode = Node.PROCESS_MODE_DISABLED
+		actor.position = Vector2(350 + index * 70, 148)
+		actor.get_node("Appearance")._apply_walk_pose(index, false)
+		actors.append(actor)
+	root.canvas_transform = Transform2D(Vector2(2.5, 0), Vector2(0, 2.5), Vector2(640, 360) - Vector2(460, 65) * 2.5)
+	room.get_node("VisualStyleSlice")._process(0.1)
+	var overlay := CanvasLayer.new()
+	root.add_child(overlay)
+	_label(overlay, "STAGED WALK PHASES / normal camera zoom", Vector2(30, 20), 20)
+	await _capture("player_walk_grotto")
+	for actor in actors:
+		actor.queue_free()
+	room.queue_free()
+	overlay.queue_free()
+	await process_frame
+	state.delete_save()
+	quit(0)

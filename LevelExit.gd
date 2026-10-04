@@ -65,8 +65,12 @@ func _track_enemies() -> void:
 		unlock_exit()
 		return
 	var enemies := get_tree().get_nodes_in_group(required_enemy_group)
-	remaining_enemies = enemies.size()
+	remaining_enemies = 0
 	for enemy in enemies:
+		# Restored checkpoint kills can still be queued for deletion this frame.
+		if enemy.is_queued_for_deletion() or enemy.get("is_dead") == true:
+			continue
+		remaining_enemies += 1
 		var callback := Callable(self, "_on_enemy_defeated")
 		if enemy.has_signal("defeated") and not enemy.is_connected("defeated", callback):
 			enemy.connect("defeated", callback)

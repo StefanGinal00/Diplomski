@@ -1,0 +1,235 @@
+{
+  "version": 1,
+  "date": "2026-09-30",
+  "mode": "imagegen skill; built-in image_gen; original generation; no CLI, external assets or post-generation pixel edits",
+  "purpose": "Human-scale settlement facade masonry, shallow transparent terrace arcades, modular non-stretched trim and observatory equipment.",
+  "original_art": true,
+  "asset_directory": "res://art/visual_slice/",
+  "assets": [
+    {
+      "id": "citadel",
+      "name": "city_wall_citadel_v1",
+      "prompt": "Use case: stylized-concept. Asset type: original modular bitmap material for a side-view dark-fantasy 2D game, painterly realistic carved stone, soft diffuse neutral lighting without hard speculars, no outline drawing. Square 1024x1024 opaque texture, orthographic straight-on, fills the ENTIRE canvas edge to edge. Seamlessly repeatable in X and Y. NO border, objects, writing, perspective, vignette, focal light spot or ground shadow. Small human-scale construction: at least 12 horizontal courses of staggered bricks across image height, joints fine and worn, varied stone lengths, subtle patina. Subject: quiet muted blue-grey limestone ashlar of an old observatory city, tiny desaturated violet mineral flecks, weathered fine chipped edges, a few subtle hairline cracks, restrained dark mortar. Keep total contrast gentle and wall medium dark so characters and golden windows stand out. No giant boulders, no moss clumps.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-06aada10-f798-4bc2-aee5-47627aefae5e.png",
+      "target": "art/visual_slice/city_wall_citadel_v1.png",
+      "Id": "citadel",
+      "Bytes": 3258533,
+      "SourceSHA256": "4EA61AD3A96EF56A059A4431975F7438E7584AFC68A29ED4E06ACB06264E0796",
+      "ProjectSHA256": "4EA61AD3A96EF56A059A4431975F7438E7584AFC68A29ED4E06ACB06264E0796",
+      "runtime_max_edge": 512,
+      "mipmaps": true,
+      "source_dimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "cinder",
+      "name": "city_wall_cinder_v1",
+      "prompt": "Use case: stylized-concept. Asset type: original modular bitmap material for a side-view dark-fantasy 2D game, painterly realistic carved stone, soft diffuse neutral lighting without hard speculars, no outline drawing. Square 1024x1024 opaque texture, orthographic straight-on, fills the ENTIRE canvas edge to edge. Seamlessly repeatable in X and Y. NO border, objects, writing, perspective, vignette, focal light spot or ground shadow. Small human-scale construction: at least 12 horizontal courses of staggered bricks across image height, joints fine and worn, varied stone lengths, subtle patina. Subject: soot-weathered charcoal and muted umber fired-brick walls of a mountain foundry town. Narrow brick courses with staggered lengths, a few darker repaired blocks and desaturated rusty brown hues. Some subtle ash dust. Medium-dark low contrast, not bright red. No lava, flames, metal plates or giant blocks.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-f03efde3-8bce-4156-9762-c5e7c4de7715.png",
+      "target": "art/visual_slice/city_wall_cinder_v1.png",
+      "Id": "cinder",
+      "Bytes": 3000440,
+      "SourceSHA256": "690A1A80423CA30975D0ABB35E08D792B935563A75A243AEF1087DE6E92214C1",
+      "ProjectSHA256": "690A1A80423CA30975D0ABB35E08D792B935563A75A243AEF1087DE6E92214C1",
+      "runtime_max_edge": 512,
+      "mipmaps": true,
+      "source_dimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "echo",
+      "name": "city_wall_echo_v1",
+      "prompt": "Use case: stylized-concept. Asset type: original modular bitmap material for a side-view dark-fantasy 2D game, painterly realistic carved stone, soft diffuse neutral lighting without hard speculars, no outline drawing. Square 1024x1024 opaque texture, orthographic straight-on, fills the ENTIRE canvas edge to edge. Seamlessly repeatable in X and Y. NO border, objects, writing, perspective, vignette, focal light spot or ground shadow. Small human-scale construction: at least 12 horizontal courses of staggered bricks across image height, joints fine and worn, varied stone lengths, subtle patina. Subject: damp grey-green limestone masonry of a sheltered cavern village, hand-hewn small blocks, patches of delicate dark moss IN the joints and subtle cool mineral streaks, muted teal-grey low saturation. Medium-dark value and gentle contrast. No plants projecting outward, no openings or large rocks.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-02e20770-aa04-4ac8-8a81-dd800ab41508.png",
+      "target": "art/visual_slice/city_wall_echo_v1.png",
+      "Id": "echo",
+      "Bytes": 3340631,
+      "SourceSHA256": "56431785294775854FE7EEC94534DB69B3959CEE9656294EB32CA3F47C12307C",
+      "ProjectSHA256": "56431785294775854FE7EEC94534DB69B3959CEE9656294EB32CA3F47C12307C",
+      "runtime_max_edge": 512,
+      "mipmaps": true,
+      "source_dimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "arcades",
+      "name": "city_arcade_spandrels_v1",
+      "prompt": "Use case: stylized-concept. Asset type: original RGBA sprite atlas for dark fantasy side-view 2D game. Landscape1536x1024, TRUE transparent background including arch holes. EXACTLY THREE separate long horizontal architectural spandrel modules, stacked in three equal-height rows, each centered with large transparent gutters. Every module 1400px wide and about240px deep. Each has straight flat upper edge, vertical left/right ends, and a SINGLE shallow broad smooth arch opening cut into its underside: bottom edge curves upward at center, leaving a thinner stone band at middle and thicker triangular haunches on the sides. NO long legs or piers, no columns or ground. They will hang directly beneath elevated stone walkways. Strict front orthographic view, same width and height in all three rows. Row1 muted bluegrey observatory limestone, finely jointed arch voussoirs. Row2 slightly green weathered garden stone with a few small trailing ivy leaves attached near the edges. Row3 darker old violetgrey civic limestone with chipped thin moulding and restrained brass keystone. Detailed painterly believable masonry, soft neutral lighting, dark seams and aged bevels, NOT schematic outlines. Transparent arch voids show nothing. No background wall, fake sky, text, labels, checkerboard, drop shadow, glowing rim, scenery, perspective or additional objects.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-2bc47426-1d42-410e-add7-cae8a98d3563.png",
+      "target": "art/visual_slice/city_arcade_spandrels_v1.png",
+      "Id": "arcades",
+      "Bytes": 2489002,
+      "SourceSHA256": "BD72F756B7836462CFBAD76FD19844475594F992BD238DDF3F4B8B9CB28F9946",
+      "ProjectSHA256": "BD72F756B7836462CFBAD76FD19844475594F992BD238DDF3F4B8B9CB28F9946",
+      "runtime_max_edge": 1024,
+      "mipmaps": true,
+      "source_dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "trim",
+      "name": "city_facade_trim_v1",
+      "prompt": "Use case: stylized-concept. Asset type: original RGBA modular architectural trim sprite atlas for a dark fantasy side-view 2D game. Landscape1536x1024. TRUE transparent background. STRICT regular 3columns by2rows of equal512x512 cells, six separate components, generous transparent gutters, no touching cells. Top row has THREE narrow vertical engaged PILASTERS, each about90px wide by430px tall, front-on FLAT wall-mounted relief with capital and foot, muted blue-grey carved limestone. Top-left fluted civic stone, top-middle weathered garden stone with sparse tiny ivy, top-right old observatory stone and small understated brass bands. Bottom row has THREE long horizontal CORNICES, each about460px wide by100px tall: matching civic, garden, observatory variants. Each cornice straight horizontal and simply capped both ends, small carved dentils and chipped moulding. Painterly textured old stone with soft neutral ambient light, no bright lavender flat areas or ink outlines. Orthographic frontal view, no perspective; these are thin facade ornaments NOT free-standing pillars. No ground shadows, scenery, frames, text, labels, checkerboard or extra elements.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-b4f99b4c-b11b-462e-9bd8-2c7b2caa8609.png",
+      "target": "art/visual_slice/city_facade_trim_v1.png",
+      "Id": "trim",
+      "Bytes": 1828886,
+      "SourceSHA256": "B031CF2714DA5D8CE3DEEBF59FE064D3B3D0B20737E57F60742D7A695C2514FB",
+      "ProjectSHA256": "B031CF2714DA5D8CE3DEEBF59FE064D3B3D0B20737E57F60742D7A695C2514FB",
+      "runtime_max_edge": 1024,
+      "mipmaps": true,
+      "source_dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "instruments",
+      "name": "city_observatory_details_v1",
+      "prompt": "Use case: stylized-concept. Asset type: original RGBA prop sprite atlas for side-view dark fantasy 2D game. Landscape1536x1024 TRUE transparent background, exact3columns by2rows six equal512x512cells with generous transparent gutters. Top-left: small freestanding aged brass armillary sphere on a short carved darkstone pedestal, allthewaytoflatfoot, tarnished bronze nested open rings and blue glass center, front orthographic view. Top-middle: a second different small freestanding celestial instrument, tilted ring astrolabe on squat carved stone stand, full flat foot visible. Top-right: circular old observatory wall clock medallion, dark blue-grey stone rim, subtle bronze spokes and hands, NO numbers or letters. Bottom-left: different weathered brass radial star-chart wallmedallion, NO writing. Bottom-middle: slender arched dark bronze ventilation grate with stone surround. Bottom-right: square weathered pierced bronze ventilation grille with stone surround. Detailed painterly materials, believable hand-crafted dark-fantasy design, softly lit, no neon/glows. Instruments full silhouette feet intact; clock and grilles are shallow wall fixtures. No backdrop, scene, platform, perspective, ground shadows, border, captions, typography, checkerboard or additional items.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-37d4d6c3-f14d-4b43-a775-ea67fef21665.png",
+      "target": "art/visual_slice/city_observatory_details_v1.png",
+      "Id": "instruments",
+      "Bytes": 2685282,
+      "SourceSHA256": "6C0E635799B53DA6711AC1AA202EA5E55492D15A2AAB8D5584EBE909F425AB61",
+      "ProjectSHA256": "6C0E635799B53DA6711AC1AA202EA5E55492D15A2AAB8D5584EBE909F425AB61",
+      "runtime_max_edge": 1024,
+      "mipmaps": true,
+      "source_dimensions": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "atlas_regions_original_pixels": {
+    "arcades": [
+      [
+        36,
+        59,
+        1466,
+        238
+      ],
+      [
+        35,
+        381,
+        1467,
+        244
+      ],
+      [
+        35,
+        710,
+        1468,
+        248
+      ]
+    ],
+    "trim": [
+      [
+        178,
+        61,
+        156,
+        676
+      ],
+      [
+        694,
+        60,
+        152,
+        678
+      ],
+      [
+        1206,
+        62,
+        149,
+        676
+      ],
+      [
+        22,
+        816,
+        476,
+        118
+      ],
+      [
+        537,
+        809,
+        465,
+        125
+      ],
+      [
+        1043,
+        816,
+        470,
+        118
+      ]
+    ],
+    "instruments": [
+      [
+        126,
+        9,
+        328,
+        491
+      ],
+      [
+        588,
+        49,
+        380,
+        444
+      ],
+      [
+        1038,
+        39,
+        424,
+        429
+      ],
+      [
+        58,
+        515,
+        465,
+        454
+      ],
+      [
+        620,
+        524,
+        316,
+        443
+      ],
+      [
+        1073,
+        549,
+        391,
+        385
+      ]
+    ]
+  },
+  "integration": {
+    "rooms": [
+      "echo_haven",
+      "echo_haven_outskirts",
+      "ash_hearth",
+      "starfall_citadel"
+    ],
+    "facade_surfaces": 79,
+    "additional_market_walls": 3,
+    "new_gables": 6,
+    "new_wall_feet": 6,
+    "terrace_bays": 30,
+    "images": 6,
+    "materials": 3,
+    "atlas_components": 15,
+    "decoded_bytes_including_mipmaps": 14316897,
+    "collision_changes": false,
+    "progression_changes": false,
+    "atlas_helper": "res://CityArchitectureAtlas.gd"
+  },
+  "verification": "res://tests/city_architecture_verification_v1.json",
+  "limitations": [
+    "No physical phone profiling; decoded texture budget checked, not whole-game RAM/FPS.",
+    "Many existing non-city props, ambient assemblies and authored structural transitions still need individual art passes; this is not a claim that the entire game's art backlog is complete."
+  ]
+}

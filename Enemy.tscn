@@ -1,4 +1,6 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://CompactMobAppearance.gd" id="compact_mob_art"]
 
 [ext_resource type="Script" path="res://Enemy.gd" id="1_enemy"]
 [ext_resource type="Texture2D" path="res://icon.svg" id="2_icon"]
@@ -63,3 +65,8 @@ position = Vector2(90, 0)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopHitbox"]
 position = Vector2(0, -10)
 shape = SubResource("StompShape")
+
+[node name="PaintedMobAppearance" type="Sprite2D" parent="."]
+script = ExtResource("compact_mob_art")
+identity = "enemy"
+heated = false

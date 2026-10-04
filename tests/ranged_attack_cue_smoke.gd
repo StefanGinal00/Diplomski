@@ -41,7 +41,7 @@ func _case(side: float, height: float) -> void:
 	root.add_child(holder)
 	var sentry: StaticBody2D = load("res://RangedEnemy.tscn").instantiate()
 	holder.add_child(sentry)
-	sentry.set_process(false)
+	sentry.set_physics_process(false)
 	var art := sentry.get_node("AttackCue")
 	art.set_process(false)
 	var appearance := sentry.get_node("Appearance")
@@ -55,7 +55,7 @@ func _case(side: float, height: float) -> void:
 	var shot_times: Array[float] = []
 	for tick in range(72):
 		var count_before := launches
-		sentry._process(0.05)
+		sentry._physics_process(0.05)
 		art._process(0.05)
 		appearance._process(0.05)
 		_check(appearance.frame == art.pose and appearance.flip_h == (side < 0), "Bitmap disagrees with attack cue/facing")
@@ -78,7 +78,7 @@ func _case(side: float, height: float) -> void:
 	await _clear_shots()
 	# Real Area2D projectile flight, not a direct damage callback.
 	sentry.shot_cooldown_remaining = 0
-	sentry._process(0.01)
+	sentry._physics_process(0.01)
 	for tick in range(70):
 		await physics_frame
 	_check(player.current_health == 99, "New art prevented real projectile contact damage")
@@ -89,7 +89,7 @@ func _case(side: float, height: float) -> void:
 	_check(art.pose == 1, "In-range charged shot lacks warning")
 	player.position.x = side * 1000
 	var count_before := launches
-	sentry._process(0.1)
+	sentry._physics_process(0.1)
 	art._process(0.01)
 	_check(art.pose == 0 and launches == count_before, "Out-of-range target kept charging/firing")
 	player.position.x = side * 100
@@ -100,7 +100,7 @@ func _case(side: float, height: float) -> void:
 	var scene: PackedScene = sentry.projectile_scene
 	sentry.projectile_scene = null
 	sentry.shot_cooldown_remaining = 0
-	sentry._process(0.1)
+	sentry._physics_process(0.1)
 	art._process(0.01)
 	_check(launches == count_before and art.pose == 0, "Failed launch produced a fake shot/warning")
 	sentry.projectile_scene = scene

@@ -1,4 +1,8 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=27 format=3]
+
+[ext_resource type="Script" path="res://ResidentialFacadeDetails.gd" id="art_residential"]
+
+[ext_resource type="Script" path="res://SettlementAtmosphere.gd" id="art_atmosphere"]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
@@ -7,6 +11,22 @@
 [ext_resource type="Script" path="res://SettlementTimeline.gd" id="5_timeline"]
 [ext_resource type="Script" path="res://TownLifeExpansion.gd" id="6_life"]
 [ext_resource type="Script" path="res://CinderTownExpansion.gd" id="7_town_expansion"]
+[ext_resource type="Texture2D" path="res://art/characters/mira_portrait_v1.png" id="art_mira"]
+[ext_resource type="Texture2D" path="res://art/characters/tarin_portrait_v1.png" id="art_tarin"]
+[ext_resource type="Texture2D" path="res://art/characters/korin_portrait_v1.png" id="art_korin"]
+[ext_resource type="Texture2D" path="res://art/characters/selen_portrait_v1.png" id="art_selen"]
+[ext_resource type="Script" path="res://PaintedSettlementBackdrop.gd" id="art_backdrop"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/cinder_hearth_backdrop_v1.png" id="art_sky"]
+
+[ext_resource type="Script" path="res://PaintedSettlementBuildings.gd" id="art_buildings"]
+[ext_resource type="Script" path="res://SettlementStreetArt.gd" id="art_street"]
+[ext_resource type="Script" path="res://TownNameplateLayout.gd" id="name_layout"]
+[ext_resource type="Script" path="res://SettlementBuildingSupports.gd" id="art_supports"]
+[ext_resource type="Script" path="res://CinderCivicArt.gd" id="art_civic"]
+[ext_resource type="Script" path="res://CinderWalkwayArt.gd" id="art_walkways"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/city_wall_cinder_v1.png" id="art_wall"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/cinder_roof_v1.png" id="art_roof"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/cinder_door_v1.png" id="art_door"]
 
 [sub_resource type="RectangleShape2D" id="FloorShape"]
 size = Vector2(1220, 18)
@@ -28,6 +48,43 @@ settlement = "ash"
 
 [node name="EasternDistricts" type="Node2D" parent="."]
 script = ExtResource("7_town_expansion")
+
+[node name="PaintedBackdrop" type="Node2D" parent="."]
+script = ExtResource("art_backdrop")
+backdrop_texture = ExtResource("art_sky")
+plate_paths = Array[NodePath]([NodePath("Backdrop"), NodePath("EasternDistricts/EasternSky")])
+top_fade_paths = Array[NodePath]([NodePath("EasternDistricts/EasternSky")])
+hide_paths = Array[NodePath]([NodePath("DistantRamparts"), NodePath("EasternDistricts/ThreeDistrictRidge")])
+
+[node name="PaintedBuildings" type="Node2D" parent="."]
+script = ExtResource("art_buildings")
+theme = "cinder"
+wall_texture = ExtResource("art_wall")
+roof_texture = ExtResource("art_roof")
+door_texture = ExtResource("art_door")
+
+[node name="StreetArt" type="Node2D" parent="."]
+script = ExtResource("art_street")
+theme = "cinder"
+
+[node name="NameplateLayout" type="Node2D" parent="."]
+script = ExtResource("name_layout")
+
+[node name="CivicArt" type="Node2D" parent="."]
+script = ExtResource("art_civic")
+
+[node name="WalkwayArt" type="Node2D" parent="."]
+script = ExtResource("art_walkways")
+
+[node name="BuildingSupports" type="Node2D" parent="."]
+script = ExtResource("art_supports")
+theme = "cinder"
+
+[node name="SettlementAtmosphere" type="Node2D" parent="."]
+script = ExtResource("art_atmosphere")
+
+[node name="ResidentialFacadeDetails" type="Node2D" parent="."]
+script = ExtResource("art_residential")
 
 [node name="Backdrop" type="Polygon2D" parent="."]
 z_index = -6
@@ -253,6 +310,7 @@ pause_seconds = 2.2
 [node name="Tarin" parent="." groups=["hearth_gate_quest_npc"] instance=ExtResource("3_resident")]
 position = Vector2(210, 357)
 resident_name = "Tarin"
+portrait_texture = ExtResource("art_tarin")
 dialogue_lines = PackedStringArray("The lanterns stop at the gate. Keep your blade ready beyond them.", "Our guards can hold the wall, but the road needs someone who can fight out there.")
 coat_color = Color(0.34, 0.31, 0.4, 1)
 accent_color = Color(0.96, 0.68, 0.36, 1)
@@ -272,6 +330,7 @@ pause_seconds = 5.0
 [node name="Mira" parent="." groups=["hearth_quest_npc"] instance=ExtResource("3_resident")]
 position = Vector2(747, 357)
 resident_name = "Mira"
+portrait_texture = ExtResource("art_mira")
 dialogue_lines = PackedStringArray("Our smith says every scar in a blade tells a story. I prefer stories with happy endings.", "If you find more emberstone, bring it home. We can make the next crossing safer.")
 coat_color = Color(0.43, 0.29, 0.34, 1)
 accent_color = Color(0.96, 0.69, 0.43, 1)
@@ -290,6 +349,7 @@ walk_speed = 20.0
 pause_seconds = 2.6
 
 [node name="Quartermaster" parent="." instance=ExtResource("4_service")]
+portrait_texture = ExtResource("art_korin")
 position = Vector2(597, 357)
 service_kind = "shop"
 service_id = "ash_haven_shop"
@@ -297,6 +357,7 @@ service_name = "Korin • Supply"
 service_color = Color(0.94, 0.59, 0.28, 1)
 
 [node name="Anvil" parent="." instance=ExtResource("4_service")]
+portrait_texture = ExtResource("art_selen")
 position = Vector2(909, 357)
 service_kind = "anvil"
 service_id = "ash_hearth_anvil"

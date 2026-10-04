@@ -1,0 +1,420 @@
+{
+  "void_sentinel": {
+    "sources": [
+      {
+        "path": "art/characters/drafts/sentinel_walk_six_v1_rgb.png",
+        "columns": 3,
+        "rows": 2
+      },
+      {
+        "path": "art/characters/drafts/sentinel_cast_six_v1_rgb.png",
+        "columns": 3,
+        "rows": 2
+      }
+    ],
+    "order": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        5
+      ]
+    ]
+  },
+  "abyss_warden": {
+    "sources": [
+      {
+        "path": "art/characters/drafts/abyss_warden_twelve_source_v2.png",
+        "columns": 4,
+        "rows": 3
+      }
+    ],
+    "order": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        0,
+        7
+      ],
+      [
+        0,
+        8
+      ],
+      [
+        0,
+        9
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        0,
+        11
+      ]
+    ]
+  },
+  "echo_matriarch": {
+    "sources": [
+      {
+        "path": "art/characters/drafts/echo_matriarch_twelve_source_v2.png",
+        "columns": 4,
+        "rows": 3
+      }
+    ],
+    "order": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        0,
+        7
+      ],
+      [
+        0,
+        8
+      ],
+      [
+        0,
+        9
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        0,
+        11
+      ]
+    ]
+  },
+  "ash_castellan": {
+    "sources": [
+      {
+        "path": "art/characters/drafts/ash_castellan_twelve_source_v2.png",
+        "columns": 4,
+        "rows": 3
+      }
+    ],
+    "order": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        0,
+        7
+      ],
+      [
+        0,
+        8
+      ],
+      [
+        0,
+        9
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        0,
+        11
+      ]
+    ]
+  },
+  "hollow_sovereign": {
+    "sources": [
+      {
+        "path": "art/characters/drafts/hollow_sovereign_twelve_source_v2.png",
+        "columns": 4,
+        "rows": 3
+      }
+    ],
+    "order": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        0,
+        7
+      ],
+      [
+        0,
+        8
+      ],
+      [
+        0,
+        9
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        0,
+        11
+      ]
+    ]
+  },
+  "starfall_guardian": {
+    "sources": [
+      {
+        "path": "art/characters/drafts/starfall_guardian_twelve_source_v2.png",
+        "columns": 4,
+        "rows": 3
+      }
+    ],
+    "order": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        0,
+        7
+      ],
+      [
+        0,
+        8
+      ],
+      [
+        0,
+        9
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        0,
+        11
+      ]
+    ]
+  },
+  "ember_marshal": {
+    "sources": [
+      {
+        "path": "art/characters/drafts/ember_marshal_twelve_source_v2.png",
+        "columns": 4,
+        "rows": 3
+      }
+    ],
+    "order": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        0,
+        7
+      ],
+      [
+        0,
+        8
+      ],
+      [
+        0,
+        9
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        0,
+        11
+      ]
+    ]
+  }
+}

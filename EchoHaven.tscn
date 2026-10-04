@@ -1,4 +1,8 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=28 format=3]
+
+[ext_resource type="Script" path="res://ResidentialFacadeDetails.gd" id="art_residential"]
+
+[ext_resource type="Script" path="res://SettlementAtmosphere.gd" id="art_atmosphere"]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
@@ -8,6 +12,22 @@
 [ext_resource type="Script" path="res://SettlementTimeline.gd" id="6_timeline"]
 [ext_resource type="Script" path="res://TownLifeExpansion.gd" id="7_life"]
 [ext_resource type="Script" path="res://EchoSettlementExpansion.gd" id="8_district"]
+[ext_resource type="Texture2D" path="res://art/characters/neris_portrait_v1.png" id="9_neris_portrait"]
+[ext_resource type="Texture2D" path="res://art/characters/nalim_portrait_v1.png" id="art_nalim"]
+[ext_resource type="Texture2D" path="res://art/characters/ivara_portrait_v1.png" id="art_ivara"]
+[ext_resource type="Script" path="res://PaintedSettlementBackdrop.gd" id="art_backdrop"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/echo_haven_backdrop_v1.png" id="art_sky"]
+
+[ext_resource type="Script" path="res://PaintedSettlementBuildings.gd" id="art_buildings"]
+[ext_resource type="Script" path="res://SettlementStreetArt.gd" id="art_street"]
+[ext_resource type="Script" path="res://TownNameplateLayout.gd" id="name_layout"]
+[ext_resource type="Script" path="res://SettlementBuildingSupports.gd" id="art_supports"]
+[ext_resource type="Script" path="res://TownMaterialExpansion.gd" id="art_materials"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/echo_path_stone_v1.png" id="art_path"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/echo_walk_timber_v1.png" id="art_timber"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/city_wall_echo_v1.png" id="art_wall"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/echo_roof_v1.png" id="art_roof"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/echo_door_v1.png" id="art_door"]
 
 [sub_resource type="RectangleShape2D" id="FloorShape"]
 size = Vector2(1180, 18)
@@ -30,6 +50,41 @@ settlement = "echo"
 [node name="NewDistricts" type="Node2D" parent="."]
 script = ExtResource("8_district")
 district = "haven"
+
+[node name="PaintedBackdrop" type="Node2D" parent="."]
+script = ExtResource("art_backdrop")
+backdrop_texture = ExtResource("art_sky")
+plate_paths = Array[NodePath]([NodePath("Backdrop"), NodePath("NewDistricts/DistrictPocket00"), NodePath("NewDistricts/DistrictPocket01"), NodePath("NewDistricts/DistrictPocket02"), NodePath("NewDistricts/DistrictPocket03"), NodePath("NewDistricts/DistrictPocket04"), NodePath("NewDistricts/DistrictPocket05"), NodePath("NewDistricts/DistrictShaft00"), NodePath("NewDistricts/DistrictShaft01"), NodePath("NewDistricts/DistrictShaft02"), NodePath("NewDistricts/DistrictShaft03"), NodePath("NewDistricts/DistrictShaft04")])
+hide_paths = Array[NodePath]([NodePath("DistantCavern")])
+
+[node name="PaintedBuildings" type="Node2D" parent="."]
+script = ExtResource("art_buildings")
+theme = "echo"
+wall_texture = ExtResource("art_wall")
+roof_texture = ExtResource("art_roof")
+door_texture = ExtResource("art_door")
+
+[node name="StreetArt" type="Node2D" parent="."]
+script = ExtResource("art_street")
+theme = "echo"
+
+[node name="NameplateLayout" type="Node2D" parent="."]
+script = ExtResource("name_layout")
+
+[node name="MaterialExpansion" type="Node2D" parent="."]
+script = ExtResource("art_materials")
+primary_texture = ExtResource("art_path")
+secondary_texture = ExtResource("art_timber")
+
+[node name="BuildingSupports" type="Node2D" parent="."]
+script = ExtResource("art_supports")
+theme = "echo"
+
+[node name="SettlementAtmosphere" type="Node2D" parent="."]
+script = ExtResource("art_atmosphere")
+
+[node name="ResidentialFacadeDetails" type="Node2D" parent="."]
+script = ExtResource("art_residential")
 
 [node name="Backdrop" type="Polygon2D" parent="."]
 z_index = -5
@@ -223,6 +278,7 @@ enemy_block_radius = 130.0
 [node name="Neris" parent="." instance=ExtResource("3_resident")]
 position = Vector2(245, 129)
 resident_name = "Neris"
+portrait_texture = ExtResource("9_neris_portrait")
 dialogue_lines = PackedStringArray("The crystals hum differently when both resonators are awake.", "My mother taught me to listen for the quiet notes. They mean the path is safe.")
 timeline_dialogue_stage = 3
 timeline_dialogue_lines = PackedStringArray("Word reached us that someone crossed into the Ashen Bastion. Even the crystals sound restless tonight.", "Calen is drawing a safe route for anyone returning from the ash. I keep the lamp burning for them.")
@@ -250,6 +306,7 @@ walk_speed = 27.0
 pause_seconds = 5.5
 
 [node name="GlowmarketTrader" parent="." instance=ExtResource("4_service")]
+portrait_texture = ExtResource("art_nalim")
 position = Vector2(590, 129)
 service_kind = "shop"
 service_id = "echo_haven_shop"
@@ -259,6 +316,7 @@ service_color = Color(0.39, 0.86, 0.71, 1)
 [node name="Ivara" parent="." instance=ExtResource("3_resident")]
 position = Vector2(760, 129)
 resident_name = "Ivara"
+portrait_texture = ExtResource("art_ivara")
 dialogue_lines = PackedStringArray("The people above us call this place a ruin. They have never seen it lit at night.", "The Matriarch guarded the deep halls. Whatever comes after her still frightens me.")
 timeline_dialogue_stage = 3
 timeline_dialogue_lines = PackedStringArray("The Matriarch is gone, but the road into the Bastion has opened. That is not the end of our worries.", "Travelers from Cinder Hearth have begun trading here again. Perhaps these halls can be a home, not a refuge.")

@@ -97,9 +97,9 @@ func _save_progress(player: Player) -> bool:
 	var quest_manager := get_tree().get_first_node_in_group("quest_manager")
 	if game_state == null or game_state.is_boss_encounter_active():
 		return false
-	player.set_checkpoint(respawn_point.global_position)
 	if not game_state.save_at_checkpoint(player, quest_manager, respawn_point.global_position, lamp_id, lamp_name, room_id):
 		return false
+	player.set_checkpoint(respawn_point.global_position)
 	is_active = true
 	_set_active_visuals()
 	save_chime.play()

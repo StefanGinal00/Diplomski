@@ -30,6 +30,7 @@ var start_x: float
 var target_player: Player
 var zone_tier: int = 0
 var echo_charge_ready: bool = false
+const Perception := preload("res://EnemyPerception.gd")
 
 @onready var body_visual: Polygon2D = $BodyVisual
 @onready var warning_icon: Polygon2D = $WarningIcon
@@ -39,6 +40,7 @@ var echo_charge_ready: bool = false
 
 
 func _ready() -> void:
+	preload("res://MobAttackPresentation.gd").attach(self, "crawler")
 	start_x = global_position.x
 	var game_state := get_node_or_null("/root/GameState")
 	if game_state != null:
@@ -52,6 +54,15 @@ func _ready() -> void:
 	health_bar.value = current_health
 	warning_icon.hide()
 	target_player = get_tree().get_first_node_in_group("player") as Player
+
+
+func suspend_room_combat() -> void:
+	if is_dead: return
+	var cooldown := attack_cooldown
+	_begin_recovery()
+	attack_cooldown = maxf(cooldown, attack_cooldown)
+	contact_cooldown = maxf(contact_cooldown, 0.6)
+	velocity = Vector2.ZERO
 
 
 func _physics_process(delta: float) -> void:
@@ -76,13 +87,18 @@ func _physics_process(delta: float) -> void:
 			velocity.x = 0.0
 			warning_icon.scale = Vector2.ONE * (1.0 + sin(Time.get_ticks_msec() * 0.03) * 0.15)
 			if is_zero_approx(state_remaining):
-				state = State.CHARGE
-				state_remaining = 0.38
-				warning_icon.hide()
+				# A windup is not permission to attack a dead, occluded or departed
+				# target. Keep the advertised heading; dodging past it still works.
+				if _charge_target_valid():
+					state = State.CHARGE
+					state_remaining = 0.38
+					warning_icon.hide()
+				else:
+					_begin_recovery()
 		State.CHARGE:
 			velocity.x = direction * charge_speed
 			if is_zero_approx(state_remaining):
-				if echo_charge_ready and is_instance_valid(target_player) and not target_player.is_dead and absf(target_player.global_position.x - global_position.x) < detection_range and absf(target_player.global_position.y - global_position.y) < 55.0:
+				if echo_charge_ready and _charge_target_valid():
 					echo_charge_ready = false
 					_start_warning()
 				else:
@@ -96,6 +112,12 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	if state == State.CHARGE and (is_on_wall() or absf(global_position.x - start_x) > patrol_distance + 85.0):
 		_begin_recovery()
+	elif state == State.PATROL and is_on_wall() and get_wall_normal().x * direction < -0.5:
+		# The forward floor probe already handles wide obstructions; a thin
+		# wall can sit behind that probe and still stop the body itself.
+		direction = -direction
+		velocity.x = direction * patrol_speed
+		body_visual.scale.x = direction
 	_try_contact_damage()
 
 
@@ -108,9 +130,8 @@ func _avoid_ledge(delta: float) -> void:
 	# This also works on one-way niche floors; airborne crawlers still fall
 	# normally and no invisible wall is added for the player.
 	var foot := global_position + Vector2(heading * (half.x + maxf(6.0, absf(velocity.x) * delta)), half.y)
-	var query := PhysicsRayQueryParameters2D.create(foot + Vector2(0, -5), foot + Vector2(0, 18), collision_mask, [get_rid()])
-	var hit := get_world_2d().direct_space_state.intersect_ray(query)
-	if not hit.is_empty() and hit.normal.y < -0.5 and hit.collider is StaticBody2D and not hit.collider.is_in_group("enemy"):
+	var hit := Perception.terrain_hit(self,foot+Vector2(0,-5),foot+Vector2(0,18))
+	if not hit.is_empty() and hit.has("normal") and hit.normal.y < -0.5:
 		return
 	if state == State.PATROL:
 		direction = -heading
@@ -132,9 +153,14 @@ func _patrol() -> void:
 
 
 func _can_start_charge() -> bool:
-	return attack_cooldown <= 0.0 and target_player != null and not target_player.is_dead \
+	return attack_cooldown <= 0.0 and _charge_target_valid(46.0)
+
+
+func _charge_target_valid(height_tolerance: float = 55.0) -> bool:
+	return is_on_floor() and is_instance_valid(target_player) and not target_player.is_dead \
 		and absf(target_player.global_position.x - global_position.x) <= detection_range \
-		and absf(target_player.global_position.y - global_position.y) < 46.0
+		and absf(target_player.global_position.y - global_position.y) < height_tolerance \
+		and Perception.clear_sight(self,target_player)
 
 
 func _start_warning() -> void:
@@ -187,6 +213,7 @@ func _try_contact_damage() -> void:
 			var push := -1.0 if body.global_position.x < global_position.x else 1.0
 			body.take_damage(damage, Vector2(push * 170.0, -115.0))
 			contact_cooldown = 0.8
+			get_node("AttackPresentation").contact(body)
 			return
 
 

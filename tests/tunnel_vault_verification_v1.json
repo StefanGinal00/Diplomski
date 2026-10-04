@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-04",
+  "scope": "Bounded black-earth ceiling cross-sections and release regressions for accumulated game work; not a full campaign certification.",
+  "implementation": {
+    "rooms_audited": 39,
+    "lowered_vaults": 22,
+    "vault_rooms": 11,
+    "new_raster_sources": 0,
+    "collision_changes_this_pass": 0,
+    "new_per_decoration_callbacks": 0,
+    "notes": [
+      "Opaque backing is confined to the existing collision profile, with chipped inset edges and the same landing margins.",
+      "Floor geological strata are reversed for the ceiling underside, with separately oriented side samples blended at corners.",
+      "The dark interior never extends above the support into an upper playable route.",
+      "Native collision profiles and measured visual/jump headroom remain unchanged.",
+      "Support removal and late obstacles retire the whole vault; returning cannot regrow it over the player."
+    ]
+  },
+  "verification": {
+    "passed": 13,
+    "total": 13,
+    "tests": [
+      {"test":"tunnel_vault_mass_smoke.gd","status":"PASS","run":".tmp-smoke-suite-20261004-141858-511-a754a636","coverage":"39 rooms, 22 live vaults, 28 mass checks including two scaled lifecycle fixtures"},
+      {"test":"route_vault_traversal_smoke.gd","status":"PASS","run":".tmp-smoke-suite-20261004-141533-013-6149e9d7","coverage":"110 actual-controller jump/walk checks under unchanged ceiling collisions"},
+      {"test":"route_richness_smoke.gd","status":"PASS","run":".tmp-smoke-suite-20261004-141710-913-e4c88388"},
+      {"test":"boss_body_hitbox_smoke.gd","status":"PASS","run":".tmp-smoke-suite-20261004-141604-646-0d4d4758","coverage":"72 full-body contacts across seven bosses and rematch"},
+      {"test":"player_projectile_lifecycle_smoke.gd","status":"PASS","run":".tmp-smoke-suite-20261004-141622-027-c79ac43f","coverage":"50 lifecycle/deferred-hit cases plus piercing, spawn, pause disposal"},
+      {"test":"pickup_motion_smoke.gd","status":"PASS","run":".tmp-smoke-suite-20261004-141630-454-e911b884","coverage":"gold, XP and iron settling, animation and no-jump collection"},
+      {"test":"outer_boundary_collision_smoke.gd","status":"PASS","run":".tmp-smoke-suite-20261004-141645-181-c1ee1516"},
+      {"test":"terrain_envelope_smoke.gd","status":"PASS","run":".tmp-smoke-suite-20261004-142012-554-2f429745"},
+      {"test":"world_grounding_smoke.gd","status":"PASS","run":".tmp-smoke-suite-20261004-142024-490-30061a80","coverage":"39 rooms, 3161 surfaces, 15138 contacts, 112 portals, 95 boundaries"},
+      {"test":"reactive_foliage_smoke.gd","status":"PASS","run":".tmp-smoke-suite-20261004-142101-035-dd1cdb68"},
+      {"test":"ambient_continuity_smoke.gd","status":"PASS","run":".tmp-smoke-suite-20261004-142110-797-835c7e60"},
+      {"test":"route_relief_physics_smoke.gd","status":"PASS","run":".tmp-smoke-suite-20261004-142122-148-01746137"},
+      {"test":"route_relief_world_smoke.gd","status":"PASS","run":".tmp-smoke-suite-20261004-142149-736-061e7dd6","coverage":"105 contours in 18 rooms, 898 slope plants, 36 controller walks, six profiles"}
+    ],
+    "native_previews": {
+      "script": "tests/preview_tunnel_vaults.gd",
+      "log": ".tmp-tunnel-vault-preview-delivery.log",
+      "captures_reviewed": 8,
+      "rooms": ["shaft_gallery","shaft_drift","echo_depths","starfall_rooted_hall"],
+      "tiers": ["below","above"],
+      "path_pattern": "art/characters/preview_tunnel_vault_<room>_<tier>.png",
+      "notes": "Actual player physics settles on both original floors; camera offsets are preview-only. Final shader joins and both textured side edges reviewed after two visual iterations."
+    },
+    "editor_import": {
+      "exit_code": 0,
+      "log": ".tmp-tunnel-release-import.log",
+      "script_errors": 0,
+      "notes": "Asset import/class registration completed. Sandbox denied saving global editor settings outside workspace; project import itself succeeded."
+    },
+    "limitations": [
+      "Focused regression selection, not the entire 307-test suite or a full normal-health playthrough.",
+      "Windows root-certificate warning in tool runs; native renderer also reports sandbox shader-cache write denials, not shader compile failures.",
+      "No device/FPS benchmark, no new raster generation, and no claim that all remaining game artwork is production-complete.",
+      "Run folders are local ignored artifacts; source tests, this report and native previews are versioned."
+    ]
+  }
+}

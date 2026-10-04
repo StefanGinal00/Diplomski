@@ -50,10 +50,15 @@ Tests and previews use isolated temporary saves.
 
 ## Limits / next work
 
+Continuation: [sword contact effects](MELEE_CONTACTS.md) now connect actual
+deduplicated melee contacts to brief, capped Worn Sword/Spiritglass cuts.
+Their placement follows the existing overlap rectangle; combat is unchanged.
+
 These are simple native weapon drawings, not final painted assets. Weapons
 only appear during the current attack window, matching the previous behavior.
 The bow rotates to diagonal aim but body arms still use horizontal poses.
-Projectile graphics, persistent equipped/holstered art, more intermediate
-animation frames and final hand-painted materials remain pending. Existing
+The subsequent [projectile pass](PROJECTILES.md) adds six native variants.
+Persistent equipped/holstered art, more intermediate animation frames and
+final hand-painted materials remain pending. Existing
 NPC art, walk-cycle polish, full-map pacing and mobile-device profiling are
 separate milestones; these targeted checks do not certify them.

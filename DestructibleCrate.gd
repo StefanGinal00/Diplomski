@@ -2,6 +2,9 @@ extends StaticBody2D
 
 signal destroyed
 
+const IMPACT := preload("res://ProjectileImpact.gd")
+const FLOOR_PLACEMENT := preload("res://CrateFloorPlacement.gd")
+
 @export_range(1, 10, 1) var max_health: int = 2
 @export var gold_pickup_scene: PackedScene
 @export var item_pickup_scene: PackedScene
@@ -11,10 +14,17 @@ signal destroyed
 @export_range(0.0, 1.0, 0.05) var empty_drop_chance: float = 0.0
 @export var common_item_ids: PackedStringArray = ["healing_herb", "iron_fragment", "ether_dust"]
 @export var random_seed: int = 0
+@export var settle_on_floor: bool = true
 
-var current_health: int
+var current_health: int:
+	set(value):
+		current_health = value
+		# Streaming restores health directly; refresh cracks without hit effects.
+		if is_instance_valid(visual):
+			visual.set_integrity(current_health, max_health)
 var is_destroyed: bool = false
 var rng := RandomNumberGenerator.new()
+var hit_tween: Tween
 
 @onready var visual: Node2D = $Visual
 
@@ -25,6 +35,8 @@ func _ready() -> void:
 		rng.randomize()
 	else:
 		rng.seed = random_seed
+	if settle_on_floor:
+		FLOOR_PLACEMENT.request(self)
 
 
 func take_damage(amount: int, _knockback: Vector2 = Vector2.ZERO) -> void:
@@ -34,9 +46,11 @@ func take_damage(amount: int, _knockback: Vector2 = Vector2.ZERO) -> void:
 	if current_health <= 0:
 		_destroy()
 		return
-	var tween := create_tween()
-	tween.tween_property(visual, "modulate", Color(1.8, 1.8, 1.8, 1.0), 0.05)
-	tween.tween_property(visual, "modulate", Color.WHITE, 0.08)
+	if hit_tween != null and hit_tween.is_valid():
+		hit_tween.kill()
+	hit_tween = create_tween()
+	hit_tween.tween_property(visual, "modulate", Color(1.8, 1.8, 1.8, 1.0), 0.05)
+	hit_tween.tween_property(visual, "modulate", Color.WHITE, 0.08)
 
 
 func _destroy() -> void:
@@ -44,6 +58,8 @@ func _destroy() -> void:
 		return
 	is_destroyed = true
 	_drop_random_loot()
+	if is_visible_in_tree():
+		IMPACT.spawn(self, global_position, Vector2.RIGHT, "crate_break", visual.timber, "breakable")
 	destroyed.emit()
 	queue_free()
 

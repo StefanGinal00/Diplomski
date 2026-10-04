@@ -1,4 +1,6 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://CompactMobAppearance.gd" id="compact_mob_art"]
 
 [ext_resource type="Script" path="res://ShaftSentry.gd" id="1_sentry"]
 [ext_resource type="PackedScene" path="res://EnemyProjectile.tscn" id="2_projectile"]
@@ -51,3 +53,8 @@ mouse_filter = 2
 max_value = 4.0
 value = 4.0
 show_percentage = false
+
+[node name="PaintedMobAppearance" type="Sprite2D" parent="."]
+script = ExtResource("compact_mob_art")
+identity = "sentry"
+heated = true

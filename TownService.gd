@@ -1,3 +1,4 @@
+@tool
 extends Area2D
 
 signal interaction_requested(npc: Area2D)
@@ -5,13 +6,19 @@ signal interaction_requested(npc: Area2D)
 @export_enum("shop", "anvil") var service_kind: String = "shop"
 @export var service_id: String = "echo_haven_shop"
 @export var service_name: String = "Quartermaster"
+@export var portrait_texture: Texture2D
 @export var service_color: Color = Color(0.46, 0.72, 0.66, 1.0)
 
 var player_in_range: Player
+var painting: Node2D
 
 @onready var sign_visual: Polygon2D = $Sign
 @onready var name_label: Label = $NameLabel
 @onready var prompt: Label = $InteractionPrompt
+
+
+func get_portrait_texture() -> Texture2D:
+	return portrait_texture
 
 
 func _ready() -> void:
@@ -24,10 +31,12 @@ func _ready() -> void:
 	prompt.hide()
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+	painting = preload("res://ServicePaintedArt.gd").attach(self)
+	if Engine.is_editor_hint(): set_process(false)
 
 
-func _process(_delta: float) -> void:
-	sign_visual.modulate.a = 0.82 + 0.18 * sin(Time.get_ticks_msec() * 0.003 + position.x)
+func _process(delta: float) -> void:
+	if is_instance_valid(painting): painting.advance(delta,player_in_range)
 
 
 func _unhandled_input(event: InputEvent) -> void:

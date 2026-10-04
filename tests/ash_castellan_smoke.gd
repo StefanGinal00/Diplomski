@@ -56,7 +56,7 @@ func _run() -> void:
 	player.current_health = 100
 	player.global_position = boss.global_position + Vector2(-250.0, 0.0)
 	await create_timer(0.3).timeout
-	_check(boss.active and soundscape.current_track == "boss", "Castellan did not begin battle music")
+	_check(boss.active and soundscape.current_track == "boss_ash_castellan", "Castellan did not begin battle music")
 	_check("ASH CASTELLAN" in ui.boss_health_label.text, "Castellan health bar is missing")
 	boss._start_charge()
 	_check(boss.charge_line.visible and boss.charge_windup > 0.0, "Castellan charge has no warning")
@@ -91,7 +91,7 @@ func _run() -> void:
 	await process_frame
 	_check(not immediate_rematch.active, "Approaching the optional Castellan started combat")
 	immediate_rematch.take_damage(1)
-	_check(soundscape.current_track == "boss", "Dynamically spawned Castellan rematch has no boss music")
+	_check(soundscape.current_track == "boss_ash_castellan", "Dynamically spawned Castellan rematch has no boss music")
 	await throne.get_node("ChapelReturnDoor").activate(player)
 	_check(state.current_room_id == "ash_throne" and immediate_rematch.active and throne.get_node("ChapelReturnDoor").status_label.text == "BATTLE SEALED", "Castellan rematch allowed retreat")
 	_check(not throne.get_node("ThroneLamp")._save_progress(player), "Throne lamp saved during Castellan rematch")

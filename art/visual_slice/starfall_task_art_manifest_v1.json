@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-04",
+  "mode": "built-in imagegen; transparent_background=true; original source PNG pixels unchanged",
+  "registration": "StarfallTaskAtlas.gd; alpha >=12 bounds, >=153 supporting rows; books use stone support row rather than hanging ivy tips. Runtime crops only; uniform display scales. Godot lossless imports capped at 1024px with mipmaps.",
+  "assets": [
+    {
+      "id": "starfall_task_stations_v1",
+      "prompt": "Use case: stylized-concept. Asset type: production transparent sprite atlas for a detailed painterly 2D dark fantasy side-scrolling game. EXACTLY SIX separate complete cutout props in a regular 3 column by 2 row grid, each in its own equal cell with at least 24 px transparent gutter; no overlaps, no text, no labels or borders. Orthographic front elevation, modest depth only, no isometric angle. Fine worn material detail, muted slate-blue iron, tarnished brass, dark timber, moss, violet-white accents, cool soft indirect light. Genuinely transparent RGBA background, no landscape, no ground plane or cast shadow outside the objects, no watermark. Row-major six props: 1 compact practical medieval crank winch on a squat iron frame, wound rope spool and side handle, wide flat feet; 2 small antique ward-inspection lectern terminal with slanted engraved metal reading plate and a tiny dark glass lens, sturdy pedestal and feet; 3 low rectangular chipped stone planting trough with rich soil and small dormant brown curled sprouts; 4 EXACT SAME trough, same width and height and feet as prop 3, now filled with healthy silver-green leaves and several small pale violet blossoms, a convincing before-after growth pair; 5 small aged stone-and-brass pedestal beacon with an unlit enclosed brazier, narrow stem, wide stable foot, no glow; 6 EXACT SAME pedestal beacon and proportions as prop 5, lit with a delicate pale lilac-white flame inside the brazier, restrained contained light. All six are utilitarian hand-sized or waist-high interactive props, not giant monuments. Detailed game-ready silhouettes, complete bases, no cropped parts.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-d24ec42a-5d47-4874-98f3-3f7150b7973b.png",
+      "asset": "art/visual_slice/starfall_task_stations_v1.png",
+      "sha256": "4d3799af33f8cd283b524086a771c91bd5e3e6353c4bf7d9a72855db19d25304",
+      "original_size": [
+        1536,
+        1024
+      ],
+      "cutouts": 6
+    },
+    {
+      "id": "starfall_task_registers_v1",
+      "prompt": "Use case: stylized-concept. Asset type: production transparent sprite atlas for a detailed painterly 2D dark fantasy side-scrolling game. EXACTLY SIX separate complete cutout props in a regular 3 column by 2 row grid, each in its own equal cell with at least 24 px transparent gutter, no overlap. Orthographic straight-on front elevation, no isometric angle. Genuinely transparent RGBA background. Painterly realistic worn wood, tarnished brass, slate-blue stone, understated moss, cool indirect light; no landscape, no floor or cast shadows, no typography, no labels, no grid lines, no watermark. Row-major: 1 small wooden expedition ledger board on two short sturdy legs and small footplates, landscape panel roughly 2:1 wide, dark blank inner panel suitable for two tiny game-code status marks, chipped wood frame with bronze corners and a few ivy leaves; 2 small stone-and-brass citadel ledger board on two short stout legs, landscape panel roughly 2:1 wide, dark blank inner panel suitable for three tiny game-code status marks, aged carved edges and restrained purple-grey inlay; 3 low patch of dormant curled brown stems among small stones and roots, wider than tall, horizontal grounded baseline; 4 same patch grown into lush silver-green ferns and delicate small pale violet flowers, roughly same width and baseline as prop 3, no giant tree; 5 squat aged bronze cage lantern resting on a small slate stone foot, front elevation, unlit dark interior; 6 exactly the same lantern and stone foot, now with a small warm pale-gold flame inside and restrained warm illumination. Keep pairs geometrically consistent. All props complete with generous transparent margins, highly detailed but cleanly readable silhouettes.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-8e15033a-e07c-47f2-8ab2-2ff3010962ca.png",
+      "asset": "art/visual_slice/starfall_task_registers_v1.png",
+      "sha256": "9953da5ec4d5c28a954d7734d0f5ee58bd739e94503096488a844bd7b301bc63",
+      "original_size": [
+        1536,
+        1024
+      ],
+      "cutouts": 6
+    },
+    {
+      "id": "starfall_route_furnishings_v1",
+      "prompt": "Use case: stylized-concept. Asset type: transparent production sprite atlas for richly detailed painterly 2D dark fantasy side-scrolling game. Six complete isolated cutout props, evenly spaced regular 3 columns by 2 rows, each entirely inside its own cell, minimum 25 px transparent gutter. Strict orthographic side elevation, no top-down or isometric perspective. Painterly realistic chipped materials, worn dark wood, aged iron, slate stone, restrained moss, cool desaturated purple-blue palette. Genuinely transparent RGBA background; no scenery, no ground plane, no typography, no labels, no border, no watermark, no diffuse background mist or shadows. Row-major: 1 an abandoned SMALL two-wheel wooden caravan cart with low torn dark blue-grey canvas canopy, both wheels attached and resting on a horizontal baseline, some ropes and a few sacks; 2 a DIFFERENT compact damaged covered supply wagon with one half-collapsed pale grey canvas hood, one broken shaft resting on the same baseline as its two complete wheels, a few vines, not a giant stagecoach; 3 a compact broken medieval defensive timber barricade of five irregular stakes with two cross braces and iron nails, side elevation, splintered ends, low and wide; 4 short weathered square stone boundary post with chipped cap, small moss patches and an uneven flat foot, no glowing runes, not a tall column; 5 another distinct shorter ruined carved stone boundary post with chipped beveled cap, subtle tarnished brass inlay and rootlets at the base; 6 a small low pile of weathered bound books and scroll cases resting on a chipped stone ledge with a little ivy. All props fully visible including feet and wheel bottoms. Carefully detailed but readable at small gameplay scale, no duplicated subjects or additional loose pieces in margins.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-e1018c69-c27b-472d-bb70-7bab690b1556.png",
+      "asset": "art/visual_slice/starfall_route_furnishings_v1.png",
+      "sha256": "fda370b9e1545233e32deec70f72784c071c659aeef52d407df20b5921d3264c",
+      "original_size": [
+        1536,
+        1024
+      ],
+      "cutouts": 6
+    }
+  ]
+}

@@ -8,12 +8,16 @@ signal collected(amount: int)
 @export_range(0.0, 1.0, 0.05) var pickup_delay: float = 0.12
 
 var age: float = 0.0
+var claimed: bool = false
 var target_player: Node2D
+var travel := preload("res://PickupMotion.gd").new()
 
 @onready var visual: Node2D = $Visual
 
 
 func _ready() -> void:
+	preload("res://AnimatedPickupArt.gd").configure(visual, "gold")
+	preload("res://PickupMaterialArt.gd").retire_shapes(visual)
 	body_entered.connect(_on_body_entered)
 	monitoring = false
 	target_player = get_tree().get_first_node_in_group("player") as Node2D
@@ -25,26 +29,35 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	age += delta
-	visual.position.y = sin(age * 5.0) * 2.0
-	visual.rotation += delta * 1.4
+	visual.position.y = sin(age * 5.0) * 1.0
+	visual.rotation = sin(age * 2.0) * 0.08
+	preload("res://AnimatedPickupArt.gd").animate(visual, age)
+
+
+func _physics_process(delta: float) -> void:
 	if not is_instance_valid(target_player):
 		target_player = get_tree().get_first_node_in_group("player") as Node2D
-	if target_player == null or target_player.get("is_dead") == true:
-		return
-	if global_position.distance_to(target_player.global_position) <= attraction_radius:
-		global_position = global_position.move_toward(target_player.global_position, attraction_speed * delta)
+	travel.tick(self, delta, target_player, attraction_radius, attraction_speed, age >= pickup_delay)
+	if age >= pickup_delay: travel.retry_contacts(self)
 
 
 func _enable_pickup() -> void:
-	if is_inside_tree():
+	if is_inside_tree() and not claimed and not is_queued_for_deletion():
 		monitoring = true
 
 
 func _on_body_entered(body: Node) -> void:
-	if not body.is_in_group("player"):
+	if claimed or is_queued_for_deletion() or not body.is_in_group("player") or body.get("is_dead") == true:
+		return
+	if not travel.can_collect(self, body): return
+	var game_state := get_node_or_null("/root/GameState")
+	if game_state == null: return
+	# Lock before inventory signals: their listeners may reenter this callback.
+	claimed = true
+	if not game_state.add_gold(gold_value):
+		claimed = false
 		return
 	set_deferred("monitoring", false)
-	var game_state := get_node_or_null("/root/GameState")
-	if game_state != null and game_state.add_gold(gold_value):
-		collected.emit(gold_value)
-		queue_free()
+	collected.emit(gold_value)
+	preload("res://PickupCollectArt.gd").spawn(self, body)
+	queue_free()

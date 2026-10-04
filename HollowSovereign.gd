@@ -69,10 +69,13 @@ func _ready() -> void:
 	health_bar.value = current_health
 	target_player = get_tree().get_first_node_in_group("player") as Player
 	_hide_warnings()
+	preload("res://BossAppearance.gd").attach(self)
 
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
+		return
+	if get_node("EncounterSafety").should_suspend():
 		return
 	aura.modulate.a = (0.55 if not active else 0.78) + 0.18 * sin(Time.get_ticks_msec() * 0.004)
 	if not is_instance_valid(target_player):
@@ -109,13 +112,14 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, 900.0 * delta)
 	else:
 		var distance_x := target_player.global_position.x - global_position.x
-		velocity.x = signf(distance_x) * (52.0 + phase * 10.0) if absf(distance_x) > 110.0 else 0.0
+		var desired := signf(distance_x) * (52.0 + phase * 10.0) if absf(distance_x) > 110.0 else 0.0
+		velocity.x = preload("res://BossLocomotion.gd").approach(velocity.x, desired, delta)
 		muzzle.position.x = 28.0 * (-1.0 if distance_x < 0.0 else 1.0)
 		attack_delay = maxf(attack_delay - delta, 0.0)
 		if is_zero_approx(attack_delay):
 			_choose_pattern()
 	move_and_slide()
-	position.x = clampf(position.x, arena_left_x, arena_right_x)
+	preload("res://BossLocomotion.gd").stop_at_edge(self, arena_left_x, arena_right_x, 0.48)
 	if charge_remaining > 0.0 and is_on_wall():
 		charge_remaining = 0.0
 		recovery_remaining = 0.48
@@ -192,6 +196,7 @@ func _start_pattern(pattern_name: String) -> void:
 
 
 func _release_pattern() -> void:
+	get_node("CombatPresentation").release(current_pattern)
 	windup_remaining = 0.0
 	impact_flash = 0.23
 	eye.color = Color(0.86, 0.95, 1.0, 1.0)
@@ -218,7 +223,7 @@ func _release_pattern() -> void:
 		"nova":
 			nova_ring.color = Color(0.76, 0.45, 0.94, 0.65)
 			if target_player.global_position.distance_to(global_position) < 175.0:
-				_damage_player(2)
+				_damage_player(3)
 		"soul_lock":
 			lock_mark.color = Color(0.91, 0.56, 0.95, 0.88)
 			if target_player.global_position.distance_to(locked_point) < 88.0:
@@ -226,7 +231,7 @@ func _release_pattern() -> void:
 		"rift":
 			rift_mark.default_color = Color(1.0, 0.75, 1.0, 1.0)
 			if target_player.global_position.y > parent_origin.y + 355.0 and target_player.global_position.x >= parent_origin.x + arena_left_x and target_player.global_position.x <= parent_origin.x + arena_right_x:
-				_damage_player(2)
+				_damage_player(3)
 	if current_pattern != "lunge":
 		recovery_remaining = 0.38
 

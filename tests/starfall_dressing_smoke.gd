@@ -137,8 +137,15 @@ func _run() -> void:
 		state.mark_boss_defeated("hollow_sovereign")
 		_check("PATROL READY" in detail.get_node("Site6/RouteClue").text, "Ready return cue stale")
 		state.unlock_shortcut(id + "_field_return_complete")
-		_check("WATCH IS QUIET" in detail.get_node("Site6/RouteClue").text, "Cleared patrol still advertised")
-		_check("quiet" in String(detail.get_node("FieldGuide").dialogue_lines[2]).to_lower(), "Cleared guide advice stale")
+		_check("COLLECT ITS RESERVE" in detail.get_node("Site6/RouteClue").text, "Unclaimed reserve is not advertised")
+		_check("collect" in String(detail.get_node("FieldGuide").dialogue_lines[2]).to_lower(), "Cleared guide advice stale")
+		var reward: Area2D
+		for candidate in room.find_children("*", "Area2D", true, false):
+			if candidate.get_script() == preload("res://ResonanceCache.gd") and candidate.cache_id == id + "_field_return_reserve":
+				reward = candidate
+				break
+		_check(reward != null and reward.open(game.get_node("Player")), "Return reserve failed to open")
+		_check("RESERVE CLAIMED" in detail.get_node("Site6/RouteClue").text, "Collected reserve is still advertised")
 		# All task lights and original-system models also support completed state.
 		for event in detail._events():
 			state.unlock_shortcut(event)
@@ -157,7 +164,7 @@ func _run() -> void:
 		var room := game.get_node(room_name)
 		var detail := room.get_node("FieldDressing" if room_name == "StarfallRamparts" else "ExpandedRoute/FieldDressing")
 		_landmarks(detail)
-		_check("WATCH IS QUIET" in detail.get_node("Site6/RouteClue").text, "Saved return cue not restored")
+		_check("RESERVE CLAIMED" in detail.get_node("Site6/RouteClue").text, "Saved claimed cue not restored")
 		var total: int = detail._events().size()
 		_check("%d/%d" % [total, total] in detail.get_node("FieldGuide").dialogue_lines[0], "Saved completed guide advice not restored")
 	state.delete_save()

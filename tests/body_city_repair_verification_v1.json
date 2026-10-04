@@ -1,0 +1,335 @@
+{
+  "version": 1,
+  "date": "2026-10-03",
+  "scope": "Body-vs-foot boss damage volumes, real outer cliff closure, architectural town streets, facade/platform clearance, grounded dressing and old overview-primitive removal.",
+  "asset_manifest": "res://art/visual_slice/city_walkway_manifest_v1.json",
+  "previous_pass": "res://tests/guardhouse_verification_v1.json",
+  "summary": {
+    "new_original_images": 3,
+    "new_edge_variants": 12,
+    "new_city_architectural_surfaces": 262,
+    "echo_haven": 57,
+    "echo_haven_outskirts_built_streets": 55,
+    "ash_hearth": 44,
+    "starfall_citadel": 106,
+    "terrain_surfaces_rechecked": 3068,
+    "world_rooms_rechecked": 39,
+    "boss_types": 7,
+    "rematch_profile_checked": "Awakened Warden",
+    "boss_weapon_body_part_cases": 72,
+    "native_boss_navigation_unchanged": true,
+    "painted_city_windows": 91,
+    "refitted_windows": 63,
+    "supported_non_intersecting_awnings": 5,
+    "grounded_visible_echo_rubble": 175,
+    "retired_waystone_chevrons_rechecked": 87,
+    "world_registered_surfaces_rechecked": 3161,
+    "registered_contacts_rechecked": 15398,
+    "contextual_portals_rechecked": 112,
+    "outer_boundary_objects_rechecked_including_existing": 95,
+    "new_texture_decoded_bytes_and_mipmaps": 11171172,
+    "selected_tests_passed": 19,
+    "selected_tests_failed": 0,
+    "native_camera_captures": 12,
+    "all_camera_players_settled": true
+  },
+  "physics_changes": [
+    "CombatHurtbox.gd adds damage-only layer-2 core/head Area2D capsules and matching ContactArea core coverage; seven native navigation colliders and player walking mask remain unchanged.",
+    "Sword, arrow and magic resolve proxy receivers to the original actor ID, so a foot/body/proxy overlap damages once. Piercing excludes both actor and receiver; generic pickup/interaction Areas cannot stop shots.",
+    "WorldOuterBoundary.gd extends only already-authored room-wide exterior walls above the highest and below the lowest surveyed route; it does not close interior shafts or individual platform gaps.",
+    "The native Haven upper east cliff and translated synthetic wall both reject horizontal/dash-sized/diagonal CharacterBody2D movement. Town floor endpoints, one-way status, native portal destinations and progression are not moved by this continuation."
+  ],
+  "art_changes": [
+    "Three architectural ledge atlases replace hanging cave stones in town galleries. Outskirts natural ground and the timber link retain their own materials.",
+    "Facade-only window refits, expansion roof silhouette clipping, filled gables and small true-floor footings remove platform/roof intersections without moving native walking solids.",
+    "Unsupported blueprint triangles, circles, ribbons and alcove diagonal strokes are retired only on audited decorative routes; actual hazard/current/combat cues remain live.",
+    "Cluster opaque contact rows eliminate transparent-foot hover. Town rocky overhead dressing is suppressed; earth strips overlap and feather incoming joins.",
+    "Superseded short outer-wall faces and their old leaf decorations are hidden behind the extended cliff art. Real clotheslines remain thin warm ropes with budgeted suspended cloth."
+  ],
+  "tests": [
+    {
+      "Test": "boss_body_hitbox_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 12.61,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-152923-153-707dd0bc\\boss_body_hitbox_smoke.log"
+    },
+    {
+      "Test": "outer_boundary_collision_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 3.34,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-153650-796-7cd3da65\\outer_boundary_collision_smoke.log"
+    },
+    {
+      "Test": "terrain_edges_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 61.77,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-152517-948-ecce307f\\terrain_edges_smoke.log"
+    },
+    {
+      "Test": "city_walkway_occlusion_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 5.15,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-151355-951-40374820\\city_walkway_occlusion_smoke.log"
+    },
+    {
+      "Test": "city_architecture_finish_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 8.81,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-145612-057-06679f02\\city_architecture_finish_smoke.log"
+    },
+    {
+      "Test": "service_painted_art_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 37.01,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-144627-615-74cda279\\service_painted_art_smoke.log"
+    },
+    {
+      "Test": "world_structure_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 58.43,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-145736-595-67d71c2a\\world_structure_smoke.log"
+    },
+    {
+      "Test": "corridor_dressing_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 66.98,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-145622-128-4f8ac821\\corridor_dressing_smoke.log"
+    },
+    {
+      "Test": "residential_facade_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 7.81,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-145727-803-cdd79652\\residential_facade_smoke.log"
+    },
+    {
+      "Test": "projectile_sweep_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 0.73,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-150446-705-d60c7619\\projectile_sweep_smoke.log"
+    },
+    {
+      "Test": "projectile_hit_budget_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 27.23,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-151345-643-c9747017\\projectile_hit_budget_smoke.log"
+    },
+    {
+      "Test": "basic_jump_routes_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 22,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-150209-205-7b04ed6c\\basic_jump_routes_smoke.log"
+    },
+    {
+      "Test": "echo_organic_scenery_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 21.3,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-151422-703-7e770022\\echo_organic_scenery_smoke.log"
+    },
+    {
+      "Test": "echo_scenery_art_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 21.35,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-151936-743-6ad5a824\\echo_scenery_art_smoke.log"
+    },
+    {
+      "Test": "settlement_atmosphere_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 5.28,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-151930-538-143f22a0\\settlement_atmosphere_smoke.log"
+    },
+    {
+      "Test": "terrain_envelope_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 0.81,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-152104-472-4fb2b884\\terrain_envelope_smoke.log"
+    },
+    {
+      "Test": "world_grounding_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 60.22,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-151920-197-ef9933fb\\world_grounding_smoke.log"
+    },
+    {
+      "Test": "guardhouse_finish_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 3.58,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-152538-368-03bbafb3\\guardhouse_finish_smoke.log"
+    },
+    {
+      "Test": "scenery_completion_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 69.45,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-153211-371-1110ab30\\scenery_completion_smoke.log"
+    }
+  ],
+  "native_renderer": {
+    "engine": "Godot 4.6.2",
+    "method": "Forward Mobile",
+    "driver": "D3D12",
+    "device": "NVIDIA GeForce RTX 4050 Laptop GPU",
+    "viewport": [
+      1280,
+      720
+    ],
+    "capture_script": "res://tests/preview_body_city_repairs.gd",
+    "log": ".tmp-body-city-handoff-final.log",
+    "captures": [
+      {
+        "room": "training_passage",
+        "index": 0,
+        "native_floor_contact": true,
+        "native_position": "(540.0, 377.9946)",
+        "path": "art/characters/preview_body_city_training_passage_0.png"
+      },
+      {
+        "room": "echo_haven",
+        "index": 0,
+        "native_floor_contact": true,
+        "native_position": "(1995.199, 120.9902)",
+        "path": "art/characters/preview_body_city_echo_haven_0.png"
+      },
+      {
+        "room": "echo_haven",
+        "index": 1,
+        "native_floor_contact": true,
+        "native_position": "(3405.199, -99.00977)",
+        "path": "art/characters/preview_body_city_echo_haven_1.png"
+      },
+      {
+        "room": "echo_haven",
+        "index": 2,
+        "native_floor_contact": true,
+        "native_position": "(2150.0, -686.0098)",
+        "path": "art/characters/preview_body_city_echo_haven_2.png"
+      },
+      {
+        "room": "echo_haven",
+        "index": 3,
+        "native_floor_contact": true,
+        "native_position": "(4260.0, -951.0137)",
+        "path": "art/characters/preview_body_city_echo_haven_3.png"
+      },
+      {
+        "room": "echo_haven_outskirts",
+        "index": 0,
+        "native_floor_contact": true,
+        "native_position": "(1480.0, 146.9941)",
+        "path": "art/characters/preview_body_city_echo_haven_outskirts_0.png"
+      },
+      {
+        "room": "ash_hearth",
+        "index": 0,
+        "native_floor_contact": true,
+        "native_position": "(4103.0, 370.9778)",
+        "path": "art/characters/preview_body_city_ash_hearth_0.png"
+      },
+      {
+        "room": "starfall_citadel",
+        "index": 0,
+        "native_floor_contact": true,
+        "native_position": "(265.0, 380.9893)",
+        "path": "art/characters/preview_body_city_starfall_citadel_0.png"
+      },
+      {
+        "room": "starfall_citadel",
+        "index": 1,
+        "native_floor_contact": true,
+        "native_position": "(3500.0, 380.9893)",
+        "path": "art/characters/preview_body_city_starfall_citadel_1.png"
+      },
+      {
+        "room": "sunken_shaft",
+        "index": 0,
+        "native_floor_contact": true,
+        "native_position": "(490.0, 645.9922)",
+        "path": "art/characters/preview_body_city_sunken_shaft_0.png"
+      },
+      {
+        "room": "echo_tide_well",
+        "index": 0,
+        "native_floor_contact": true,
+        "native_position": "(952.0, -634.0117)",
+        "path": "art/characters/preview_body_city_echo_tide_well_0.png"
+      },
+      {
+        "room": "echo_tide_well",
+        "index": 1,
+        "native_floor_contact": true,
+        "native_position": "(2021.0, -1914.012)",
+        "path": "art/characters/preview_body_city_echo_tide_well_1.png"
+      }
+    ],
+    "limitations": [
+      "Desktop Forward Mobile captures do not establish physical phone performance.",
+      "The sandbox reports unavailable root-certificate access and, in native preview runs, a shader disk-cache write warning; all listed captures were saved successfully. Final editor import exited with code 0 without script/parse errors, but could not persist editor_settings-4.6.tres outside the writable workspace.",
+      "The camera script lets native gravity settle the player, then freezes motion for repeatable visual review."
+    ]
+  },
+  "test_revisions": [
+    "Organic regression now includes compact 1024px rubble reused from the existing atlas, with original-to-import crop registration; the previous high-resolution-only assertion applied only to fungus/crystal.",
+    "World-grounding boundary checks distinguish internal CharacterBody2D AI patrol markers from actual player arrival markers. All transforms are still checked unchanged.",
+    "Waystone chevron regression accepts already-hidden source leaves, not only sources tagged by the newest painter."
+  ],
+  "remaining_scope": [
+    "Full campaign manual playthrough and physical-phone profiling are not done.",
+    "These checks do not declare every NPC/enemy/boss animation, AI encounter, prop scale or room composition in the user's broader backlog finished.",
+    "Long-form ambience/lighting and remaining room-specific scenery can receive further polish without changing these repaired collision contracts."
+  ]
+}

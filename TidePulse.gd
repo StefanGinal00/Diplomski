@@ -30,6 +30,7 @@ func _ready() -> void:
 	phase_remaining = idle_duration
 	monitoring = false
 	_update_visuals()
+	preload("res://EnvironmentHazardArt.gd").attach(self, "water")
 
 
 func _on_zone_tier_changed(zone_id: String, tier: int) -> void:

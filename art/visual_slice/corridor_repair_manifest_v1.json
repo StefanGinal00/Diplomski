@@ -1,0 +1,72 @@
+{
+  "date": "2026-09-30",
+  "mode": "built-in image_gen",
+  "use": "Godot project runtime corridor and structural detail assets",
+  "original_pngs_unmodified": true,
+  "alpha": "Inspected on generated sources; preserved during copying. Atlas regions determined with read-only Godot pixel scan.",
+  "items": [
+    {
+      "id": "corridor_cave_clusters_v1",
+      "prompt": "Use case: stylized-concept. Asset type: production 2D side-scrolling game prop atlas. Generate one landscape transparent PNG, 1536x1024, a strict 3 columns by 2 rows grid of six separate cutout objects. Subject: six DIFFERENT low ground clusters: pebbles with two ferns, shelf mushroom stump, broken mining timber with moss, tangled dry roots and river stones, small grass and porous limestone, abandoned rope coil and tiny clay pot. Palette and setting: damp blue-grey limestone cave, moss olive green, small pale shelf mushrooms, brittle roots. Painterly detailed dark fantasy realism, orthographic SIDE ELEVATION, no perspective floor plane. Each cluster is broad and LOW, occupies at most 85% width and 65% height of its 512x512 cell, centered, rests on the same horizontal baseline 450px into each row. All six objects completely separate with ample transparent gutters. Truly transparent alpha background throughout negative space, no checkerboard pattern baked in, no shadow rectangle, no ground slab, no backdrop, no text or labels or border, no bright neon. Designed as small pass-through ground dressing, not treasure or interactable items. Distinct asymmetric silhouettes, fine natural materials, consistent soft cool overhead light.",
+      "path": "art/visual_slice/corridor_cave_clusters_v1.png",
+      "original": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-b7af0968-2271-4f87-b9ec-4219c31bdd32.png",
+      "import_size_limit": 768,
+      "frames": 6
+    },
+    {
+      "id": "corridor_ash_clusters_v1",
+      "prompt": "Use case: stylized-concept. Asset type: production 2D side-scrolling game prop atlas. Generate one landscape transparent PNG, 1536x1024, a strict 3 columns by 2 rows grid of six separate cutout objects. Subject: six DIFFERENT low ground clusters: charred twig and stones, broken furnace brick pile, dry ochre grasses, small broken cog and ash rubble, fallen cracked urn with pale weeds, burnt stump with rusty chain. Palette and setting: burnt dark basalt industrial ruins, dusty ochre rust iron and dry copper grass. Painterly detailed dark fantasy realism, orthographic SIDE ELEVATION, no perspective floor plane. Each cluster is broad and LOW, occupies at most 85% width and 65% height of its 512x512 cell, centered, rests on the same horizontal baseline 450px into each row. All six objects completely separate with ample transparent gutters. Truly transparent alpha background throughout negative space, no checkerboard pattern baked in, no shadow rectangle, no ground slab, no backdrop, no text or labels or border, no bright neon. Designed as small pass-through ground dressing, not treasure or interactable items. Distinct asymmetric silhouettes, fine natural materials, consistent soft cool overhead light.",
+      "path": "art/visual_slice/corridor_ash_clusters_v1.png",
+      "original": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-ad3acb6b-e248-4cfa-a29f-681909f28a48.png",
+      "import_size_limit": 768,
+      "frames": 6
+    },
+    {
+      "id": "corridor_star_clusters_v1",
+      "prompt": "Use case: stylized-concept. Asset type: production 2D side-scrolling game prop atlas. Generate one landscape transparent PNG, 1536x1024, a strict 3 columns by 2 rows grid of six separate cutout objects. Subject: six DIFFERENT low ground clusters: broken column foot with small ivy, fallen gargoyle fragment, cracked paving and pale grasses, mossed urn shards, small twisted roots and marble pebbles, tarnished lantern wreck with purple weeds. Palette and setting: moonlit ruined gothic city, slate violet stone desaturated sage foliage, weathered brass. Painterly detailed dark fantasy realism, orthographic SIDE ELEVATION, no perspective floor plane. Each cluster is broad and LOW, occupies at most 85% width and 65% height of its 512x512 cell, centered, rests on the same horizontal baseline 450px into each row. All six objects completely separate with ample transparent gutters. Truly transparent alpha background throughout negative space, no checkerboard pattern baked in, no shadow rectangle, no ground slab, no backdrop, no text or labels or border, no bright neon. Designed as small pass-through ground dressing, not treasure or interactable items. Distinct asymmetric silhouettes, fine natural materials, consistent soft cool overhead light.",
+      "path": "art/visual_slice/corridor_star_clusters_v1.png",
+      "original": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-a50ae621-bb99-497b-ab75-065a32782a19.png",
+      "import_size_limit": 768,
+      "frames": 6
+    },
+    {
+      "id": "corridor_cave_overhangs_v1",
+      "prompt": "Use case: stylized-concept. Asset type: modular 2D side-view terrain cutout atlas. Create a 1536x1024 transparent PNG in a strict 2 columns x 2 rows grid. Four distinct horizontally broad rocky OVERHANG underside segments made of dark blue grey limestone, damp jagged strata, dangling tiny roots and olive moss. Top row: two shallow long natural ceiling shelves with rough irregular LOWER edges and small drooping roots. Bottom row: two compact rounded rocky cliff BOTTOM CAPS with undercut notches and hanging roots. Orthographic FRONT / SIDE-ELEVATION, dark fantasy painterly realistic material matching a hand-painted platform game. Upper silhouettes rounded irregular too: complete self-contained isolated rock objects, NOT squared rectangles, NOT spikes or triangles, no vertical flat end cuts. Each object fully inside its cell, at least 50 pixels of genuinely transparent margin all around, no touching other cells. Mostly dark upper bulk and subtle cool lower rock rim, no glow. No scene backdrop, no black rectangle or gradient behind the objects, preserve true transparent alpha between rocks and around roots. No text, characters, arrows, frames, platforms or machinery. Asset sheet, not concept scene.",
+      "path": "art/visual_slice/corridor_cave_overhangs_v1.png",
+      "original": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-3bb56c1a-fc37-48ea-ab53-9e74d553d175.png",
+      "import_size_limit": 1024,
+      "frames": 4
+    },
+    {
+      "id": "corridor_ash_overhangs_v1",
+      "prompt": "Use case: stylized-concept. Asset type: modular 2D side-view terrain cutout atlas. Create a 1536x1024 transparent PNG in a strict 2 columns x 2 rows grid. Four distinct horizontally broad rocky OVERHANG underside segments made of black basalt and fractured furnace masonry, iron inclusions, soot, dry roots. Top row: two shallow long natural ceiling shelves with rough irregular LOWER edges and small drooping roots. Bottom row: two compact rounded rocky cliff BOTTOM CAPS with undercut notches and hanging roots. Orthographic FRONT / SIDE-ELEVATION, dark fantasy painterly realistic material matching a hand-painted platform game. Upper silhouettes rounded irregular too: complete self-contained isolated rock objects, NOT squared rectangles, NOT spikes or triangles, no vertical flat end cuts. Each object fully inside its cell, at least 50 pixels of genuinely transparent margin all around, no touching other cells. Mostly dark upper bulk and subtle cool lower rock rim, no glow. No scene backdrop, no black rectangle or gradient behind the objects, preserve true transparent alpha between rocks and around roots. No text, characters, arrows, frames, platforms or machinery. Asset sheet, not concept scene.",
+      "path": "art/visual_slice/corridor_ash_overhangs_v1.png",
+      "original": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-431f711c-0019-4176-a892-03dde9f383bb.png",
+      "import_size_limit": 1024,
+      "frames": 4
+    },
+    {
+      "id": "corridor_star_overhangs_v1",
+      "prompt": "Use case: stylized-concept. Asset type: modular 2D side-view terrain cutout atlas. Create a 1536x1024 transparent PNG in a strict 2 columns x 2 rows grid. Four distinct horizontally broad rocky OVERHANG underside segments made of moonlit slate limestone with faint violet mineral veins, pale moss and ancient masonry fragments. Top row: two shallow long natural ceiling shelves with rough irregular LOWER edges and small drooping roots. Bottom row: two compact rounded rocky cliff BOTTOM CAPS with undercut notches and hanging roots. Orthographic FRONT / SIDE-ELEVATION, dark fantasy painterly realistic material matching a hand-painted platform game. Upper silhouettes rounded irregular too: complete self-contained isolated rock objects, NOT squared rectangles, NOT spikes or triangles, no vertical flat end cuts. Each object fully inside its cell, at least 50 pixels of genuinely transparent margin all around, no touching other cells. Mostly dark upper bulk and subtle cool lower rock rim, no glow. No scene backdrop, no black rectangle or gradient behind the objects, preserve true transparent alpha between rocks and around roots. No text, characters, arrows, frames, platforms or machinery. Asset sheet, not concept scene.",
+      "path": "art/visual_slice/corridor_star_overhangs_v1.png",
+      "original": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-651dd52d-070b-4ab6-a65d-e9083dd32ba3.png",
+      "import_size_limit": 1024,
+      "frames": 4
+    },
+    {
+      "id": "structural_timber_beams_v1",
+      "prompt": "Use case: stylized-concept. Asset type: production 2D game sprite atlas on truly transparent alpha background. A 1536x1024 sheet with FOUR separate long horizontal weathered brown oak support beams, one beam centered in each of FOUR ROWS. Each beam is about 1400 pixels long and 95 pixels thick with ample transparent margins and 150 pixels empty space between rows. Side elevation orthographic, four variations of chipped cracked heavy timber with continuous wood grain running HORIZONTALLY ALONG the beam, a few black iron straps and rivets at the ends. Painterly dark fantasy realism, warm grey-brown aged timber, muted highlights and dark structural edges, no teal paint. Completely self-contained silhouettes, no floor, no background panel, no label, no shadow rectangle, no checkerboard baked into image. These are actual single long narrow structural beams, not a wall made of boards, not a fence, not a stack of planks. Preserve actual transparent PNG alpha.",
+      "path": "art/visual_slice/structural_timber_beams_v1.png",
+      "original": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-ef197360-9124-4650-a186-79d14b24798a.png",
+      "import_size_limit": 768,
+      "frames": 4
+    }
+  ],
+  "integration": [
+    "WorldCorridorDressing.gd",
+    "CorridorAtlas.gd",
+    "ShaftVaultGeometry.gd",
+    "LiftMechanismArt.gd"
+  ],
+  "reference": "User-supplied Hollow Knight room and world screenshots: layered dark terrain mass, irregular silhouettes, foliage before and behind actors, alternating corridor widths. No assets copied from those games."
+}

@@ -3,6 +3,7 @@ extends Node
 signal quest_updated
 signal quest_item_collected(item_id: String, progress: int)
 signal return_contract_completed(zone_id: String)
+signal main_quest_reward_claimed(stage_id: String)
 
 enum QuestState {
 	NOT_STARTED,
@@ -44,6 +45,31 @@ var dawn_archive_records: Dictionary = {}
 var echo_traces: Dictionary = {}
 var return_contract_kills: Dictionary = {}
 var return_contract_done: Dictionary = {}
+var main_quest_rewards: Dictionary = {}
+var main_reward_in_progress := false
+
+
+func claim_main_reward(index: int, player: Node) -> bool:
+	var state := get_node_or_null("/root/GameState")
+	var campaign = preload("res://MainQuest.gd")
+	if main_reward_in_progress or state == null or not is_instance_valid(player) or bool(player.get("is_dead")) or not player.has_method("add_skill_points"):
+		return false
+	if index < 0 or index >= campaign.STEPS.size() or index != campaign.next_reward(state, main_quest_rewards):
+		return false
+	main_reward_in_progress = true
+	var step: Dictionary = campaign.STEPS[index]
+	# Record before emitting any inventory/progression signals: reentry cannot repay.
+	main_quest_rewards[step.id] = true
+	var reward: Dictionary = step.reward
+	if reward.has("gold"): state.add_gold(int(reward.gold))
+	if reward.has("sp"): player.add_skill_points(int(reward.sp))
+	for id in reward.items: state.add_item(str(id), int(reward.items[id]))
+	state.capture_player(player)
+	state.capture_quest(self)
+	main_reward_in_progress = false
+	quest_updated.emit()
+	main_quest_reward_claimed.emit(str(step.id))
+	return true
 
 
 func _ready() -> void:
@@ -55,11 +81,22 @@ func _ready() -> void:
 		game_state.cache_opened.connect(_on_return_cache_opened)
 		game_state.shortcut_changed.connect(_on_hearth_shortcut_changed)
 		game_state.checkpoint_resting.connect(_on_checkpoint_resting)
+		game_state.mode_changed.connect(_sync_main_quest_receipts)
 	for enemy in get_tree().get_nodes_in_group("enemy"):
 		_connect_return_enemy(enemy)
 		_connect_hearth_gate_enemy(enemy)
 	get_tree().node_added.connect(_connect_return_enemy)
 	get_tree().node_added.connect(_connect_hearth_gate_enemy)
+
+
+func _sync_main_quest_receipts(_mode: String) -> void:
+	var state := get_node_or_null("/root/GameState")
+	if state == null: return
+	main_quest_rewards.clear()
+	var receipts: Dictionary = Dictionary(state.quest_state.get("main_quest_rewards", {}))
+	for step in preload("res://MainQuest.gd").STEPS:
+		if receipts.get(step.id, false) == true: main_quest_rewards[step.id] = true
+	quest_updated.emit()
 
 
 func _connect_return_enemy(node: Node) -> void:
@@ -613,6 +650,7 @@ func get_save_state() -> Dictionary:
 		"echo_traces": echo_traces.duplicate(true),
 		"return_contract_kills": return_contract_kills.duplicate(true),
 		"return_contract_done": return_contract_done.duplicate(true),
+		"main_quest_rewards": main_quest_rewards.duplicate(true),
 	}
 
 
@@ -635,4 +673,8 @@ func apply_save_state(data: Dictionary) -> void:
 	echo_traces = Dictionary(data.get("echo_traces", {})).duplicate(true)
 	return_contract_kills = Dictionary(data.get("return_contract_kills", {})).duplicate(true)
 	return_contract_done = Dictionary(data.get("return_contract_done", {})).duplicate(true)
+	main_quest_rewards.clear()
+	var receipts: Dictionary = Dictionary(data.get("main_quest_rewards", {}))
+	for step in preload("res://MainQuest.gd").STEPS:
+		if receipts.get(step.id, false) == true: main_quest_rewards[step.id] = true
 	quest_updated.emit()

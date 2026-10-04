@@ -42,6 +42,10 @@ func _on_test_node_added(node: Node) -> void:
 
 
 func _battle(scene_name: String, tier: int, return_trial := false) -> void:
+	# The isolated room still uses native encounter activity guards. Declare
+	# its room context just as a real door transition does; don't bypass them.
+	var state := root.get_node("GameState")
+	state.set_current_room(str(preload("res://WorldLayout.gd").ROOM_NODES.find_key(scene_name)))
 	player = _player()
 	var room := load("res://%s.tscn" % scene_name).instantiate() as Node2D
 	room.process_mode = Node.PROCESS_MODE_DISABLED

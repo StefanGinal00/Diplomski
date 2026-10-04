@@ -1,0 +1,364 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-30",
+  "scope": "Cross-room terrain, scenery, lamps/caches, actor motion, projectile collision and Shaft encounter repair",
+  "asset_manifest": "art/visual_slice/world_repair_manifest_v1.json",
+  "generated_assets": {
+    "accepted_atlases": 14,
+    "sha256_verified": true,
+    "originals_unchanged": true,
+    "max_import_dimension": 1024,
+    "mipmaps": true,
+    "walk_frames": 72,
+    "cache_opening_frames": 18,
+    "lamp_frames": 8,
+    "foreign_game_assets_used": false
+  },
+  "implementation": {
+    "terrain": [
+      "Static room-local natural boundary envelopes and lowest-floor foundation cross-sections",
+      "Preserves isolated platforms, one-way decks, bridges and lower routes; no new terrain collision",
+      "Portal rock buttresses replace flat masonry overlaps",
+      "Retires reviewed oversized descent, water, timber and route schematic leaves without hiding hazards or controller subtrees"
+    ],
+    "scenery": [
+      "Painted route props cover 29 route-dressing groups",
+      "Nine controller families retain native interaction/state under painted art",
+      "Six new Shaft fixture variants",
+      "All 84 upper-city decks carry painted masonry; three workshop canopies carry timber; twelve upper planters reuse painted street material"
+    ],
+    "lamps_and_caches": [
+      "Budgeted four-frame cyan/amber active lamp loops with revealed/active gating",
+      "Three chest families with six registered opening poses and saved-open restoration",
+      "Textured breakable crates preserve hit flash, splinters and loot"
+    ],
+    "actors": [
+      "Six resident walk identities and three ground-enemy walk identities, eight frames each",
+      "Walk phase follows actual displacement; fixed stationary portrait override on routed residents",
+      "Grounded static sentries and bounded room-local crate/enemy clearance"
+    ],
+    "combat": [
+      "Continuous terrain/target sweeps for arrows, magic and enemy projectiles",
+      "Finite travel range and lifecycle; reserved final hits can commit",
+      "Shaft sentry acquisition increased to 310, awakened minimum 330; full windup retained after cover"
+    ]
+  },
+  "checks": {
+    "smoke_tests_passed": 45,
+    "smoke_tests_failed": 0,
+    "live_shaft_encounters": 40,
+    "live_shaft_shots": 254,
+    "crate_support_audit_count": 556,
+    "enemy_crate_overlap_audit": "PASS across all mapped rooms",
+    "native_world_views": 29,
+    "native_views_player_grounded": 29,
+    "native_world_regions": [
+      "training_passage",
+      "sunken_shaft",
+      "shaft_hollow",
+      "shaft_crossing",
+      "ash_hearth",
+      "starfall_citadel"
+    ],
+    "native_upper_city_views": 6,
+    "native_renderer": "Godot 4.6.2 Forward Mobile / D3D12 on RTX 4050 Laptop GPU",
+    "image_qa": [
+      "72-frame registered walk gallery",
+      "18-frame registered cache opening gallery",
+      "active/inactive checkpoint samples",
+      "portal and foundation examples",
+      "upper-city material and planter pass"
+    ],
+    "git_diff_check": "PASS"
+  },
+  "tests": [
+    {
+      "name": "attack_damage_range_smoke.gd",
+      "status": "PASS",
+      "seconds": 7.83,
+      "log": ".tmp-smoke-suite-20260930-155355-634-29a646a8/attack_damage_range_smoke.log"
+    },
+    {
+      "name": "basic_jump_routes_smoke.gd",
+      "status": "PASS",
+      "seconds": 8.19,
+      "log": ".tmp-smoke-suite-20260930-163414-318-b79b7d6a/basic_jump_routes_smoke.log"
+    },
+    {
+      "name": "boss_lamp_reveal_smoke.gd",
+      "status": "PASS",
+      "seconds": 0.87,
+      "log": ".tmp-smoke-suite-20260930-162705-649-38dbe2d0/boss_lamp_reveal_smoke.log"
+    },
+    {
+      "name": "crate_floor_placement_smoke.gd",
+      "status": "PASS",
+      "seconds": 13.92,
+      "log": ".tmp-smoke-suite-20260930-163352-556-eee3fbcb/crate_floor_placement_smoke.log"
+    },
+    {
+      "name": "crate_presentation_smoke.gd",
+      "status": "PASS",
+      "seconds": 0.89,
+      "log": ".tmp-smoke-suite-20260930-154237-343-18539bb1/crate_presentation_smoke.log"
+    },
+    {
+      "name": "echo_device_art_smoke.gd",
+      "status": "PASS",
+      "seconds": 9.58,
+      "log": ".tmp-smoke-suite-20260930-162624-101-af5deb4f/echo_device_art_smoke.log"
+    },
+    {
+      "name": "echo_painted_props_smoke.gd",
+      "status": "PASS",
+      "seconds": 9.29,
+      "log": ".tmp-smoke-suite-20260930-163241-682-dd961939/echo_painted_props_smoke.log"
+    },
+    {
+      "name": "encounter_streaming_smoke.gd",
+      "status": "PASS",
+      "seconds": 9.56,
+      "log": ".tmp-smoke-suite-20260930-162426-589-e374c3db/encounter_streaming_smoke.log"
+    },
+    {
+      "name": "enemy_projectile_contact_smoke.gd",
+      "status": "PASS",
+      "seconds": 7.78,
+      "log": ".tmp-smoke-suite-20260930-162330-953-d56ee494/enemy_projectile_contact_smoke.log"
+    },
+    {
+      "name": "expanded_portal_alignment_smoke.gd",
+      "status": "PASS",
+      "seconds": 7.83,
+      "log": ".tmp-smoke-suite-20260930-162644-420-91052497/expanded_portal_alignment_smoke.log"
+    },
+    {
+      "name": "expedition_jump_routes_smoke.gd",
+      "status": "PASS",
+      "seconds": 7.9,
+      "log": ".tmp-smoke-suite-20260930-163028-734-74d5fffd/expedition_jump_routes_smoke.log"
+    },
+    {
+      "name": "field_records_smoke.gd",
+      "status": "PASS",
+      "seconds": 13.37,
+      "log": ".tmp-smoke-suite-20260930-162652-265-5c71e8a6/field_records_smoke.log"
+    },
+    {
+      "name": "field_reserve_art_smoke.gd",
+      "status": "PASS",
+      "seconds": 7.82,
+      "log": ".tmp-smoke-suite-20260930-163406-487-a2a498cd/field_reserve_art_smoke.log"
+    },
+    {
+      "name": "finished_props_smoke.gd",
+      "status": "PASS",
+      "seconds": 4.31,
+      "log": ".tmp-smoke-suite-20260930-162835-970-4e0eda5b/finished_props_smoke.log"
+    },
+    {
+      "name": "ground_contact_assets_smoke.gd",
+      "status": "PASS",
+      "seconds": 1.23,
+      "log": ".tmp-smoke-suite-20260930-162643-172-d8f0ed08/ground_contact_assets_smoke.log"
+    },
+    {
+      "name": "lamp_travel_smoke.gd",
+      "status": "PASS",
+      "seconds": 12.07,
+      "log": ".tmp-smoke-suite-20260930-162706-539-169c4b6d/lamp_travel_smoke.log"
+    },
+    {
+      "name": "mob_attack_followthrough_smoke.gd",
+      "status": "PASS",
+      "seconds": 0.94,
+      "log": ".tmp-smoke-suite-20260930-162349-993-e90cae87/mob_attack_followthrough_smoke.log"
+    },
+    {
+      "name": "mob_charge_cue_smoke.gd",
+      "status": "PASS",
+      "seconds": 0.67,
+      "log": ".tmp-smoke-suite-20260930-162349-993-e90cae87/mob_charge_cue_smoke.log"
+    },
+    {
+      "name": "mob_defeat_echo_smoke.gd",
+      "status": "PASS",
+      "seconds": 1.23,
+      "log": ".tmp-smoke-suite-20260930-162349-993-e90cae87/mob_defeat_echo_smoke.log"
+    },
+    {
+      "name": "mob_room_reentry_smoke.gd",
+      "status": "PASS",
+      "seconds": 9.28,
+      "log": ".tmp-smoke-suite-20260930-162349-993-e90cae87/mob_room_reentry_smoke.log"
+    },
+    {
+      "name": "player_projectile_flight_smoke.gd",
+      "status": "PASS",
+      "seconds": 0.46,
+      "log": ".tmp-smoke-suite-20260930-162330-953-d56ee494/player_projectile_flight_smoke.log"
+    },
+    {
+      "name": "player_projectile_lifecycle_smoke.gd",
+      "status": "PASS",
+      "seconds": 0.46,
+      "log": ".tmp-smoke-suite-20260930-162330-953-d56ee494/player_projectile_lifecycle_smoke.log"
+    },
+    {
+      "name": "projectile_appearance_smoke.gd",
+      "status": "PASS",
+      "seconds": 0.47,
+      "log": ".tmp-smoke-suite-20260930-162330-953-d56ee494/projectile_appearance_smoke.log"
+    },
+    {
+      "name": "projectile_hit_budget_smoke.gd",
+      "status": "PASS",
+      "seconds": 8.8,
+      "log": ".tmp-smoke-suite-20260930-162330-953-d56ee494/projectile_hit_budget_smoke.log"
+    },
+    {
+      "name": "projectile_impact_smoke.gd",
+      "status": "PASS",
+      "seconds": 0.48,
+      "log": ".tmp-smoke-suite-20260930-162330-953-d56ee494/projectile_impact_smoke.log"
+    },
+    {
+      "name": "projectile_sweep_smoke.gd",
+      "status": "PASS",
+      "seconds": 0.46,
+      "log": ".tmp-smoke-suite-20260930-162330-953-d56ee494/projectile_sweep_smoke.log"
+    },
+    {
+      "name": "regional_ambient_smoke.gd",
+      "status": "PASS",
+      "seconds": 15.13,
+      "log": ".tmp-smoke-suite-20260930-162411-447-c4d00791/regional_ambient_smoke.log"
+    },
+    {
+      "name": "remaining_jump_routes_smoke.gd",
+      "status": "PASS",
+      "seconds": 11.97,
+      "log": ".tmp-smoke-suite-20260930-163016-740-4b3e8533/remaining_jump_routes_smoke.log"
+    },
+    {
+      "name": "resident_conversation_smoke.gd",
+      "status": "PASS",
+      "seconds": 4.54,
+      "log": ".tmp-smoke-suite-20260930-162331-851-494171ab/resident_conversation_smoke.log"
+    },
+    {
+      "name": "resident_motion_smoke.gd",
+      "status": "PASS",
+      "seconds": 0.47,
+      "log": ".tmp-smoke-suite-20260930-162331-851-494171ab/resident_motion_smoke.log"
+    },
+    {
+      "name": "resident_painted_art_smoke.gd",
+      "status": "PASS",
+      "seconds": 14.94,
+      "log": ".tmp-smoke-suite-20260930-163422-529-55be2557/resident_painted_art_smoke.log"
+    },
+    {
+      "name": "route_field_dressing_smoke.gd",
+      "status": "PASS",
+      "seconds": 16.02,
+      "log": ".tmp-smoke-suite-20260930-163250-997-273f4d78/route_field_dressing_smoke.log"
+    },
+    {
+      "name": "save_failure_smoke.gd",
+      "status": "PASS",
+      "seconds": 12.08,
+      "log": ".tmp-smoke-suite-20260930-162943-022-c6f3fcee/save_failure_smoke.log"
+    },
+    {
+      "name": "sentry_cover_smoke.gd",
+      "status": "PASS",
+      "seconds": 5.18,
+      "log": ".tmp-smoke-suite-20260930-162326-657-2b8b005d/sentry_cover_smoke.log"
+    },
+    {
+      "name": "sentry_medium_range_smoke.gd",
+      "status": "PASS",
+      "seconds": 4.66,
+      "log": ".tmp-smoke-suite-20260930-162321-964-b6ebfd12/sentry_medium_range_smoke.log"
+    },
+    {
+      "name": "shaft_exploration_sites_smoke.gd",
+      "status": "PASS",
+      "seconds": 17.07,
+      "log": ".tmp-smoke-suite-20260930-162925-932-18b524ed/shaft_exploration_sites_smoke.log"
+    },
+    {
+      "name": "shaft_ranged_combat_smoke.gd",
+      "status": "PASS",
+      "seconds": 29.66,
+      "log": ".tmp-smoke-suite-20260930-162856-260-c7c76eb0/shaft_ranged_combat_smoke.log"
+    },
+    {
+      "name": "starfall_upper_art_smoke.gd",
+      "status": "PASS",
+      "seconds": 1.32,
+      "log": ".tmp-smoke-suite-20260930-164421-488-d05f42ca/starfall_upper_art_smoke.log"
+    },
+    {
+      "name": "starfall_upper_city_smoke.gd",
+      "status": "PASS",
+      "seconds": 15.6,
+      "log": ".tmp-smoke-suite-20260930-164421-488-d05f42ca/starfall_upper_city_smoke.log"
+    },
+    {
+      "name": "starfall_upper_structure_smoke.gd",
+      "status": "PASS",
+      "seconds": 1.29,
+      "log": ".tmp-smoke-suite-20260930-164421-488-d05f42ca/starfall_upper_structure_smoke.log"
+    },
+    {
+      "name": "terrain_envelope_smoke.gd",
+      "status": "PASS",
+      "seconds": 0.47,
+      "log": ".tmp-smoke-suite-20260930-162840-369-1179126b/terrain_envelope_smoke.log"
+    },
+    {
+      "name": "walk_cycle_smoke.gd",
+      "status": "PASS",
+      "seconds": 0.67,
+      "log": ".tmp-smoke-suite-20260930-163307-034-3ada650a/walk_cycle_smoke.log"
+    },
+    {
+      "name": "world_device_finish_smoke.gd",
+      "status": "PASS",
+      "seconds": 14.12,
+      "log": ".tmp-smoke-suite-20260930-163227-471-e9d6da52/world_device_finish_smoke.log"
+    },
+    {
+      "name": "world_grounding_smoke.gd",
+      "status": "PASS",
+      "seconds": 15.37,
+      "log": ".tmp-smoke-suite-20260930-162840-865-89a96d64/world_grounding_smoke.log"
+    },
+    {
+      "name": "world_spawn_clearance_smoke.gd",
+      "status": "PASS",
+      "seconds": 13.94,
+      "log": ".tmp-smoke-suite-20260930-163338-528-a6a96484/world_spawn_clearance_smoke.log"
+    }
+  ],
+  "previews": [
+    "art/characters/preview_world_repair_training_passage_1.png",
+    "art/characters/preview_world_repair_training_passage_0_lit.png",
+    "art/characters/preview_world_repair_shaft_crossing_0.png",
+    "art/characters/preview_world_repair_shaft_hollow_0.png",
+    "art/characters/preview_starfall_upper_artisans.png",
+    "art/characters/preview_starfall_upper_gardens.png",
+    "art/characters/preview_walk_cycles_registered.png",
+    "art/characters/preview_cache_opening_registered.png"
+  ],
+  "limitations": [
+    "All mapped rooms received automated support/spawn audits; visual review sampled six regions and the upper city, not every camera position in every room.",
+    "No physical-phone FPS, thermal or total game memory profile was performed. New atlas import caps and shared animation budgets are safeguards, not measured device performance.",
+    "Existing saves were not migrated or overwritten; tests use isolated res://_tmp_*.json saves.",
+    "Native render runs emitted environment certificate-store and denied shader-cache write warnings; editor import emitted denied AppData settings writes. Tests and rendered previews had no project script parse/runtime exceptions.",
+    "Procedural rock joins and repeated architecture can still benefit from room-specific art direction; this is a broad shared-system repair, not a claim of final bespoke polish for every room."
+  ],
+  "launch_note": "Stop the existing Godot play session, allow asset import, then use F5 for the complete game."
+}

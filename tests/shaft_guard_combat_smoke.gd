@@ -28,6 +28,7 @@ func _run() -> void:
 			for one_way in [false, true]:
 				await _charge_edge(tier, side, one_way)
 	state.set_zone_tier("sunken_shaft", 1)
+	state.set_current_room("shaft_hollow")
 	var room := load("res://ShaftHollow.tscn").instantiate() as Node2D
 	room.process_mode = Node.PROCESS_MODE_DISABLED
 	root.add_child(room)

@@ -2,6 +2,8 @@ extends Area2D
 
 signal interaction_requested(npc: Area2D)
 
+@export var portrait_texture: Texture2D
+
 var player_in_range: Player
 
 @onready var interaction_prompt: Label = $InteractionPrompt
@@ -9,6 +11,7 @@ var player_in_range: Player
 
 
 func _ready() -> void:
+	preload("res://OpeningResidentArt.gd").attach(self, 0)
 	interaction_prompt.hide()
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
@@ -16,6 +19,10 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	body_visual.modulate.a = 0.88 + sin(Time.get_ticks_msec() * 0.003) * 0.12
+
+
+func get_portrait_texture() -> Texture2D:
+	return portrait_texture
 
 
 func _unhandled_input(event: InputEvent) -> void:

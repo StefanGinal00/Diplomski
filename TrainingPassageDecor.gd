@@ -17,6 +17,13 @@ func _ready() -> void:
 	_build_wayfarer_camp()
 	_build_aqueduct()
 	_build_sentinel_court()
+	var painted := Node2D.new()
+	painted.name = "RemainingArt"
+	painted.set_script(preload("res://RemainingRoomArt.gd"))
+	painted.set("artwork", "training_aqueduct")
+	painted.set("layout", "training")
+	painted.set("plate_path", NodePath("GeneratedPassageDetails/FarCave"))
+	add_child(painted)
 	if Engine.is_editor_hint():
 		return
 	var moth := NEUTRAL_SCENE.instantiate()

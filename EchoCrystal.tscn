@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://EchoCrystal.gd" id="1_crystal"]
+[ext_resource type="Script" path="res://EchoDeviceArt.gd" id="2_art"]
 
 [sub_resource type="CircleShape2D" id="InteractionShape"]
 radius = 30.0
@@ -24,6 +25,10 @@ polygon = PackedVector2Array(0, -20, 7, -7, 0, 8, -5, -7)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("InteractionShape")
+
+[node name="DeviceArt" type="Node2D" parent="."]
+script = ExtResource("2_art")
+kind = "resonator"
 
 [node name="Prompt" type="Label" parent="."]
 offset_left = -105.0

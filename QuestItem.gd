@@ -11,6 +11,8 @@ var is_collected: bool = false
 
 
 func _ready() -> void:
+	preload("res://PickupMaterialArt.gd").loot(visual, 1, Vector2(22, 22))
+	preload("res://PickupMaterialArt.gd").retire_shapes(visual)
 	body_entered.connect(_on_body_entered)
 	call_deferred("_sync_collected_state")
 

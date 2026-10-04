@@ -22,6 +22,7 @@ func _ready() -> void:
 	stream_b.default_color = current_tint.lightened(0.2)
 	direction_arrow.color = current_tint.lightened(0.34)
 	direction_arrow.rotation = flow_velocity.angle()
+	preload("res://EnvironmentHazardArt.gd").attach(self, "current")
 
 
 func _process(delta: float) -> void:
@@ -46,4 +47,4 @@ func _physics_process(delta: float) -> void:
 func set_calmed(value: bool) -> void:
 	calmed = value
 	modulate.a = 0.22 if calmed else 1.0
-	direction_arrow.visible = not calmed
+	direction_arrow.visible = not calmed and not has_node("HazardArt")

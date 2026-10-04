@@ -42,6 +42,7 @@ func _ready() -> void:
 		return
 	_build_depth()
 	_build_route()
+	preload("res://ShaftVaultGeometry.gd").install(self)
 	_build_broken_hoist()
 	_build_landmarks()
 	if not Engine.is_editor_hint():
@@ -239,6 +240,9 @@ func _build_route() -> void:
 		_build_connection("SideLink%d" % index, _main_room(int(SIDE_CHAMBERS[index][4])), _side_room(index), TONE)
 	_build_connection("HoistLoop", _main_room(int(LOOP_LINK[0])), _main_room(int(LOOP_LINK[1])), TONE.lightened(0.18))
 	_rect("WestBoundary", Vector2(WEST, -175.0), Vector2(16.0, 2200.0), TONE.darkened(0.62))
+	# The upper west branch reaches x=-3400, but the bottom chamber starts
+	# at -3300. Seal only this terminal 100-unit gap, not the climbing shafts.
+	_rect("WestTerminalFloor", Vector2(WEST + 54, 715), Vector2(108, 18), TONE)
 
 
 func _register_opening(openings: Dictionary, key_a: String, a: Rect2, key_b: String, b: Rect2) -> void:

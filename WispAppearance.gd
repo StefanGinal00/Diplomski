@@ -16,6 +16,8 @@ func _ready() -> void:
 	vframes = 2
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	_apply_pose(0, Vector2.RIGHT, Vector2.ONE, Color.WHITE)
+	preload("res://MobDefeatEcho.gd").hook(self, "wisp")
+	visibility_changed.connect(_on_visibility_changed)
 	if Engine.is_editor_hint():
 		set_process(false)
 	else:
@@ -25,6 +27,12 @@ func _ready() -> void:
 
 func _initialize_health() -> void:
 	previous_health = get_parent().current_health
+
+func _on_visibility_changed() -> void:
+	if not Engine.is_editor_hint() and not is_visible_in_tree():
+		hurt_remaining = 0
+		elapsed = 0
+		_apply_pose(0, Vector2.RIGHT, Vector2.ONE, Color.WHITE)
 
 
 func _on_health_changed(current: int, _maximum: int) -> void:

@@ -25,6 +25,8 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 	_update_visuals()
+	if has_node("DeviceArt"):
+		set_process(false) # Only the explicitly dressed Echo valves opt in.
 
 
 func _process(_delta: float) -> void:
@@ -62,6 +64,8 @@ func _update_visuals() -> void:
 	status_label.text = active_label if is_active else inactive_label
 	interaction_prompt.text = active_prompt if is_active else inactive_prompt
 	interaction_prompt.visible = player_in_range != null
+	if has_node("DeviceArt"):
+		$DeviceArt.set_status(is_active)
 
 
 func _on_body_entered(body: Node) -> void:

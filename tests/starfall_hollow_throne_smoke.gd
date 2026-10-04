@@ -62,7 +62,7 @@ func _run() -> void:
 	player.current_health = 100
 	player.global_position = boss.global_position + Vector2(-300.0, 0.0)
 	await create_timer(0.18).timeout
-	_check(boss.active and ambience.current_track == "hollow_boss" and ui.boss_health_panel.visible, "Final boss did not activate its own battle music and HUD")
+	_check(boss.active and ambience.current_track == "boss_hollow_sovereign" and ui.boss_health_panel.visible, "Final boss did not activate its own battle music and HUD")
 	await throne.get_node("SunlessReturnDoor").activate(player)
 	_check(state.current_room_id == "starfall_hollow_throne" and throne.get_node("SunlessReturnDoor").status_label.text == "BATTLE SEALED", "Final battle allowed retreat through return door")
 	_check(lamp._has_nearby_threat() and not lamp._save_progress(player), "Final battle allowed lamp rest")

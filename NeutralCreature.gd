@@ -20,6 +20,7 @@ var grace_remaining: float = 0.0
 
 func _ready() -> void:
 	super._ready()
+	get_node("AttackPresentation").style = "neutral"
 	resting = start_resting
 	phase_remaining = maxf(rest_seconds if resting else wander_seconds, 0.1)
 	default_sprite_modulate = passive_tint

@@ -56,10 +56,13 @@ func _ready() -> void:
 	target_player = get_tree().get_first_node_in_group("player") as Player
 	pulse_ring.hide()
 	challenge_prompt.visible = is_rematch
+	preload("res://BossAppearance.gd").attach(self)
 
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
+		return
+	if get_node("EncounterSafety").should_suspend():
 		return
 	age += delta
 	wing_left.rotation = -0.08 + sin(age * 7.0) * 0.16
@@ -90,7 +93,8 @@ func _physics_process(delta: float) -> void:
 	else:
 		var desired_x := clampf(target_player.global_position.x, anchor_position.x - 220.0, anchor_position.x + 220.0)
 		var desired_y := anchor_position.y + sin(age * 1.8) * 14.0
-		velocity = (Vector2(desired_x, desired_y) - global_position).limit_length(move_speed * (1.3 if phase >= 2 else 1.0))
+		var desired := (Vector2(desired_x, desired_y) - global_position).limit_length(move_speed * (1.3 if phase >= 2 else 1.0))
+		velocity = velocity.move_toward(desired, 240.0 * delta)
 		if is_zero_approx(pulse_cooldown):
 			_start_pulse()
 		elif is_zero_approx(shot_cooldown):
@@ -113,6 +117,7 @@ func _start_pulse() -> void:
 func _fire_fan() -> void:
 	if projectile_scene == null:
 		return
+	get_node("CombatPresentation").release("volley")
 	var base_direction := (target_player.global_position - muzzle.global_position).normalized()
 	var angles: Array[float] = [-0.18, 0.0, 0.18]
 	if phase == 3:
@@ -120,12 +125,13 @@ func _fire_fan() -> void:
 	elif phase == 2:
 		angles = [-0.3, -0.15, 0.0, 0.15, 0.3]
 	for angle in angles:
-		_spawn_projectile(base_direction.rotated(angle), 155.0 if phase == 1 else (210.0 if phase == 3 else 190.0))
+		_spawn_projectile(base_direction.rotated(angle), 155.0 if phase == 1 else (210.0 if phase == 3 else 190.0), 2 if is_zero_approx(angle) else 1)
 	shot_cooldown = 1.45 if is_rematch and phase == 1 else (0.95 if phase == 3 else (1.65 if phase == 1 else 1.15))
 	body_visual.color = _combat_color()
 
 
 func _fire_ring() -> void:
+	get_node("CombatPresentation").release("ring")
 	var count := 14 if phase == 3 else (10 if phase == 2 else 8)
 	for index in range(count):
 		var angle := TAU * float(index) / float(count) + age * 0.22
@@ -139,7 +145,7 @@ func _combat_color() -> Color:
 	return Color(0.57, 0.29, 0.66, 1.0) if phase == 1 else Color(0.88, 0.25, 0.59, 1.0)
 
 
-func _spawn_projectile(direction: Vector2, projectile_speed: float) -> void:
+func _spawn_projectile(direction: Vector2, projectile_speed: float, impact_damage: int = 1) -> void:
 	var drop_parent := get_parent() as Node2D
 	if projectile_scene == null or drop_parent == null:
 		return
@@ -148,6 +154,8 @@ func _spawn_projectile(direction: Vector2, projectile_speed: float) -> void:
 	projectile.global_position = muzzle.global_position + direction * 24.0
 	projectile.setup(direction, self)
 	projectile.set("speed", projectile_speed)
+	projectile.damage = impact_damage
+	projectile.scale = Vector2.ONE * (1.25 if impact_damage > 1 else 1.0)
 	(projectile.get_node("Core") as Polygon2D).color = Color(0.42, 1.0, 0.91, 1.0) if is_rematch else Color(0.98, 0.48, 0.79, 1.0)
 
 

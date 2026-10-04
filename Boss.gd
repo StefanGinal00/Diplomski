@@ -32,6 +32,24 @@ var damage_cooldown: float = 0.0
 var target_player: Player
 var default_color: Color
 
+# Combat owns the pose/facing timers. Presentation must not guess attacks from
+# the cooldown: feet plant, the core charges, one committed shot, then recovery.
+var combat_state: String = "approach"
+var current_pattern: String = "volley"
+var facing_direction: float = 1.0
+var pending_facing: float = 1.0
+var turn_remaining: float = 0.0
+var windup_remaining: float = 0.0
+var windup_duration: float = 0.62
+var recovery_remaining: float = 0.0
+var recovery_duration: float = 0.48
+var locked_shot_direction := Vector2.RIGHT
+var closing_distance: bool = false
+const ACCELERATION := 160.0
+const BRAKING := 270.0
+const TURN_SECONDS := 0.22
+const FACING_DEADZONE := 24.0
+
 @onready var sprite: Polygon2D = $BodyVisual
 @onready var eye: Polygon2D = $Eye
 @onready var contact_area: Area2D = $ContactArea
@@ -47,15 +65,28 @@ func _ready() -> void:
 	current_health = max_health
 	default_color = sprite.color
 	target_player = get_tree().get_first_node_in_group("player") as Player
+	if is_instance_valid(target_player):
+		facing_direction = -1.0 if target_player.global_position.x < global_position.x else 1.0
+	_update_facing_markers()
+	preload("res://BossAppearance.gd").attach(self)
 
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
+	if get_node("EncounterSafety").should_suspend():
+		return
 	if not is_instance_valid(target_player):
 		target_player = get_tree().get_first_node_in_group("player") as Player
+	var game_state := get_node_or_null("/root/GameState")
+	if game_state != null and game_state.current_room_id != "training_passage":
+		_cancel_attack()
+		active = false
+		velocity.x = 0
+		return
 	if target_player == null or target_player.is_dead:
-		velocity.x = move_toward(velocity.x, 0.0, 500.0 * delta)
+		_cancel_attack()
+		velocity.x = move_toward(velocity.x, 0.0, BRAKING * delta)
 		_apply_gravity(delta)
 		move_and_slide()
 		return
@@ -72,11 +103,13 @@ func _physics_process(delta: float) -> void:
 	damage_cooldown = maxf(damage_cooldown - delta, 0.0)
 	shot_cooldown = maxf(shot_cooldown - delta, 0.0)
 	_apply_gravity(delta)
-	_move_toward_player()
+	_update_combat(delta)
 	move_and_slide()
+	# Bound after the physics step, never a repeating overshoot/snap every tick.
+	global_position.x = clampf(global_position.x, arena_left, arena_right)
+	if (global_position.x <= arena_left and velocity.x < 0) or (global_position.x >= arena_right and velocity.x > 0):
+		velocity.x = 0
 	_try_contact_damage()
-	if is_zero_approx(shot_cooldown):
-		_fire_volley()
 
 
 func _apply_gravity(delta: float) -> void:
@@ -86,17 +119,86 @@ func _apply_gravity(delta: float) -> void:
 		velocity.y = 0.0
 
 
-func _move_toward_player() -> void:
+func _update_combat(delta: float) -> void:
+	if combat_state == "windup":
+		velocity.x = 0.0
+		windup_remaining = maxf(0, windup_remaining - delta)
+		if windup_remaining == 0:
+			_fire_volley()
+			combat_state = "recover"
+			recovery_remaining = recovery_duration
+		return
+	if combat_state == "recover":
+		velocity.x = 0.0
+		recovery_remaining = maxf(0, recovery_remaining - delta)
+		if recovery_remaining == 0:
+			combat_state = "approach"
+		return
+	if combat_state == "turn":
+		velocity.x = move_toward(velocity.x, 0, BRAKING * delta)
+		# Finish braking before pivoting. A committed pivot can't oscillate if
+		# the player repeatedly crosses the boss's center during this interval.
+		if absf(velocity.x) <= 0.5:
+			turn_remaining = maxf(0, turn_remaining - delta)
+			if turn_remaining <= TURN_SECONDS * 0.5:
+				facing_direction = pending_facing
+				_update_facing_markers()
+			if turn_remaining == 0:
+				combat_state = "approach"
+		return
 	var distance_x := target_player.global_position.x - global_position.x
-	var direction := signf(distance_x)
-	if absf(distance_x) < 54.0:
-		velocity.x = move_toward(velocity.x, 0.0, 10.0)
-	else:
-		var speed := phase_two_speed if phase == 2 else move_speed
-		velocity.x = direction * speed
-	global_position.x = clampf(global_position.x, arena_left, arena_right)
-	eye.position.x = 7.0 * direction
-	muzzle.position.x = 18.0 * direction
+	if absf(distance_x) > FACING_DEADZONE and signf(distance_x) != facing_direction:
+		combat_state = "turn"
+		pending_facing = signf(distance_x)
+		turn_remaining = TURN_SECONDS
+		velocity.x = move_toward(velocity.x, 0, BRAKING * delta)
+		return
+	if combat_state == "brake":
+		velocity.x = move_toward(velocity.x, 0, BRAKING * delta)
+		if absf(velocity.x) <= 0.5 and is_on_floor():
+			_start_volley_windup()
+		return
+	# Hysteresis keeps the boss from stuttering at a single distance threshold.
+	# He holds his ground at melee range, rather than retreating indefinitely.
+	if absf(distance_x) > 150:
+		closing_distance = true
+	elif absf(distance_x) < 112:
+		closing_distance = false
+	var speed := phase_two_speed if phase == 2 else move_speed
+	var desired := facing_direction * speed if closing_distance else 0.0
+	var acceleration := ACCELERATION if desired != 0 else BRAKING
+	velocity.x = move_toward(velocity.x, desired, acceleration * delta)
+	if shot_cooldown == 0 and absf(distance_x) <= 300 and absf(target_player.global_position.y - global_position.y) < 180:
+		combat_state = "brake"
+
+
+func _update_facing_markers() -> void:
+	eye.position.x = 7 * facing_direction
+	# Painted Sentinel casts from his chest core, not an invisible gun below it.
+	muzzle.position = Vector2(12 * facing_direction, -17)
+
+
+func _start_volley_windup() -> void:
+	combat_state = "windup"
+	velocity.x = 0
+	windup_duration = 0.48 if phase == 2 else 0.62
+	recovery_duration = 0.42 if phase == 2 else 0.48
+	windup_remaining = windup_duration
+	locked_shot_direction = (target_player.global_position - muzzle.global_position).normalized()
+	if locked_shot_direction.is_zero_approx():
+		locked_shot_direction = Vector2(facing_direction, 0)
+
+
+func _cancel_attack() -> void:
+	combat_state = "approach"
+	windup_remaining = 0
+	recovery_remaining = 0
+	turn_remaining = 0
+	closing_distance = false
+	shot_cooldown = maxf(shot_cooldown, 0.7)
+	var presentation := get_node_or_null("CombatPresentation")
+	if presentation != null:
+		presentation.release_remaining = 0
 
 
 func _try_contact_damage() -> void:
@@ -113,7 +215,8 @@ func _try_contact_damage() -> void:
 func _fire_volley() -> void:
 	if projectile_scene == null or target_player == null or get_parent() == null:
 		return
-	var base_direction := (target_player.global_position - muzzle.global_position).normalized()
+	get_node("CombatPresentation").release("volley")
+	var base_direction := locked_shot_direction
 	var angles: Array[float] = []
 	if phase == 2:
 		angles.assign([-0.16, 0.0, 0.16])
@@ -125,6 +228,11 @@ func _fire_volley() -> void:
 		projectile.global_position = muzzle.global_position
 		projectile.setup(base_direction.rotated(angle), self)
 		projectile.set("speed", 145.0 if phase == 2 else 125.0)
+		# The aimed core is heavier than the two grazing fragments. A larger
+		# painted core communicates the damage difference before impact.
+		projectile.damage = (3 if phase == 2 else 2) if is_zero_approx(angle) else 1
+		projectile.scale = Vector2.ONE * (1.3 if is_zero_approx(angle) else 0.85)
+		projectile.max_range = 460.0
 	shot_cooldown = phase_two_shot_interval if phase == 2 else shot_interval
 
 

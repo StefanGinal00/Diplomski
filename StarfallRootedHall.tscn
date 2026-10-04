@@ -1,4 +1,6 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://RoomPaintedDepth.gd" id="90_painted_depth"]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://StarfallRelay.tscn" id="2_relay"]
@@ -20,6 +22,11 @@ size = Vector2(120, 10)
 size = Vector2(760, 12)
 
 [node name="StarfallRootedHall" type="Node2D"]
+
+[node name="PaintedDepth" type="Node2D" parent="."]
+script = ExtResource("90_painted_depth")
+profile = "rooted"
+entry_plate_path = NodePath("Canopy")
 
 [node name="Canopy" type="Polygon2D" parent="."]
 z_index = -9

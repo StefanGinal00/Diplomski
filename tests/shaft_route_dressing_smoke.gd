@@ -88,6 +88,8 @@ func _run() -> void:
 		trial.spawned_enemies[1].die()
 		_check(not detail.get_node("Site4/GuardianSeal0").visible, "Sign ignored completed niche")
 		_check(cache.open(player) and not cache.open(player), "Niche reward not one-time")
+		_check("CACHE CLAIMED" in detail.get_node("Site4/RouteClue").text, "Claimed niche remains advertised")
+		_check("REWARD CLAIMED" in trial.status_label.text, "Encounter still advertises a claimed reward")
 		_check("separate cache" in guide.dialogue_lines[1], "Guide ignored separate niche reward")
 		var main_flag := "shaft_hollow_relay" if entry[2] == "hollow" else "shaft_sluice_valve"
 		_check(not state.unlocked_shortcuts.get(main_flag, false), "Optional guardians bypassed main objective")

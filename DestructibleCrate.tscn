@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://DestructibleCrate.gd" id="1_crate"]
 [ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="2_gold"]
 [ext_resource type="PackedScene" path="res://ItemPickup.tscn" id="3_item"]
+[ext_resource type="Script" path="res://CrateAppearance.gd" id="4_art"]
 
 [sub_resource type="RectangleShape2D" id="CrateShape"]
 size = Vector2(24, 24)
@@ -16,6 +17,7 @@ item_pickup_scene = ExtResource("3_item")
 shape = SubResource("CrateShape")
 
 [node name="Visual" type="Node2D" parent="."]
+script = ExtResource("4_art")
 
 [node name="Box" type="Polygon2D" parent="Visual"]
 color = Color(0.42, 0.24, 0.12, 1)

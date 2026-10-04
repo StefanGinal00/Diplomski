@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-03",
+  "scope": "Terrain joins, closed outer-wall seams, material-aware player footfall and landing dust",
+  "changes": {
+    "wall_foot_deposits": 37,
+    "rooms_with_wall_foot_deposits": 21,
+    "inset_painted_floor_caps": 35,
+    "additional_slope_end_deposits": 268,
+    "total_props_on_existing_134_contours": 1110,
+    "native_collision_geometry_changed": false,
+    "relief_refresh_guards": "Retire safely if the native support is disabled, becomes one-way or stops being a rectangle",
+    "outer_mass_fix": "Remove the two-pixel inset on both sides so opaque terrain meets the existing physical boundary",
+    "ground_contact_material_palettes": ["moss", "shale", "basalt", "citadel", "timber", "iron"],
+    "dust_pool_desktop_low_cost": [40, 12],
+    "wood_metal_burst_cap": 2,
+    "new_generated_bitmaps": 0,
+    "notes": "Registered route and terrain-edge atlases are reused. Dust uses real physics-ray contacts and slope normals. No particle nodes, collisions, save data, new controls or permanent footprints. All simulation belongs to the existing shared ambience driver."
+  },
+  "tests": [
+    {"name":"terrain_joints_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-210418-457-cd694ddd/terrain_joints_smoke.log","coverage":"All 39 rooms, 37 wall feet, 268 slope end caps, 35 inset painted backings, texture bounds, grounding, device clearance, stable re-entry, scaled/late-wall/device fixture and replaced native support"},
+    {"name":"ground_contact_fx_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-210442-021-3d7f9a89/ground_contact_fx_smoke.log","coverage":"Real-player walking and landing, actual slope/material contacts, six palettes, idle/passive motion/warp/death/flight guards, bounded lifetime and 40/12 pool"},
+    {"name":"terrain_envelope_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-210714-008-65c07dc4/terrain_envelope_smoke.log","coverage":"Exact opaque closure at both physical side boundaries, open bridges/platforms, unchanged native collision"},
+    {"name":"route_relief_physics_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-204900-250-86deee73/route_relief_physics_smoke.log","coverage":"12 standing/crouching walks, 6 dashes, 3 jumps, 9 loot drops on rounded terrain"},
+    {"name":"route_relief_world_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-205608-108-08e1d5ac/route_relief_world_smoke.log","coverage":"39 rooms, 134 contours, 1110 slope props, 40 real-player walks, headroom/device/landing clearance and re-entry"},
+    {"name":"route_richness_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-205618-384-f337e751/route_richness_smoke.log","coverage":"39 rooms, all 48 registered cutouts, 5684 flat-ground clusters, 3493 hanging details, 6 lowered vaults"},
+    {"name":"world_grounding_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-210802-577-75746e99/world_grounding_smoke.log","coverage":"39 rooms, 3161 registered surfaces, 15059 contacts, 112 portals, 95 outer boundaries"},
+    {"name":"reactive_foliage_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-210828-465-86f57f3e/reactive_foliage_smoke.log"},
+    {"name":"ambient_continuity_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-205644-080-a9ed7754/ambient_continuity_smoke.log"}
+  ],
+  "runtime_review": {
+    "script": "tests/preview_terrain_contacts.gd",
+    "log": ".tmp-terrain-contacts-preview-release.log",
+    "renderer": "Godot 4.6.2 D3D12 Forward Mobile / NVIDIA RTX 4050 Laptop GPU",
+    "observed_step": {"events":1,"grains":2,"material":"shale"},
+    "observed_landing": {"events":1,"grains":7},
+    "captures": [
+      "art/characters/preview_terrain_joint_sunken_shaft.png",
+      "art/characters/preview_terrain_joint_echo_depths.png",
+      "art/characters/preview_terrain_joint_ash_barracks.png",
+      "art/characters/preview_terrain_joint_starfall_outskirts.png",
+      "art/characters/preview_terrain_contact_step.png",
+      "art/characters/preview_terrain_contact_landing.png"
+    ],
+    "notes": "Four world compositions and two effects from actual player movement, not manually posed particles. The native sandbox logs certificate-store and shader-cache write warnings, but captures succeed without script errors. No frame-rate benchmark is claimed."
+  }
+}

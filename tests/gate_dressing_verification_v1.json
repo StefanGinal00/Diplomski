@@ -1,0 +1,167 @@
+{
+  "version": 1,
+  "date": "2026-09-30",
+  "scope": "Haven approach gates, region-specific thresholds, grounded ward vegetation and nearby readable signs.",
+  "asset_manifest": "res://art/visual_slice/gate_dressing_manifest_v1.json",
+  "summary": {
+    "original_images": 5,
+    "atlas_parts": 15,
+    "gate_compositions": 3,
+    "gate_pieces": 11,
+    "thresholds": 112,
+    "removed_ward_garden_wedges": 30,
+    "supported_ward_plants": 26,
+    "additional_haven_readables": 13,
+    "total_readables": 487,
+    "readable_rooms": 39,
+    "selected_tests_passed": 9,
+    "selected_tests_failed": 0,
+    "originals_preserved_by_sha256": true,
+    "physics_or_destinations_changed": false,
+    "new_decoded_image_bytes": 18618620,
+    "phone_profiled": false
+  },
+  "tests": [
+    {
+      "Test": "world_structure_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 21.47,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-225524-371-fad058d0\\world_structure_smoke.log"
+    },
+    {
+      "Test": "gate_dressing_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 2.27,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-225143-202-12d0d690\\gate_dressing_smoke.log"
+    },
+    {
+      "Test": "settlement_atmosphere_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 2.9,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-224953-661-e786c6a9\\settlement_atmosphere_smoke.log"
+    },
+    {
+      "Test": "world_readables_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 24.06,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-225500-190-7e972603\\world_readables_smoke.log"
+    },
+    {
+      "Test": "scenery_completion_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 22.38,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-225153-348-dd510f9f\\scenery_completion_smoke.log"
+    },
+    {
+      "Test": "settlement_reading_occlusion_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 10.9,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-225545-862-afeae4c2\\settlement_reading_occlusion_smoke.log"
+    },
+    {
+      "Test": "world_grounding_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 20.99,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-225215-812-87345c46\\world_grounding_smoke.log"
+    },
+    {
+      "Test": "city_architecture_finish_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 3.17,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-225219-048-ec323073\\city_architecture_finish_smoke.log"
+    },
+    {
+      "Test": "basic_jump_routes_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 9.57,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-225236-823-55c357a2\\basic_jump_routes_smoke.log"
+    }
+  ],
+  "native_camera": {
+    "engine": "Godot 4.6.2",
+    "renderer": "Mobile / D3D12",
+    "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+    "log": ".tmp-gate-preview-handoff.log",
+    "views": [
+      {
+        "path": "art/characters/preview_gate_finish_echo_haven_outskirts_0.png",
+        "grounded": true
+      },
+      {
+        "path": "art/characters/preview_gate_finish_echo_haven_outskirts_1.png",
+        "grounded": true
+      },
+      {
+        "path": "art/characters/preview_gate_finish_echo_haven_outskirts_2.png",
+        "grounded": true
+      },
+      {
+        "path": "art/characters/preview_gate_finish_echo_haven_0.png",
+        "grounded": true
+      },
+      {
+        "path": "art/characters/preview_gate_finish_echo_haven_1.png",
+        "grounded": true
+      },
+      {
+        "path": "art/characters/preview_gate_finish_sunken_shaft_0.png",
+        "grounded": true
+      },
+      {
+        "path": "art/characters/preview_gate_finish_sunken_shaft_1.png",
+        "grounded": true
+      },
+      {
+        "path": "art/characters/preview_gate_finish_ash_hearth_0.png",
+        "grounded": true
+      },
+      {
+        "path": "art/characters/preview_gate_finish_ash_hearth_1.png",
+        "grounded": true
+      },
+      {
+        "path": "art/characters/preview_gate_finish_starfall_citadel_0.png",
+        "grounded": true
+      },
+      {
+        "path": "art/characters/preview_gate_finish_starfall_citadel_1.png",
+        "grounded": true
+      }
+    ],
+    "inspection": "Gate scales revised after first native review; lower Haven gate moved away from original house and stair. Ward arch feet kept on upper ledge. Gate reading sign moved beside native door mouth. Background rectangle impression at lower approach disappeared with removal of overlapping solid tower; no background shader change was required."
+  },
+  "remaining": [
+    "Cinder eastern guardhouse still has schematic crenellations, banner and block accents.",
+    "Starfall ground approach gate masonry includes blunt legacy pillars.",
+    "Some real stair/platform geometry still passes in front of very tall portal facades; future pass should audit doorway visual clearance without altering route accessibility.",
+    "Physical Android/iOS GPU memory, frame-time and overdraw profiling.",
+    "Broader pre-existing actor/environment polish backlog is not claimed complete."
+  ]
+}

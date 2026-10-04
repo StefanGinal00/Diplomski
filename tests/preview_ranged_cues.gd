@@ -29,7 +29,7 @@ func _render() -> void:
 		root.add_child(actor)
 		actor.process_mode = Node.PROCESS_MODE_DISABLED
 		actor.shot_cooldown_remaining = [0.6, 0.1, 0.0][index]
-		actor._process(0.0)
+		actor._physics_process(0.0)
 		actor.get_node("AttackCue")._process(0.0)
 		actor.get_node("Appearance")._process(0.0)
 		actors.append(actor)

@@ -1,0 +1,220 @@
+{
+  "version": 1,
+  "date": "2026-09-30",
+  "skill": "imagegen",
+  "mode": "built-in",
+  "intent": "generate",
+  "scope": "Haven approach gateways and worldwide doorway threshold dressing. Original game artwork, reference-inspired composition, no copied Hollow Knight assets.",
+  "source_preservation": "Original generated PNG bytes retained; only Godot atlas regions, uniform sprite scale and runtime import size limit.",
+  "assets": [
+    {
+      "id": "haven_court_gate_v1",
+      "prompt": "Use case: stylized-concept. Asset type: production transparent 2D side-scroller environment sprite, one complete OPEN civic stone gateway. Genuine transparent RGBA background INCLUDING THE ENTIRE OPEN ARCHWAY. Landscape canvas 1536x1024. Original dark fantasy hand-painted semi-realistic game art. Weathered blue-grey small dressed stone blocks, worn slate coping, subtle dull moss, a few fine trailing roots. Wide shallow pointed arch spanning two SLENDER piers with stepped grounded plinths; top at y=90, feet same baseline near y=940, silhouette contained within x=120..1416. Broad arch opening width at least 60% total gateway width, transparent from ground to upper arch. Broken uneven projecting buttress stone edges, fine mortar and detailed texture; NOT two huge solid towers. Stony chipped pediment, tiny unlit brass sconce incorporated on one pier only. Front orthographic elevation, no isometric perspective, readable light from upper left. Isolated architectural cutout, no floor scene, no sky, no backdrop, no text, no watermark, no checkerboard drawn into image, no glowing geometric shapes. Object must fit entirely with transparent padding.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-22c6bdef-f1e5-4fdf-bfe2-2d57cb9a11c5.png",
+      "path": "art/visual_slice/haven_court_gate_v1.png",
+      "sha256": "4AB8791FF2016DB32F35D5657E4987EFCC6DF4A6BCC077A92E6D9FC6E360F55F",
+      "original_unchanged": true,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "runtime_max_dimension": 1024,
+      "mipmaps": true,
+      "crops": [
+        [
+          46,
+          26,
+          1444,
+          958
+        ]
+      ],
+      "contact_rows": [
+        956
+      ]
+    },
+    {
+      "id": "haven_ward_gate_v1",
+      "prompt": "Use case: stylized-concept. Asset type: production transparent 2D side-scroller architecture sprite, one OPEN ward gateway. Genuine transparent RGBA background; arch hole also fully transparent. Landscape canvas1536x1024. Original painterly dark fantasy, detailed cool grey limestone worn by water, dark iron straps and restrained bronze ornaments, slate hood. Front orthographic. Two narrow uneven grounded jambs supporting a rounded arch with small weathered star medallion above keystone, flanking compact buttresses connected to the jambs, fine root threads and muted moss. Outer silhouette x=120..1416 y=90..940; both feet on same y940. Opening spans at least58% width and70% height, transparent down to baseline, no door leaf. Small block sizes, fine mortar, no giant rectangular slabs. Rich sculpted layered stone profile, chipped edges. Soft cold upper-left light; no light beams, no neon. No surrounding scenery, no floor plane, no backdrop, no characters, no text, no logo or watermark. Keep full sprite inside frame.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-e458256f-7275-4da8-8895-2f695e9a21b0.png",
+      "path": "art/visual_slice/haven_ward_gate_v1.png",
+      "sha256": "FC68CEC35155E33A30C864F7646766CA6B305FF5DB4F20E6E2F4EDE13571AF3A",
+      "original_unchanged": true,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "runtime_max_dimension": 1024,
+      "mipmaps": true,
+      "crops": [
+        [
+          36,
+          20,
+          1465,
+          960
+        ]
+      ],
+      "contact_rows": [
+        958
+      ]
+    },
+    {
+      "id": "haven_road_ruin_v1",
+      "prompt": "Use case: stylized-concept. Asset type: production transparent 2D side-scroller ruin sprite. Genuine transparent RGBA canvas1536x1024 landscape. ONE old partial arch ruin, original hand-painted dark fantasy realistic texture, weathered blue-grey shale masonry with moss crevices, thin trailing root threads. Orthographic front. Two broken asymmetrical narrow stone piers and broken top arch: left pier taller with arch half still extending inward, right pier lower with visibly crumbled tip. Full open space between piers fully transparent, missing arch portion transparent, no roof rectangle. Both feet y940 with restrained small rubble physically attached. Outer bounds x120..1416 y100..940. Fine readable masonry, softened blue-green shadows, subdued top-left daylight. Complete isolated silhouette with transparent margins. No background, floor plane, sky, text, people, logos, glows or checkerboard. This is an architectural relic that the player walks in FRONT of, not a closed doorway.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-2ff2ed4e-2dc5-47d0-b66f-71257e8b3994.png",
+      "path": "art/visual_slice/haven_road_ruin_v1.png",
+      "sha256": "4692E1B116F091ACE6281E7F2C13182DCFEFFE38407ACB96A7C6C5F59D06092A",
+      "original_unchanged": true,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "runtime_max_dimension": 1024,
+      "mipmaps": true,
+      "crops": [
+        [
+          63,
+          46,
+          1420,
+          918
+        ]
+      ],
+      "contact_rows": [
+        916
+      ]
+    },
+    {
+      "id": "gate_buttress_modules_v1",
+      "prompt": "Use case: stylized-concept. Asset type: modular sprite atlas for original hand-painted dark fantasy 2D side-scroller. Transparent RGBA landscape1536x1024. SIX separate isolated elements, arranged precise3columns2rows equal512x512 cells, no element crossing its cell, at least30px transparent gutter all sides. Row1 three different slender ruined STONE BUTTRESS piers, full object fits inside each cell, cool blue-grey tiny masonry blocks, slate caps and moss; variant1 mostly intact stepped pier,2broken layered shale pier,3slim carved limestone pier with dull bronze strap. Row2 three separate low lateral broken wall-and-rubble clusters, each horizontal, irregular upper edge and FLAT grounded bottom, cool stone and restrained tiny grass. Detailed texture, softened side lighting, orthographic front side-view. Ground contact same baseline near y480 inside each respectivecell. Genuine alpha around every object, no scene background, no floor plane, no cast shadow puddle, no text, no labels, no grid or watermark. Entire objects not cropped.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-7cbaa5a1-b3e7-42d5-9211-a83115d69232.png",
+      "path": "art/visual_slice/gate_buttress_modules_v1.png",
+      "sha256": "C85C85108D73D9E17466D4AA7F84EF67E940158997C4193BEF9BFF0736939A5A",
+      "original_unchanged": true,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "runtime_max_dimension": 1024,
+      "mipmaps": true,
+      "crops": [
+        [
+          110,
+          40,
+          322,
+          604
+        ],
+        [
+          589,
+          62,
+          355,
+          598
+        ],
+        [
+          1206,
+          50,
+          228,
+          619
+        ],
+        [
+          25,
+          726,
+          485,
+          236
+        ],
+        [
+          544,
+          739,
+          470,
+          225
+        ],
+        [
+          1045,
+          754,
+          469,
+          213
+        ]
+      ],
+      "contact_rows": [
+        602,
+        596,
+        617,
+        235,
+        223,
+        211
+      ]
+    },
+    {
+      "id": "portal_threshold_dressing_v1",
+      "prompt": "Use case: stylized-concept. Asset type: transparent sprite atlas of small grounded doorway threshold details for original semi-realistic painterly dark fantasy 2D platform game. Landscape1536x1024 RGBA genuine transparency. SIX isolated LOW HORIZONTAL clusters arranged strict3columns2rows each512x512, generous transparent gutters. All clusters only~160-230px tall and380-440px wide, positioned along bottom baseline y460 of respectivecell. Row1 variations grey weathered cobble steps and moss roots:1three flat chipped slate stones with tiny fern;2low limestone sill with moss seam;3dark wet blue slate threshold with two reeds. Row2 regional variants:1rusty iron floor plate and dark basalt rubble;2ochre ash-stained stone sill and sparse dry grasses;3pale violet limestone sill with tiny weathered brass inlay. Front orthographic elevation, grounded flat silhouette bottom, asymmetric natural upper outline, fine texture. No archway, no tall walls, no big steps that imply a gameplay obstacle. Transparent background everywhere including between objects. No floor scene, labels, text, grid, people, white halo, logo, or watermark.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-f94c8c83-e69a-4470-8619-ac6ceda86fbb.png",
+      "path": "art/visual_slice/portal_threshold_dressing_v1.png",
+      "sha256": "D64D0DC6878214B99B37169650AB9A6F3D159D7A6F4D0597526D860271CBDE0F",
+      "original_unchanged": true,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "runtime_max_dimension": 1024,
+      "mipmaps": true,
+      "crops": [
+        [
+          11,
+          308,
+          496,
+          169
+        ],
+        [
+          528,
+          338,
+          489,
+          139
+        ],
+        [
+          1034,
+          260,
+          489,
+          219
+        ],
+        [
+          8,
+          735,
+          504,
+          163
+        ],
+        [
+          512,
+          671,
+          508,
+          226
+        ],
+        [
+          1033,
+          734,
+          494,
+          162
+        ]
+      ],
+      "contact_rows": [
+        166,
+        137,
+        217,
+        161,
+        223,
+        160
+      ]
+    }
+  ],
+  "coverage": {
+    "gateway_compositions": 3,
+    "gate_and_buttress_instances": 11,
+    "portal_thresholds": 112,
+    "ward_garden_wedges_retired": 30,
+    "supported_ward_plants": 26,
+    "new_readable_notices": 13
+  },
+  "budget": {
+    "decoded_images_with_mips_bytes": 18618620,
+    "gate_per_frame_callbacks": 0,
+    "vegetation_animation": "Existing visibility-budgeted WorldAmbience scheduler; no individual process callback",
+    "physical_phone_profiled": false
+  }
+}

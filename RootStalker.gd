@@ -24,6 +24,7 @@ var phase_remaining: float = 0.0
 var attack_cooldown: float = 0.8
 var hit_player: bool = false
 var target_player: Player
+const Perception := preload("res://EnemyPerception.gd")
 
 @onready var body_visual: Polygon2D = $BodyVisual
 @onready var warning_line: Line2D = $WarningLine
@@ -32,6 +33,8 @@ var target_player: Player
 
 
 func _ready() -> void:
+	preload("res://CompactMobAppearance.gd").attach(self, "root")
+	preload("res://MobAttackPresentation.gd").attach(self, "root")
 	anchor_x = global_position.x
 	var game_state := get_node_or_null("/root/GameState")
 	if game_state != null:
@@ -45,6 +48,15 @@ func _ready() -> void:
 	target_player = get_tree().get_first_node_in_group("player") as Player
 	warning_line.hide()
 	strike_area.monitoring = false
+
+
+func suspend_room_combat() -> void:
+	if is_dead: return
+	var cooldown := attack_cooldown
+	_begin_recovery()
+	attack_cooldown = maxf(cooldown, attack_cooldown)
+	hit_player = true
+	velocity = Vector2.ZERO
 
 
 func _physics_process(delta: float) -> void:
@@ -64,6 +76,8 @@ func _physics_process(delta: float) -> void:
 			else:
 				if absf(global_position.x - anchor_x) >= patrol_radius:
 					patrol_direction = -signf(global_position.x - anchor_x)
+				if is_on_floor() and (is_on_wall() or not Perception.floor_ahead(self,patrol_direction,7.0)):
+					patrol_direction=-patrol_direction
 				velocity.x = patrol_direction * patrol_speed
 		"warning":
 			velocity.x = 0.0
@@ -76,7 +90,7 @@ func _physics_process(delta: float) -> void:
 			phase_remaining = maxf(phase_remaining - delta, 0.0)
 			if strike_area.monitoring and not hit_player:
 				for body in strike_area.get_overlapping_bodies():
-					if body is Player and not body.is_dead:
+					if body is Player and not body.is_dead and Perception.clear_sight(self,body):
 						body.take_damage(2, Vector2(facing * 170.0, -190.0))
 						hit_player = true
 						break
@@ -91,7 +105,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _player_in_attack_range() -> bool:
-	return is_instance_valid(target_player) and not target_player.is_dead and absf(target_player.global_position.x - global_position.x) <= detection_range and absf(target_player.global_position.y - global_position.y) <= 75.0
+	return is_instance_valid(target_player) and not target_player.is_dead and absf(target_player.global_position.x - global_position.x) <= detection_range and absf(target_player.global_position.y - global_position.y) <= 75.0 and Perception.clear_sight(self,target_player)
 
 
 func _begin_warning() -> void:
@@ -100,7 +114,9 @@ func _begin_warning() -> void:
 	velocity.x = 0.0
 	facing = -1.0 if target_player.global_position.x < global_position.x else 1.0
 	strike_area.position.x = facing * 51.0
-	warning_line.points = PackedVector2Array([Vector2(facing * 8.0, 25.0), Vector2(facing * 105.0, 25.0)])
+	var feet_y: float = $CollisionShape2D.position.y + $CollisionShape2D.shape.size.y * 0.5
+	var reach: float = $StrikeArea/CollisionShape2D.shape.size.x * 0.5
+	warning_line.points = PackedVector2Array([Vector2(strike_area.position.x - reach, feet_y), Vector2(strike_area.position.x + reach, feet_y)])
 	warning_line.show()
 	body_visual.color = Color(0.91, 0.63, 0.43, 1.0)
 

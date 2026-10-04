@@ -31,6 +31,12 @@ func _on_room_changed(room_id: String) -> void:
 	for known_id in rooms:
 		var room: Node2D = rooms[known_id]
 		var active: bool = known_id == room_id
+		if not active and room.visible:
+			# A quick return cancels unloading, not the attack's old windup.
+			# Restart hostile preparation without healing or recreating actors.
+			for actor in room.find_children("*", "Node2D", true, false):
+				if actor.is_in_group("enemy") and not actor.is_in_group("boss") and actor.has_method("suspend_room_combat"):
+					actor.suspend_room_combat()
 		room.visible = active
 		room.process_mode = Node.PROCESS_MODE_INHERIT if active else Node.PROCESS_MODE_DISABLED
 		if active:

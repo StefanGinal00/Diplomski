@@ -124,9 +124,15 @@ const PREVIEW_POINTS := {
 
 func _ready() -> void:
 	super._ready()
+	preload("res://FieldReserveArt.gd").attach(get_node("Site6"), "starfall")
+	var layout := Node2D.new()
+	layout.name = "RegionalSignLayout"
+	layout.set_script(preload("res://RegionalFieldSignLayout.gd"))
+	add_child(layout)
 	if not Engine.is_editor_hint():
 		var state := get_node("/root/GameState")
 		state.shortcut_changed.connect(_on_progress)
+		state.cache_opened.connect(_on_progress)
 		state.boss_progress_changed.connect(_on_progress)
 		_refresh()
 
@@ -147,12 +153,17 @@ func _build_site(index: int, data: Array, at: Vector2) -> void:
 				var x := (i - (captions.size() - 1) * 0.5) * 90
 				_poly(site, "Light%d" % i, [Vector2(x - 26, -72), Vector2(x - 21, -111), Vector2(x + 21, -111), Vector2(x + 26, -72)], tone.darkened(0.55))
 				var label := Label.new()
+				label.name = "TaskCaption%d" % i
 				label.position = Vector2(x - 43, -60)
 				label.size.x = 86
 				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 				label.add_theme_font_size_override("font_size", 11)
 				label.text = captions[i]
 				site.add_child(label)
+			var art := Node2D.new()
+			art.name = "TaskArt"
+			art.set_script(preload("res://StarfallTaskArt.gd"))
+			site.add_child(art)
 		"reserve":
 			_poly(site, "ReserveStone", [Vector2(-132, 0), Vector2(-122, -126), Vector2(122, -126), Vector2(132, 0)], tone.darkened(0.55))
 			_ring(site, "TaskSeal", Vector2(-60, -75), 24, tone)
@@ -254,7 +265,7 @@ func _refresh() -> void:
 	reserve.get_node("ReserveLatch").modulate = Color(0.5, 1, 0.65) if complete and guarded else Color.WHITE
 	var return_text := "RETURN AFTER THE SOVEREIGN"
 	if returned:
-		return_text = "RETURN PATROL CLEARED - THIS WATCH IS QUIET"
+		return_text = "RETURN RESERVE CLAIMED" if bool(state.opened_caches.get(prefix + "_field_return_reserve", false)) else "RETURN PATROL CLEARED - COLLECT ITS RESERVE"
 	elif victorious:
 		return_text = "RETURN PATROL READY IN THE FINAL GALLERY" if complete and guarded else "RETURN PATROL NEEDS TASK + GUARDIANS"
 	reserve.get_node("RouteClue").text = String(_sites()[6][3]) + "\nTASK: " + ("DONE" if complete else "PENDING") + " | GUARDIANS: " + ("DONE" if guarded else "PENDING") + "\n" + return_text

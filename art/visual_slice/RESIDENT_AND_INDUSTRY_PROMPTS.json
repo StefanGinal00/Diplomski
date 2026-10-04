@@ -1,0 +1,53 @@
+{
+  "date": "2026-09-30",
+  "mode": "built-in imagegen; no CLI/API fallback or downloaded third-party artwork",
+  "originals": "PNG files copied unchanged with generated alpha. Godot AtlasTexture crops only; import max edge 1024, mipmaps enabled.",
+  "additional_decoded_bytes_with_mipmaps": 16763576,
+  "scope": "Six shared regional NPC appearances with four authored poses each, not 96 unique characters. Native motion interleaves idle/stride poses and uses a conversational gesture. Industrial rotor rotates procedurally under the existing 18/8 scenery budget.",
+  "assets": [
+    {
+      "family": "cave",
+      "final_path": "art/characters/residents_cave_motion_v1.png",
+      "source_path": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-d7b44f97-be49-4afc-8f03-d5a00ee39159.png",
+      "actual_dimensions": [
+        1536,
+        1024
+      ],
+      "prompt": "Use case: stylized-concept\nAsset type: production transparent 2D side-scrolling dark fantasy NPC sprite atlas, NOT concept environment.\nPrimary request: exactly eight full-body character sprites, four columns and two rows on a 1536 by 1024 canvas. Each of the two rows is ONE consistent adult identity in four different poses.\nComposition: equal 384 by 512 cells, sprite centered horizontally in each cell, same head height and shoe baseline across every column, ample transparent padding. All characters face RIGHT in clear side/three-quarter side view, including idle and talk. Head-to-boots entirely visible. No props beyond worn accessories, no ground, no cast shadow, no frame borders or labels. Actual transparent background alpha, not white or checkerboard.\nPose columns left to right: 1 relaxed idle with feet naturally together; 2 slow walk contact pose left boot forward, right boot back; 3 opposite walk contact pose right boot forward, left boot back; 4 conversational gesture one open hand raised at chest height, feet standing naturally. The walking poses must visibly differ in legs and arms; consistent body proportions, outfit, hair, face and scale throughout each row.\nStyle: hand-painted high-detail game sprites with worn leather, woven fabric, seams, believable anatomy and readable small silhouettes, restrained moody colors and soft upper-left light, original art, no neon outlines, no geometric placeholders, no text, no logos, no watermarks.\nRegional palette: subterranean Echo settlements, desaturated teal, gray-green, old brass. Row 1: practical woman with dark braided hair, teal shoulder shawl, layered gray-green tunic, brown belt pouch, trousers and worn leather boots. Row 2: lean older man with short gray hair and beard, dark moss hooded coat with hood down, rolled sleeves, ochre scarf, belt tool pouch, sturdy brown boots. Their costumes belong to underground village residents, not armored warriors."
+    },
+    {
+      "family": "ash",
+      "final_path": "art/characters/residents_ash_motion_v1.png",
+      "source_path": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-dedec1df-24d5-4eb3-b319-564edf313c32.png",
+      "actual_dimensions": [
+        1536,
+        1024
+      ],
+      "prompt": "Use case: stylized-concept\nAsset type: production transparent 2D side-scrolling dark fantasy NPC sprite atlas, NOT concept environment.\nPrimary request: exactly eight full-body character sprites, four columns and two rows on a 1536 by 1024 canvas. Each of the two rows is ONE consistent adult identity in four different poses.\nComposition: equal 384 by 512 cells, sprite centered horizontally in each cell, same head height and shoe baseline across every column, ample transparent padding. All characters face RIGHT in clear side/three-quarter side view, including idle and talk. Head-to-boots entirely visible. No props beyond worn accessories, no ground, no cast shadow, no frame borders or labels. Actual transparent background alpha, not white or checkerboard.\nPose columns left to right: 1 relaxed idle with feet naturally together; 2 slow walk contact pose left boot forward, right boot back; 3 opposite walk contact pose right boot forward, left boot back; 4 conversational gesture one open hand raised at chest height, feet standing naturally. The walking poses must visibly differ in legs and arms; consistent body proportions, outfit, hair, face and scale throughout each row.\nStyle: hand-painted high-detail game sprites with worn leather, woven fabric, seams, believable anatomy and readable small silhouettes, restrained moody colors and soft upper-left light, original art, no neon outlines, no geometric placeholders, no text, no logos, no watermarks.\nRegional palette: Ashen forge settlements, rusty ochre, faded burgundy, charcoal, soot and aged copper. Row 1: adult woman with tied-back chestnut hair, ochre scarf, patched burgundy work coat over charcoal tunic and trousers, leather tool belt, worn boots. Row 2: stocky middle-aged man, short dark hair and trimmed beard, charcoal rolled-sleeve shirt, worn brown leather apron ending at knees, russet trousers, strong worn leather boots. Neither carries weapons; ordinary furnace workers."
+    },
+    {
+      "family": "star",
+      "final_path": "art/characters/residents_star_motion_v1.png",
+      "source_path": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-0be9b5af-f533-435f-b0bf-44f0a7871f79.png",
+      "actual_dimensions": [
+        1536,
+        1024
+      ],
+      "prompt": "Use case: stylized-concept\nAsset type: production transparent 2D side-scrolling dark fantasy NPC sprite atlas, NOT concept environment.\nPrimary request: exactly eight full-body character sprites, four columns and two rows on a 1536 by 1024 canvas. Each of the two rows is ONE consistent adult identity in four different poses.\nComposition: equal 384 by 512 cells, sprite centered horizontally in each cell, same head height and shoe baseline across every column, ample transparent padding. All characters face RIGHT in clear side/three-quarter side view, including idle and talk. Head-to-boots entirely visible. No props beyond worn accessories, no ground, no cast shadow, no frame borders or labels. Actual transparent background alpha, not white or checkerboard.\nPose columns left to right: 1 relaxed idle with feet naturally together; 2 slow walk contact pose left boot forward, right boot back; 3 opposite walk contact pose right boot forward, left boot back; 4 conversational gesture one open hand raised at chest height, feet standing naturally. The walking poses must visibly differ in legs and arms; consistent body proportions, outfit, hair, face and scale throughout each row.\nStyle: hand-painted high-detail game sprites with worn leather, woven fabric, seams, believable anatomy and readable small silhouettes, restrained moody colors and soft upper-left light, original art, no neon outlines, no geometric placeholders, no text, no logos, no watermarks.\nRegional palette: Starfall citadel, desaturated indigo, slate blue, ivory trim and tarnished silver. Row 1: adult woman with tied-back silver-blond hair, fitted navy long coat, ivory shawl, cross-body small leather satchel, dark trousers and calf-high boots. Row 2: adult man with dark swept hair and short beard, slate-blue scholar coat with muted purple waist scarf, belt notebook, dark trousers and calf-high boots. Practical city residents, no crowns, no weapons."
+    },
+    {
+      "family": "industrial fixtures",
+      "final_path": "art/visual_slice/ash_industrial_landmarks_v1.png",
+      "source_path": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-0eec13bc-0903-4c6b-9fab-36cf851ac448.png",
+      "requested_dimensions": [
+        1024,
+        1024
+      ],
+      "actual_dimensions": [
+        1254,
+        1254
+      ],
+      "prompt": "Use case: stylized-concept\nAsset type: modular transparent 2D side-scroller industrial environment atlas.\nPrimary request: four SEPARATE cutout assets in a clean two-column two-row 1024x1024 sheet, equal cells with generous clear gutters and margins.\nTop left: front-view aged iron ventilation housing, circular dark empty opening centered in upper half of sturdy riveted frame with two squat stone-and-steel feet on bottom baseline and short attached duct elbows. Absolutely no fan blades in the opening. A mechanical mounting, not a doorway.\nTop right: matching detached six-blade curved iron fan rotor only, seen exactly face-on, central brass riveted hub exactly at its center, symmetrical circular outer silhouette, no housing or feet. It will rotate independently inside the top-left housing.\nBottom left: compact wooden and iron armor rack with two weathered helmets and two hanging cuirasses, stout legs reaching the baseline, not oversized.\nBottom right: freestanding old garrison standard, heavy stone foot, rusty metal upright pole and crossbar, hanging tattered burgundy banner with a simple faded eye emblem, cloth and structural supports complete.\nStyle: hand-painted 2D dark fantasy, finely detailed worn metal, cracked stone, wood grain and soot; ash-gray, dull copper and muted russet. Match painted realistic game scenery, crisp silhouettes and restrained light from upper left.\nComposition: orthographic SIDE-SCROLLING front-facing elevations, no floor plane or background scene, every object entirely visible and isolated, no overlapping cells, no perspective tilt for rotor.\nConstraints: genuine transparent alpha background, no checkerboard, no shadows outside objects, no text, no captions, no extra props, no watermark, no logos, original artwork."
+    }
+  ]
+}

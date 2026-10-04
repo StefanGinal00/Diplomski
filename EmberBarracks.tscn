@@ -1,4 +1,6 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://RemainingRoomArt.gd" id="remaining_art"]
 
 [ext_resource type="Script" path="res://BarracksTrial.gd" id="1_trial"]
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="2_door"]
@@ -31,6 +33,13 @@ course_id = &"barracks"
 course_width = 4200.0
 legacy_width = 1200.0
 ground_y = 420.0
+
+[node name="RemainingArt" type="Node2D" parent="."]
+script = ExtResource("remaining_art")
+artwork = "ember_barracks"
+layout = "ash"
+route_path = NodePath("AshSwitchback")
+plate_path = NodePath("Backdrop")
 
 [node name="Backdrop" type="Polygon2D" parent="."]
 z_index = -4

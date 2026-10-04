@@ -1,9 +1,11 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
 [ext_resource type="PackedScene" path="res://StarfallGuardian.tscn" id="3_guardian"]
 [ext_resource type="PackedScene" path="res://ResonanceCache.tscn" id="4_cache"]
+[ext_resource type="Script" path="res://StarfallArenaArt.gd" id="90_arena_art"]
+[ext_resource type="Script" path="res://BossArenaRelics.gd" id="boss_relics"]
 
 [sub_resource type="RectangleShape2D" id="FloorShape"]
 size = Vector2(1600, 18)
@@ -21,6 +23,16 @@ size = Vector2(160, 10)
 size = Vector2(120, 10)
 
 [node name="StarfallEmptyCourt" type="Node2D"]
+
+[node name="ArenaRelics" type="Node2D" parent="."]
+script = ExtResource("boss_relics")
+style = 3
+points = PackedVector2Array(545, 391, 1380, 391)
+height = 64.0
+
+[node name="ArenaArt" type="Node2D" parent="."]
+script = ExtResource("90_arena_art")
+arena_style = "empty_court"
 
 [node name="Sky" type="Polygon2D" parent="."]
 z_index = -9

@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://NeutralCreature.gd" id="1_neutral"]
 [ext_resource type="Texture2D" path="res://icon.svg" id="2_icon"]
 [ext_resource type="PackedScene" path="res://XPOrb.tscn" id="3_xp"]
 [ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="4_gold"]
+[ext_resource type="Script" path="res://EchoGrazerAppearance.gd" id="5_echo_art"]
+[ext_resource type="Script" path="res://EchoFaunaAppearance.gd" id="6_fauna_art"]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
 size = Vector2(22, 18)
@@ -28,6 +30,12 @@ gold_reward = 3
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.145, 0.115)
 texture = ExtResource("2_icon")
+
+[node name="EchoAppearance" type="Sprite2D" parent="."]
+script = ExtResource("5_echo_art")
+
+[node name="FaunaAppearance" type="Sprite2D" parent="."]
+script = ExtResource("6_fauna_art")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("BodyShape")

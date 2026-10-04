@@ -199,6 +199,14 @@ func _ready() -> void:
 
 
 func _build_starfall_dressing() -> void:
+	var scenery_art := Node2D.new()
+	scenery_art.name = "SceneryArt"
+	scenery_art.set_script(preload("res://StarfallSceneryArt.gd"))
+	generated.add_child(scenery_art)
+	var branch_art := Node2D.new()
+	branch_art.name = "BranchArt"
+	branch_art.set_script(preload("res://StarfallBranchArt.gd"))
+	generated.add_child(branch_art)
 	var dressing := Node2D.new()
 	dressing.set_script(preload("res://StarfallRouteDressing.gd"))
 	dressing.name = "FieldDressing"

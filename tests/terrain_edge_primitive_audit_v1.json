@@ -1,0 +1,2288 @@
+[
+  {
+    "color": "(0.15, 0.78, 1.0, 0.42)",
+    "kind": "Polygon2D",
+    "node": "DashGate/EnergyField",
+    "room": "training_passage",
+    "script": "res://DashGate.gd",
+    "size": "(14.0, 260.0)"
+  },
+  {
+    "color": "(0.62, 0.96, 1.0, 0.95)",
+    "kind": "Line2D",
+    "node": "DashGate/EnergyCore",
+    "room": "training_passage",
+    "script": "res://DashGate.gd",
+    "size": "(0.0, 260.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "DeepShaftTraversal/Infrastructure/RepairedHoist0/LiftGantry/SuspensionRight",
+    "room": "sunken_shaft",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "DeepShaftTraversal/Infrastructure/RepairedHoist0/LiftGantry/SuspensionLeft",
+    "room": "sunken_shaft",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "DeepShaftTraversal/Infrastructure/RepairedHoist1/LiftGantry/SuspensionRight",
+    "room": "sunken_shaft",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "DeepShaftTraversal/Infrastructure/RepairedHoist1/LiftGantry/SuspensionLeft",
+    "room": "sunken_shaft",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "UpperLift/LiftGantry/SuspensionRight",
+    "room": "sunken_shaft",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "UpperLift/LiftGantry/SuspensionLeft",
+    "room": "sunken_shaft",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "LowerLift/LiftGantry/SuspensionRight",
+    "room": "sunken_shaft",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "LowerLift/LiftGantry/SuspensionLeft",
+    "room": "sunken_shaft",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing0_0_0Rope",
+    "room": "shaft_hollow",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing1_0_0Rope",
+    "room": "shaft_hollow",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing2_0_0Rope",
+    "room": "shaft_hollow",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(126.25, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing2_0_1Rope",
+    "room": "shaft_hollow",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(126.25, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing4_0_0Rope",
+    "room": "shaft_hollow",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing5_0_0Rope",
+    "room": "shaft_hollow",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftTop/LiftGantry/SuspensionRight",
+    "room": "shaft_hollow",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftTop/LiftGantry/SuspensionLeft",
+    "room": "shaft_hollow",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftBottom/LiftGantry/SuspensionRight",
+    "room": "shaft_hollow",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftBottom/LiftGantry/SuspensionLeft",
+    "room": "shaft_hollow",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftTop/LiftGantry/SuspensionRight",
+    "room": "shaft_drift",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftTop/LiftGantry/SuspensionLeft",
+    "room": "shaft_drift",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftBottom/LiftGantry/SuspensionRight",
+    "room": "shaft_drift",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftBottom/LiftGantry/SuspensionLeft",
+    "room": "shaft_drift",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing0_0_0Rope",
+    "room": "shaft_crossing",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing1_0_0Rope",
+    "room": "shaft_crossing",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing2_0_0Rope",
+    "room": "shaft_crossing",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing4_0_0Rope",
+    "room": "shaft_crossing",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing4_1_0Rope",
+    "room": "shaft_crossing",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftTop/LiftGantry/SuspensionRight",
+    "room": "shaft_crossing",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftTop/LiftGantry/SuspensionLeft",
+    "room": "shaft_crossing",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftBottom/LiftGantry/SuspensionRight",
+    "room": "shaft_crossing",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftBottom/LiftGantry/SuspensionLeft",
+    "room": "shaft_crossing",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.2, 0.65, 0.71, 0.45)",
+    "kind": "Line2D",
+    "node": "UpperConduit",
+    "room": "shaft_gallery",
+    "script": "",
+    "size": "(540.0, 35.0)"
+  },
+  {
+    "color": "(0.2, 0.65, 0.71, 0.45)",
+    "kind": "Line2D",
+    "node": "LowerConduit",
+    "room": "shaft_gallery",
+    "script": "",
+    "size": "(540.0, 13.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing0_0_0Rope",
+    "room": "shaft_gallery",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing1_0_0Rope",
+    "room": "shaft_gallery",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing2_0_0Rope",
+    "room": "shaft_gallery",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing4_0_0Rope",
+    "room": "shaft_gallery",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing4_1_0Rope",
+    "room": "shaft_gallery",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(113.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing4_1_1Rope",
+    "room": "shaft_gallery",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(113.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing5_0_0Rope",
+    "room": "shaft_gallery",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.22, 0.53, 0.57, 0.72)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/GalleryManifold00",
+    "room": "shaft_gallery",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(285.0, 108.0)"
+  },
+  {
+    "color": "(0.22, 0.53, 0.57, 0.72)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/GalleryManifold01",
+    "room": "shaft_gallery",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(285.0, 108.0)"
+  },
+  {
+    "color": "(0.22, 0.53, 0.57, 0.72)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/GalleryManifold02",
+    "room": "shaft_gallery",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(285.0, 108.0)"
+  },
+  {
+    "color": "(0.22, 0.53, 0.57, 0.72)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/GalleryManifold03",
+    "room": "shaft_gallery",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(285.0, 108.0)"
+  },
+  {
+    "color": "(0.22, 0.53, 0.57, 0.72)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/GalleryManifold04",
+    "room": "shaft_gallery",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(285.0, 108.0)"
+  },
+  {
+    "color": "(0.22, 0.53, 0.57, 0.72)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/GalleryManifold05",
+    "room": "shaft_gallery",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(285.0, 108.0)"
+  },
+  {
+    "color": "(0.22, 0.53, 0.57, 0.72)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/GalleryManifold06",
+    "room": "shaft_gallery",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(285.0, 108.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftTop/LiftGantry/SuspensionRight",
+    "room": "shaft_gallery",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftTop/LiftGantry/SuspensionLeft",
+    "room": "shaft_gallery",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftBottom/LiftGantry/SuspensionRight",
+    "room": "shaft_gallery",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftBottom/LiftGantry/SuspensionLeft",
+    "room": "shaft_gallery",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.27, 0.64, 0.72, 0.46)",
+    "kind": "Line2D",
+    "node": "PressurePipe",
+    "room": "shaft_cistern",
+    "script": "res://CisternPuzzle.gd",
+    "size": "(880.0, 35.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing0_0_0Rope",
+    "room": "shaft_cistern",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing1_0_0Rope",
+    "room": "shaft_cistern",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing1_1_0Rope",
+    "room": "shaft_cistern",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing3_0_0Rope",
+    "room": "shaft_cistern",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing3_1_0Rope",
+    "room": "shaft_cistern",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing3_2_0Rope",
+    "room": "shaft_cistern",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing4_0_0Rope",
+    "room": "shaft_cistern",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing5_0_0Rope",
+    "room": "shaft_cistern",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.5765, 0.5922, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/CisternPressureCell0/RivetedSeam",
+    "room": "shaft_cistern",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(410.0, 244.0)"
+  },
+  {
+    "color": "(0.4745, 0.5765, 0.5922, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/CisternPressureCell1/RivetedSeam",
+    "room": "shaft_cistern",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(410.0, 244.0)"
+  },
+  {
+    "color": "(0.4745, 0.5765, 0.5922, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/CisternPressureCell2/RivetedSeam",
+    "room": "shaft_cistern",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(410.0, 244.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftTop/LiftGantry/SuspensionRight",
+    "room": "shaft_cistern",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftTop/LiftGantry/SuspensionLeft",
+    "room": "shaft_cistern",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftBottom/LiftGantry/SuspensionRight",
+    "room": "shaft_cistern",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftBottom/LiftGantry/SuspensionLeft",
+    "room": "shaft_cistern",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.41, 0.55, 0.58, 0.38)",
+    "kind": "Line2D",
+    "node": "SuspendedChains",
+    "room": "shaft_approach",
+    "script": "",
+    "size": "(130.0, 230.0)"
+  },
+  {
+    "color": "(0.28, 0.71, 0.74, 0.23)",
+    "kind": "Line2D",
+    "node": "Bridge/Rail",
+    "room": "shaft_approach",
+    "script": "res://CounterweightBridge.gd",
+    "size": "(620.0, 0.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing0_0_0Rope",
+    "room": "shaft_approach",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing1_0_0Rope",
+    "room": "shaft_approach",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing2_0_0Rope",
+    "room": "shaft_approach",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing3_0_0Rope",
+    "room": "shaft_approach",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(86.5, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing3_0_1Rope",
+    "room": "shaft_approach",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(86.5, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing4_0_0Rope",
+    "room": "shaft_approach",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.4745, 0.4235, 0.3255, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ShaftCrossing5_0_0Rope",
+    "room": "shaft_approach",
+    "script": "res://ShaftRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftTop/LiftGantry/SuspensionRight",
+    "room": "shaft_approach",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftTop/LiftGantry/SuspensionLeft",
+    "room": "shaft_approach",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftBottom/LiftGantry/SuspensionRight",
+    "room": "shaft_approach",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/AuthoredDescent/ReturnLiftBottom/LiftGantry/SuspensionLeft",
+    "room": "shaft_approach",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftTop/LiftGantry/SuspensionRight",
+    "room": "echo_depths",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftTop/LiftGantry/SuspensionLeft",
+    "room": "echo_depths",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftBottom/LiftGantry/SuspensionRight",
+    "room": "echo_depths",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftBottom/LiftGantry/SuspensionLeft",
+    "room": "echo_depths",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.47, 0.62, 0.93, 0.35)",
+    "kind": "Line2D",
+    "node": "LongTraversal/RefractionBeam00",
+    "room": "echo_archive",
+    "script": "res://EchoTraversal.gd",
+    "size": "(315.0, 55.0)"
+  },
+  {
+    "color": "(0.47, 0.62, 0.93, 0.35)",
+    "kind": "Line2D",
+    "node": "LongTraversal/RefractionBeam01",
+    "room": "echo_archive",
+    "script": "res://EchoTraversal.gd",
+    "size": "(315.0, 55.0)"
+  },
+  {
+    "color": "(0.47, 0.62, 0.93, 0.35)",
+    "kind": "Line2D",
+    "node": "LongTraversal/RefractionBeam02",
+    "room": "echo_archive",
+    "script": "res://EchoTraversal.gd",
+    "size": "(315.0, 55.0)"
+  },
+  {
+    "color": "(0.47, 0.62, 0.93, 0.35)",
+    "kind": "Line2D",
+    "node": "LongTraversal/RefractionBeam03",
+    "room": "echo_archive",
+    "script": "res://EchoTraversal.gd",
+    "size": "(315.0, 55.0)"
+  },
+  {
+    "color": "(0.48, 0.77, 1.0, 0.3)",
+    "kind": "Line2D",
+    "node": "GlyphLines",
+    "room": "echo_archive",
+    "script": "res://PrismArchive.gd",
+    "size": "(560.0, 167.0)"
+  },
+  {
+    "color": "(0.21, 0.71, 0.79, 0.34)",
+    "kind": "Line2D",
+    "node": "CurrentLine",
+    "room": "echo_tide_well",
+    "script": "",
+    "size": "(412.0, 439.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "UpperLift/LiftGantry/SuspensionRight",
+    "room": "echo_tide_well",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "UpperLift/LiftGantry/SuspensionLeft",
+    "room": "echo_tide_well",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "LowerLift/LiftGantry/SuspensionRight",
+    "room": "echo_tide_well",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "LowerLift/LiftGantry/SuspensionLeft",
+    "room": "echo_tide_well",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.78, 1.0, 1.0, 0.95)",
+    "kind": "Line2D",
+    "node": "LongTraversal/TraversalPhaseBridge00/Edge",
+    "room": "echo_causeway",
+    "script": "res://EchoPhaseBridge.gd",
+    "size": "(167.3984, 0.0)"
+  },
+  {
+    "color": "(0.27, 0.72, 0.84, 0.42)",
+    "kind": "Line2D",
+    "node": "LongTraversal/AnchorRay00",
+    "room": "echo_causeway",
+    "script": "res://EchoTraversal.gd",
+    "size": "(240.0, 63.0)"
+  },
+  {
+    "color": "(0.78, 1.0, 1.0, 0.95)",
+    "kind": "Line2D",
+    "node": "LongTraversal/TraversalPhaseBridge01/Edge",
+    "room": "echo_causeway",
+    "script": "res://EchoPhaseBridge.gd",
+    "size": "(167.3984, 0.0)"
+  },
+  {
+    "color": "(0.27, 0.72, 0.84, 0.42)",
+    "kind": "Line2D",
+    "node": "LongTraversal/AnchorRay01",
+    "room": "echo_causeway",
+    "script": "res://EchoTraversal.gd",
+    "size": "(240.0, 63.0)"
+  },
+  {
+    "color": "(0.78, 1.0, 1.0, 0.95)",
+    "kind": "Line2D",
+    "node": "LongTraversal/TraversalPhaseBridge02/Edge",
+    "room": "echo_causeway",
+    "script": "res://EchoPhaseBridge.gd",
+    "size": "(167.3984, 0.0)"
+  },
+  {
+    "color": "(0.27, 0.72, 0.84, 0.42)",
+    "kind": "Line2D",
+    "node": "LongTraversal/AnchorRay02",
+    "room": "echo_causeway",
+    "script": "res://EchoTraversal.gd",
+    "size": "(240.0, 63.0)"
+  },
+  {
+    "color": "(0.78, 1.0, 1.0, 0.95)",
+    "kind": "Line2D",
+    "node": "LongTraversal/TraversalPhaseBridge03/Edge",
+    "room": "echo_causeway",
+    "script": "res://EchoPhaseBridge.gd",
+    "size": "(167.3984, 0.0)"
+  },
+  {
+    "color": "(0.27, 0.72, 0.84, 0.42)",
+    "kind": "Line2D",
+    "node": "LongTraversal/AnchorRay03",
+    "room": "echo_causeway",
+    "script": "res://EchoTraversal.gd",
+    "size": "(240.0, 63.0)"
+  },
+  {
+    "color": "(0.56, 0.7, 0.97, 0.38)",
+    "kind": "Line2D",
+    "node": "CrystalRays",
+    "room": "echo_causeway",
+    "script": "",
+    "size": "(392.0, 70.0)"
+  },
+  {
+    "color": "(0.78, 1.0, 1.0, 0.95)",
+    "kind": "Line2D",
+    "node": "PhaseBridgeNear/Edge",
+    "room": "echo_causeway",
+    "script": "res://EchoPhaseBridge.gd",
+    "size": "(108.0, 0.0)"
+  },
+  {
+    "color": "(0.78, 1.0, 1.0, 0.95)",
+    "kind": "Line2D",
+    "node": "PhaseBridgeFar/Edge",
+    "room": "echo_causeway",
+    "script": "res://EchoPhaseBridge.gd",
+    "size": "(108.0, 0.0)"
+  },
+  {
+    "color": "(0.28, 0.76, 0.86, 0.45)",
+    "kind": "Line2D",
+    "node": "TideChannel",
+    "room": "echo_vault",
+    "script": "",
+    "size": "(515.0, 13.0)"
+  },
+  {
+    "color": "(0.94, 0.49, 0.75, 0.95)",
+    "kind": "Line2D",
+    "node": "NestVeil/Core",
+    "room": "echo_nest",
+    "script": "res://NestSeal.gd",
+    "size": "(0.0, 340.0)"
+  },
+  {
+    "color": "(0.29, 0.71, 0.68, 0.47)",
+    "kind": "Line2D",
+    "node": "NewDistricts/LaundryLine01",
+    "room": "echo_haven",
+    "script": "res://EchoSettlementExpansion.gd",
+    "size": "(660.3984, 6.0)"
+  },
+  {
+    "color": "(0.29, 0.71, 0.68, 0.47)",
+    "kind": "Line2D",
+    "node": "NewDistricts/LaundryLine03",
+    "room": "echo_haven",
+    "script": "res://EchoSettlementExpansion.gd",
+    "size": "(542.0, 6.0)"
+  },
+  {
+    "color": "(0.29, 0.71, 0.68, 0.47)",
+    "kind": "Line2D",
+    "node": "NewDistricts/LaundryLine05",
+    "room": "echo_haven",
+    "script": "res://EchoSettlementExpansion.gd",
+    "size": "(1159.602, 6.0)"
+  },
+  {
+    "color": "(0.38, 0.76, 0.72, 0.5)",
+    "kind": "Line2D",
+    "node": "WalkwayInlay",
+    "room": "echo_haven",
+    "script": "res://SettlementTimeline.gd",
+    "size": "(1008.0, 3.0)"
+  },
+  {
+    "color": "(0.3843, 0.4, 0.3765, 1.0)",
+    "kind": "Line2D",
+    "node": "HangingLampLeft",
+    "room": "echo_haven",
+    "script": "res://SettlementTimeline.gd",
+    "size": "(0.0, 167.0)"
+  },
+  {
+    "color": "(0.3843, 0.4, 0.3765, 1.0)",
+    "kind": "Line2D",
+    "node": "HangingLampRight",
+    "room": "echo_haven",
+    "script": "res://SettlementTimeline.gd",
+    "size": "(0.0, 188.0)"
+  },
+  {
+    "color": "(0.23, 0.66, 0.69, 0.47)",
+    "kind": "Line2D",
+    "node": "GateApproach/LaundryLine01",
+    "room": "echo_haven_outskirts",
+    "script": "res://EchoSettlementExpansion.gd",
+    "size": "(777.5, 52.0)"
+  },
+  {
+    "color": "(0.23, 0.66, 0.69, 0.47)",
+    "kind": "Line2D",
+    "node": "GateApproach/LaundryLine03",
+    "room": "echo_haven_outskirts",
+    "script": "res://EchoSettlementExpansion.gd",
+    "size": "(699.5, 52.0)"
+  },
+  {
+    "color": "(0.23, 0.66, 0.69, 0.47)",
+    "kind": "Line2D",
+    "node": "GateApproach/LaundryLine05",
+    "room": "echo_haven_outskirts",
+    "script": "res://EchoSettlementExpansion.gd",
+    "size": "(1176.5, 52.0)"
+  },
+  {
+    "color": "(0.18, 0.58, 0.63, 0.45)",
+    "kind": "Line2D",
+    "node": "CrystalSeam",
+    "room": "echo_haven_outskirts",
+    "script": "",
+    "size": "(930.0, 215.0)"
+  },
+  {
+    "color": "(0.27, 0.67, 0.68, 0.6)",
+    "kind": "Line2D",
+    "node": "RoadInlay",
+    "room": "echo_haven_outskirts",
+    "script": "",
+    "size": "(961.0, 0.0)"
+  },
+  {
+    "color": "(0.6, 0.3, 0.2, 0.48)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/WatchChains/Chain0",
+    "room": "ash_causeway",
+    "script": "res://AshSwitchback.gd",
+    "size": "(23.0, 1122.0)"
+  },
+  {
+    "color": "(0.6, 0.3, 0.2, 0.48)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/WatchChains/Chain1",
+    "room": "ash_causeway",
+    "script": "res://AshSwitchback.gd",
+    "size": "(23.0, 1422.0)"
+  },
+  {
+    "color": "(0.6, 0.3, 0.2, 0.48)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/WatchChains/Chain2",
+    "room": "ash_causeway",
+    "script": "res://AshSwitchback.gd",
+    "size": "(23.0, 822.0)"
+  },
+  {
+    "color": "(0.6, 0.3, 0.2, 0.48)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/WatchChains/Chain3",
+    "room": "ash_causeway",
+    "script": "res://AshSwitchback.gd",
+    "size": "(23.0, 522.0)"
+  },
+  {
+    "color": "(0.6, 0.3, 0.2, 0.48)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/WatchChains/Chain4",
+    "room": "ash_causeway",
+    "script": "res://AshSwitchback.gd",
+    "size": "(23.0, 222.0)"
+  },
+  {
+    "color": "(0.6, 0.3, 0.2, 0.48)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/WatchChains/Chain5",
+    "room": "ash_causeway",
+    "script": "res://AshSwitchback.gd",
+    "size": "(23.0, 1422.0)"
+  },
+  {
+    "color": "(0.6, 0.3, 0.2, 0.48)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/WatchChains/Chain6",
+    "room": "ash_causeway",
+    "script": "res://AshSwitchback.gd",
+    "size": "(23.0, 1122.0)"
+  },
+  {
+    "color": "(0.96, 0.37, 0.14, 0.43)",
+    "kind": "Line2D",
+    "node": "EmberSeam",
+    "room": "ash_causeway",
+    "script": "",
+    "size": "(685.0, 11.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftTop/LiftGantry/SuspensionRight",
+    "room": "ash_emberspine",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftTop/LiftGantry/SuspensionLeft",
+    "room": "ash_emberspine",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftBottom/LiftGantry/SuspensionRight",
+    "room": "ash_emberspine",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftBottom/LiftGantry/SuspensionLeft",
+    "room": "ash_emberspine",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/FieldOperations/ServiceHoist0/LiftGantry/SuspensionRight",
+    "room": "ash_forge",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/FieldOperations/ServiceHoist0/LiftGantry/SuspensionLeft",
+    "room": "ash_forge",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/FieldOperations/ServiceHoist1/LiftGantry/SuspensionRight",
+    "room": "ash_forge",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/FieldOperations/ServiceHoist1/LiftGantry/SuspensionLeft",
+    "room": "ash_forge",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.52, 0.72, 0.7, 0.55)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/PressureTanks/TankBand0",
+    "room": "ash_reservoir",
+    "script": "res://AshSwitchback.gd",
+    "size": "(148.0, 0.0)"
+  },
+  {
+    "color": "(0.52, 0.72, 0.7, 0.55)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/PressureTanks/TankBand1",
+    "room": "ash_reservoir",
+    "script": "res://AshSwitchback.gd",
+    "size": "(148.0, 0.0)"
+  },
+  {
+    "color": "(0.52, 0.72, 0.7, 0.55)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/PressureTanks/TankBand2",
+    "room": "ash_reservoir",
+    "script": "res://AshSwitchback.gd",
+    "size": "(148.0, 0.0)"
+  },
+  {
+    "color": "(0.52, 0.72, 0.7, 0.55)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/PressureTanks/TankBand3",
+    "room": "ash_reservoir",
+    "script": "res://AshSwitchback.gd",
+    "size": "(148.0, 0.0)"
+  },
+  {
+    "color": "(0.52, 0.72, 0.7, 0.55)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/PressureTanks/TankBand4",
+    "room": "ash_reservoir",
+    "script": "res://AshSwitchback.gd",
+    "size": "(148.0, 0.0)"
+  },
+  {
+    "color": "(0.52, 0.72, 0.7, 0.55)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/PressureTanks/TankBand5",
+    "room": "ash_reservoir",
+    "script": "res://AshSwitchback.gd",
+    "size": "(148.0, 0.0)"
+  },
+  {
+    "color": "(0.38, 0.68, 0.7, 0.48)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/CoolantChannels/PressurePipe0",
+    "room": "ash_reservoir",
+    "script": "res://AshSwitchback.gd",
+    "size": "(2785.0, 42.0)"
+  },
+  {
+    "color": "(0.38, 0.68, 0.7, 0.48)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/CoolantChannels/PressurePipe1",
+    "room": "ash_reservoir",
+    "script": "res://AshSwitchback.gd",
+    "size": "(2785.0, 42.0)"
+  },
+  {
+    "color": "(0.38, 0.68, 0.7, 0.48)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/CoolantChannels/PressurePipe2",
+    "room": "ash_reservoir",
+    "script": "res://AshSwitchback.gd",
+    "size": "(2785.0, 42.0)"
+  },
+  {
+    "color": "(0.38, 0.68, 0.7, 0.48)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/CoolantChannels/PressurePipe3",
+    "room": "ash_reservoir",
+    "script": "res://AshSwitchback.gd",
+    "size": "(2785.0, 42.0)"
+  },
+  {
+    "color": "(0.38, 0.68, 0.7, 0.48)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/CoolantChannels/PressurePipe4",
+    "room": "ash_reservoir",
+    "script": "res://AshSwitchback.gd",
+    "size": "(2785.0, 42.0)"
+  },
+  {
+    "color": "(0.38, 0.68, 0.7, 0.48)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/CoolantChannels/PressurePipe5",
+    "room": "ash_reservoir",
+    "script": "res://AshSwitchback.gd",
+    "size": "(2785.0, 42.0)"
+  },
+  {
+    "color": "(0.36, 0.7, 0.76, 0.56)",
+    "kind": "Line2D",
+    "node": "CoolantPipe",
+    "room": "ash_reservoir",
+    "script": "",
+    "size": "(965.0, 54.0)"
+  },
+  {
+    "color": "(0.87, 0.68, 0.48, 0.52)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/BellNave/WindowCross0",
+    "room": "ash_chapel",
+    "script": "res://AshSwitchback.gd",
+    "size": "(110.0, 110.0)"
+  },
+  {
+    "color": "(0.87, 0.68, 0.48, 0.52)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/BellNave/WindowCross1",
+    "room": "ash_chapel",
+    "script": "res://AshSwitchback.gd",
+    "size": "(110.0, 110.0)"
+  },
+  {
+    "color": "(0.87, 0.68, 0.48, 0.52)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/BellNave/WindowCross2",
+    "room": "ash_chapel",
+    "script": "res://AshSwitchback.gd",
+    "size": "(110.0, 110.0)"
+  },
+  {
+    "color": "(0.87, 0.68, 0.48, 0.52)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/BellNave/WindowCross3",
+    "room": "ash_chapel",
+    "script": "res://AshSwitchback.gd",
+    "size": "(110.0, 110.0)"
+  },
+  {
+    "color": "(0.87, 0.68, 0.48, 0.52)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/BellNave/WindowCross4",
+    "room": "ash_chapel",
+    "script": "res://AshSwitchback.gd",
+    "size": "(110.0, 110.0)"
+  },
+  {
+    "color": "(0.87, 0.68, 0.48, 0.52)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/BellNave/WindowCross5",
+    "room": "ash_chapel",
+    "script": "res://AshSwitchback.gd",
+    "size": "(110.0, 110.0)"
+  },
+  {
+    "color": "(0.76, 0.61, 0.45, 0.42)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/ProcessionBells/BellRope0",
+    "room": "ash_chapel",
+    "script": "res://AshSwitchback.gd",
+    "size": "(0.0, 1045.0)"
+  },
+  {
+    "color": "(0.76, 0.61, 0.45, 0.42)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/ProcessionBells/BellRope1",
+    "room": "ash_chapel",
+    "script": "res://AshSwitchback.gd",
+    "size": "(0.0, 1345.0)"
+  },
+  {
+    "color": "(0.76, 0.61, 0.45, 0.42)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/ProcessionBells/BellRope2",
+    "room": "ash_chapel",
+    "script": "res://AshSwitchback.gd",
+    "size": "(0.0, 745.0)"
+  },
+  {
+    "color": "(0.76, 0.61, 0.45, 0.42)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/ProcessionBells/BellRope3",
+    "room": "ash_chapel",
+    "script": "res://AshSwitchback.gd",
+    "size": "(0.0, 445.0)"
+  },
+  {
+    "color": "(0.76, 0.61, 0.45, 0.42)",
+    "kind": "Line2D",
+    "node": "AshSwitchback/AshIdentity/ProcessionBells/BellRope4",
+    "room": "ash_chapel",
+    "script": "res://AshSwitchback.gd",
+    "size": "(0.0, 145.0)"
+  },
+  {
+    "color": "(0.95, 0.6, 0.34, 0.45)",
+    "kind": "Line2D",
+    "node": "EasternDistricts/OldRoadContinuation",
+    "room": "ash_hearth",
+    "script": "res://CinderTownExpansion.gd",
+    "size": "(2900.0, 0.0)"
+  },
+  {
+    "color": "(0.92, 0.56, 0.35, 0.5)",
+    "kind": "Line2D",
+    "node": "EasternDistricts/WardLaundry0",
+    "room": "ash_hearth",
+    "script": "res://CinderTownExpansion.gd",
+    "size": "(360.0, 29.0)"
+  },
+  {
+    "color": "(0.92, 0.56, 0.35, 0.5)",
+    "kind": "Line2D",
+    "node": "EasternDistricts/WardLaundry1",
+    "room": "ash_hearth",
+    "script": "res://CinderTownExpansion.gd",
+    "size": "(360.0, 29.0)"
+  },
+  {
+    "color": "(0.92, 0.56, 0.35, 0.5)",
+    "kind": "Line2D",
+    "node": "EasternDistricts/WardLaundry2",
+    "room": "ash_hearth",
+    "script": "res://CinderTownExpansion.gd",
+    "size": "(360.0, 29.0)"
+  },
+  {
+    "color": "(0.92, 0.56, 0.35, 0.5)",
+    "kind": "Line2D",
+    "node": "EasternDistricts/WardLaundry3",
+    "room": "ash_hearth",
+    "script": "res://CinderTownExpansion.gd",
+    "size": "(360.0, 29.0)"
+  },
+  {
+    "color": "(0.8, 0.36, 0.2, 0.53)",
+    "kind": "Line2D",
+    "node": "RoadInlay",
+    "room": "ash_hearth_outskirts",
+    "script": "",
+    "size": "(972.0, 0.0)"
+  },
+  {
+    "color": "(0.75, 0.73, 0.76, 0.75)",
+    "kind": "Line2D",
+    "node": "WardDistrict/LanternLine",
+    "room": "starfall_citadel",
+    "script": "res://StarfallCityDecor.gd",
+    "size": "(970.0, 20.0)"
+  },
+  {
+    "color": "(0.76, 0.72, 0.75, 0.8)",
+    "kind": "Line2D",
+    "node": "WestPromenadeRail",
+    "room": "starfall_citadel",
+    "script": "res://StarfallCityDecor.gd",
+    "size": "(1180.0, 35.0)"
+  },
+  {
+    "color": "(0.8, 0.71, 0.75, 0.8)",
+    "kind": "Line2D",
+    "node": "MarketRail",
+    "room": "starfall_citadel",
+    "script": "res://StarfallCityDecor.gd",
+    "size": "(650.0, 37.0)"
+  },
+  {
+    "color": "(0.76, 0.84, 0.78, 0.82)",
+    "kind": "Line2D",
+    "node": "GardenRail",
+    "room": "starfall_citadel",
+    "script": "res://StarfallCityDecor.gd",
+    "size": "(830.0, 38.0)"
+  },
+  {
+    "color": "(0.69, 0.82, 0.96, 1.0)",
+    "kind": "Line2D",
+    "node": "UpperCity/CrownObservatory/CelestialLens",
+    "room": "starfall_citadel",
+    "script": "res://StarfallUpperCity.gd",
+    "size": "(170.0, 130.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "UpperCity/StreetLift/LiftGantry/SuspensionRight",
+    "room": "starfall_citadel",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "UpperCity/StreetLift/LiftGantry/SuspensionLeft",
+    "room": "starfall_citadel",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "UpperCity/CrownLift/LiftGantry/SuspensionRight",
+    "room": "starfall_citadel",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "UpperCity/CrownLift/LiftGantry/SuspensionLeft",
+    "room": "starfall_citadel",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.78, 0.7, 0.69, 0.64)",
+    "kind": "Line2D",
+    "node": "CityDistrictDetails/MarketLifeDetails/MarketClothesline",
+    "room": "starfall_citadel",
+    "script": "res://StarfallCityDecor.gd",
+    "size": "(470.0, 18.0)"
+  },
+  {
+    "color": "(0.62, 0.65, 0.79, 0.92)",
+    "kind": "Line2D",
+    "node": "CityDistrictDetails/ObservatoryDetails/TelescopeTube",
+    "room": "starfall_citadel",
+    "script": "res://StarfallCityDecor.gd",
+    "size": "(95.0, 47.0)"
+  },
+  {
+    "color": "(0.43, 0.46, 0.6, 0.9)",
+    "kind": "Line2D",
+    "node": "CityDistrictDetails/ObservatoryDetails/TelescopeLegLeft",
+    "room": "starfall_citadel",
+    "script": "res://StarfallCityDecor.gd",
+    "size": "(30.0, 74.0)"
+  },
+  {
+    "color": "(0.43, 0.46, 0.6, 0.9)",
+    "kind": "Line2D",
+    "node": "CityDistrictDetails/ObservatoryDetails/TelescopeLegRight",
+    "room": "starfall_citadel",
+    "script": "res://StarfallCityDecor.gd",
+    "size": "(30.0, 74.0)"
+  },
+  {
+    "color": "(0.76, 0.65, 0.86, 0.45)",
+    "kind": "Line2D",
+    "node": "RoadLine",
+    "room": "starfall_outskirts",
+    "script": "",
+    "size": "(1405.0, 0.0)"
+  },
+  {
+    "color": "(0.538, 0.552, 0.657, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing0_0_0Rope",
+    "room": "starfall_outskirts",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.552, 0.657, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing1_0_0Rope",
+    "room": "starfall_outskirts",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.552, 0.657, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing3_0_0Rope",
+    "room": "starfall_outskirts",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.552, 0.657, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing3_1_0Rope",
+    "room": "starfall_outskirts",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.552, 0.657, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing4_0_0Rope",
+    "room": "starfall_outskirts",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.552, 0.657, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing5_0_0Rope",
+    "room": "starfall_outskirts",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftTop/LiftGantry/SuspensionRight",
+    "room": "starfall_outskirts",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftTop/LiftGantry/SuspensionLeft",
+    "room": "starfall_outskirts",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftBottom/LiftGantry/SuspensionRight",
+    "room": "starfall_outskirts",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftBottom/LiftGantry/SuspensionLeft",
+    "room": "starfall_outskirts",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftTop/LiftGantry/SuspensionRight",
+    "room": "starfall_ramparts",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftTop/LiftGantry/SuspensionLeft",
+    "room": "starfall_ramparts",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftBottom/LiftGantry/SuspensionRight",
+    "room": "starfall_ramparts",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ReturnLiftBottom/LiftGantry/SuspensionLeft",
+    "room": "starfall_ramparts",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.64, 0.48, 0.88, 0.3)",
+    "kind": "Line2D",
+    "node": "WardBeam",
+    "room": "starfall_silent_gate",
+    "script": "",
+    "size": "(1485.0, 170.0)"
+  },
+  {
+    "color": "(0.51, 0.48, 0.69, 0.38)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MuteBells/CutRope0",
+    "room": "starfall_silent_gate",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(8.0, 109.0)"
+  },
+  {
+    "color": "(0.51, 0.48, 0.69, 0.38)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MuteBells/CutRope1",
+    "room": "starfall_silent_gate",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(8.0, 109.0)"
+  },
+  {
+    "color": "(0.51, 0.48, 0.69, 0.38)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MuteBells/CutRope2",
+    "room": "starfall_silent_gate",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(8.0, 109.0)"
+  },
+  {
+    "color": "(0.51, 0.48, 0.69, 0.38)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MuteBells/CutRope3",
+    "room": "starfall_silent_gate",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(8.0, 109.0)"
+  },
+  {
+    "color": "(0.51, 0.48, 0.69, 0.38)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MuteBells/CutRope4",
+    "room": "starfall_silent_gate",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(8.0, 109.0)"
+  },
+  {
+    "color": "(0.538, 0.538, 0.692, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing0_0_0Rope",
+    "room": "starfall_silent_gate",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.538, 0.692, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing1_0_0Rope",
+    "room": "starfall_silent_gate",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.538, 0.692, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing2_0_0Rope",
+    "room": "starfall_silent_gate",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.538, 0.692, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing3_0_0Rope",
+    "room": "starfall_silent_gate",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.538, 0.692, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing5_0_0Rope",
+    "room": "starfall_silent_gate",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(99.16797, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.538, 0.692, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing5_0_1Rope",
+    "room": "starfall_silent_gate",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(99.16406, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.538, 0.692, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing5_0_2Rope",
+    "room": "starfall_silent_gate",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(99.16797, 24.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftTop/LiftGantry/SuspensionRight",
+    "room": "starfall_silent_gate",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftTop/LiftGantry/SuspensionLeft",
+    "room": "starfall_silent_gate",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftBottom/LiftGantry/SuspensionRight",
+    "room": "starfall_silent_gate",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftBottom/LiftGantry/SuspensionLeft",
+    "room": "starfall_silent_gate",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.42, 0.73, 0.86, 0.28)",
+    "kind": "Line2D",
+    "node": "MemoryThread",
+    "room": "starfall_memory_vault",
+    "script": "",
+    "size": "(1360.0, 200.0)"
+  },
+  {
+    "color": "(0.72, 0.68, 0.98, 0.64)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MemoryMonoliths/Inscription0_0",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(56.0, 95.0)"
+  },
+  {
+    "color": "(0.72, 0.68, 0.98, 0.64)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MemoryMonoliths/Inscription0_1",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(56.0, 95.0)"
+  },
+  {
+    "color": "(0.72, 0.68, 0.98, 0.64)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MemoryMonoliths/Inscription1_0",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(56.0, 95.0)"
+  },
+  {
+    "color": "(0.72, 0.68, 0.98, 0.64)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MemoryMonoliths/Inscription1_1",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(56.0, 95.0)"
+  },
+  {
+    "color": "(0.72, 0.68, 0.98, 0.64)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MemoryMonoliths/Inscription2_0",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(56.0, 95.0)"
+  },
+  {
+    "color": "(0.72, 0.68, 0.98, 0.64)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MemoryMonoliths/Inscription2_1",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(56.0, 95.0)"
+  },
+  {
+    "color": "(0.72, 0.68, 0.98, 0.64)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MemoryMonoliths/Inscription3_0",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(56.0, 95.0)"
+  },
+  {
+    "color": "(0.72, 0.68, 0.98, 0.64)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MemoryMonoliths/Inscription3_1",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(56.0, 95.0)"
+  },
+  {
+    "color": "(0.72, 0.68, 0.98, 0.64)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MemoryMonoliths/Inscription4_0",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(56.0, 95.0)"
+  },
+  {
+    "color": "(0.72, 0.68, 0.98, 0.64)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MemoryMonoliths/Inscription4_1",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(56.0, 95.0)"
+  },
+  {
+    "color": "(0.72, 0.68, 0.98, 0.64)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MemoryMonoliths/Inscription5_0",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(56.0, 95.0)"
+  },
+  {
+    "color": "(0.72, 0.68, 0.98, 0.64)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/MemoryMonoliths/Inscription5_1",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(56.0, 95.0)"
+  },
+  {
+    "color": "(0.601, 0.601, 0.748, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing0_0_0Rope",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.601, 0.601, 0.748, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing1_0_0Rope",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.601, 0.601, 0.748, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing3_0_0Rope",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.601, 0.601, 0.748, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing3_1_0Rope",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.601, 0.601, 0.748, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing4_0_0Rope",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.601, 0.601, 0.748, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing5_0_0Rope",
+    "room": "starfall_memory_vault",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftTop/LiftGantry/SuspensionRight",
+    "room": "starfall_memory_vault",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftTop/LiftGantry/SuspensionLeft",
+    "room": "starfall_memory_vault",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftBottom/LiftGantry/SuspensionRight",
+    "room": "starfall_memory_vault",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftBottom/LiftGantry/SuspensionLeft",
+    "room": "starfall_memory_vault",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.496, 0.636, 0.573, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing0_0_0Rope",
+    "room": "starfall_rooted_hall",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.496, 0.636, 0.573, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing1_0_0Rope",
+    "room": "starfall_rooted_hall",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.496, 0.636, 0.573, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing2_0_0Rope",
+    "room": "starfall_rooted_hall",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(110.0, 24.0)"
+  },
+  {
+    "color": "(0.496, 0.636, 0.573, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing2_0_1Rope",
+    "room": "starfall_rooted_hall",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(110.0, 24.0)"
+  },
+  {
+    "color": "(0.496, 0.636, 0.573, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing2_0_2Rope",
+    "room": "starfall_rooted_hall",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(110.0, 24.0)"
+  },
+  {
+    "color": "(0.496, 0.636, 0.573, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing4_0_0Rope",
+    "room": "starfall_rooted_hall",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.496, 0.636, 0.573, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing5_0_0Rope",
+    "room": "starfall_rooted_hall",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftTop/LiftGantry/SuspensionRight",
+    "room": "starfall_rooted_hall",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftTop/LiftGantry/SuspensionLeft",
+    "room": "starfall_rooted_hall",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftBottom/LiftGantry/SuspensionRight",
+    "room": "starfall_rooted_hall",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftBottom/LiftGantry/SuspensionLeft",
+    "room": "starfall_rooted_hall",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.62, 0.7, 0.99, 0.48)",
+    "kind": "Line2D",
+    "node": "WestBoundaryStars",
+    "room": "starfall_empty_court",
+    "script": "",
+    "size": "(56.0, 265.0)"
+  },
+  {
+    "color": "(0.62, 0.7, 0.99, 0.48)",
+    "kind": "Line2D",
+    "node": "EastBoundaryStars",
+    "room": "starfall_empty_court",
+    "script": "",
+    "size": "(56.0, 265.0)"
+  },
+  {
+    "color": "(0.77, 0.44, 0.95, 0.45)",
+    "kind": "Line2D",
+    "node": "Conduit",
+    "room": "starfall_soul_crucible",
+    "script": "res://StarfallSoulCrucible.gd",
+    "size": "(630.0, 270.0)"
+  },
+  {
+    "color": "(0.643, 0.545, 0.706, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing0_0_0Rope",
+    "room": "starfall_soul_crucible",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.643, 0.545, 0.706, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing1_0_0Rope",
+    "room": "starfall_soul_crucible",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.643, 0.545, 0.706, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing2_0_0Rope",
+    "room": "starfall_soul_crucible",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.643, 0.545, 0.706, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing3_0_0Rope",
+    "room": "starfall_soul_crucible",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.643, 0.545, 0.706, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing5_0_0Rope",
+    "room": "starfall_soul_crucible",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(99.16406, 24.0)"
+  },
+  {
+    "color": "(0.643, 0.545, 0.706, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing5_0_1Rope",
+    "room": "starfall_soul_crucible",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(99.17188, 24.0)"
+  },
+  {
+    "color": "(0.643, 0.545, 0.706, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing5_0_2Rope",
+    "room": "starfall_soul_crucible",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(99.16406, 24.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftTop/LiftGantry/SuspensionRight",
+    "room": "starfall_soul_crucible",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftTop/LiftGantry/SuspensionLeft",
+    "room": "starfall_soul_crucible",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftBottom/LiftGantry/SuspensionRight",
+    "room": "starfall_soul_crucible",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftBottom/LiftGantry/SuspensionLeft",
+    "room": "starfall_soul_crucible",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "kind": "Label",
+    "node": "ExpandedRoute/StarfallDescent/FieldOperations/Containment0/@Label@2884",
+    "room": "starfall_soul_crucible",
+    "text": "HIGH CONTAINMENT\nPOWER THE ORIGINAL HIGH CHANNEL FIRST; RE-ENTER THIS CHAMBER"
+  },
+  {
+    "color": "(0.43, 0.51, 0.8, 0.28)",
+    "kind": "Line2D",
+    "node": "FaintStars",
+    "room": "starfall_sunless_passage",
+    "script": "",
+    "size": "(1160.0, 45.0)"
+  },
+  {
+    "color": "(0.83, 0.87, 1.0, 0.96)",
+    "kind": "Line2D",
+    "node": "BridgeOne/Edge",
+    "room": "starfall_sunless_passage",
+    "script": "res://SunlessBridge.gd",
+    "size": "(150.0, 0.0)"
+  },
+  {
+    "color": "(0.83, 0.87, 1.0, 0.96)",
+    "kind": "Line2D",
+    "node": "BridgeTwo/Edge",
+    "room": "starfall_sunless_passage",
+    "script": "res://SunlessBridge.gd",
+    "size": "(150.0, 0.0)"
+  },
+  {
+    "color": "(0.83, 0.87, 1.0, 0.96)",
+    "kind": "Line2D",
+    "node": "BridgeThree/Edge",
+    "room": "starfall_sunless_passage",
+    "script": "res://SunlessBridge.gd",
+    "size": "(150.0, 0.0)"
+  },
+  {
+    "color": "(0.83, 0.87, 1.0, 0.96)",
+    "kind": "Line2D",
+    "node": "BridgeFour/Edge",
+    "room": "starfall_sunless_passage",
+    "script": "res://SunlessBridge.gd",
+    "size": "(150.0, 0.0)"
+  },
+  {
+    "color": "(0.83, 0.87, 1.0, 0.96)",
+    "kind": "Line2D",
+    "node": "BridgeFive/Edge",
+    "room": "starfall_sunless_passage",
+    "script": "res://SunlessBridge.gd",
+    "size": "(150.0, 0.0)"
+  },
+  {
+    "color": "(0.34, 0.39, 0.65, 0.37)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/ExtinguishedLanterns/LanternChain0",
+    "room": "starfall_sunless_passage",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(0.0, 92.0)"
+  },
+  {
+    "color": "(0.34, 0.39, 0.65, 0.37)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/ExtinguishedLanterns/LanternChain1",
+    "room": "starfall_sunless_passage",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(0.0, 92.0)"
+  },
+  {
+    "color": "(0.34, 0.39, 0.65, 0.37)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/ExtinguishedLanterns/LanternChain2",
+    "room": "starfall_sunless_passage",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(0.0, 92.0)"
+  },
+  {
+    "color": "(0.34, 0.39, 0.65, 0.37)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/ExtinguishedLanterns/LanternChain3",
+    "room": "starfall_sunless_passage",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(0.0, 92.0)"
+  },
+  {
+    "color": "(0.34, 0.39, 0.65, 0.37)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/ExtinguishedLanterns/LanternChain4",
+    "room": "starfall_sunless_passage",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(0.0, 92.0)"
+  },
+  {
+    "color": "(0.34, 0.39, 0.65, 0.37)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/ExtinguishedLanterns/LanternChain5",
+    "room": "starfall_sunless_passage",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(0.0, 92.0)"
+  },
+  {
+    "color": "(0.34, 0.39, 0.65, 0.37)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/ExtinguishedLanterns/LanternChain6",
+    "room": "starfall_sunless_passage",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(0.0, 92.0)"
+  },
+  {
+    "color": "(0.34, 0.39, 0.65, 0.37)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/ExtinguishedLanterns/LanternChain7",
+    "room": "starfall_sunless_passage",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(0.0, 92.0)"
+  },
+  {
+    "color": "(0.34, 0.39, 0.65, 0.37)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/RoomIdentity/ExtinguishedLanterns/LanternChain8",
+    "room": "starfall_sunless_passage",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(0.0, 92.0)"
+  },
+  {
+    "color": "(0.538, 0.573, 0.713, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing0_0_0Rope",
+    "room": "starfall_sunless_passage",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.573, 0.713, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing1_0_0Rope",
+    "room": "starfall_sunless_passage",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.573, 0.713, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing2_0_0Rope",
+    "room": "starfall_sunless_passage",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.573, 0.713, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing3_0_0Rope",
+    "room": "starfall_sunless_passage",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.573, 0.713, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing5_0_0Rope",
+    "room": "starfall_sunless_passage",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.538, 0.573, 0.713, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ShaftCrossing5_1_0Rope",
+    "room": "starfall_sunless_passage",
+    "script": "res://StarfallRoomExpansion.gd",
+    "size": "(170.0, 24.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftTop/LiftGantry/SuspensionRight",
+    "room": "starfall_sunless_passage",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftTop/LiftGantry/SuspensionLeft",
+    "room": "starfall_sunless_passage",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftBottom/LiftGantry/SuspensionRight",
+    "room": "starfall_sunless_passage",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.5412, 0.4549, 0.3451, 1.0)",
+    "kind": "Line2D",
+    "node": "ExpandedRoute/StarfallDescent/ReturnLiftBottom/LiftGantry/SuspensionLeft",
+    "room": "starfall_sunless_passage",
+    "script": "res://LiftMechanismArt.gd",
+    "size": "(4.0, 68.0)"
+  },
+  {
+    "color": "(0.7098, 0.6941, 0.7569, 1.0)",
+    "kind": "Line2D",
+    "node": "FallenSpan/Visual/StoneTrim68",
+    "room": "starfall_hollow_throne",
+    "script": "",
+    "size": "(228.0, 0.0)"
+  }
+]

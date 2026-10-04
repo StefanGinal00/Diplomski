@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "date": "2026-10-03",
+  "scope": "Original modular facade detail pass: Echo Haven, Echo Haven Outskirts, Cinder Hearth",
+  "generation": {
+    "tool": "Built-in ImageGen",
+    "mode": "generate",
+    "transparent_background": true,
+    "source_pixels_modified": false,
+    "request_count": 2,
+    "cutouts": 12,
+    "third_party_assets_downloaded": false
+  },
+  "assets": [
+    {
+      "file": "art/visual_slice/facade_pilasters_v1.png",
+      "sha256": "61e56ce1108f99fda20e91cbe638b972015f779bb6390b3828013c5f8fb3d034",
+      "source_size": [
+        1536,
+        1024
+      ],
+      "cutouts": 6,
+      "crops": [
+        [
+          248,
+          20,
+          138,
+          477
+        ],
+        [
+          709,
+          19,
+          118,
+          478
+        ],
+        [
+          1156,
+          19,
+          136,
+          478
+        ],
+        [
+          242,
+          525,
+          151,
+          477
+        ],
+        [
+          696,
+          526,
+          144,
+          475
+        ],
+        [
+          1152,
+          520,
+          145,
+          481
+        ]
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: production 2D side-view game atlas, six modular facade pilasters. Generate original hand-painted dark-fantasy architectural cutouts on genuinely transparent background. Canvas landscape 1536x1024, exactly 3 columns x 2 rows of equal 512x512 cells, generous transparent gutters, no cell borders or lettering. Each cell contains ONE slender vertical straight pilaster front-facing orthographic, about 155 pixels wide and 440 high, centered, flat top at y=36 within cell and solid base at y=476. Keep each central shaft mostly vertical with crisp continuous textured material; capitals and footings slightly wider. Top row left: damp blue-grey dressed stone with chipped capital and scant moss; top middle: narrow warm brown old timber upright with iron straps and weathered grain; top right: grey civic carved stone pier with restrained shallow arch motifs. Bottom left: root-weathered limestone with ivy only at base; bottom middle: smoked sandstone and copper collars; bottom right: cracked slate buttress with a worn pointed capital. Style painterly realistic 2D fantasy game assets matching mossy medieval stone towns, visible textured material at small size, soft cool ambient lighting without cast background shadows. All six distinct silhouettes, widths visually consistent, top and bottom aligned for safe modular cropping of capitals, straight middle courses and footings. No buildings, ground, environment, characters, perspective, glows, text, watermarks, grids or opaque backgrounds. True alpha everywhere outside objects."
+    },
+    {
+      "file": "art/visual_slice/facade_growth_v1.png",
+      "sha256": "ebbc879cb435376eefa0ba44c10461c03871f9b1b73b837c35b512b275f93aa6",
+      "source_size": [
+        1536,
+        1024
+      ],
+      "cutouts": 6,
+      "crops": [
+        [
+          88,
+          21,
+          346,
+          479
+        ],
+        [
+          585,
+          17,
+          412,
+          495
+        ],
+        [
+          1101,
+          28,
+          396,
+          464
+        ],
+        [
+          86,
+          517,
+          363,
+          483
+        ],
+        [
+          596,
+          512,
+          398,
+          494
+        ],
+        [
+          1094,
+          524,
+          414,
+          487
+        ]
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: original production 2D game facade vegetation atlas. Six DISTINCT wall-clinging plants, transparent cutout. Landscape canvas 1536x1024, exact 3 columns x 2 rows of 512x512 cells; each plant stays fully inside its cell with at least 35 px transparent margin. No cell lines or labels. Each is a small irregular cluster of trailing vegetation hanging from a masonry joint at its upper left, entirely front-facing orthographic, about 340x400 pixels. Top row left: moss and fern fronds with very fine hanging brown roots; top center: asymmetrical dusty green ivy climbing downward with a sparse branch; top right: faded teal creeping vine with tiny off-white flowers. Bottom left: sparse rust-orange dry creeper and brittle leaves suitable for soot-covered forge town; bottom middle: dark olive ivy with soft short moss clumps and one tiny warm flower; bottom right: dusky blue small-leaved ivy with exposed wiry stems and lichen tufts. Painterly textured dark fantasy, naturally varied silhouettes with lots of holes of transparency between leaves, no large blob of grass. Fine detailed realistic painted surface, desaturated subdued colours, soft diffuse cool light. These will be combined over existing grey masonry behind a game character, so no wall texture, background, ground, pots, characters, buildings, text, frames, glow, hard drop shadows, logos, or watermarks. Genuine alpha outside leaves and stems, no white/black matte."
+    }
+  ],
+  "import": {
+    "mode": "lossless",
+    "size_limit": 1024,
+    "mipmaps": true,
+    "alpha_border": true,
+    "decoded_bytes_including_mipmaps": 7447448,
+    "combined_budget_bytes": 8388608
+  },
+  "placement": {
+    "actual_generated_variants_used": 12,
+    "wall_details": 83,
+    "pilasters": 44,
+    "ivy_patches": 39,
+    "grounded_rear_piers": 13,
+    "rooms": {
+      "EchoHaven": {
+        "pilasters": 15,
+        "ivy": 15,
+        "rear_piers": 6
+      },
+      "EchoHavenOutskirts": {
+        "pilasters": 11,
+        "ivy": 10,
+        "rear_piers": 6
+      },
+      "CinderHearth": {
+        "pilasters": 18,
+        "ivy": 14,
+        "rear_piers": 1
+      }
+    },
+    "principles": [
+      "Details stay inside their owning wall silhouette and clear of window/door/floor reservations.",
+      "Pilaster caps, straight material courses and feet are cropped at uniform scale, not vertically stretched.",
+      "Rear piers only connect an existing upper floor to an actual lower floor supporting their whole 14-pixel footprint.",
+      "Two static draw lists per settlement; no per-prop tick, collision, navigation, interaction or image readback.",
+      "Original Hollow Knight references inform layering, contact and silhouette composition only; no artwork copied."
+    ]
+  },
+  "implementation": [
+    "FacadeReliefAtlas.gd",
+    "SettlementFacadeRelief.gd",
+    "PaintedSettlementBuildings.gd"
+  ],
+  "verification": "tests/facade_route_verification_v1.json",
+  "limitations": [
+    "Scoped continuation, not whole-game visual completion.",
+    "Physical-phone profiling and a complete manual campaign playthrough are still pending."
+  ]
+}

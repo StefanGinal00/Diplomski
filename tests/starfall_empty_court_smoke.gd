@@ -49,7 +49,7 @@ func _run() -> void:
 	player.current_health = 100
 	player.global_position = boss.global_position + Vector2(-260.0, 0.0)
 	await create_timer(0.2).timeout
-	_check(boss.active and ambience.current_track == "boss" and ui.boss_health_panel.visible, "Guardian battle did not activate music and boss HUD")
+	_check(boss.active and ambience.current_track == "boss_starfall_guardian" and ui.boss_health_panel.visible, "Guardian battle did not activate music and boss HUD")
 	await court.get_node("RootReturnDoor").activate(player)
 	_check(state.current_room_id == "starfall_empty_court" and boss.active and court.get_node("RootReturnDoor").status_label.text == "BATTLE SEALED", "Guardian fight did not seal the return door")
 	_check(lamp._has_nearby_threat() and not lamp._save_progress(player), "Court lamp allowed a save during the boss fight")

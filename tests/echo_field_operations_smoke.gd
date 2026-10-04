@@ -65,6 +65,9 @@ func _station(ops: Node, index: int, player: Player) -> void:
 
 
 func _effects(ops: Node, first: bool, second: bool) -> void:
+	for index in range(ops.controls.size()):
+		var art: Node2D = ops.controls[index].get_node("DeviceArt")
+		_check(art.active == (first if index == 0 else second), "Device painting lost native activation/rollback state: " + ops.route_id)
 	for index in range(2):
 		var active := first if index == 0 else second
 		match ops.route_id:

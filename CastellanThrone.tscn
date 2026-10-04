@@ -1,4 +1,7 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://RemainingRoomArt.gd" id="remaining_art"]
+[ext_resource type="Script" path="res://BossArenaRelics.gd" id="boss_relics"]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
@@ -17,6 +20,18 @@ size = Vector2(1200, 12)
 size = Vector2(140, 10)
 
 [node name="CastellanThrone" type="Node2D"]
+
+[node name="ArenaRelics" type="Node2D" parent="."]
+script = ExtResource("boss_relics")
+points = PackedVector2Array(355, 411, 990, 411)
+height = 72.0
+
+[node name="RemainingArt" type="Node2D" parent="."]
+script = ExtResource("remaining_art")
+artwork = "castellan_throne"
+layout = "arena"
+route_path = NodePath("")
+plate_path = NodePath("Backdrop")
 
 [node name="Backdrop" type="Polygon2D" parent="."]
 z_index = -6

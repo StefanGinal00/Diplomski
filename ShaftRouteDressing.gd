@@ -94,10 +94,22 @@ func _site_anchor(index: int) -> Vector2:
 
 func _ready() -> void:
 	super._ready()
+	for index in range(_sites().size()):
+		if _sites()[index][2] == "watch_rack":
+			var site := get_node("Site%d" % index)
+			preload("res://IndustrialLandmarkArt.gd").attach(site, "armour_rack")
+			for leaf in site.get_children():
+				if (leaf is Polygon2D or leaf is Line2D) and leaf.get_child_count() == 0: leaf.self_modulate.a = 0
+	preload("res://FieldReserveArt.gd").attach(get_node("Site4"), "shaft")
+	var layout := Node2D.new()
+	layout.name = "RegionalSignLayout"
+	layout.set_script(preload("res://RegionalFieldSignLayout.gd"))
+	add_child(layout)
 	if not Engine.is_editor_hint():
 		var state := get_node_or_null("/root/GameState")
 		if state != null:
 			state.shortcut_changed.connect(_on_route_event)
+			state.cache_opened.connect(_on_route_event)
 		if region == "shaft_cistern":
 			room.sequence_changed.connect(_refresh_route)
 		_refresh_route()
@@ -218,11 +230,12 @@ func _refresh_route() -> void:
 
 func _refresh_reserve(state: Node) -> void:
 	var cleared := bool(state.unlocked_shortcuts.get(_event_prefix() + "hidden_depth_cleared", false))
+	var claimed := bool(state.opened_caches.get(_event_prefix() + "depth_cache", false))
 	var plaque := get_node("Site4")
 	plaque.get_node("ReserveSeal").modulate = Color(0.4, 1, 0.6) if cleared else Color.WHITE
 	for guard in range(2):
 		plaque.get_node("GuardianSeal%d" % guard).visible = not cleared
-	plaque.get_node("RouteClue").text = String(_sites()[4][3]) + "\n" + ("HIGH NICHE: GUARDIANS CLEARED, CACHE UNSEALED" if cleared else "HIGH NICHE: DEFEAT BOTH GUARDIANS FOR ITS CACHE")
+	plaque.get_node("RouteClue").text = String(_sites()[4][3]) + "\n" + ("HIGH NICHE: CACHE CLAIMED" if claimed else ("HIGH NICHE: GUARDIANS CLEARED, CACHE UNSEALED" if cleared else "HIGH NICHE: DEFEAT BOTH GUARDIANS FOR ITS CACHE"))
 
 
 func _refresh_deep_route(state: Node) -> void:

@@ -1,0 +1,257 @@
+{
+  "version": 1,
+  "date": "2026-10-01",
+  "skill": "imagegen",
+  "mode": "built-in",
+  "intent": "generate",
+  "scope": "Compact regional passage facades; Cinder civic buildings and guardhouses; open Starfall street arch; budgeted cloth movement.",
+  "source_preservation": "Original generated RGBA retained bit-for-bit; only runtime atlas regions, uniform scale and mipmapped 1024px imports. Alpha audit is read-only. No copied Hollow Knight artwork.",
+  "assets": [
+    {
+      "id": "compact_passages_echo_v1",
+      "prompt": "Use case: stylized-concept. Asset type: transparent RGBA sprite atlas for original painterly dark fantasy 2D side-scroller. Landscape1536x1024, TWO compact doorway facades side by side in two equal768x1024 cells. Each entire silhouette fits within x60..708 of its own cell, y130..930. Orthographic frontal elevation. Variant left: weathered damp blue-grey stone tunnel arch with narrow timber inner jamb and a small unlit brass lamp. Variant right: old mossy limestone pointed arch with chipped slate threshold. Both are COMPACT human-sized door frames, thin textured border; black opaque unlit interior opening occupying at least65% width and80% height. NO tall surrounding mountain, no tower, no large hood above arch; only a narrow uneven ring of dressed rock. Both feet on same y930 baseline, minimal low rubble attached to jambs. Entire outside background genuinely transparent, opaque black only inside each door opening. Detailed fine masonry, subdued cold diffuse light. No sky, walls outside the frames, ground plane, text, characters, glow cone, logo, watermark or painted checkerboard. Leave clear transparent gutters between objects.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-4fd2474f-56e2-46cb-85ff-2b509abe06a3.png",
+      "path": "art/visual_slice/compact_passages_echo_v1.png",
+      "sha256": "83FF2B281F01E3C92EDD63C4278261873335A4A266D8EA6653CC67B29755D04F",
+      "original_unchanged": true,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "runtime_max_dimension": 1024,
+      "mipmaps": true,
+      "crops": [
+        [
+          34,
+          77,
+          703,
+          872
+        ],
+        [
+          800,
+          38,
+          702,
+          913
+        ]
+      ]
+    },
+    {
+      "id": "compact_passages_cinder_v1",
+      "prompt": "Use case: stylized-concept. Asset type: transparent RGBA game sprite atlas, original painterly dark fantasy side-scroller. Landscape1536x1024, TWO compact single-door facades side by side, two equal768x1024 cells. Entire separate silhouettes fit x60..708 percell y130..930. Orthographic frontal elevation. Left: compact round ash-dark brick doorway with narrow iron-strapped stone jambs, modest copper keystone; right: compact shallow pointed basalt arch with rusted iron edging. Rich weathered small bricks, restrained warm burnt umber and dark bronze textures. Both interiors fully black opaque, openings at least65% width and80% of fullheight. Thin architectural frame, NO bulky surrounding tower/mountain/roof/landscape. Feet same baseliney930; small low stone threshold. Actual transparent background outside each object and transparent gutter between. Soft neutral upper-left light, no orange blaze, no people, no text, no grid, no logos, no watermark, no background scene.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-ee2833ba-8980-463a-bb3e-9ad6dde65caf.png",
+      "path": "art/visual_slice/compact_passages_cinder_v1.png",
+      "sha256": "FC3DF2CFB34F076DE1FDC3C332E7AE8B50881106F542CAA9AF5587D5A78DB8D7",
+      "original_unchanged": true,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "runtime_max_dimension": 1024,
+      "mipmaps": true,
+      "crops": [
+        [
+          36,
+          63,
+          722,
+          872
+        ],
+        [
+          815,
+          49,
+          686,
+          885
+        ]
+      ]
+    },
+    {
+      "id": "compact_passages_star_v1",
+      "prompt": "Use case: stylized-concept. Asset type: original production transparent RGBA sprite atlas for painterly dark-fantasy 2D platformer. Landscape1536x1024, TWO compact doorway frames side by side, equal768x1024 cells, whole isolated objects inside each cell x60..708 y130..930. Front orthographic, not isometric. Left: elegant weathered pale blue-violet limestone pointed civic arch with fine carved rim and tiny bronze star inset. Right: squat rounded archivist doorway in dusky violet stone with narrow fluted jambs and tiny worn book crest. Black opaque dark interior opening occupies>=65% width and80% totalheight. Thin human-scale framing only, NO tall facade, huge wall, mountain or spire above opening. Detailed small masonry, subtle moss, slate threshold same baseliney930. Outside is truly transparent alpha, not a painted black rectangle. Quiet cool lighting, no glows, text, letters, human, scenery, checkerboard, watermark or logo.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-bef0b1c9-fa4b-4aaf-9cb9-c84b0c805caa.png",
+      "path": "art/visual_slice/compact_passages_star_v1.png",
+      "sha256": "69709D806E821C2BFA1FE48AF0C20401EEADA343EB6E7ED61E6007502F5CB695",
+      "original_unchanged": true,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "runtime_max_dimension": 1024,
+      "mipmaps": true,
+      "crops": [
+        [
+          55,
+          14,
+          666,
+          960
+        ],
+        [
+          786,
+          207,
+          712,
+          768
+        ]
+      ]
+    },
+    {
+      "id": "starfall_watch_arch_v1",
+      "prompt": "Use case: stylized-concept. Production original 2D side-scroller transparent RGBA sprite, 1536x1024. A WIDE LOW medieval fantasy civic gate, single open arch joined to two short buttresses, muted blue grey weathered limestone, restrained bronze star relief on keystone, small slate hip caps, moss at base. Painterly realistic stone texture consistent with a dark subterranean town, orthographic FRONT elevation, not isometric. Entire gate x100..1436 y140..950. Broad clear arch opening spans x440..1100 y280..940. BOTH the opening and all background genuinely transparent alpha, no black fill in opening. There is no doorway or door leaf; this is an open street arch through which distant scenery remains visible. The two feet align at y950, no connecting floor or threshold, no scenery, characters, text, logos or watermark. No solid walls through opening, no floating rectangular background, no light rays. Strong readable silhouette, subdued material detail.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-8b4c265e-5007-464e-9284-c513e9a3249c.png",
+      "path": "art/visual_slice/starfall_watch_arch_v1.png",
+      "sha256": "C4D48E9B5A12087ACE7F931A394B5F19B569B25956E40EA2C086E6CF34319F16",
+      "original_unchanged": true,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "runtime_max_dimension": 1024,
+      "mipmaps": true,
+      "crops": [
+        [
+          60,
+          98,
+          1416,
+          810
+        ]
+      ]
+    },
+    {
+      "id": "civic_battlements_v1",
+      "prompt": "Use case: stylized-concept. Original transparent RGBA sprite atlas for a hand-painted dark fantasy 2D side scrolling game, 1536x1024. Three separated horizontal modular parapet cornices each in its own 1536x341 row, margins 45px left/right, 50px top/bottom in each cell. FRONT orthographic view, no perspective ground plane. Top row: warm ash-brown basalt crenellation, six chunky worn merlons, rusted iron braces and carved copper coping. Middle row: faded blue grey limestone fortified parapet, five rounded chipped crenels and subtle bronze star ornament. Bottom row: weathered ochre sandstone civic cornice with fluted band and short mossy end caps, NO crenels. Each module broad and LOW, silhouette horizontal. Real masonry texture, painterly realistic not cartoon geometry. Genuine transparent background around and between all three objects, soft shading only ON stone, no cast drop shadow. No scene, text, characters, labels, floor, watermarks or logos. Pieces will be repeated along building eaves at small game scale.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-4e817457-fd88-45bf-8305-aa6a90d93aae.png",
+      "path": "art/visual_slice/civic_battlements_v1.png",
+      "sha256": "E0BBF4C69DCC1D03109F3204D23A3A0058E0F3A5512775A0C9493EEBC78DBB71",
+      "original_unchanged": true,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "runtime_max_dimension": 1024,
+      "mipmaps": true,
+      "crops": [
+        [
+          51,
+          81,
+          1434,
+          244
+        ],
+        [
+          59,
+          417,
+          1418,
+          231
+        ],
+        [
+          49,
+          724,
+          1438,
+          220
+        ]
+      ]
+    },
+    {
+      "id": "civic_reliefs_v1",
+      "prompt": "Use case: stylized-concept. Original transparent RGBA six-piece modular facade ornament atlas for a dark medieval fantasy 2D side-scroller, 1536x1024, THREE columns by TWO rows, six isolated objects in equal 512x512 cells. Every object fits x55..457 y60..455 in its cell. FRONT elevation, consistent muted worn bronze, warm limestone and dark aged wood, finely textured painterly realism, read at small scale. Top-left a carved limestone unfurled scroll relief with shallow unreadable line engraving and bronze end rollers. Top-middle an open book relief in carved warm limestone, copper book corners, no readable text. Top-right a small classroom slate sign in weathered wooden frame with simple faint chalk circle and three lines, no words. Bottom-left round warm amber stained-glass rose window with dark iron radial tracery and stone ring. Bottom-middle a mounted embossed copper shield displaying an ORIGINAL simple crossed spear and small ember insignia, not heraldry from any real group. Bottom-right a carved warm stone bell-foundry plaque, a recessed dark rectangular niche with timber lintel and small antique bronze bell hanging inside. Each isolated on genuinely transparent alpha background; no room wall behind the object, no glow haze, cast shadow, characters, labels, scene or watermark.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-c33bf16d-dba4-41e1-b751-cd34cdd072b8.png",
+      "path": "art/visual_slice/civic_reliefs_v1.png",
+      "sha256": "92E20DF84F9738DB1254CCABA1E4C23BF3D19077D1EE905141BC0CBDFE829AEC",
+      "original_unchanged": true,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "runtime_max_dimension": 1024,
+      "mipmaps": true,
+      "crops": [
+        [
+          29,
+          13,
+          496,
+          456
+        ],
+        [
+          557,
+          71,
+          480,
+          376
+        ],
+        [
+          1096,
+          13,
+          403,
+          435
+        ],
+        [
+          31,
+          474,
+          480,
+          474
+        ],
+        [
+          575,
+          458,
+          436,
+          509
+        ],
+        [
+          1075,
+          454,
+          432,
+          525
+        ]
+      ]
+    },
+    {
+      "id": "watch_banners_v1",
+      "prompt": "Use case: stylized-concept. Original transparent RGBA game sprite atlas 1536x1024, THREE columns TWO rows, six isolated medieval fantasy cloth hanging banners, one per512x512 cell, all within margins65px and60px. FRONT orthographic, weathered painterly realistic fabric with subtle folds, each hung from a short dark metal rod with visible brackets, long pennant shape ending withincell y460, topy50. Top row three warm Cinder town variants: faded oxblood pointed banner with bronze ember; soot-brown split-tail with simple crossed spears; ochre cloth with a tiny bell emblem. Bottom row three Starfall town variants: faded blue-violet star banner; desaturated indigo split-tail constellation embroidery; blue-grey cloth with simple open book emblem. Original iconography, no text or labels, no real logos. Genuine transparent alpha around EVERY object, no background or cast shadows or glow. Restrained medieval material, no bright saturated cartoon flat shapes, each banner separately cuttable. Designed for a gentle shader sway anchored at top rod.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-b5409ff5-82fa-4837-ac36-d4147ff3f23b.png",
+      "path": "art/visual_slice/watch_banners_v1.png",
+      "sha256": "EFD1E43CACFF4B8710C4B223ECC74CEB816E19F2D9E0653439D0074E2B6B6191",
+      "original_unchanged": true,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "runtime_max_dimension": 1024,
+      "mipmaps": true,
+      "crops": [
+        [
+          114,
+          6,
+          350,
+          500
+        ],
+        [
+          593,
+          6,
+          350,
+          500
+        ],
+        [
+          1070,
+          6,
+          351,
+          500
+        ],
+        [
+          108,
+          510,
+          353,
+          501
+        ],
+        [
+          591,
+          510,
+          352,
+          499
+        ],
+        [
+          1068,
+          510,
+          354,
+          499
+        ]
+      ]
+    }
+  ],
+  "decoded_rgba_and_mipmap_bytes": 26066068,
+  "phone_profiled": false
+}

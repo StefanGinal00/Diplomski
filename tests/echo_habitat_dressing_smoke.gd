@@ -96,7 +96,10 @@ func _run() -> void:
 		_cues(detail, false, false)
 		if entry[2] == "tide":
 			for sign in detail.get_parent().get_node("FieldOperations").signs:
-				_check("PEARL MARKS" in sign.text and not "FINAL HIDDEN" in sign.text, "Well clue points past the tier-seven reward")
+				if int(sign.get_meta("station_index", -1)) < 0:
+					_check("PEARL MARKS" in sign.text and not "FINAL HIDDEN" in sign.text, "Well entry clue points past the tier-seven reward")
+				else:
+					_check("PROGRESS" in sign.text and "SAVE AT A LAMP" in sign.text and not "FINAL HIDDEN" in sign.text, "Compact well station lost progress/save guidance")
 		_check(not detail.has_node("SalvageCache") and not detail.get_parent().get_node("RouteDiscoveryCache").open(player), "Dressing bypassed original objective")
 		await _station(detail, 0, player)
 		_cues(detail, true, false)

@@ -50,6 +50,14 @@ func _run() -> void:
 	first_snare._advance_phase()
 	_check(first_snare.phase == "warning" and first_snare.warning_line.default_color.a > 0.8, "Root snare has no visible warning before damage")
 	var stalker = rooted.get_node("FirstStalker")
+	# Room streaming deliberately leaves enemies in a safe recovery on re-entry.
+	# Observe that real transition instead of assuming a fresh patrol one frame
+	# after the door animation (and mistaking recovery for an untelegraphed hit).
+	for tick in 90:
+		if stalker.phase != "recovery": break
+		_check(not stalker.strike_area.monitoring,"Re-entry recovery deals damage")
+		await physics_frame
+	_check(stalker.phase=="patrol","Root Stalker did not leave entry recovery")
 	player.global_position = stalker.global_position + Vector2(75, 0)
 	stalker.attack_cooldown = 0.0
 	await physics_frame

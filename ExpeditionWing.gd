@@ -130,6 +130,9 @@ const ROOM_NAMES := {
 }
 
 @export_enum("shaft", "echo", "ash", "starfall") var region: String = "shaft"
+@export var painted_ramparts_enabled := true
+@export var painted_driftworks_enabled := true
+@export var painted_remaining_enabled := true
 
 var route: Dictionary
 const FLOOR_Y := 680.0
@@ -159,11 +162,39 @@ func _ready() -> void:
 
 
 func _build_field_dressing() -> void:
+	if region == "echo":
+		var scenery := Node2D.new()
+		scenery.name = "SceneryArt"
+		scenery.set_script(preload("res://EchoSceneryArt.gd"))
+		add_child(scenery)
 	var dressing := Node2D.new()
 	dressing.set_script(preload("res://StarfallRouteDressing.gd") if region == "starfall" else preload("res://ExpeditionFieldDressing.gd"))
 	dressing.name = "FieldDressing"
 	dressing.set("region", {"shaft": "drift", "echo": "depths", "ash": "emberspine", "starfall": "StarfallRamparts"}[region])
 	add_child(dressing)
+	if region == "starfall" and painted_ramparts_enabled:
+		var art := Node2D.new()
+		art.name = "RampartArt"
+		art.set_script(preload("res://RampartPaintedArt.gd"))
+		add_child(art)
+	elif region == "shaft" and painted_driftworks_enabled:
+		var art := Node2D.new()
+		art.name = "DriftworksArt"
+		art.set_script(preload("res://DriftworksPaintedArt.gd"))
+		add_child(art)
+	elif region in ["echo", "ash"] and painted_remaining_enabled:
+		var art := Node2D.new()
+		art.name = "RemainingArt"
+		art.set_script(preload("res://RemainingRoomArt.gd"))
+		art.set("layout", "expedition")
+		art.set("artwork", "echo_depths" if region == "echo" else "emberspine")
+		art.set("route_path", NodePath("."))
+		art.set("plate_path", NodePath(""))
+		add_child(art)
+	if region != "echo": # Echo's native scenery pass already handles these shapes.
+		var growth := preload("res://ExpeditionNatureArt.gd").new()
+		growth.name = "ExpeditionNatureArt"
+		add_child(growth)
 
 
 func _uses_world_population_streaming() -> bool:

@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://EchoShade.gd" id="1_shade"]
 [ext_resource type="PackedScene" path="res://XPOrb.tscn" id="2_xp"]
 [ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="3_gold"]
+[ext_resource type="Script" path="res://ShadeAppearance.gd" id="4_art"]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
 size = Vector2(28, 35)
@@ -28,6 +29,7 @@ color = Color(0.72, 1, 0.96, 1)
 polygon = PackedVector2Array(-8, -5, -2, -5, -2, -2, -8, -2, 2, -5, 8, -5, 8, -2, 2, -2)
 
 [node name="Telegraph" type="Line2D" parent="."]
+z_index = 1
 visible = false
 points = PackedVector2Array(0, 5, 130, 5)
 width = 4.0
@@ -50,3 +52,6 @@ mouse_filter = 2
 max_value = 4.0
 value = 4.0
 show_percentage = false
+
+[node name="Appearance" type="Sprite2D" parent="."]
+script = ExtResource("4_art")

@@ -3,10 +3,13 @@ extends CharacterBody2D
 signal health_changed(current_health: int, maximum_health: int)
 signal phase_changed(phase: int)
 signal defeated
+signal battle_started
 
 const PROJECTILE_SCENE: PackedScene = preload("res://EnemyProjectile.tscn")
 
 @export var max_health: int = 16
+@export var boss_id := "ember_marshal"
+var is_rematch := false
 @export var gravity: float = 1000.0
 @export var walk_speed: float = 48.0
 @export var charge_speed: float = 245.0
@@ -37,6 +40,7 @@ func _ready() -> void:
 	var game_state := get_node_or_null("/root/GameState")
 	if game_state != null:
 		var tier: int = game_state.get_zone_tier("ashen_bastion")
+		is_rematch = tier > 0
 		max_health += tier * 5
 		charge_speed += tier * 25.0
 	current_health = max_health
@@ -44,10 +48,13 @@ func _ready() -> void:
 	health_bar.value = current_health
 	target_player = get_tree().get_first_node_in_group("player") as Player
 	telegraph.hide()
+	preload("res://BossAppearance.gd").attach(self)
 
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
+		return
+	if get_node("EncounterSafety").should_suspend():
 		return
 	if not is_instance_valid(target_player):
 		target_player = get_tree().get_first_node_in_group("player") as Player
@@ -76,7 +83,8 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, 800.0 * delta)
 	else:
 		var horizontal_distance: float = target_player.global_position.x - global_position.x
-		velocity.x = signf(horizontal_distance) * walk_speed if absf(horizontal_distance) > 95.0 else 0.0
+		var desired := signf(horizontal_distance) * walk_speed if absf(horizontal_distance) > 95.0 else 0.0
+		velocity.x = preload("res://BossLocomotion.gd").approach(velocity.x, desired, delta)
 		muzzle.position.x = 24.0 * signf(horizontal_distance)
 		eye.position.x = 9.0 * signf(horizontal_distance)
 		if is_zero_approx(charge_cooldown):
@@ -84,7 +92,7 @@ func _physics_process(delta: float) -> void:
 		elif is_zero_approx(volley_cooldown):
 			_fire_volley()
 	move_and_slide()
-	position.x = clampf(position.x, arena_left_x, arena_right_x)
+	preload("res://BossLocomotion.gd").stop_at_edge(self, arena_left_x, arena_right_x, 0.55)
 	if charge_remaining > 0.0 and is_on_wall():
 		charge_remaining = 0.0
 		recovery_remaining = 0.55
@@ -107,6 +115,7 @@ func _fire_volley() -> void:
 	volley_cooldown = 2.2 if phase == 1 else 1.5
 	if target_player == null or get_parent() == null:
 		return
+	get_node("CombatPresentation").release("volley")
 	var direction: Vector2 = (target_player.global_position - muzzle.global_position).normalized()
 	var angles: Array[float] = [0.0]
 	if phase == 2:
@@ -126,7 +135,7 @@ func _try_contact_damage() -> void:
 	for body in contact_area.get_overlapping_bodies():
 		if body is Player and not body.is_dead:
 			var direction := -1.0 if body.global_position.x < global_position.x else 1.0
-			body.take_damage(2, Vector2(direction * 210.0, -180.0))
+			body.take_damage(3 if charge_remaining > 0.0 else 1, Vector2(direction * 210.0, -180.0))
 			contact_cooldown = 0.9
 			return
 

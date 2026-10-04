@@ -2,15 +2,22 @@ extends Area2D
 
 signal interaction_requested(npc: Area2D)
 
+@export var portrait_texture: Texture2D
+
 var player_in_range: Node
 
 @onready var interaction_prompt: Label = $InteractionPrompt
 
 
 func _ready() -> void:
+	preload("res://OpeningResidentArt.gd").attach(self, 1)
 	interaction_prompt.hide()
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+
+
+func get_portrait_texture() -> Texture2D:
+	return portrait_texture
 
 
 func _unhandled_input(event: InputEvent) -> void:

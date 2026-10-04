@@ -9,6 +9,7 @@ const CACHE := preload("res://ResonanceCache.tscn")
 const BROOD := preload("res://EchoBroodling.tscn")
 const SHADE := preload("res://EchoShade.tscn")
 const WISP := preload("res://ShaftWisp.tscn")
+const DEVICE_ART := preload("res://EchoDeviceArt.gd")
 const PROFILES := {
 	"tide": ["THE QUIET WELL", "CALM BOTH CURRENT BANKS", "THE RETURNING TIDE", [WISP, WISP]],
 	"nest": ["THE OUTER NURSERIES", "CLEAR BOTH SIDE NURSERIES", "THE LAST HATCH", [BROOD, BROOD]],
@@ -47,6 +48,7 @@ func _ready() -> void:
 				post.set("room_id", "echo_depths")
 				post.set("threat_root", route)
 				post.connect("heard", _on_signal)
+				_add_device_art(post, "receiver")
 				add_child(post)
 				controls.append(post)
 			_:
@@ -59,9 +61,10 @@ func _ready() -> void:
 				valve.set("inactive_prompt", "[E] " + ("STABILIZE BRIDGES" if route_id == "causeway" else "CALM THE CURRENT"))
 				valve.set("active_label", String(names[index]) + " - READY")
 				valve.set("active_prompt", "BRIDGES STABLE" if route_id == "causeway" else "CURRENT CALMED")
+				_add_device_art(valve, {"tide": "valve", "causeway": "anchor", "vault": "drain"}[route_id])
 				add_child(valve)
 				controls.append(valve)
-		_sign(point + Vector2(-220, -235))
+		_sign(point + Vector2(-220, -190), index)
 	# A clue at the entry makes the distant branches discoverable.
 	var entry_point := _depth_floor(0, false) if route_id == "depths" else (route.get_node("Tier00SideAlcove") as Node2D).position + Vector2(0, -34)
 	_sign(entry_point + Vector2(-220, -180))
@@ -134,13 +137,18 @@ func _encounter(node_name: String, point: Vector2, event_id: String, foes: Array
 	return trial
 
 
-func _sign(point: Vector2) -> void:
+func _add_device_art(device: Node2D, kind: String) -> void:
+	DEVICE_ART.attach(device, kind)
+
+
+func _sign(point: Vector2, station_index: int = -1) -> void:
 	var sign := Label.new()
 	sign.position = point
-	sign.size = Vector2(440, 95)
+	sign.size = Vector2(440, 65 if station_index >= 0 else 95)
+	sign.set_meta("station_index", station_index)
 	sign.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	sign.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	sign.add_theme_font_size_override("font_size", 11)
+	sign.add_theme_font_size_override("font_size", 10 if station_index >= 0 else 11)
 	add_child(sign)
 	signs.append(sign)
 
@@ -183,6 +191,16 @@ func _refresh() -> void:
 	if bool(state.unlocked_shortcuts.get("echo_%s_field_return_complete" % route_id, false)):
 		detail = "DISCOVERY RECORDED\nRETURN TRIAL CLEARED"
 	for sign in signs:
+		var local_index := int(sign.get_meta("station_index", -1))
+		if local_index >= 0:
+			var local_done := bool(state.unlocked_shortcuts.get(requirements[local_index], false))
+			var local_status := "STATION COMPLETE" if local_done else String(PROFILES[route_id][1])
+			if completed:
+				local_status = "TASK COMPLETE - RETURN AFTER THE MATRIARCH"
+			if bool(state.unlocked_shortcuts.get("echo_%s_field_return_complete" % route_id, false)):
+				local_status = "RETURN TRIAL CLEARED"
+			sign.text = String(PROFILES[route_id][0]) + "\n" + local_status + "\nPROGRESS %d/%d | SAVE AT A LAMP" % [count, requirements.size()]
+			continue
 		var route_clue := "EXPLORE THE SIDE CHAMBERS; CACHE: FINAL HIDDEN SHELF"
 		if route_id == "depths":
 			route_clue = "SIGNALS: WEST + EAST BRANCHES; CACHE: DEEPEST BRANCH"

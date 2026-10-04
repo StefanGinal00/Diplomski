@@ -15,7 +15,7 @@ const INDUSTRY_SITES := {
 		[-1, 0.5, "camp", "THE ARMOURER'S SHELTER", "THE OLD DRILL SHELTER IS NOT A SAFE ZONE"],
 		[0, 0.58, "drill_panel", "QUARTERMASTER'S TALLY", "FOUR MARKED TARGETS AND THE ORIGINAL BEACON WAVES"],
 		[1, 0.26, "haul", "TRAINING SUPPLY CART", "ORDINARY CRATES ARE NOT MARKED DRILL TARGETS"],
-		[3, 0.55, "armour_rack", "THE EMPTY ARMOUR RACK", "THE BEACON TRIAL IS SEPARATE FROM THE UPPER GUARDIANS"],
+		[3, 0.55, "armour_rack", "QUARTERMASTER'S ARMOUR RACK", "THE BEACON TRIAL IS SEPARATE FROM THE UPPER GUARDIANS"],
 		[4, 0.25, "garden", "RAMPART MOSS", "RESTING GRAZERS NEED NOT BE FOUGHT"],
 		[5, 0.55, "survey", "THE LAST MUSTER RECORD", "AFTER THE CASTELLAN, RETURN TO THE FINAL GALLERY"],
 		[6, 0.68, "reserve_board", "QUARTERMASTER'S RESERVE", "FINISH THE INSPECTION AND DEFEAT THE UPPER GUARDIANS"],
@@ -106,6 +106,8 @@ func _build_site(index: int, data: Array, at: Vector2) -> void:
 			_line(site, "Standard", [Vector2(-82, 0), Vector2(-82, -155), Vector2(110, -155)], tone.lightened(0.15), 5)
 			_poly(site, "Cloth", [Vector2(-75, -148), Vector2(105, -148), Vector2(105, -48), Vector2(70, -64), Vector2(22, -38), Vector2(-75, -64)], tone.darkened(0.3))
 			_line(site, "WatchEye", [Vector2(-35, -101), Vector2(15, -129), Vector2(66, -101), Vector2(15, -82), Vector2(-35, -101)], tone.lightened(0.4), 3)
+	if data[2] in ["fan_model", "armour_rack", "watch_banner"]:
+		preload("res://IndustrialLandmarkArt.gd").attach(site, data[2])
 
 
 func _lights(site_index: int, values: Array) -> void:
@@ -135,6 +137,7 @@ func _refresh_ash() -> void:
 			_status(1, "HOIST READY" if complete else "SERVICE REQUIREMENTS %d/3" % (int(winch) + int(gear) + int(fan)))
 			for i in range(4):
 				get_node("Site3/Blade%d" % i).modulate = Color(1.6, 1.8, 1.4) if fan else Color.WHITE
+			get_node("Site3/IndustrialLandmark").set_enabled(fan)
 			_status(3, "COOLING FAN ACTIVE" if fan else "COOLING FAN OFFLINE")
 			advice = "Service repairs: %d/2. The cooling fan is %s. All three are needed for the service hoist." % [int(winch) + int(gear), "active" if fan else "still offline"]
 		"barracks":
@@ -169,9 +172,9 @@ func _refresh_ash() -> void:
 	reserve.get_node("FieldSeal").modulate = Color(0.4, 1, 0.55) if complete else Color.WHITE
 	reserve.get_node("GuardianSeal").modulate = Color(0.4, 1, 0.55) if guarded else Color.WHITE
 	reserve.get_node("ReserveLatch").modulate = Color(0.4, 1, 0.55) if complete and guarded else Color.WHITE
-	_status(6, "TASK: %s | UPPER GUARDIANS: %s" % ["DONE" if complete else "PENDING", "DONE" if guarded else "PENDING"])
+	get_node("Site6/RouteClue").text = String(_sites()[6][3]) + "\nTASK: %s | UPPER GUARDIANS: %s\n" % ["DONE" if complete else "PENDING", "DONE" if guarded else "PENDING"] + _return_status(state)
 	if returned:
-		advice = "The returning guardians are quiet. Their reserve and the original upper cache are separate, one-time finds. Save at a lamp."
+		advice = "The returning guardians are quiet. " + _return_status(state).capitalize() + ". The return reserve and original upper cache are separate, one-time finds. Save at a lamp."
 	elif complete and guarded:
 		advice = "The upper reserve is unsealed. " + ("The final gallery's return trial is now awake." if state.get_zone_tier("ashen_bastion") >= 1 else "After the Castellan falls, revisit the final gallery for the return trial.")
 	elif complete:

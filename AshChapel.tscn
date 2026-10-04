@@ -1,4 +1,6 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=17 format=3]
+
+[ext_resource type="Script" path="res://RemainingRoomArt.gd" id="remaining_art"]
 
 [ext_resource type="Script" path="res://AshChapelTrial.gd" id="1_trial"]
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="2_door"]
@@ -33,6 +35,13 @@ course_id = &"chapel"
 course_width = 4200.0
 legacy_width = 1150.0
 ground_y = 420.0
+
+[node name="RemainingArt" type="Node2D" parent="."]
+script = ExtResource("remaining_art")
+artwork = "ash_chapel"
+layout = "ash"
+route_path = NodePath("AshSwitchback")
+plate_path = NodePath("Backdrop")
 
 [node name="Backdrop" type="Polygon2D" parent="."]
 z_index = -5

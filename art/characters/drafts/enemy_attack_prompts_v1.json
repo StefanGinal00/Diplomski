@@ -1,0 +1,14 @@
+{
+  "mode": "built-in image_gen",
+  "skill": "imagegen",
+  "sources": [
+    "enemy_attack_source_v1.png",
+    "enemy_attack_extra_source_v1.png"
+  ],
+  "prompts": [
+    "Use case: stylized-concept. Asset type: production 2D dark fantasy game attack VFX sprite atlas, square 2048x2048. Exactly 4 columns by 4 rows, sixteen distinct isolated painted effects, centered in equal square cells with generous empty margins. Transparent background actual alpha, no checkerboard, no text, no grid, no characters, no environment. Crisp hand-painted luminous edges, textured dark cores, readable silhouettes, restrained glow, not UI icons. Row1 left to right: violet fractured void crystal bolt pointing right; cyan abyss water lance pointing right; magenta resonant concentric sonic projectile pointing right; orange burning coal projectile pointing right. Row2: pale lavender spectral torn soul projectile pointing right; icy blue four-point star spear pointing right; amber molten iron hammer-shaped projectile pointing right; crimson thorn-like archer dart pointing right. Row3: ivory three short curved claw contact slashes; ochre stone dust and chitin scrape burst low horizontal; turquoise moth-wing slipstream pointed right; violet curved spectral dash wake pointed right. Row4: teal chitin leap contact burst; amber fire eruption rising vertically from base; blue celestial light column rising vertically from base; lavender broken circular runic shockwave. Every effect stays inside its own cell, no overlap. Effects are game sprites, no painted rectangular backplates or drop shadows. Strong distinct materials and shapes, coherent dark fantasy art style.",
+    "Use case: stylized-concept. Asset type: 2D dark fantasy game attack sprite atlas, exactly two columns and two rows, four isolated painted VFX on genuinely transparent alpha background. No checkerboard or background color, no text or grids. All four effects centered inside equal square cells with wide transparent gutters. Upper left: thin cyan crystalline needle pointing RIGHT, turquoise etched mineral core with small trailing cold wisps, compact head near right end. Upper right: rising tangle of sharp gnarled green brown roots erupting upward from a low ground base, thorn and bark texture, coherent single attack silhouette. Lower left: three curved orange ember claw-slashes with dark charcoal edges and sparse ash flakes. Lower right: three curved pale green leaf-edged scratches, organic plant creature contact strike, subtle moss motes. Hand-painted textured 2D sprites, crisp readable forms, restrained glow, no characters, no 3D, no environment, no shadows or opaque backplates. All effects fully isolated within their cell."
+  ],
+  "processing": "Both outputs were genuine 1254x1254 RGBA. Preserve alpha; normalize and pad cells via tests/prepare_attack_atlas.py. No background removal needed.",
+  "runtime": "res://art/characters/enemy_attacks_v1.png"
+}

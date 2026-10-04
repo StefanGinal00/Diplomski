@@ -29,6 +29,7 @@ func _ready() -> void:
 	backing.polygon = PackedVector2Array([Vector2(-255, -234), Vector2(255, -234), Vector2(255, -62), Vector2(-255, -62)])
 	add_child(backing)
 	var title := _label("CITADEL FIELD OFFICE - %d EXPANDED ROUTES" % ROUTES.size(), 0)
+	title.name = "OfficeTitle"
 	title.position = Vector2(-244, -292)
 	title.add_theme_font_size_override("font_size", 12)
 	add_child(title)
@@ -166,3 +167,20 @@ func _fit_board() -> void:
 	summary.position.y = table.position.y + table.get_combined_minimum_size().y + 8
 	var bottom := summary.position.y + summary.get_combined_minimum_size().y + 8
 	backing.polygon = PackedVector2Array([Vector2(-255, -300), Vector2(255, -300), Vector2(255, bottom), Vector2(-255, bottom)])
+
+func prepare_world_reading() -> Vector2:
+	# Data cells remain live for quest status, but are no longer a billboard
+	# across the player camera. The painted public board is at city x=2773.
+	backing.hide()
+	table.hide()
+	summary.hide()
+	get_node("OfficeTitle").hide()
+	return global_position+Vector2(-117,-44)
+
+func reading_report() -> String:
+	var lines := PackedStringArray(["CITADEL FIELD OFFICE",summary.text])
+	for id in ROUTES:
+		var cells: Array = rows[id]
+		lines.append("%s\nTask: %s | Guard: %s | Cache: %s | Return: %s" % [cells[0].text,cells[1].text,cells[2].text,cells[3].text,cells[4].text])
+	lines.append("\nREADY is available, TAKEN is collected. Speak with Senna and Tarin for route guidance. This board never awards loot.")
+	return "\n\n".join(lines)

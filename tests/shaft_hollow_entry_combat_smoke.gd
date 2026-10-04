@@ -78,19 +78,24 @@ func _walk_to(destination: Vector2, budget: int) -> bool:
 			return true
 		if foe != null:
 			target = room.to_local(foe.global_position)
+			var in_sword_reach := false
 			player.attack_cast.force_shapecast_update()
 			for hit in player.attack_cast.get_collision_count():
 				if player.attack_cast.get_collider(hit) == foe:
+					in_sword_reach = true
 					player.try_attack()
 			if target.y < here.y - 35 and absf(target.x - here.x) < 90 and player.is_on_floor():
 				player._try_jump()
 			if foe.get_script() == load("res://ShaftCrawler.gd") and foe.state == foe.State.WARNING and foe.state_remaining < 0.2 and player.is_on_floor():
 				player._try_jump()
-			if target.y > here.y + 25 and player.is_on_floor():
+			# A ledge can put the target ~25px below the player: close enough
+			# for the old stop radius, but outside the actual sword ShapeCast.
+			# Approach its lower level using movement, not fabricated damage.
+			if not in_sword_reach and target.y > here.y + 18 and player.is_on_floor():
 				if flank_direction == 0:
 					flank_direction = 1.0 if target.x >= here.x else -1.0
 				target.x = here.x + flank_direction * 70
-			elif absf(target.y - here.y) < 25:
+			elif in_sword_reach or absf(target.y - here.y) < 12:
 				flank_direction = 0
 		else:
 			flank_direction = 0

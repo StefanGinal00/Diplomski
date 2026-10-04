@@ -24,10 +24,13 @@ func _ready() -> void:
 		marker.position = to_local(route.to_global(points[index]))
 		marker.set("shortcut_id", EVENTS[index])
 		marker.set("inactive_label", TITLES[index])
-		marker.set("active_label", TITLES[index] + " - RECORDED")
+		marker.set("active_label", "ORE RECORDED")
 		marker.set("inactive_prompt", "[E] RECORD ORE SAMPLE")
 		marker.set("active_prompt", "SAMPLE RECORDED")
 		add_child(marker)
+		preload("res://PickupMaterialArt.gd").attach(marker, 2, Vector2(23, 26))
+		marker.get_node("Core").hide()
+		marker.get_node("Glow").hide()
 		marker.get_node("Core").polygon = PackedVector2Array([Vector2(0, -20), Vector2(13, -6), Vector2(7, 14), Vector2(-7, 14), Vector2(-13, -6)])
 		for label_name in ["StatusLabel", "InteractionPrompt"]:
 			var label := marker.get_node(label_name) as Label

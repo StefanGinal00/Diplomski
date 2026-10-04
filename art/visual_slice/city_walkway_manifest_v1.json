@@ -1,0 +1,181 @@
+{
+  "version": 1,
+  "date": "2026-10-03",
+  "skill": "imagegen",
+  "mode": "built-in",
+  "intent": "generate",
+  "scope": "Three region-specific architectural walkway atlases; four shallow manmade stone/timber cornices each, replacing cave-like ledges in Echo Haven, Cinder Hearth and Starfall Citadel. The connected Haven outer housing quarter uses the same architectural family; its natural base floor and timber link remain regional materials.",
+  "source_preservation": "Original generated PNGs retained bit-for-bit. Read-only alpha registration, runtime atlas regions, uniform scale and 1024px mipmapped imports; no pixel rewriting, no copied Hollow Knight assets.",
+  "assets": [
+    {
+      "id": "terrain_edge_haven_v1",
+      "prompt": "Use case: stylized-concept. Asset type: transparent RGBA modular 2D side-scrolling game architectural ledge atlas, landscape 1536x1024. Four completely separate long horizontal strips in four evenly spaced rows, each extending almost full width with 40px clear padding, with transparent space between rows. Primary request: four distinct narrow WEATHERED CIVIL ARCHITECTURAL WALKWAYS for a cool blue-green underground medieval canal town. Row 1: neatly built gray slate masonry cornice with small projecting stone corbels. Row 2: dark weathered timber balcony deck with small wrought iron supports underneath. Row 3: old stone paving with a carved lower frieze and small cracks. Row 4: narrow stone terrace fascia with restrained moss and roots on the undersides. Each strip has a perfectly straight continuous thin flat walkable top edge and natural but MANMADE architectural lower silhouette, no cave stalactites, no hanging giant boulders. Small believable blocks, timber grain, damp patina. Muted dark cool stone palette with subdued highlights. Orthographic FRONT side elevation, hand-painted detailed realistic game texture. No railings or tall objects above walkable top. Each horizontal strip should occupy a shallow height of 140-175 pixels maximum; equal scale and alignment. No ground underneath, no perspective, no scene, no characters, no text, no UI, no watermarks. Genuine alpha transparency in all empty space.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-0dc4f2ce-aeac-4ce1-9358-b6d071fca62a.png",
+      "path": "art/visual_slice/terrain_edge_haven_v1.png",
+      "sha256": "29DCEDE2109A5DF88C5DABDA528F257164F7A3861BEEB172B6A99C061E243A7B",
+      "original_unchanged": true,
+      "original_size": [
+        1536,
+        1024
+      ],
+      "source_png_bytes": 2057158,
+      "runtime_size": [
+        1024,
+        682
+      ],
+      "runtime_max_dimension": 1024,
+      "mipmaps": true,
+      "decoded_bytes_including_mipmaps": 3723724,
+      "crops": [
+        [
+          26,
+          98,
+          1485,
+          109
+        ],
+        [
+          26,
+          320,
+          1485,
+          133
+        ],
+        [
+          26,
+          554,
+          1485,
+          119
+        ],
+        [
+          26,
+          779,
+          1485,
+          148
+        ]
+      ],
+      "opaque_walk_contact_rows": [
+        99,
+        320,
+        554,
+        779
+      ]
+    },
+    {
+      "id": "terrain_edge_hearth_v1",
+      "prompt": "Use case: stylized-concept. Asset type: transparent RGBA modular 2D side-scrolling game architectural ledge atlas, landscape 1536x1024. Four separate long narrow horizontal strips arranged in four rows, spanning nearly full width with 40px margins and generous clear transparent space between each. Primary request: four distinct MANMADE WALKABLE cornices and galleries for an ancient soot-dark forge city. Row 1: narrow warm ash-gray brick cornice with small masonry corbels. Row 2: sturdy dark timber gallery deck with small iron riveted brackets under the deck. Row 3: gray stone paving with geometric inset copper frieze underneath. Row 4: worn basalt brick terrace fascia with restrained rusty seams and small patches of dry moss. Each strip has a straight horizontal continuous flat walkway top edge, rectangular small worked building blocks and believable architecture beneath, not cave ledges or drooping rocks. Small-scale rich textures, no giant blocks. Orthographic FRONT side elevation, painterly realistic detailed game asset. Height of each strip 140-175 pixels; all same scale. No railings or protrusions above top, no ground/background underneath, no perspective, no scene, no characters, no text, no UI or watermark. Genuine transparent background including between rows.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-df6e17b3-80bb-46c9-9b5c-8b7f86fe61cc.png",
+      "path": "art/visual_slice/terrain_edge_hearth_v1.png",
+      "sha256": "B2DAAB2F410187F63618DCE2D997414BD3AC99805DF01466242232A416047CFC",
+      "original_unchanged": true,
+      "original_size": [
+        1536,
+        1024
+      ],
+      "source_png_bytes": 2350588,
+      "runtime_size": [
+        1024,
+        682
+      ],
+      "runtime_max_dimension": 1024,
+      "mipmaps": true,
+      "decoded_bytes_including_mipmaps": 3723724,
+      "crops": [
+        [
+          10,
+          100,
+          1514,
+          107
+        ],
+        [
+          10,
+          331,
+          1514,
+          134
+        ],
+        [
+          9,
+          572,
+          1516,
+          148
+        ],
+        [
+          10,
+          811,
+          1513,
+          135
+        ]
+      ],
+      "opaque_walk_contact_rows": [
+        100,
+        331,
+        572,
+        812
+      ]
+    },
+    {
+      "id": "terrain_edge_street_v1",
+      "prompt": "Use case: stylized-concept. Asset type: original transparent RGBA modular 2D side-scrolling game architecture sprite atlas, landscape 1536x1024. Four separate very long shallow horizontal strips in four rows, 40px empty margins and transparent gutters. Primary request: four distinct walkable stone balcony cornices for a misty ancient Gothic city, detailed weathered civil architecture instead of cave platforms. Row 1: pale cool gray slate pavers over graceful small carved stone corbels. Row 2: dark timber balcony fascia with delicate black iron fasteners and underside braces. Row 3: dusky lavender-gray masonry deck with fine geometric carved trim. Row 4: weathered stone terrace fascia with tiny vine roots, pale lichen, a few soft chips. Straight continuous FLAT upper walking surface; shallow detailed lower profiles without big rocks, stalactites or clutter. Each strip should be 140-175 pixels tall and span almost all width. Hand-painted realistic game texture, orthographic FRONT side elevation, no perspective. Muted values so actors remain legible. No railings or tall objects above top, no ground, scene, characters, text, logos, UI or watermarks. Actual alpha transparency in all empty areas.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-0e930f60-ee14-4d51-87bc-6a0be819593e.png",
+      "path": "art/visual_slice/terrain_edge_street_v1.png",
+      "sha256": "C95779F99F3071C05E18392EB5C765A164EDADE52A91499E33A50799AE90FE83",
+      "original_unchanged": true,
+      "original_size": [
+        1536,
+        1024
+      ],
+      "source_png_bytes": 2231338,
+      "runtime_size": [
+        1024,
+        682
+      ],
+      "runtime_max_dimension": 1024,
+      "mipmaps": true,
+      "decoded_bytes_including_mipmaps": 3723724,
+      "crops": [
+        [
+          7,
+          119,
+          1526,
+          107
+        ],
+        [
+          7,
+          338,
+          1524,
+          171
+        ],
+        [
+          6,
+          596,
+          1524,
+          118
+        ],
+        [
+          7,
+          800,
+          1523,
+          136
+        ]
+      ],
+      "opaque_walk_contact_rows": [
+        119,
+        338,
+        596,
+        800
+      ]
+    }
+  ],
+  "coverage": {
+    "echo_haven": 57,
+    "ash_hearth": 44,
+    "starfall_citadel": 106,
+    "echo_haven_outskirts_built_streets": 55,
+    "total_city_horizontal_surfaces": 262,
+    "original_png_sha256_equal": true,
+    "combined_decoded_bytes_including_mipmaps": 11171172
+  },
+  "limitations": [
+    "Architectural ledge art does not change the original horizontal floor colliders or one-way status.",
+    "Decoded image budget measured; actual phone FPS, VRAM and memory not profiled.",
+    "This is a scoped continuation, not whole-world final art."
+  ]
+}

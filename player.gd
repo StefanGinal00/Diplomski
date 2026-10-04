@@ -14,6 +14,10 @@ signal respawned
 signal died
 ## Presentation event: emitted only after the original attack succeeds.
 signal attack_performed(weapon_class: String, direction: Vector2)
+## Cosmetic contact notification, after target deduplication, before damage.
+signal melee_contacted(target_point: Vector2, kind: String, direction: Vector2, weapon_id: String)
+## Accepted post-defense damage only; presentation never determines the outcome.
+signal damage_received(amount: int, knockback: Vector2, outcome: String)
 
 @export_category("Movement")
 @export var move_speed: float = 165.0
@@ -87,6 +91,10 @@ var mana_regen_progress: float = 0.0
 var facing_direction: float = 1.0
 var respawn_position: Vector2
 var drop_through_floors: Array[Dictionary] = []
+# Session-only development controls. Never exported or copied to GameState.
+var test_invincible := false
+var test_flight := false
+var test_noclip := false
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var player_collision: CollisionShape2D = $CollisionShape2D
@@ -105,6 +113,9 @@ var standing_sprite_scale: Vector2
 
 
 func _ready() -> void:
+	# Follow shallow downhill contours without one-frame airborne flicker.
+	# Upward jumps still detach normally; snapping never bridges route gaps.
+	floor_snap_length = 6.0
 	current_health = max_health
 	current_mana = max_mana
 	var game_state := _get_game_state()
@@ -139,6 +150,9 @@ func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
 
+	if OS.is_debug_build() and test_flight:
+		_update_test_flight(delta)
+		return
 	_update_dash_timers(delta)
 	_update_mana(delta)
 	if Input.is_action_just_pressed("dash"):
@@ -183,6 +197,32 @@ func _physics_process(delta: float) -> void:
 		try_attack()
 
 	move_and_slide()
+
+
+func set_test_flight(enabled: bool, noclip := false) -> void:
+	if not OS.is_debug_build(): return
+	test_flight = enabled
+	test_noclip = enabled and noclip
+	_clear_drop_through()
+	velocity = Vector2.ZERO
+	is_dashing = false
+	dash_time_remaining = 0
+	jump_buffer_remaining = 0
+	dash_visual.hide()
+	_set_crouching(false)
+
+
+func _update_test_flight(delta: float) -> void:
+	var direction := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	direction += Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)), float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W)))
+	if Input.is_physical_key_pressed(KEY_SPACE): direction.y -= 1
+	velocity = direction.limit_length() * (420.0 if Input.is_physical_key_pressed(KEY_SHIFT) else 190.0)
+	if test_noclip: global_position += velocity * delta
+	else: move_and_slide()
+	if not is_zero_approx(direction.x):
+		facing_direction = signf(direction.x)
+		sprite.flip_h = facing_direction < 0
+		_update_attack_direction()
 
 
 func _try_drop_through() -> bool:
@@ -286,6 +326,7 @@ func try_dash() -> bool:
 
 func get_effective_dash_cooldown() -> float:
 	var game_state := _get_game_state()
+	if game_state != null and game_state.get_equipped_defense_id() == "wayfarer_mantle": return dash_cooldown * 0.8
 	return dash_cooldown * 0.75 if game_state != null and game_state.get_equipped_defense_id() == "wind_cloak" else dash_cooldown
 
 
@@ -400,7 +441,7 @@ func _try_melee_attack(definition: Dictionary) -> bool:
 
 	var hit_targets: Dictionary = {}
 	for collision_index in range(attack_cast.get_collision_count()):
-		var target := attack_cast.get_collider(collision_index) as Node
+		var target := preload("res://CombatHurtbox.gd").actor(attack_cast.get_collider(collision_index) as Node)
 		if target == null or not is_instance_valid(target) or target.is_queued_for_deletion():
 			continue
 		if not target.is_in_group("enemy") and not target.is_in_group("neutral_creature") and not target.is_in_group("breakable"):
@@ -416,6 +457,8 @@ func _try_melee_attack(definition: Dictionary) -> bool:
 			attack_knockback.y
 		)
 		var target_bonus: int = game_state.get_weapon_target_bonus(weapon_id, target) if game_state != null else 0
+		var target_point: Vector2 = target.global_position if target is Node2D else attack_cast.global_position
+		melee_contacted.emit(target_point, "breakable" if target.is_in_group("breakable") else "actor", Vector2(facing_direction, 0), weapon_id)
 		target.take_damage(damage + target_bonus, knockback)
 
 	attack_performed.emit("sword", Vector2(facing_direction, 0))
@@ -439,7 +482,7 @@ func _try_bow_attack(definition: Dictionary) -> bool:
 	var arrow := arrow_scene.instantiate() as Area2D
 	get_parent().add_child(arrow)
 	arrow.global_position = global_position + aim_direction * 20.0 + Vector2(0.0, -3.0)
-	arrow.setup(aim_direction, self, arrow_type, (1 if bow_mastery_unlocked else 0) + upgrade_bonus, 1 if bow_piercing_unlocked and arrow_type == "basic_arrow" else 0, weapon_id, int(definition.get("damage", 1)), float(definition.get("range", 520.0)))
+	arrow.setup(aim_direction, self, arrow_type, (1 if bow_mastery_unlocked else 0) + upgrade_bonus, 1 if bow_piercing_unlocked and arrow_type == "basic_arrow" else 0, weapon_id, int(definition.get("damage", 1)), float(definition.get("range", 300.0)))
 	attack_cooldown_timer.start(float(definition.get("cooldown", 0.58)) * cooldown_multiplier)
 	attack_visual.hide()
 	if staff_visual != null:
@@ -478,7 +521,7 @@ func _try_staff_attack(definition: Dictionary) -> bool:
 	var projectile := magic_projectile_scene.instantiate() as Area2D
 	get_parent().add_child(projectile)
 	projectile.global_position = global_position + cast_direction * 19.0 + Vector2(0.0, -4.0)
-	projectile.setup(cast_direction, self, spell_id, (1 if staff_mastery_unlocked else 0) + upgrade_bonus, weapon_id, int(definition.get("damage", 2)), float(definition.get("range", 440.0)))
+	projectile.setup(cast_direction, self, spell_id, (1 if staff_mastery_unlocked else 0) + upgrade_bonus, weapon_id, int(definition.get("damage", 2)), float(definition.get("range", 270.0)))
 	attack_cooldown_timer.start(float(definition.get("cooldown", 0.72)) * cooldown_multiplier)
 	attack_visual.hide()
 	if bow_visual != null:
@@ -605,12 +648,15 @@ func _update_mana(delta: float) -> void:
 
 
 func take_damage(amount: int, knockback: Vector2 = Vector2.ZERO) -> void:
+	if OS.is_debug_build() and test_invincible: return
 	if is_dead or is_invulnerable or amount <= 0:
 		return
 
 	var game_state := _get_game_state()
 	if game_state != null and game_state.get_equipped_defense_id() == "guardian_band":
 		amount = maxi(amount - 1, 1)
+	elif game_state != null and game_state.get_equipped_defense_id() == "wayfarer_mantle" and amount >= 3:
+		amount -= 1
 	current_health = maxi(current_health - amount, 0)
 	if current_health <= 0 and second_breath_active:
 		second_breath_active = false
@@ -622,11 +668,13 @@ func take_damage(amount: int, knockback: Vector2 = Vector2.ZERO) -> void:
 		is_invulnerable = true
 		modulate.a = 0.5
 		invulnerability_timer.start()
+		damage_received.emit(amount, knockback, "second_breath")
 		return
 	_persist_state()
 	health_changed.emit(current_health, max_health)
 
 	if current_health <= 0:
+		damage_received.emit(amount, knockback, "fatal")
 		die()
 		return
 
@@ -636,6 +684,7 @@ func take_damage(amount: int, knockback: Vector2 = Vector2.ZERO) -> void:
 	is_invulnerable = true
 	modulate.a = 0.5
 	invulnerability_timer.start()
+	damage_received.emit(amount, knockback, "hurt")
 
 
 func heal(amount: int) -> void:

@@ -1,0 +1,69 @@
+{
+  "date": "2026-09-30",
+  "mode": "built-in imagegen, five independent generation calls; no CLI fallback or third-party downloads",
+  "originals": "Original RGBA PNGs copied unchanged to workspace. Source dimensions 1536x1024 each. Shared Godot imports max edge 1024 with mipmaps. AtlasTexture regions for sprites/cached draw; explicit atlas UVs for Polygon2D.",
+  "additional_decoded_bytes_with_mipmaps": 18618620,
+  "coverage": {
+    "services": 10,
+    "body_archetypes": 4,
+    "poses_per_archetype": 3,
+    "echo_cinder_windows": 59,
+    "starfall_direct_windows": 15,
+    "starfall_upper_windows": 40,
+    "starfall_market_windows": 18,
+    "echo_cinder_stalls": 9,
+    "starfall_market_stalls": 5,
+    "starfall_street_lamps": 11,
+    "starfall_planters": 11,
+    "starfall_benches": 4,
+    "starfall_cart": 1
+  },
+  "limits": "Three quiet authored poses per shared body (idle, work preparation/ledger, greeting), not a hand-refined hammer-strike cycle or ten bespoke portraits. Native stock, forge, reach and collision remain. More schematic scenery, continuous gameplay review and real-phone performance validation remain.",
+  "assets": [
+    {
+      "final_path": "art/characters/service_merchants_motion_v1.png",
+      "source_path": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-92b73ec3-1499-4e5d-bb6c-ddf4bcedfb5c.png",
+      "actual_dimensions": [
+        1536,
+        1024
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: original production-ready 2D side-view fantasy game sprite atlas. Hand-painted dark storybook realism, muted colors, crisp silhouette, subtle painterly texture, not pixel art, not 3D. Real transparent RGBA background, no checkerboard drawn, no ground, no cast shadow, no words, no labels, no borders, no watermark. Landscape 1536x1024, strict three columns and two rows, six isolated cutouts with generous transparent gutters. Human proportions, full bodies including boots. Each row one consistent character, same head height, same boot baseline, identical clothing and anatomy in all three frames. Side-three-quarter view facing RIGHT, no perspective rotation between poses. Poses ordered left to right: relaxed idle, working with hand-held tool, friendly open-palm greeting. Keep feet planted in identical positions. Two merchants. TOP ROW: middle-aged male quartermaster, short brown beard, dark teal long tunic, warm brown leather waistcoat, belt pouches, worn dark boots; idle holding closed ledger at waist, working opening ledger and checking a loose coin, greeting one open right palm with ledger retained in other hand. BOTTOM ROW: female market keeper, dark hair braided back, muted burgundy cloth over cream blouse, dark blue-green skirt/apron, small coin pouch and boots; same three actions. No oversized packs. Figures about 420 pixels tall, each fully inside its 512x512 cell. Ground contacts crisp without floating decor."
+    },
+    {
+      "final_path": "art/characters/service_smiths_motion_v1.png",
+      "source_path": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-f7e692cc-9680-48f1-b0ab-da72344f3e29.png",
+      "actual_dimensions": [
+        1536,
+        1024
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: original production-ready 2D side-view fantasy game sprite atlas. Hand-painted dark storybook realism, muted colors, crisp silhouette, subtle painterly texture, not pixel art, not 3D. Real transparent RGBA background, no checkerboard drawn, no ground, no cast shadow, no words, no labels, no borders, no watermark. Landscape 1536x1024, strict three columns and two rows, six isolated cutouts with generous transparent gutters. Human proportions, full bodies including boots. Each row one consistent character, same head height, same boot baseline, identical clothing and anatomy in all three frames. Side-three-quarter view facing RIGHT, no perspective rotation between poses. Poses ordered left to right: relaxed idle, working with hand-held tool, friendly open-palm greeting. Keep feet planted in identical positions. Two blacksmiths. TOP ROW: middle-aged male smith, cropped dark hair, rolled cream sleeves, charcoal trousers, leather apron, heavy worn boots; idle holding small hammer downward, work preparation raising hammer to shoulder with forearm reaching RIGHT, greeting open left hand and hammer lowered in right. BOTTOM ROW: female smith Selen with tied auburn braid, rolled gray sleeves, dark brown leather apron, dark trousers, reinforced boots; same three actions. Hands and hammer readable, not exaggerated. Work pose anticipates tapping an anvil on the RIGHT, DO NOT draw the anvil or sparks. Keep skull and body position stable between poses, only arms change. Each figure about 420 pixels tall fully inside its 512x512 cell."
+    },
+    {
+      "final_path": "art/visual_slice/service_workplaces_v1.png",
+      "source_path": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-425030cf-32ea-41d2-ad66-191359d8ac23.png",
+      "actual_dimensions": [
+        1536,
+        1024
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: original 2D game scenery atlas, six transparent painted cutouts, 1536x1024, strict 3 columns x2 rows, each cell512x512 separated by large transparent gutters. Dark fantasy storybook painted realism, worn natural materials, crisp silhouette, orthographic side-front view (not isometric), consistent diffused upper-left light, flat horizontal grounded bases. TOP LEFT low wooden provision table laden with folded cloth, ledger, coin scale and sacks, no canopy; TOP MIDDLE small blue-green apothecary cabinet/worktable with bottles, mortar and dried herbs; TOP RIGHT blackened iron anvil firmly mounted on squat wooden stump with tongs at side. BOTTOM LEFT hanging teal canvas shop awning with sewn seams, rope bindings and two short wooden brackets, no poles or stall beneath; BOTTOM MIDDLE ochre and red striped weathered canvas shop awning with timber brackets, no poles or stall beneath; BOTTOM RIGHT dark indigo shop awning with muted brass trim, wood brackets, no poles beneath. Props each centered individually fully inside cells, awnings roughly400px wide by150px high, table400px wide by280px high, anvil360px wide by300px high. Transparent background with alpha, no backdrop, no text, no people, no shadows on ground, no borders, no checkerboard pattern, no UI."
+    },
+    {
+      "final_path": "art/visual_slice/settlement_windows_v1.png",
+      "source_path": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-eb4d18e0-dc70-4b3f-8b30-5fae648e8b4c.png",
+      "actual_dimensions": [
+        1536,
+        1024
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: original 2D game architectural detail atlas, transparent RGBA,1536x1024, strict three columns and two rows with six isolated individual full window units. Painterly dark fantasy storybook realism, side-on orthographic facade elevation, no isometric perspective. TOP ROW three distinct Echo cave-village windows: mossy timber square window with left-open teal shutter and warm dim panes; narrow arched rough gray stone window with weathered green shutter and hanging herb sprig; round-topped timber lattice window with little fern planter. BOTTOM ROW three Cinder ash-town windows: soot-dark timber rectangular window with copper hinges and ochre half-open shutters; arched aged brick window with iron grille and warm amber panes; square pale stone window with weathered burgundy shutter and small dry flower box. Each window includes its full frame, deep dark inset recess, softly lit glass, sill and modest wall-mount fittings. Actual openings about160px wide by240px high, full units250-340px wide by300-370px high, centered in each512x512cell with wide alpha gutters. Consistent soft upper-left light. No wall slab or surrounding building, no text, no labels, no characters, no ground, no drop shadows outside units, no decorative grid, no watermark. Must be genuine transparent background, not checkerboard."
+    },
+    {
+      "final_path": "art/visual_slice/starfall_street_furnishings_v1.png",
+      "source_path": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-388d4809-2590-4731-a908-6b3b119d5118.png",
+      "actual_dimensions": [
+        1536,
+        1024
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: original 2D side-scrolling game scenery atlas, six separate transparent RGBA cutouts,1536x1024,strict 3 columns and 2 rows. Hand-painted dark fantasy storybook realism, worn silver-gray stone, indigo cloth, muted brass and weathered oak; crisp silhouettes and fine material detail, same soft light from upper left. Orthographic FRONT/SIDE ELEVATION, never isometric. TOP LEFT: narrow arched city window, carved pale gray stone frame and sill, diamond-latticed leaded glass with dim amber light, modest brass corners; TOP MIDDLE: second city window, rectangular weathered stone frame with two partly open indigo wooden shutters, warm small glass panes, carved star motif above, complete sill; TOP RIGHT: whole tall slim freestanding cast-iron street lamp with brass trim, glass lantern with warm light, dark pole, broad securely grounded stone foot, no halo outside silhouette. BOTTOM LEFT: low wide carved stone planter box with trailing ivy and varied purple-white flowers, clearly defined flat grounded bottom; BOTTOM MIDDLE: side-view modest wooden two-wheeled handcart carrying covered cloth bundles and two crates, shafts pointing slightly LEFT, both complete wheels touching same baseline, no ground; BOTTOM RIGHT: weathered wooden street bench with ornate wrought-iron side legs and modest carved backrest, front-side view, feet on one baseline. Keep every complete object INSIDE its512x512cell, large transparent gaps and 35px margins, no overlap between cells, no floating objects, no human characters, no text or labels, no checkerboard drawn, no backdrop, no contact shadows, no watermark. Window heights350px, lamp410px, planter260px, cart300px, bench260px; objects fill their own cells naturally without stretching."
+    }
+  ]
+}

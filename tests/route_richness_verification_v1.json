@@ -1,0 +1,175 @@
+{
+  "date": "2026-10-03",
+  "scope": "World-wide route enrichment, region-specific layered ground art, hanging decoration and selected physical low ceiling pockets.",
+  "implementation": {
+    "rooms": 39,
+    "generated_sheets": 8,
+    "unique_cutouts_used": 48,
+    "visible_ground_clusters": 6329,
+    "foreground_clusters_included": 2046,
+    "hanging_and_canopy_details": 3667,
+    "solid_lowered_vaults": 6,
+    "wind_eligible_details": 3906,
+    "simultaneous_wind_budget": {
+      "desktop": 18,
+      "low_cost": 8
+    },
+    "new_decoded_texture_bytes": 26079712,
+    "unchanged_original_source_png_bytes": true
+  },
+  "vault_rooms": [
+    "shaft_drift",
+    "shaft_cistern",
+    "shaft_approach",
+    "echo_depths",
+    "starfall_sunless_passage (2)"
+  ],
+  "geometry": {
+    "native_support_colliders_unchanged": true,
+    "new_solid_vault_colliders": 6,
+    "minimum_visual_clearance": 123,
+    "minimum_solid_clearance_tested": 130,
+    "real_controller_checks": 30,
+    "jump_checks_per_vault": 3,
+    "walk_directions_per_vault": 2,
+    "boss_arenas_and_settlements_no_new_vault_collision": true,
+    "art_only_details_have_no_colliders": true
+  },
+  "validation": {
+    "all_tests_passed": true,
+    "unique_tests": 9,
+    "tests": [
+      {
+        "Test": "route_field_dressing_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 18.8,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-194947-019-f764bf72\\route_field_dressing_smoke.log"
+      },
+      {
+        "Test": "route_richness_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 21.14,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-194947-019-f764bf72\\route_richness_smoke.log"
+      },
+      {
+        "Test": "route_vault_traversal_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 20.05,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-194947-019-f764bf72\\route_vault_traversal_smoke.log"
+      },
+      {
+        "Test": "corridor_clearance_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 20.69,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-194947-033-900ce7ac\\corridor_clearance_smoke.log"
+      },
+      {
+        "Test": "corridor_dressing_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 20.58,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-194947-033-900ce7ac\\corridor_dressing_smoke.log"
+      },
+      {
+        "Test": "world_grounding_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 22.36,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-194947-030-d0aa2098\\world_grounding_smoke.log"
+      },
+      {
+        "Test": "ambient_continuity_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 0.45,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-195049-253-a803f534\\ambient_continuity_smoke.log"
+      },
+      {
+        "Test": "regional_ambient_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 21.15,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-195049-233-d647d8aa\\regional_ambient_smoke.log"
+      },
+      {
+        "Test": "facade_context_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 2.42,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261003-195049-245-e18cdfd3\\facade_context_smoke.log"
+      }
+    ],
+    "fixtures": [
+      "scaled room artwork and ceiling geometry",
+      "native support preservation",
+      "late wall additions and disabling",
+      "wide streamed device reservations and removal",
+      "stable re-entry without duplicate nodes",
+      "registered opaque-ground contact",
+      "actual sprite bounds against all static solids",
+      "all 48 generated cutouts in use",
+      "mipmapped 1024px lossless imports",
+      "existing 8/18 active animation budgets"
+    ],
+    "test_harness_correction": "Native crossing ledge in Sunless Passage catches a jump 68px ABOVE takeoff; walking briefly steps off it 6px above the continuous floor. Landing assertions accept valid higher landings and allow 20 settle frames, while rejecting any fall below the real floor. No gameplay floor was removed/disabled to pass."
+  },
+  "native_preview": {
+    "engine": "Godot 4.6.2",
+    "renderer": "mobile / D3D12",
+    "size": [
+      1280,
+      720
+    ],
+    "files": [
+      "art/characters/preview_route_richness_training_passage.png",
+      "art/characters/preview_route_richness_sunken_shaft.png",
+      "art/characters/preview_route_richness_shaft_drift.png",
+      "art/characters/preview_route_richness_echo_grotto.png",
+      "art/characters/preview_route_richness_echo_gallery.png",
+      "art/characters/preview_route_richness_ash_forge.png",
+      "art/characters/preview_route_richness_ash_barracks.png",
+      "art/characters/preview_route_richness_starfall_rooted_hall.png",
+      "art/characters/preview_route_richness_starfall_sunless_passage.png",
+      "art/characters/preview_route_richness_echo_haven.png",
+      "art/characters/preview_route_richness_ash_hearth.png",
+      "art/characters/preview_route_richness_starfall_citadel.png"
+    ],
+    "logs": [
+      ".tmp-route-composed-preview.log",
+      ".tmp-route-blend-preview.log"
+    ],
+    "inspection": "All 12 views inspected. Grounded native Player in all. Ceiling core seams softened after initial hard-edge review; final mine and Starfall vault images re-inspected.",
+    "non_gameplay_environment_warnings": [
+      "Windows certificate store unavailable",
+      "shader cache write warning under sandbox; native images still rendered successfully"
+    ]
+  },
+  "asset_manifest": "art/visual_slice/route_dressing_manifest_v1.json",
+  "limits": [
+    "Not a full manual campaign playthrough or physical-phone performance benchmark.",
+    "Existing sequence-board prototype art in Rooted Hall and some older overview/readable indicators remain outside this route-dressing pass.",
+    "No new enemy AI, boss or NPC animation changes are claimed for this pass."
+  ]
+}

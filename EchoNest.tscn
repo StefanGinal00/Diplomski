@@ -1,4 +1,6 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://RemainingRoomArt.gd" id="remaining_art"]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
@@ -27,6 +29,13 @@ size = Vector2(130, 10)
 [node name="LongTraversal" type="Node2D" parent="."]
 script = ExtResource("6_traversal")
 route_id = "nest"
+
+[node name="RemainingArt" type="Node2D" parent="."]
+script = ExtResource("remaining_art")
+artwork = "echo_nest"
+layout = "echo"
+route_path = NodePath("LongTraversal")
+plate_path = NodePath("Backdrop")
 
 [node name="Backdrop" type="Polygon2D" parent="."]
 z_index = -4

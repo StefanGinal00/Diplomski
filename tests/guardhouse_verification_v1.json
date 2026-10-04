@@ -1,0 +1,215 @@
+{
+  "version": 1,
+  "verified_date": "2026-10-01",
+  "recorded_date": "2026-10-03",
+  "scope": "Verification of the preceding compact-door and civic guardhouse pass. Separate from the later body/city repair continuation.",
+  "asset_manifest": "res://art/visual_slice/guardhouse_manifest_v1.json",
+  "summary": {
+    "new_original_images": 7,
+    "atlas_cutouts": 22,
+    "compact_doorways": 25,
+    "total_contextual_doorways": 112,
+    "room_count": 39,
+    "hoists_rechecked": 40,
+    "animated_watch_banners": 10,
+    "cinder_banners": 6,
+    "starfall_banners": 4,
+    "authored_same_floor_entrance_adjustments": 5,
+    "authored_stair_width_adjustments": 3,
+    "readable_notices": 596,
+    "native_camera_views": 19,
+    "decoded_new_images_and_mipmaps_bytes": 26066068,
+    "focused_tests_passed": 13,
+    "focused_tests_failed": 0
+  },
+  "authored_changes": [
+    {
+      "node": "ShaftHollowLowerReturnDoor",
+      "same_floor_horizontal_offset": 48
+    },
+    {
+      "node": "DrownedCrossingCisternDoor",
+      "same_floor_horizontal_offset": 80
+    },
+    {
+      "node": "EchoGalleryDepthsDoor",
+      "same_floor_horizontal_offset": 80
+    },
+    {
+      "node": "TideWellVaultDoor",
+      "same_floor_horizontal_offset": 96
+    },
+    {
+      "node": "TideWellNestDoor",
+      "same_floor_horizontal_offset": 48
+    },
+    {
+      "node": "CinderLibraryDescent steps 5/6",
+      "previous_width": 118,
+      "width": 58
+    },
+    {
+      "node": "StarfallGardenGrandStair01",
+      "previous_width": 132,
+      "width": 72
+    }
+  ],
+  "tests": [
+    {
+      "Test": "settlement_civic_art_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 5.35,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261001-151854-248-052f4bc8\\settlement_civic_art_smoke.log"
+    },
+    {
+      "Test": "guardhouse_finish_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 5.13,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261001-153637-873-b79e9c24\\guardhouse_finish_smoke.log"
+    },
+    {
+      "Test": "world_structure_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 65.94,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261001-154225-035-e38e4a06\\world_structure_smoke.log"
+    },
+    {
+      "Test": "expanded_portal_alignment_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 17.01,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261001-152953-665-158a3ca9\\expanded_portal_alignment_smoke.log"
+    },
+    {
+      "Test": "remaining_jump_routes_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 34.9,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261001-153004-020-ffdbb682\\remaining_jump_routes_smoke.log"
+    },
+    {
+      "Test": "guard_landing_routes_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 14.72,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261001-153530-779-03c3e574\\guard_landing_routes_smoke.log"
+    },
+    {
+      "Test": "starfall_upper_city_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 61.27,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261001-153540-914-fe33bec1\\starfall_upper_city_smoke.log"
+    },
+    {
+      "Test": "biome_population_support_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 22.98,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261001-153627-629-beec11b9\\biome_population_support_smoke.log"
+    },
+    {
+      "Test": "world_grounding_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 54.25,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261001-153245-985-76dad15a\\world_grounding_smoke.log"
+    },
+    {
+      "Test": "world_readables_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 67.58,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261001-154214-764-c0b0631a\\world_readables_smoke.log"
+    },
+    {
+      "Test": "scenery_completion_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 65.94,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261001-154235-380-1047b34b\\scenery_completion_smoke.log"
+    },
+    {
+      "Test": "settlement_reading_occlusion_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 30.14,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261001-154424-471-ffb64f75\\settlement_reading_occlusion_smoke.log"
+    },
+    {
+      "Test": "basic_jump_routes_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 25.53,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20261001-154434-674-dedecb39\\basic_jump_routes_smoke.log"
+    }
+  ],
+  "native_renderer": {
+    "engine": "Godot 4.6.2",
+    "method": "Forward Mobile",
+    "driver": "D3D12",
+    "device": "NVIDIA GeForce RTX 4050 Laptop GPU",
+    "viewport": [
+      1280,
+      720
+    ],
+    "log": ".tmp-guard-preview-final-qa.log",
+    "capture_script": "res://tests/preview_guard_finish.gd",
+    "captures": [
+      "GUARD VIEW ash_hearth 0 (4103.0, 370.9778) grounded=true",
+      "GUARD VIEW ash_hearth 1 (3830.0, -286.0002) grounded=true",
+      "GUARD VIEW ash_hearth 2 (1540.0, 370.9998) grounded=true",
+      "GUARD VIEW ash_hearth 3 (2040.0, 370.9998) grounded=true",
+      "GUARD VIEW ash_hearth 4 (2390.0, 370.9998) grounded=true",
+      "GUARD VIEW ash_hearth 5 (3000.0, 370.9998) grounded=true",
+      "GUARD VIEW ash_hearth 6 (3560.0, 370.9998) grounded=true",
+      "GUARD VIEW ash_hearth 7 (3980.0, 370.9998) grounded=true",
+      "GUARD VIEW starfall_citadel 0 (265.0, 380.9893) grounded=true",
+      "GUARD VIEW starfall_citadel 1 (640.0, 380.9893) grounded=true",
+      "GUARD VIEW starfall_citadel 2 (6108.0, 380.9893) grounded=true",
+      "GUARD VIEW sunken_shaft 0 (16.04102, 380.998) grounded=true",
+      "GUARD VIEW sunken_shaft 1 (-164.0, -924.002) grounded=true",
+      "GUARD VIEW echo_haven_outskirts 0 (3450.0, -951.0557) grounded=true",
+      "GUARD VIEW shaft_hollow 0 (3871.301, 1390.998) grounded=true",
+      "GUARD VIEW shaft_crossing 0 (1438.801, 1420.998) grounded=true",
+      "GUARD VIEW shaft_gallery 0 (3408.0, 1080.998) grounded=true",
+      "GUARD VIEW echo_tide_well 0 (955.0, -634.002) grounded=true",
+      "GUARD VIEW echo_tide_well 1 (2024.0, -1914.002) grounded=true"
+    ]
+  },
+  "limitations": [
+    "Paired arrivals move with the five intentionally adjusted native entrances; this is not a collision-unchanged claim.",
+    "Focused jump checks and authored hops are not a full campaign or fair boss-combat playthrough.",
+    "The native camera pass is a desktop Forward Mobile render, not physical-phone profiling.",
+    "Story/save/progression authority remains in the existing controllers. No whole-game completion is claimed."
+  ]
+}

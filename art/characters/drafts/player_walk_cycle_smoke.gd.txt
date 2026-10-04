@@ -1,0 +1,97 @@
+# INACTIVE DRAFT: requires an accepted transparent WALK_SHEET and _apply_walk_pose.
+# Not included in the Godot script import or smoke-suite glob.
+extends "res://tests/player_movement_art_smoke.gd"
+
+
+func _run() -> void:
+	var state := root.get_node("GameState")
+	state.save_path = "res://_tmp_player_walk_cycle_save.json"
+	state.start_new_game("normal")
+	player = _player()
+	player.position = Vector2.ZERO
+	player.get_node("Camera2D").enabled = false
+	art = player.get_node("Appearance")
+	art.set_process(false)
+	var body_rid: RID = player.player_collision.shape.get_rid()
+	var body_transform := player.player_collision.transform
+	var cast_rid: RID = player.attack_cast.shape.get_rid()
+	var floor_node := _box(Vector2(0, 30), Vector2(2400, 20))
+	var wall := _box(Vector2(240, -100), Vector2(20, 260))
+	player.set_physics_process(true)
+	await _step(25)
+	var seen: Dictionary = {}
+	var previous_frame := -1
+	Input.action_press("ui_right")
+	for tick in range(55):
+		await _step()
+		if art.texture == art.WALK_SHEET:
+			seen[art.frame] = true
+			_check(art.hframes == 2 and art.vframes == 2 and art.frame in range(4), "Walk frame escaped atlas")
+			if previous_frame >= 0 and art.frame != previous_frame:
+				_check(art.frame == (previous_frame + 1) % 4, "Walk poses skip/reorder during real travel")
+			previous_frame = art.frame
+	_check(seen.size() == 4, "Real movement does not visit all four walk poses")
+	var frame_before: int = art.frame
+	var stride_before: float = art.stride_distance
+	for render_tick in range(4):
+		art._process(0.001)
+	_check(art.frame == frame_before and art.stride_distance == stride_before, "Extra renders advance walk without movement")
+	await _step(80)
+	stride_before = art.stride_distance
+	await _step(15)
+	_check(player.is_on_wall() and art.texture == art.SHEET and art.current_pose == art.Pose.IDLE and art.stride_distance == stride_before, "Blocked walking loops or keeps walk atlas")
+	Input.action_release("ui_right")
+	Input.action_press("ui_left")
+	await _step(20)
+	_check(art.texture == art.WALK_SHEET and art.flip_h, "Leftward motion does not mirror walk cycle")
+	Input.action_press("ui_down")
+	await _step(6)
+	_check(art.texture == art.MOVEMENT_SHEET and art.current_pose == art.Pose.CROUCH, "Crouch inherits standing walk atlas")
+	Input.action_release("ui_left")
+	Input.action_release("ui_down")
+	await _step(18)
+	_check(art.current_pose == art.Pose.IDLE, "Released movement does not settle to idle")
+	# Pure registration and safe sheet switching across every frame/facing.
+	for pose in range(4):
+		for left in [false, true]:
+			art._apply_walk_pose(pose, left)
+			_check(art.frame == pose and art.texture == art.WALK_SHEET and art.flip_h == left, "Explicit walk registration mismatch")
+			var pivot: Vector2 = art.WALK_PIVOTS[pose]
+			var cell_center := Vector2(art.WALK_SHEET.get_size()) / 4.0
+			var expected := cell_center - pivot
+			if left:
+				expected.x *= -1
+			_check(art.offset == expected and art.position == Vector2(0, 10), "Walk foot/pivot drift")
+			art._apply_pose(art.Pose.IDLE, left, false)
+			_check(art.texture == art.SHEET and art.hframes == 3 and art.frame == 0, "Walk to idle atlas switch broken")
+			art._apply_walk_pose(pose, left)
+			art._apply_attack_pose("staff", true, left, false)
+			_check(art.texture == art.COMBAT_SHEET and art.frame == 5, "Walk to attack atlas switch broken")
+	var pixels: Image = art.WALK_SHEET.get_image()
+	_check(pixels.get_size().x == pixels.get_size().y and pixels.get_size().x % 2 == 0, "Walk atlas is not a square 2x2 sheet")
+	var cell := pixels.get_size() / 2
+	for index in range(4):
+		var origin := Vector2i(index % 2, index / 2) * cell
+		var opaque := 0
+		for y in range(0, cell.y, 12):
+			for x in range(0, cell.x, 12):
+				if pixels.get_pixelv(origin + Vector2i(x, y)).a > 0.5:
+					opaque += 1
+		_check(opaque > 100, "Walk cell is empty")
+		for point in [Vector2i(5, 5), Vector2i(cell.x - 5, 40), Vector2i(15, cell.y - 15), Vector2i(cell.x - 12, cell.y - 12)]:
+			_check(pixels.get_pixelv(origin + point).a == 0, "Walk sheet contains checkerboard/background bleed")
+	player.set_physics_process(false)
+	player.position.x += 300
+	art._process(0.001)
+	_check(art.stride_distance == 0 and art.walk_grace == 0, "Teleport advances walk cycle")
+	_check(player.player_collision.shape.get_rid() == body_rid and player.player_collision.transform == body_transform and player.attack_cast.shape.get_rid() == cast_rid, "Walk art changed collision")
+	player.queue_free()
+	floor_node.queue_free()
+	wall.queue_free()
+	await process_frame
+	state.delete_save()
+	if failures.is_empty():
+		print("PLAYER WALK CYCLE TEST PASSED: four actual-travel frames, render retention, walls, facing, crouch/idle/attack switches, pivots, alpha, teleport and collision")
+		quit(0)
+	else:
+		quit(1)

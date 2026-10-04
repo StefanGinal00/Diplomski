@@ -1,0 +1,728 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-30",
+  "engine": "Godot 4.6.2 stable",
+  "scope": "Continuation of world repair, applied to shared systems and 39 registered rooms, not just attached screenshot positions.",
+  "inspiration_reviewed": "User-supplied Hollow Knight/Silksong map and room screenshots were viewed: irregular solid silhouettes, dark underground masses, occasional slopes, foreground pass-through foliage, atmosphere and coherent thresholds guided the pass. No game-reference image imported.",
+  "asset_manifest": "art/visual_slice/living_world_manifest_v1.json",
+  "implemented": [
+    {
+      "request": "Oversized mundane models and reserve chests",
+      "result": "18 regional reserve chests reduced from 0.50 to 0.23 art scale (~61x27 world units); carts, desks, tents, shelves and plants capped by category.",
+      "files": [
+        "FieldReserveArt.gd",
+        "EchoPaintedProps.gd"
+      ]
+    },
+    {
+      "request": "Iron and other loot floating out of reach; animate XP/gold/materials",
+      "result": "Non-quest pickups settle using gravity and a terrain probe; nearby accessible items magnetize to a live player. Six painted 4-frame cycles, low-amplitude bob and capped collection fly-in. Claims remain immediate, unique and guarded against dead players/blocked paths.",
+      "files": [
+        "PickupMotion.gd",
+        "AnimatedPickupArt.gd",
+        "PickupCollectArt.gd",
+        "ItemPickup.gd",
+        "GoldPickup.gd",
+        "XPOrb.gd"
+      ]
+    },
+    {
+      "request": "More varied original modular assets",
+      "result": "35 selected original images: 33 atlases with 278 source frames/segments plus water and bark material textures. Rejected alpha variants retained outside Godot import.",
+      "files": [
+        "LivingAtlasData.gd",
+        "LivingSpriteAtlas.gd"
+      ]
+    },
+    {
+      "request": "Natural walls, ground fill, doors and slopes",
+      "result": "Continues existing terrain envelope/portal context repair. Adds 30 shallow walkable rubble contours with measured source silhouettes (9 variants traversed both directions), 180 lower-earth joins, no slope added to boss arenas, moving bridges or narrow jump ledges.",
+      "files": [
+        "WorldTerrainEnvelope.gd",
+        "PortalContextArt.gd",
+        "NaturalMound.gd",
+        "WorldNaturalContours.gd",
+        "TerrainContourData.gd"
+      ]
+    },
+    {
+      "request": "Living foreground and ambience",
+      "result": "1456 low foreground plants across 39 rooms; 3 biome palettes, 3 growth types per biome, 4 painted breeze poses each; gust/near-player bending, no foliage collision. Existing mist/vines/lamps preserved.",
+      "files": [
+        "ForegroundGrowth.gd",
+        "WorldForegroundDressing.gd",
+        "WorldAmbience.gd"
+      ]
+    },
+    {
+      "request": "Unfinished primitive scenery, unsupported props, meaningful map details",
+      "result": "248 late-pass scenery replacements, 117 bark root ribbons, 45 textured water surfaces; explicit owner/name rules preserve controllers and collision. Includes tanks, boats, bell frames, instruments, urns, kilns, counters, ferns, ruin towers and 27 Outskirts backdrop buildings.",
+      "files": [
+        "WorldSceneryCompletion.gd",
+        "SceneryStateArt.gd",
+        "RootRibbonArt.gd",
+        "StarfallSceneryArt.gd"
+      ]
+    },
+    {
+      "request": "City texture variety and parallax",
+      "result": "Existing two-plane city parallax and painted facade systems retained and reverified; reused six original city elevations for Outskirts backdrop ruins instead of bare masonry silhouettes.",
+      "files": [
+        "StarfallParallaxCity.gd",
+        "CityParallaxAtlas.gd",
+        "WorldSceneryCompletion.gd"
+      ]
+    },
+    {
+      "request": "Readable text instead of floating giant labels",
+      "result": "404 readable notices in 39 rooms, including 77 additional operation/discovery reports. Live source text stays authoritative; G/touch reader wraps inside small viewports and does not consume E interactions.",
+      "files": [
+        "WorldReadables.gd",
+        "EmberspineOperations.gd"
+      ]
+    },
+    {
+      "request": "NPC gestures and walking",
+      "result": "Regional 8-pose gesture atlases (female/male), timed conversation poses and relaxed idle gestures; existing 8-frame locomotion retained, feet registered to source-alpha bounds.",
+      "files": [
+        "ResidentPaintedArt.gd",
+        "ResidentMotion.gd"
+      ]
+    },
+    {
+      "request": "Mob and boss animations",
+      "result": "4 enemy attack libraries, 7 boss attack and 7 boss motion libraries. Native preparation/release/recovery timers choose paint; six locomotion in-betweens per boss, immediate impact frame, hurt/death/ghosts copy current masked artwork. No hitbox changes to match pictures.",
+      "files": [
+        "CompactMobAppearance.gd",
+        "BossPaintedCycle.gd",
+        "BossAppearance.gd",
+        "BossCombatPresentation.gd",
+        "BossDefeatEcho.gd"
+      ]
+    },
+    {
+      "request": "Enemy combat logic, particularly Shaft shooters",
+      "result": "Ranged acquisition increased to 285 with terrain-only LOS and a fresh 0.35 second warning after reacquisition; cover/death/out-of-room cancellation tested. RootStalker checks ledges/LOS; ShaftCrawler charge acquisition respects LOS; prior ShaftSentry range/telegraph repair retained.",
+      "files": [
+        "EnemyPerception.gd",
+        "RangedEnemy.gd",
+        "RangedAttackCue.gd",
+        "RootStalker.gd",
+        "ShaftCrawler.gd",
+        "ShaftSentry.gd"
+      ]
+    },
+    {
+      "request": "Projectiles never disappear",
+      "result": "Previous finite lifetime/range and swept collision fixes revalidated in six projectile suites, including offscreen/player/enemy contact and hit budgets.",
+      "files": [
+        "ProjectileTravel.gd"
+      ]
+    },
+    {
+      "request": "Lamps, lifts, crates and enemy overlap",
+      "result": "Previous lamp/cache/device art animation and supporting structures retained/reverified. Crate migration suite validates 85 authored placements, bounded spawn clearance, and saved position/health/cracks after reload.",
+      "files": [
+        "CheckpointLampArt.gd",
+        "CachePaintedArt.gd",
+        "CrateFloorPlacement.gd",
+        "tests/crate_spawn_anchors_smoke.gd"
+      ]
+    },
+    {
+      "request": "NPC state logic",
+      "result": "Industrial guides now explicitly acknowledge defeated returning guardians while preserving cache/task/return distinctions; Ash field progression/save/reload suite passes.",
+      "files": [
+        "AshIndustryDressing.gd"
+      ]
+    }
+  ],
+  "budgets": {
+    "ambient_animated_normal": 18,
+    "ambient_animated_low": 8,
+    "ambient_hz_normal": 20,
+    "ambient_hz_low": 10,
+    "max_foreground_instances_per_room": 42,
+    "max_new_mounds_per_room": 2,
+    "collection_fx_cap": 18,
+    "new_atlas_decoded_bytes": 76631548,
+    "phone_fps_measured": false
+  },
+  "verification": {
+    "selected_smoke_tests": 56,
+    "passed": 56,
+    "failed": 0,
+    "results": [
+      {
+        "Test": "boss_frame_sequence_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 21.17,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-175922-280-03a2a4d0/boss_frame_sequence_smoke.log"
+      },
+      {
+        "Test": "boss_motion_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 21.21,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-175943-668-72adc3c0/boss_motion_smoke.log"
+      },
+      {
+        "Test": "boss_defeat_echo_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 21.84,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180004-917-f3993847/boss_defeat_echo_smoke.log"
+      },
+      {
+        "Test": "boss_combat_presentation_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 14.19,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180026-806-d7d859cf/boss_combat_presentation_smoke.log"
+      },
+      {
+        "Test": "boss_encounter_safety_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 19.59,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180041-036-9a385910/boss_encounter_safety_smoke.log"
+      },
+      {
+        "Test": "world_grounding_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 16.42,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-183301-199-92e53774/world_grounding_smoke.log"
+      },
+      {
+        "Test": "world_spawn_clearance_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 16.17,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180131-748-0466cb0e/world_spawn_clearance_smoke.log"
+      },
+      {
+        "Test": "world_device_finish_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 15.49,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-182912-856-45cb27e5/world_device_finish_smoke.log"
+      },
+      {
+        "Test": "terrain_envelope_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 0.56,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180204-586-e49fa697/terrain_envelope_smoke.log"
+      },
+      {
+        "Test": "world_readables_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 16.52,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-182856-322-79b8d57e/world_readables_smoke.log"
+      },
+      {
+        "Test": "world_ambience_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 10.69,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180222-677-0477d1a6/world_ambience_smoke.log"
+      },
+      {
+        "Test": "living_world_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 16.63,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-181450-411-82bead79/living_world_smoke.log"
+      },
+      {
+        "Test": "natural_mound_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 13.15,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180317-504-b614dc3b/natural_mound_smoke.log"
+      },
+      {
+        "Test": "living_actor_cycles_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 1.8,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-181417-391-0ac2bdaa/living_actor_cycles_smoke.log"
+      },
+      {
+        "Test": "pickup_claim_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 26.08,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180333-157-841b7ea2/pickup_claim_smoke.log"
+      },
+      {
+        "Test": "pickup_motion_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 12.84,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180359-340-1b3354c3/pickup_motion_smoke.log"
+      },
+      {
+        "Test": "field_reserve_art_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 17.41,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180412-235-347ad96e/field_reserve_art_smoke.log"
+      },
+      {
+        "Test": "echo_painted_props_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 39.59,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180429-678-175012f2/echo_painted_props_smoke.log"
+      },
+      {
+        "Test": "crate_floor_placement_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 17.97,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180509-330-470d1002/crate_floor_placement_smoke.log"
+      },
+      {
+        "Test": "crate_spawn_anchors_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 15.6,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-181159-585-7526ea7b/crate_spawn_anchors_smoke.log"
+      },
+      {
+        "Test": "crate_presentation_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 0.79,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180547-038-19582998/crate_presentation_smoke.log"
+      },
+      {
+        "Test": "resident_motion_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 0.74,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180547-961-1387c6a9/resident_motion_smoke.log"
+      },
+      {
+        "Test": "resident_painted_art_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 44.74,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180548-763-37e6a2db/resident_painted_art_smoke.log"
+      },
+      {
+        "Test": "resident_conversation_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 5,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180633-527-30b96785/resident_conversation_smoke.log"
+      },
+      {
+        "Test": "walk_cycle_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 0.86,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180638-544-6fc34c59/walk_cycle_smoke.log"
+      },
+      {
+        "Test": "projectile_sweep_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 0.51,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180639-426-3bae4931/projectile_sweep_smoke.log"
+      },
+      {
+        "Test": "projectile_hit_budget_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 9.65,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180639-948-28152313/projectile_hit_budget_smoke.log"
+      },
+      {
+        "Test": "projectile_impact_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 0.49,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180649-613-ed0477d1/projectile_impact_smoke.log"
+      },
+      {
+        "Test": "player_projectile_lifecycle_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 0.58,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180650-126-997e5c8b/player_projectile_lifecycle_smoke.log"
+      },
+      {
+        "Test": "player_projectile_flight_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 0.58,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180650-726-59ffb663/player_projectile_flight_smoke.log"
+      },
+      {
+        "Test": "enemy_projectile_contact_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 8.39,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180651-330-a240e221/enemy_projectile_contact_smoke.log"
+      },
+      {
+        "Test": "mob_room_reentry_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 9.83,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180659-739-40796fc9/mob_room_reentry_smoke.log"
+      },
+      {
+        "Test": "mob_defeat_echo_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 1.41,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180709-583-a86c34ea/mob_defeat_echo_smoke.log"
+      },
+      {
+        "Test": "mob_attack_followthrough_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 1.24,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180711-023-343f7684/mob_attack_followthrough_smoke.log"
+      },
+      {
+        "Test": "mob_charge_cue_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 0.84,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180712-290-4d85fef5/mob_charge_cue_smoke.log"
+      },
+      {
+        "Test": "enemy_perception_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 4.85,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180713-152-d0183d7a/enemy_perception_smoke.log"
+      },
+      {
+        "Test": "ranged_attack_cue_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 4.66,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180718-018-78cd0248/ranged_attack_cue_smoke.log"
+      },
+      {
+        "Test": "shaft_guard_combat_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 5.48,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180722-700-9b36caf7/shaft_guard_combat_smoke.log"
+      },
+      {
+        "Test": "shaft_mixed_combat_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 14.46,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180728-199-fb6dd827/shaft_mixed_combat_smoke.log"
+      },
+      {
+        "Test": "shaft_hollow_entry_combat_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 29.81,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180742-690-d8aea7f1/shaft_hollow_entry_combat_smoke.log"
+      },
+      {
+        "Test": "sentry_cover_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 5.75,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180812-521-caa48b9c/sentry_cover_smoke.log"
+      },
+      {
+        "Test": "lamp_travel_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 12.68,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180818-287-1370ff65/lamp_travel_smoke.log"
+      },
+      {
+        "Test": "boss_lamp_reveal_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 0.95,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180830-988-cff6b78c/boss_lamp_reveal_smoke.log"
+      },
+      {
+        "Test": "city_street_painted_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 1.44,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-180831-962-0c1bce6e/city_street_painted_smoke.log"
+      },
+      {
+        "Test": "scenery_completion_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 16.84,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-183244-342-32082816/scenery_completion_smoke.log"
+      },
+      {
+        "Test": "starfall_scenery_art_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 10.21,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-183234-039-f7c99472/starfall_scenery_art_smoke.log"
+      },
+      {
+        "Test": "starfall_soul_crucible_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 16.46,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-182939-915-88ff4315/starfall_soul_crucible_smoke.log"
+      },
+      {
+        "Test": "starfall_rooted_hall_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 17.25,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-182956-388-872aed08/starfall_rooted_hall_smoke.log"
+      },
+      {
+        "Test": "echo_field_operations_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 18.82,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-183013-658-7fb34ad0/echo_field_operations_smoke.log"
+      },
+      {
+        "Test": "ash_field_operations_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 19.01,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-183444-592-9f067a4a/ash_field_operations_smoke.log"
+      },
+      {
+        "Test": "starfall_field_operations_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 23.09,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-183050-345-43aff589/starfall_field_operations_smoke.log"
+      },
+      {
+        "Test": "rampart_field_operations_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 20.49,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-183113-454-c8582f0e/rampart_field_operations_smoke.log"
+      },
+      {
+        "Test": "field_records_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 14.21,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-183133-956-212fbdc5/field_records_smoke.log"
+      },
+      {
+        "Test": "starfall_upper_city_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 16.05,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-183148-184-9bd2ec9f/starfall_upper_city_smoke.log"
+      },
+      {
+        "Test": "city_parallax_runtime_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 8.82,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-183317-631-2528aca8/city_parallax_runtime_smoke.log"
+      },
+      {
+        "Test": "city_parallax_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 1.44,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20260930-183326-474-5a6a8dcf/city_parallax_smoke.log"
+      }
+    ],
+    "atlas_registration": {
+      "libraries": 33,
+      "frames": 278,
+      "facing_samples": 556,
+      "source_alpha_and_mipmaps_checked": true,
+      "source_copy_sha256_all_equal": true
+    },
+    "coverage": {
+      "rooms": 39,
+      "foreground_plants": 1456,
+      "mounds": 30,
+      "earth_joins": 180,
+      "late_scenery_paintings": 248,
+      "painted_roots": 117,
+      "textured_water_surfaces": 45,
+      "readable_notices": 404,
+      "additional_operation_reports": 77
+    },
+    "import_log": ".tmp-living-final-import.log",
+    "native_preview_logs": [
+      ".tmp-living-world-native.log",
+      ".tmp-living-world4.log",
+      ".tmp-living-boss-motion.log",
+      ".tmp-living-actors-native3.log"
+    ],
+    "targeted_native_views": [
+      "art/characters/preview_living_world_reserve_shaft.png",
+      "art/characters/preview_living_world_reserve_ash.png",
+      "art/characters/preview_living_world_reserve_star.png",
+      "art/characters/preview_living_world_boat.png",
+      "art/characters/preview_living_world_kiln.png",
+      "art/characters/preview_living_world_planter.png",
+      "art/characters/preview_living_world_slope_cave.png",
+      "art/characters/preview_living_world_slope_ash.png",
+      "art/characters/preview_living_world_slope_star.png"
+    ],
+    "atlas_galleries": [
+      "art/characters/preview_living_boss_attacks.png",
+      "art/characters/preview_living_motion_attacks.png",
+      "art/characters/preview_living_mob_attacks.png",
+      "art/characters/preview_living_resident_attacks.png",
+      "art/characters/preview_living_scenery_attacks.png",
+      "art/characters/preview_living_flora_cycle.png",
+      "art/characters/preview_living_loot_cycle.png",
+      "art/characters/preview_living_mound_atlas.png"
+    ],
+    "renderer": "Native D3D12 Forward Mobile on desktop RTX 4050; not a physical phone measurement",
+    "native_notes": "Targeted scenery previews settle the player for 40 physics ticks, freeze other AI, and assert is_on_floor; real boss sequence sampled through preparation/charge/recovery. Static gallery is supplemented by timer/physics tests.",
+    "known_environment_messages": [
+      "Sandbox cannot read Windows root certificate store.",
+      "Headless editor cannot save AppData editor settings.",
+      "Native renderer may fail to save shader cache under sandbox; captures succeed."
+    ],
+    "test_updates": [
+      "Crate anchors: preserve authored entry anchors, separately validate bounded spawn-clearance and reload persistence.",
+      "Boss/mob/walk tests now assert current atlas semantics rather than obsolete flat sprite frame assumptions.",
+      "Scenery test accounts for textured static root ribbons, still validates no collision/state mutation and clipped geometry."
+    ]
+  },
+  "limitations": [
+    "This is a broad implementation and targeted verification pass, not a claim of exhaustive manual traversal of every route and quest combination.",
+    "No physical Android/iOS device, sustained FPS, thermal or total VRAM profiling was available; low-cost budgets and import limits were tested instead.",
+    "Existing route topology is preserved apart from shallow measured rubble slopes; this does not reconstruct the entire map into the reference game's room layout.",
+    "Source animation sheets are discrete painted poses (not newly rigged 3D models).",
+    "User should stop the existing Godot run and start F5 again so new scripts/assets are instantiated."
+  ],
+  "prior_pass_report": "tests/world_repair_verification_v1.json"
+}

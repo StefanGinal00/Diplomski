@@ -341,9 +341,15 @@ func _build_checkpoint_approaches() -> void:
 
 func _place_portal(door_name: String, marker_name: String, tier: int, ratio: float, marker_side: float = 1.0) -> void:
 	var at := _portal_anchor(tier, ratio)
+	var original:=at
+	if not _use_schematic_editor_preview(): at=FLOOR_PLACEMENT.clear_passage(generated,at)
 	_move(door_name, at)
+	var native:=room.get_node_or_null(door_name)
+	if native!=null: native.set_meta("portal_landing_shift",at-original)
 	if not marker_name.is_empty():
-		_move(marker_name, at + Vector2(78.0 * marker_side, 0.0))
+		var arrival:=at+Vector2(78.0*marker_side,0)
+		if not _use_schematic_editor_preview(): arrival=_floor_point(tier,arrival.x,33,32)
+		_move(marker_name,arrival)
 
 
 func _relocate_route_portals() -> void:
@@ -848,6 +854,11 @@ func _mining_support(node_name: String, at: Vector2, height: float) -> void:
 	timber.z_index = -1
 	timber.width = 9.0
 	timber.default_color = Color(0.29, 0.23, 0.16, 0.95)
+	timber.texture = preload("res://art/visual_slice/echo_walk_timber_v1.png")
+	timber.texture_mode = Line2D.LINE_TEXTURE_TILE
+	timber.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+	timber.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	timber.default_color = Color("92958c")
 	timber.points = PackedVector2Array([at + Vector2(-112, -4), at + Vector2(-92, -height), at + Vector2(92, -height), at + Vector2(112, -4), at + Vector2(92, -height), at + Vector2(-112, -4)])
 	generated.add_child(timber)
 
@@ -1255,6 +1266,18 @@ func _build_return_lift() -> void:
 		generated.add_child(lift)
 
 
+func _entry_safe_spawn(tier: int,x: float,clearance: float,margin: float=125) -> Vector2:
+	# Resolve before _ready: native patrol origins follow this point. A door
+	# moved out from under stairs must not inherit an enemy or crate in its mouth.
+	for shift in [0,112,-112,176,-176,240,-240]:
+		var candidate:=_floor_point(tier,x+shift,clearance,margin)
+		var clear:=true
+		for doorway in room.get_children():
+			if doorway is Node2D and doorway.is_in_group("room_door") and absf(doorway.position.y-candidate.y)<110 and absf(doorway.position.x-candidate.x)<95:
+				clear=false
+		if clear: return candidate
+	return _floor_point(tier,x,clearance,margin)
+
 func _populate_descent() -> void:
 	var levels: Array = plan["levels"]
 	var id: String = plan["id"]
@@ -1271,7 +1294,7 @@ func _populate_descent() -> void:
 			var enemy_scene: PackedScene = WISP_SCENE if (tier + slot) % 4 == 0 else (SENTRY_SCENE if (tier + slot) % 3 == 0 else CRAWLER_SCENE)
 			var enemy := enemy_scene.instantiate() as Node2D
 			enemy.name = enemy_name
-			enemy.position = _floor_point(tier, plank.position.x, 98.0 if enemy_scene == WISP_SCENE else 31.0)
+			enemy.position = _entry_safe_spawn(tier, plank.position.x, 98.0 if enemy_scene == WISP_SCENE else 31.0)
 			_add_streamed_generated_actor(enemy)
 		for crate_slot in range(2):
 			var crate_name := "DepthCrate%d_%d" % [tier, crate_slot]
@@ -1282,7 +1305,7 @@ func _populate_descent() -> void:
 				continue
 			var crate := CRATE_SCENE.instantiate() as Node2D
 			crate.name = crate_name
-			crate.position = _floor_point(tier, crate_plank.position.x, 31.0, 40.0)
+			crate.position = _entry_safe_spawn(tier, crate_plank.position.x, 31.0, 40.0)
 			crate.set("empty_drop_chance", 0.34)
 			_add_streamed_generated_actor(crate)
 		if tier > 0:
@@ -1294,7 +1317,7 @@ func _populate_descent() -> void:
 				continue
 			var fauna := FAUNA_SCENE.instantiate() as Node2D
 			fauna.name = fauna_name
-			fauna.position = _floor_point(tier, fauna_plank.position.x, 31.0)
+			fauna.position = _entry_safe_spawn(tier, fauna_plank.position.x, 31.0)
 			fauna.set("creature_name", "Shaft Moth" if tier % 2 == 0 else "Cave Grazer")
 			fauna.set("zone_id", "sunken_shaft")
 			_add_streamed_generated_actor(fauna)

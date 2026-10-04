@@ -3,6 +3,8 @@ extends Node2D
 
 const FIELD_OFFICE := preload("res://StarfallFieldOffice.gd")
 const UPPER_CITY := preload("res://StarfallUpperCity.gd")
+const CITY_PAINT := preload("res://CityStreetAtlas.gd")
+const FACADE_PAINT := preload("res://FacadePropAtlas.gd")
 
 var lantern_glows: Array[Polygon2D] = []
 var lantern_base_colors: Array[Color] = []
@@ -272,9 +274,17 @@ func _star_points(center: Vector2, outer_radius: float, inner_radius: float, poi
 
 
 func _process(delta: float) -> void:
+	if not is_visible_in_tree(): return
 	animation_time += delta
 	for index in range(lantern_glows.size()):
-		lantern_glows[index].modulate.a = 0.7 + 0.2 * sin(animation_time * 2.0 + float(index) * 1.7)
+		var pulse := sin(animation_time*2.0+float(index)*1.7)
+		if lantern_glows[index].has_meta("city_painted_furnishing"):
+			# Keep masonry and iron opaque. The old glass-only alpha animation
+			# would make complete painted lamp poles and shutters turn ghostly.
+			var light := 0.985+0.015*pulse
+			lantern_glows[index].modulate = Color(light,light,light,1)
+		else:
+			lantern_glows[index].modulate.a = 0.7+0.2*pulse
 
 
 func _on_boss_progress_changed(boss_id: String) -> void:
@@ -299,45 +309,60 @@ func _refresh_victory_lights() -> void:
 func _add_door(center_x: float) -> void:
 	if has_node("VisualStyleSlice") and center_x >= 2860 and center_x <= 4290:
 		return # The market pilot supplies its own recessed facade doors.
-	_rect(center_x - 24.0, 332.0, 48.0, 59.0, Color(0.15, 0.19, 0.28, 1), -2)
-	_rect(center_x - 17.0, 340.0, 34.0, 51.0, Color(0.23, 0.27, 0.35, 1), -1)
-	_rect(center_x + 10.0, 363.0, 3.0, 3.0, Color(1, 0.81, 0.52, 1), -1)
-	_polygon(_points([center_x - 30.0, 333.0, center_x, 316.0, center_x + 30.0, 333.0]), Color(0.6, 0.55, 0.63, 1), -1)
+	var index := 2 if int(center_x)%3==0 else 5
+	var texture := FACADE_PAINT.texture_for(0,index)
+	var rect := FACADE_PAINT.contact_rect(0,index,Vector2(center_x,CITY_PAINT.street_y(self)),48,35)
+	var sprite := Sprite2D.new()
+	sprite.name = "ResidentialDoor%d" % int(center_x)
+	sprite.texture = texture
+	sprite.position = rect.get_center()
+	sprite.scale = rect.size/texture.get_size()
+	sprite.z_index = -1
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	add_child(sprite)
 
 
 func _add_window(center_x: float, top_y: float, upper: bool = false) -> void:
 	if has_node("VisualStyleSlice") and center_x >= 2860 and center_x <= 4290:
-		return # Avoid layering the old rectangular glass over the new arches.
-	var width := 33.0 if upper else 40.0
-	_rect(center_x - width * 0.5 - 3.0, top_y - 3.0, width + 6.0, 36.0, Color(0.16, 0.22, 0.3, 1), -2)
-	var glass := _rect(center_x - width * 0.5, top_y, width, 27.0, Color(0.94, 0.75, 0.45, 0.68), -1)
+		return # The market owns its facade windows.
+	var index := 0 if upper else int(center_x)%2
+	var texture := CITY_PAINT.texture_for(index)
+	var size := texture.get_size()*(40.0/texture.get_height())
+	var glass := _painted_plate(index,Rect2(Vector2(center_x-size.x/2,top_y-4),size))
 	lantern_glows.append(glass)
-	_rect(center_x - 2.0, top_y, 4.0, 27.0, Color(0.3, 0.32, 0.43, 1), 0)
-	_rect(center_x - width * 0.5, top_y + 12.0, width, 3.0, Color(0.3, 0.32, 0.43, 1), 0)
 
 
 func _add_street_lamp(center_x: float) -> void:
-	_rect(center_x - 2.0, 299.0, 4.0, 92.0, Color(0.66, 0.64, 0.7, 1), -2)
-	_rect(center_x - 11.0, 294.0, 22.0, 5.0, Color(0.67, 0.65, 0.72, 1), -1)
-	var lamp := _polygon(_points([center_x - 10.0, 300.0, center_x + 10.0, 300.0, center_x + 7.0, 320.0, center_x - 7.0, 320.0]), Color(1, 0.82, 0.48, 0.85), -1)
+	# The market painter owns its four lamps; avoid doubled lamp silhouettes.
+	if has_node("VisualStyleSlice") and center_x>=2860 and center_x<=4290: return
+	var lamp := _painted_plate(2,CITY_PAINT.ground_rect(2,Vector2(center_x,CITY_PAINT.street_y(self)),97))
 	lantern_glows.append(lamp)
-	_rect(center_x - 7.0, 321.0, 14.0, 3.0, Color(0.7, 0.68, 0.72, 1), -1)
 
 
 func _add_planter(center_x: float) -> void:
-	_polygon(_points([center_x - 18.0, 365.0, center_x + 18.0, 365.0, center_x + 12.0, 390.0, center_x - 12.0, 390.0]), Color(0.44, 0.42, 0.51, 1), -1)
-	for offset_x in [-12.0, 0.0, 12.0]:
-		_polygon(_points([center_x + offset_x - 13.0, 367.0, center_x + offset_x, 338.0 - absf(offset_x) * 0.4, center_x + offset_x + 13.0, 367.0]), Color(0.37, 0.7, 0.57, 0.9), -2)
+	_painted_plate(3,CITY_PAINT.ground_rect(3,Vector2(center_x,CITY_PAINT.street_y(self)),46))
 
 
 func _add_bench(center_x: float) -> void:
-	_rect(center_x - 35.0, 364.0, 70.0, 7.0, Color(0.59, 0.5, 0.54, 1), -1)
-	_rect(center_x - 29.0, 370.0, 4.0, 21.0, Color(0.5, 0.44, 0.51, 1), -1)
-	_rect(center_x + 25.0, 370.0, 4.0, 21.0, Color(0.5, 0.44, 0.51, 1), -1)
+	_painted_plate(5,CITY_PAINT.ground_rect(5,Vector2(center_x,CITY_PAINT.street_y(self)),34))
 
 
 func _add_banner(center_x: float, top_y: float, cloth_color: Color) -> void:
-	_polygon(_points([center_x - 20.0, top_y, center_x + 20.0, top_y, center_x + 17.0, top_y + 47.0, center_x, top_y + 36.0, center_x - 17.0, top_y + 47.0]), cloth_color, -2)
+	var banner := _polygon(_points([center_x - 20.0, top_y, center_x + 20.0, top_y, center_x + 17.0, top_y + 47.0, center_x, top_y + 36.0, center_x - 17.0, top_y + 47.0]), cloth_color, -2)
+	banner.name = "CivicBanner%d" % int(center_x)
+
+
+func _painted_plate(index: int, rect: Rect2) -> Polygon2D:
+	var shape := _polygon(PackedVector2Array([rect.position,Vector2(rect.end.x,rect.position.y),rect.end,Vector2(rect.position.x,rect.end.y)]),Color.WHITE,-1)
+	# Polygon2D does not apply AtlasTexture's region like Sprite2D/draw_texture.
+	# Use explicit UVs on the shared source; otherwise the entire sheet appears
+	# as miniature props inside every window and street-lamp quad.
+	shape.texture = CITY_PAINT.SHEET
+	var region: Rect2 = CITY_PAINT.texture_for(index).region
+	shape.uv = PackedVector2Array([region.position,Vector2(region.end.x,region.position.y),region.end,Vector2(region.position.x,region.end.y)])
+	shape.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	shape.set_meta("city_painted_furnishing",index)
+	return shape
 
 
 func _add_star_chart() -> void:
@@ -346,7 +371,8 @@ func _add_star_chart() -> void:
 	for index in range(17):
 		var angle := TAU * float(index) / 16.0
 		points.append(center + Vector2(cos(angle), sin(angle)) * 48.0)
-	_polygon(points, Color(0.17, 0.27, 0.39, 1), -2)
+	var chart := _polygon(points, Color(0.17, 0.27, 0.39, 1), -2)
+	chart.name = "CivicStarChart"
 	for index in range(8):
 		var angle := TAU * float(index) / 8.0
 		var star := center + Vector2(cos(angle), sin(angle)) * 31.0

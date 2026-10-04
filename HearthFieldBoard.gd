@@ -6,22 +6,70 @@ var state: Node
 var board: Label
 var keeper: Area2D
 var courier: Area2D
+var table: GridContainer
+var rows: Dictionary = {}
+var board_mount: Node2D
+
+func prepare_world_reading() -> Vector2:
+	board_mount.hide()
+	return global_position+Vector2(0,-45)
+
+func reading_report() -> String:
+	var lines := PackedStringArray(["HEARTH ROAD & FIELD OFFICE",board.text])
+	for id in ROOMS:
+		var cells: Array = rows[id]
+		lines.append("%s\nTask: %s | Guard: %s | Return: %s" % [cells[0].text,cells[1].text,cells[2].text,cells[3].text])
+	lines.append("\nWON records victory, not reward collected. Speak with Oren and Mira for route guidance.")
+	return "\n\n".join(lines)
 
 
 func _ready() -> void:
 	state = get_node("/root/GameState")
+	board_mount = Node2D.new()
+	board_mount.name = "BoardMount"
+	# Free wall between the watch stairs and eastern boundary; residents keep
+	# their original stops on the library walk.
+	board_mount.position.x = 350
+	add_child(board_mount)
 	var backing := Polygon2D.new()
 	backing.name = "BoardBacking"
 	backing.z_index = -1
-	backing.polygon = PackedVector2Array([Vector2(-225, -245), Vector2(225, -245), Vector2(225, -65), Vector2(-225, -65)])
-	backing.color = Color(0.12, 0.08, 0.10, 0.97)
-	add_child(backing)
+	backing.polygon = PackedVector2Array([Vector2(-190, -280), Vector2(190, -280), Vector2(190, -82), Vector2(-190, -82)])
+	backing.color = Color("292529")
+	board_mount.add_child(backing)
+	backing.draw.connect(_draw_frame.bind(backing))
+	var title := _cell("HEARTH ROAD & FIELD OFFICE", 0)
+	title.name = "BoardTitle"
+	title.position = Vector2(-178, -272)
+	title.add_theme_font_size_override("font_size", 12)
+	title.modulate = Color("efd0a1")
+	board_mount.add_child(title)
+	table = GridContainer.new()
+	table.name = "RouteTable"
+	table.position = Vector2(-178, -249)
+	table.columns = 4
+	table.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	table.add_theme_constant_override("h_separation", 8)
+	table.add_theme_constant_override("v_separation", 0)
+	board_mount.add_child(table)
+	for column in range(4):
+		var heading := _cell(["ROUTE", "TASK", "GUARD", "RETURN"][column], column)
+		heading.modulate = Color("d9b58d")
+		table.add_child(heading)
+	for id in ROOMS:
+		var cells: Array[Label] = []
+		for column in range(4):
+			var cell := _cell(ROOMS[id] if column == 0 else "-", column)
+			table.add_child(cell)
+			cells.append(cell)
+		rows[id] = cells
 	board = Label.new()
 	board.name = "WorkOrders"
-	board.position = Vector2(-215, -235)
-	board.size = Vector2(430, 160)
-	board.add_theme_font_size_override("font_size", 11)
-	add_child(board)
+	board.position = Vector2(-178, -127)
+	board.size = Vector2(356, 34)
+	board.add_theme_font_size_override("font_size", 10)
+	board.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	board_mount.add_child(board)
 	for index in range(4):
 		var stop := Marker2D.new()
 		stop.name = "BoardStop%d" % index
@@ -33,6 +81,30 @@ func _ready() -> void:
 	state.shortcut_changed.connect(_on_event)
 	state.zone_tier_changed.connect(_on_tier)
 	_refresh()
+	set_process(false)
+
+
+func _cell(text: String, column: int) -> Label:
+	var label := Label.new()
+	label.text = text
+	label.custom_minimum_size.x = [105, 50, 55, 92][column]
+	label.add_theme_font_size_override("font_size", 10)
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return label
+
+
+func _draw_frame(backing: Polygon2D) -> void:
+	var wood := Color("77543e")
+	# Hang the noticeboard from the existing watch gallery; decorative only.
+	for x in [-150, 150]:
+		backing.draw_line(Vector2(x, -299), Vector2(x, -282), Color("ab8b62"), 3)
+		backing.draw_rect(Rect2(x - 4, -286, 8, 9), Color("6c5747"))
+	backing.draw_rect(Rect2(-192, -282, 384, 202), wood, false, 4)
+	backing.draw_line(Vector2(-178, -253), Vector2(178, -253), Color("b48d60"), 1)
+	backing.draw_line(Vector2(-178, -133), Vector2(178, -133), Color("b48d60"), 1)
+	for y in [-276, -86]:
+		for x in [-185, 185]:
+			backing.draw_circle(Vector2(x, y), 2, Color("ceb484"))
 
 
 func _resident(node_name: String, title: String, at: Vector2, stops: Array, partner: String) -> Area2D:
@@ -62,8 +134,6 @@ func _on_tier(zone_id: String, _tier: int) -> void:
 
 
 func _refresh() -> void:
-	var lines := PackedStringArray(["HEARTH ROAD & FIELD OFFICE", "Task / Niche / Return    (+ complete, - pending)"])
-	var entries := PackedStringArray()
 	var tasks := 0
 	var victories := 0
 	for id in ROOMS:
@@ -72,13 +142,13 @@ func _refresh() -> void:
 		var returned := bool(state.unlocked_shortcuts.get("ash_%s_field_return_complete" % id, false))
 		tasks += int(done)
 		victories += int(returned)
-		var return_text := "+" if returned else ("READY" if done and guarded and state.get_zone_tier("ashen_bastion") >= 1 else "-")
-		entries.append("%s: %s / %s / %s" % [ROOMS[id], "+" if done else "-", "+" if guarded else "-", return_text])
-	var rows := ceili(float(entries.size()) / 2.0)
-	for index in range(rows):
-		lines.append(entries[index] + ("   |   " + entries[index + rows] if index + rows < entries.size() else ""))
-	lines.append("TASKS %d/%d   RETURN VICTORIES %d/%d" % [tasks, ROOMS.size(), victories, ROOMS.size()])
-	board.text = "\n".join(lines)
+		var cells: Array = rows[id]
+		cells[1].text = "DONE" if done else "OPEN"
+		cells[2].text = "CLEAR" if guarded else "OPEN"
+		cells[3].text = "WON" if returned else ("AFTER BOSS" if state.get_zone_tier("ashen_bastion") < 1 else ("READY" if done and guarded else "TASK/GUARD"))
+		for column in range(1, 4):
+			cells[column].modulate = Color("a6d5b1") if cells[column].text in ["DONE", "CLEAR", "WON"] else (Color("f1c676") if cells[column].text == "READY" else Color("aaa5ab"))
+	board.text = "TASKS %d/%d   RETURN VICTORIES %d/%d\nOptional routes. WON = patrol defeated, not reward collected." % [tasks, ROOMS.size(), victories, ROOMS.size()]
 	var guidance := PackedStringArray([
 		"The Causeway signals are Foot, Span, then Crown, spread up the road. Clear nearby foes to light each one. A signal is a landmark, not a safe camp.",
 		"Repair the Forge winch and gearbox, then start its cooling fan. The service hoist saves a long climb. Barracks has four marked targets, but its beacon waves must also be completed.",

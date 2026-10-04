@@ -70,6 +70,10 @@ func _run() -> void:
 			"CinderHearth":
 				paths.append(_nodes(room, ["Floor", "UpperVillage/GateStair", "UpperVillage/HearthStair", "UpperVillage/SmithyWalk", "UpperVillage/MarketWalk", "UpperVillage/EastStair", "UpperVillage/ThroneStair", "Floor"]))
 				var district := room.get_node("EasternDistricts")
+				for index in range(1,7):
+					var tread := _bounds(district.get_node("LibraryDescent"+str(index)))
+					var previous := _bounds(district.get_node("LibraryDescent"+str(index-1)))
+					_check(tread.end.x-previous.end.x >= player.player_collision.shape.size.x+10, "Library stair landing buried beneath previous tread")
 				for spec in [["WestRise", 6, "Floor", "KilnArcade", false], ["ArcadeDescent", 6, "EastMarketStreet", "KilnArcade", true], ["LibraryRise", 7, "EastMarketStreet", "CopperLibraryWalk", false], ["LibraryDescent", 7, "EastMarketStreet", "CopperLibraryWalk", true], ["WatchAscent", 6, "CopperLibraryWalk", "CinderWatch", false]]:
 					var path: Array = [room.get_node("Floor") if spec[2] == "Floor" else district.get_node(spec[2])]
 					var steps: Array = []

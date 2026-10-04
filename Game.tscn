@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://d25wjjihdqoeb"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_xkndl"]
+[ext_resource type="Script" path="res://WorldFallRecovery.gd" id="fall_recovery"]
+[ext_resource type="Script" path="res://TestingTools.gd" id="testing_tools"]
 [ext_resource type="Script" path="res://PlayerAppearance.gd" id="player_appearance"]
+[ext_resource type="Script" path="res://WorldPresentationFinish.gd" id="world_presentation_finish"]
 [ext_resource type="Script" path="res://WeaponAppearance.gd" id="weapon_appearance"]
 [ext_resource type="Texture2D" uid="uid://gb1r7s7q6tf4" path="res://icon.svg" id="2_u44n3"]
 [ext_resource type="Script" path="res://SpikeTrap.gd" id="3_u44n3"]
@@ -11,6 +14,7 @@
 [ext_resource type="Script" path="res://LevelExit.gd" id="8_exit"]
 [ext_resource type="Script" path="res://QuestManager.gd" id="9_quest"]
 [ext_resource type="Script" path="res://FriendlyNPC.gd" id="10_npc"]
+[ext_resource type="Texture2D" path="res://art/characters/eldric_portrait_v1.png" id="eldric_portrait"]
 [ext_resource type="PackedScene" path="res://QuestItem.tscn" id="11_quest_item"]
 [ext_resource type="Script" path="res://DashGate.gd" id="12_dash_gate"]
 [ext_resource type="PackedScene" path="res://RangedEnemy.tscn" id="13_ranged_enemy"]
@@ -62,6 +66,7 @@
 [ext_resource type="Script" path="res://RoomActivityDirector.gd" id="59_activity"]
 [ext_resource type="Script" path="res://BiomeBackdrop.gd" id="60_backdrop"]
 [ext_resource type="Script" path="res://TrainingPassageDecor.gd" id="61_training_decor"]
+[ext_resource type="Script" path="res://BossArenaRelics.gd" id="boss_relics"]
 [ext_resource type="Script" path="res://WorldSceneLayout.gd" id="62_world_scene_layout"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sb48q"]
@@ -275,11 +280,20 @@ region = "starfall"
 [node name="WorldPopulation" type="Node2D" parent="."]
 script = ExtResource("58_population")
 
+[node name="WorldPresentationFinish" type="Node" parent="."]
+script = ExtResource("world_presentation_finish")
+
 [node name="RoomActivityDirector" type="Node" parent="."]
 script = ExtResource("59_activity")
 
 [node name="TrainingPassageDecor" type="Node2D" parent="."]
 script = ExtResource("61_training_decor")
+
+[node name="SentinelRelics" type="Node2D" parent="TrainingPassageDecor"]
+script = ExtResource("boss_relics")
+style = 3
+points = PackedVector2Array(925, 390, 1270, 390)
+height = 48.0
 
 [node name="QuestManager" type="Node" parent="." groups=["quest_manager"]]
 script = ExtResource("9_quest")
@@ -353,10 +367,10 @@ one_shot = true
 position = Vector2(24, 0)
 shape = SubResource("RectangleShape2D_attack")
 target_position = Vector2(0, 0)
-collision_mask = 1
+collision_mask = 3
 max_results = 8
 collide_with_bodies = true
-collide_with_areas = false
+collide_with_areas = true
 
 [node name="AttackVisual" type="Polygon2D" parent="Player/AttackCast"]
 self_modulate = Color(1, 1, 1, 0)
@@ -459,6 +473,7 @@ default_color = Color(0.15, 0.82, 0.78, 0.8)
 z_index = 1
 position = Vector2(290, 376)
 script = ExtResource("10_npc")
+portrait_texture = ExtResource("eldric_portrait")
 
 [node name="Sprite2D" type="Sprite2D" parent="Caretaker"]
 scale = Vector2(0.115, 0.115)
@@ -671,6 +686,23 @@ offset_right = 300.0
 offset_bottom = 34.0
 text = "×"
 
+[node name="MainRewardButton" type="Button" parent="UI/QuestPanel"]
+visible = false
+offset_left = 14.0
+offset_top = 256.0
+offset_right = 296.0
+offset_bottom = 292.0
+theme_override_font_sizes/font_size = 14
+text = "Claim main quest reward"
+
+[node name="StoryScenesButton" type="Button" parent="UI/QuestPanel"]
+offset_left = 14.0
+offset_top = 220.0
+offset_right = 296.0
+offset_bottom = 250.0
+theme_override_font_sizes/font_size = 13
+text = "Story scenes / Replay"
+
 [node name="MenuBarPanel" type="Panel" parent="UI"]
 anchors_preset = 1
 anchor_left = 1.0
@@ -865,6 +897,18 @@ offset_bottom = -60.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBox_overlay")
+
+[node name="Portrait" type="TextureRect" parent="UI/DialoguePanel"]
+visible = false
+layout_mode = 0
+offset_left = 20.0
+offset_top = 18.0
+offset_right = 116.0
+offset_bottom = 114.0
+mouse_filter = 2
+texture_filter = 2
+expand_mode = 1
+stretch_mode = 5
 
 [node name="SpeakerLabel" type="Label" parent="UI/DialoguePanel"]
 layout_mode = 0
@@ -1356,6 +1400,18 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBox_overlay")
 
+[node name="Portrait" type="TextureRect" parent="UI/ShopPanel"]
+visible = false
+layout_mode = 0
+offset_left = 24.0
+offset_top = 14.0
+offset_right = 88.0
+offset_bottom = 78.0
+mouse_filter = 2
+texture_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
 [node name="TitleLabel" type="Label" parent="UI/ShopPanel"]
 layout_mode = 0
 offset_left = 24.0
@@ -1410,12 +1466,18 @@ theme_override_colors/font_color = Color(0.45, 1, 0.82, 1)
 theme_override_font_sizes/font_size = 18
 text = "Select an item"
 
-[node name="ItemDescriptionLabel" type="Label" parent="UI/ShopPanel"]
+[node name="DescriptionScroll" type="ScrollContainer" parent="UI/ShopPanel"]
 layout_mode = 0
 offset_left = 334.0
 offset_top = 124.0
 offset_right = 632.0
-offset_bottom = 234.0
+offset_bottom = 240.0
+focus_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="ItemDescriptionLabel" type="Label" parent="UI/ShopPanel/DescriptionScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "Choose an item to inspect it."
 autowrap_mode = 2
 
@@ -1703,7 +1765,7 @@ offset_right = 575.0
 offset_bottom = 91.0
 theme_override_colors/font_color = Color(0.6, 0.89, 0.87, 1)
 theme_override_font_sizes/font_size = 13
-text = "A first ending - the world remains open"
+text = "The Road Remains - the world stays open"
 horizontal_alignment = 1
 
 [node name="StoryScroll" type="ScrollContainer" parent="UI/EndingPanel"]
@@ -1719,7 +1781,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(508, 0)
 theme_override_colors/font_color = Color(0.87, 0.86, 0.94, 1)
 theme_override_font_sizes/font_size = 17
-text = "The Sovereign's hold breaks, but the city does not fall.\n\nThree memories answer beneath Starfall: the drowned bell, the echoing crystal, and the ember that refused to die. Their light reaches the streets above.\n\nThe people of the Citadel will decide what grows in that light. Your road through the world is still yours to walk."
+text = "The Sovereign's hold breaks. The city does not fall.\n\nA bell for the last traveler. A mirror for forgotten faces. An ember saved for another hand. Three memories answer where a throne demanded silence.\n\nYou came to this road looking for a way out. Eldric's camp, Haven's lamps and the Hearth's shared fire gave you reasons to return.\n\nThe fallen crown is a relic, not a command to take its place. The people of Starfall will decide what grows in the light. Beyond its walls, there are roads to mend and names still worth remembering.\n\nThe throne was never the world. The road remains."
 autowrap_mode = 2
 
 [node name="SaveHint" type="Label" parent="UI/EndingPanel"]
@@ -1736,11 +1798,19 @@ autowrap_mode = 2
 
 [node name="ContinueButton" type="Button" parent="UI/EndingPanel"]
 layout_mode = 0
-offset_left = 177.0
+offset_left = 316.0
 offset_top = 370.0
-offset_right = 443.0
+offset_right = 576.0
 offset_bottom = 412.0
 text = "Continue Exploring"
+
+[node name="RewardsButton" type="Button" parent="UI/EndingPanel"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 370.0
+offset_right = 304.0
+offset_bottom = 412.0
+text = "Review rewards [J]"
 
 [node name="Enemy" parent="." groups=["enemy", "passage_enemy", "family_demon"] instance=ExtResource("7_enemy")]
 position = Vector2(507, 380)
@@ -1823,5 +1893,11 @@ mouse_filter = 2
 
 [node name="XPOrb" parent="." unique_id=109054762 instance=ExtResource("5_t88pq")]
 position = Vector2(252, 381)
+
+[node name="WorldFallRecovery" type="Node" parent="."]
+script = ExtResource("fall_recovery")
+
+[node name="TestingTools" type="CanvasLayer" parent="."]
+script = ExtResource("testing_tools")
 
 [connection signal="timeout" from="Player/InvulnerabilityTimer" to="Player" method="_on_invulnerability_timer_timeout"]

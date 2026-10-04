@@ -479,6 +479,14 @@ func _house(node_name: String, foot: Vector2, size: Vector2, stone: Color, windo
 		body.polygon = PackedVector2Array([foot + Vector2(-size.x * 0.5, 0.0), foot + Vector2(-size.x * 0.5, -size.y), foot + Vector2(size.x * 0.28, -size.y), foot + Vector2(size.x * 0.5, -size.y + 31.0), foot + Vector2(size.x * 0.5, 0.0)])
 	else:
 		body.polygon = PackedVector2Array([foot + Vector2(-size.x * 0.5, 0.0), foot + Vector2(-size.x * 0.43, -size.y + 8.0), foot + Vector2(-size.x * 0.12, -size.y - 34.0), foot + Vector2(size.x * 0.43, -size.y + 8.0), foot + Vector2(size.x * 0.5, 0.0)])
+	# The wall must stay under the inner eaves. Two old house variants poked
+	# above the slate chevron, leaving a masonry triangle outside the roof.
+	var facade_points := body.polygon
+	for i in facade_points.size():
+		var dx := absf(facade_points[i].x-foot.x)
+		var inner_roof_y := foot.y-size.y-7.0+37.0*minf(dx/(size.x*0.45),1.2)
+		facade_points[i].y=maxf(facade_points[i].y,inner_roof_y)
+	body.polygon=facade_points
 	add_child(body)
 	var roof := Polygon2D.new()
 	roof.name = node_name + "Roof"

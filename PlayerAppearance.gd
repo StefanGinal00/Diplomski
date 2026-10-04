@@ -5,11 +5,15 @@ extends Sprite2D
 const SHEET = preload("res://art/characters/wayfarer_v1.png")
 const MOVEMENT_SHEET = preload("res://art/characters/wayfarer_movement_v1.png")
 const COMBAT_SHEET = preload("res://art/characters/wayfarer_combat_v1.png")
+const Impact = preload("res://ProjectileImpact.gd")
 const PIXEL_SCALE := 0.062
 const PIVOTS := [Vector2(286, 484), Vector2(276, 484), Vector2(278, 484), Vector2(296, 420), Vector2(292, 450), Vector2(306, 456)]
 const MOVEMENT_SCALE := 0.05
 const MOVEMENT_PIVOTS := [Vector2(320, 602), Vector2(302, 614), Vector2(360, 504), Vector2(302, 532)]
 const COMBAT_PIVOTS := [Vector2(270, 490), Vector2(274, 490), Vector2(268, 490), Vector2(270, 454), Vector2(274, 456), Vector2(268, 458)]
+const GROUND_ROWS := [486, 486, 486]
+const MOVEMENT_GROUND_ROWS := {0: 604, 3: 533}
+const COMBAT_GROUND_ROWS := [491, 492, 492, 456, 457, 459]
 enum Pose { IDLE, WALK_A, WALK_B, JUMP, ATTACK, HURT, CROUCH, FALL, DASH, LAND }
 var current_pose := Pose.IDLE
 var elapsed := 0.0
@@ -17,6 +21,7 @@ var hurt_remaining := 0.0
 var previous_health := -1
 var previous_position := Vector2.ZERO
 var stride_distance := 0.0
+var walk_direction := 0.0
 var walk_grace := 0.0
 var landing_remaining := 0.0
 var was_falling := false
@@ -25,6 +30,9 @@ var attack_weapon_id := ""
 var attack_direction := Vector2.RIGHT
 var attack_duration := 0.0
 var attack_reach := 34.0
+var damage_flash_remaining := 0.0
+var damage_flash_color := Color.WHITE
+var damage_burst: Node2D
 
 
 func _ready() -> void:
@@ -40,6 +48,17 @@ func _ready() -> void:
 		get_parent().respawned.connect(_on_respawned)
 		get_parent().attack_performed.connect(_on_attack_performed)
 		get_parent().weapon_changed.connect(_on_weapon_changed)
+		get_parent().damage_received.connect(_on_damage_received)
+		var state := get_node_or_null("/root/GameState")
+		if state != null:
+			state.room_changed.connect(_clear_damage_feedback)
+			state.checkpoint_resting.connect(_clear_damage_feedback)
+			state.room_changed.connect(_on_motion_boundary)
+			state.checkpoint_resting.connect(_on_motion_boundary)
+		var transition := get_node_or_null("/root/RoomTransition")
+		if transition != null:
+			transition.transition_started.connect(_clear_damage_feedback)
+			transition.transition_started.connect(_on_motion_boundary)
 		visibility_changed.connect(_on_visibility_changed)
 		_reset_motion()
 
@@ -48,10 +67,12 @@ func _on_health_changed(current: int, _maximum: int) -> void:
 	if previous_health >= 0 and current < previous_health:
 		hurt_remaining = 0.16
 		attack_class = ""
+		_reset_stride()
 	previous_health = current
 
 
 func _on_respawned() -> void:
+	_clear_damage_feedback()
 	hurt_remaining = 0.0
 	elapsed = 0.0
 	_reset_motion()
@@ -59,22 +80,66 @@ func _on_respawned() -> void:
 
 func _reset_motion() -> void:
 	previous_position = get_parent().global_position
-	stride_distance = 0.0
-	walk_grace = 0.0
+	_reset_stride()
 	landing_remaining = 0.0
 	was_falling = false
 	attack_class = ""
+
+
+func _reset_stride() -> void:
+	stride_distance = 0.0
+	walk_grace = 0.0
+	walk_direction = 0.0
+
+
+func _on_motion_boundary(_unused: String = "") -> void:
+	_reset_motion()
 
 
 func _on_visibility_changed() -> void:
 	_reset_motion()
 	if not is_visible_in_tree():
 		hurt_remaining = 0.0
+		_clear_damage_feedback()
+
+
+func _clear_damage_feedback(_unused: String = "") -> void:
+	hurt_remaining = 0.0
+	damage_flash_remaining = 0.0
+	self_modulate = Color.WHITE
+	if is_instance_valid(damage_burst):
+		damage_burst.queue_free()
+	damage_burst = null
+
+
+func _exit_tree() -> void:
+	_clear_damage_feedback()
+
+
+func _on_damage_received(_amount: int, knockback: Vector2, outcome: String) -> void:
+	_clear_damage_feedback()
+	if outcome == "fatal" or not is_visible_in_tree():
+		return # Death still uses the existing hide/respawn behavior.
+	hurt_remaining = 0.16
+	attack_class = ""
+	_reset_stride()
+	var rescued := outcome == "second_breath"
+	# Modulation above 1 keeps the dark hurt sprite readable through the
+	# existing 0.5 invulnerability alpha, without changing that alpha itself.
+	damage_flash_color = Color(2.0, 1.85, 1.25) if rescued else Color(2.0, 1.4, 1.25)
+	damage_flash_remaining = 0.12
+	self_modulate = damage_flash_color
+	var actor := get_parent() as Player
+	# Direction is the existing knockback direction, not an invented attacker
+	# position. Zero-knockback hazards get an upward cue.
+	var aim := Vector2(signf(knockback.x), 0) if not is_zero_approx(knockback.x) else Vector2.UP
+	damage_burst = Impact.spawn(actor, actor.global_position + Vector2(0, -3), aim, "player_rescue" if rescued else "player_hurt", Color("f5ce7a") if rescued else Color("f38677"), "actor")
 
 
 func _on_attack_performed(weapon_class: String, direction: Vector2) -> void:
 	if not is_visible_in_tree():
 		return
+	_reset_stride()
 	attack_class = weapon_class
 	attack_direction = direction
 	var actor := get_parent() as Player
@@ -101,6 +166,8 @@ func _process(delta: float) -> void:
 	var displacement := actor.global_position - previous_position
 	previous_position = actor.global_position
 	elapsed += delta
+	damage_flash_remaining = maxf(0.0, damage_flash_remaining - delta)
+	self_modulate = Color.WHITE.lerp(damage_flash_color, damage_flash_remaining / 0.12)
 	hurt_remaining = maxf(0.0, hurt_remaining - delta)
 	walk_grace = maxf(0.0, walk_grace - delta)
 	landing_remaining = maxf(0.0, landing_remaining - delta)
@@ -108,15 +175,21 @@ func _process(delta: float) -> void:
 		attack_class = ""
 	if displacement.length() >= 80:
 		# Door travel/respawn must not be counted as an enormous stride.
-		stride_distance = 0.0
-		walk_grace = 0.0
-		landing_remaining = 0.0
-		was_falling = false
-		attack_class = ""
-	elif actor.is_on_floor() and not actor.is_dashing and absf(actor.velocity.x) > 8 and absf(displacement.x) > 0.01:
+		_reset_motion()
+	elif not actor.is_on_floor() or actor.is_dashing or actor.is_crouching or actor.is_safe_resting or actor.is_dead or hurt_remaining > 0 or not attack_class.is_empty():
+		# Attack, knockback recoil and airborne travel are not walking distance.
+		_reset_stride()
+	elif absf(actor.velocity.x) > 8 and absf(displacement.x) > 0.01:
+		var next_direction := signf(displacement.x)
+		if next_direction != walk_direction:
+			stride_distance = 0.0
+		walk_direction = next_direction
 		stride_distance += absf(displacement.x)
 		# Preserve the current stride between physics ticks at high refresh.
 		walk_grace = 0.04
+	elif walk_grace <= 0:
+		# Remember the final distance for diagnostics, but restart the next stride.
+		walk_direction = 0.0
 	if actor.is_on_floor():
 		if was_falling:
 			landing_remaining = 0.09
@@ -156,6 +229,10 @@ func _apply_pose(pose: int, face_left: bool, crouching: bool, crouch_multiplier:
 	flip_h = face_left
 	# Registration keeps feet on the original collider's y=10 floor.
 	offset = Vector2(313.5, 313.5) - MOVEMENT_PIVOTS[frame] if movement else Vector2(256, 256) - PIVOTS[pose]
+	# Only supporting-foot poses are re-registered. Jump/fall/dash keep their
+	# authored tucked legs, and this does not change the physics body's y.
+	if not movement and pose <= Pose.WALK_B: offset.y = 256 - GROUND_ROWS[pose]
+	elif movement and MOVEMENT_GROUND_ROWS.has(frame): offset.y = 313.5 - MOVEMENT_GROUND_ROWS[frame]
 	if face_left:
 		offset.x = -offset.x
 	position = Vector2(0, 10)
@@ -177,6 +254,7 @@ func _apply_attack_pose(weapon_class: String, follow_through: bool, face_left: b
 	frame = column + (3 if follow_through else 0)
 	flip_h = face_left
 	offset = Vector2(256, 256) - COMBAT_PIVOTS[frame]
+	offset.y = 256 - COMBAT_GROUND_ROWS[frame]
 	if face_left:
 		offset.x = -offset.x
 	position = Vector2(0, 10)

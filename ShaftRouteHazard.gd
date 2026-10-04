@@ -31,6 +31,7 @@ func _ready() -> void:
 	phase_remaining = idle_duration + initial_offset
 	monitoring = hazard_kind == "current" and not disabled
 	_update_visuals()
+	preload("res://EnvironmentHazardArt.gd").attach(self, hazard_kind)
 
 
 func _physics_process(delta: float) -> void:
@@ -86,7 +87,7 @@ func _on_shortcut_changed(event_id: String) -> void:
 
 
 func _update_visuals() -> void:
-	direction_marks.visible = hazard_kind == "current"
+	direction_marks.visible = hazard_kind == "current" and not has_node("HazardArt")
 	if disabled:
 		hazard_fill.color = Color(0.12, 0.24, 0.27, 0.06)
 		warning_line.default_color = Color(0.31, 0.55, 0.58, 0.18)

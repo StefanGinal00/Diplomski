@@ -145,6 +145,8 @@ func _build_site(index: int, data: Array, at: Vector2) -> void:
 			_ring(site, "TaskSeal", Vector2(-65, -70), 24, tone)
 			_ring(site, "ReturnSeal", Vector2(65, -70), 24, tone)
 			_line(site, "ReturnTrace", [Vector2(-82, -26), Vector2(82, -26)], tone, 5)
+	if region == "drift" and data[2] in ["flywheel", "pump", "pump_board", "manifold"]:
+		preload("res://FieldMachineryArt.gd").attach(site, data[2])
 
 
 func _build_resident(at: Vector2) -> void:
@@ -167,6 +169,8 @@ func _build_resident(at: Vector2) -> void:
 	label.size.x = 280
 	label.z_index = 2
 	label.add_theme_constant_override("outline_size", 4)
+	if region == "depths" or region == "emberspine":
+		preload("res://EchoGuideAppearance.gd").attach(npc, region)
 
 
 func _add_streamed(actor: Node2D, kind: String) -> void:

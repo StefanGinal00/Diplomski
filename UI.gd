@@ -73,6 +73,7 @@ const MEMORY_MOMENTS := {
 @onready var play_again_button: Button = $LevelCompletePanel/PlayAgainButton
 @onready var quest_tracker_label: Label = $QuestPanel/QuestScroll/QuestTrackerLabel
 @onready var dialogue_panel: Panel = $DialoguePanel
+@onready var dialogue_portrait: TextureRect = $DialoguePanel/Portrait
 @onready var speaker_label: Label = $DialoguePanel/SpeakerLabel
 @onready var dialogue_text: Label = $DialoguePanel/DialogueText
 @onready var dialogue_primary_button: Button = $DialoguePanel/PrimaryButton
@@ -116,6 +117,7 @@ const MEMORY_MOMENTS := {
 @onready var weapon_status_label: Label = $WeaponStatusPanel/WeaponLabel
 @onready var ammo_status_label: Label = $WeaponStatusPanel/AmmoLabel
 @onready var shop_panel: Panel = $ShopPanel
+@onready var shop_portrait: TextureRect = $ShopPanel/Portrait
 @onready var shop_dimmer: ColorRect = get_node_or_null("ShopDimmer") as ColorRect
 @onready var shop_title_label: Label = $ShopPanel/TitleLabel
 @onready var shop_gold_label: Label = $ShopPanel/GoldLabel
@@ -123,7 +125,8 @@ const MEMORY_MOMENTS := {
 @onready var shop_buy_tab_button: Button = $ShopPanel/BuyTabButton
 @onready var shop_forge_tab_button: Button = $ShopPanel/ForgeTabButton
 @onready var shop_item_name_label: Label = $ShopPanel/ItemNameLabel
-@onready var shop_item_description_label: Label = $ShopPanel/ItemDescriptionLabel
+@onready var shop_item_description_scroll: ScrollContainer = $ShopPanel/DescriptionScroll
+@onready var shop_item_description_label: Label = $ShopPanel/DescriptionScroll/ItemDescriptionLabel
 @onready var shop_buy_button: Button = $ShopPanel/BuyButton
 @onready var shop_quest_label: Label = $ShopPanel/QuestLabel
 @onready var shop_quest_button: Button = $ShopPanel/QuestButton
@@ -147,10 +150,18 @@ var starfall_route_claimed_this_talk: bool = false
 var zone_title_tween: Tween
 var memory_reveal_tween: Tween
 var memory_reveal_queue: Array[Dictionary] = []
+var presented_encounter_stories: Dictionary = {}
+var story_player: CanvasLayer
+var campaign_scene_queue: Array[String] = []
+var campaign_scene_delay := 0.0
+var campaign_milestones: Dictionary = {}
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	story_player = preload("res://StoryScenePlayer.gd").new()
+	story_player.name = "StoryScenePlayer"
+	add_child(story_player)
 	game_over_panel.hide()
 	level_complete_panel.hide()
 	dialogue_panel.hide()
@@ -183,6 +194,8 @@ func _ready() -> void:
 	map_menu_button.pressed.connect(_toggle_map_button)
 	$SkillPanel/CloseButton.pressed.connect(_toggle_skills)
 	$QuestPanel/CloseButton.pressed.connect(_toggle_quests)
+	$QuestPanel/MainRewardButton.pressed.connect(_claim_main_quest_reward)
+	$QuestPanel/StoryScenesButton.pressed.connect(story_player.open_library)
 	restart_button.pressed.connect(_on_respawn_button_pressed)
 	switch_mode_button.pressed.connect(_switch_to_normal_mode)
 	play_again_button.pressed.connect(_restart_journey)
@@ -208,6 +221,7 @@ func _ready() -> void:
 	normal_mode_button.pressed.connect(_start_normal_mode)
 	hardcore_mode_button.pressed.connect(_start_hardcore_mode)
 	ending_continue_button.pressed.connect(_close_final_ending)
+	$EndingPanel/RewardsButton.pressed.connect(_open_ending_rewards)
 	_setup_enemy_objective()
 	_setup_friendly_npcs()
 	_setup_checkpoints()
@@ -258,6 +272,7 @@ func _ready() -> void:
 			game_state.boss_progress_changed.connect(_on_boss_progress_changed)
 		if not game_state.shortcut_changed.is_connected(_on_world_progress_changed):
 			game_state.shortcut_changed.connect(_on_world_progress_changed)
+		game_state.save_completed.connect(_offer_story_at_rest)
 		_on_gold_changed(game_state.gold)
 		_on_mode_changed(game_state.game_mode)
 		_on_lamps_changed()
@@ -306,9 +321,20 @@ func _ready() -> void:
 	_on_double_jump_state_changed(player.double_jump_unlocked)
 	_on_dash_state_changed(player.dash_unlocked)
 	_update_dash_status()
+	call_deferred("_play_reload_opening")
+
+
+func _play_reload_opening() -> void:
+	if game_state == null or not game_state.session_started or not game_state.opening_after_reload: return
+	game_state.opening_after_reload = false
+	_dismiss_zone_title()
+	story_player.play("opening")
 
 
 func _process(_delta: float) -> void:
+	_process_campaign_scenes(_delta)
+	if not memory_reveal_queue.is_empty() and not get_tree().paused:
+		_show_next_memory_reveal()
 	_update_dash_status()
 
 
@@ -332,6 +358,7 @@ func _input(event: InputEvent) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _world_reading() or _testing_tools_open(): return
 	if event.is_echo():
 		return
 	if main_menu_panel.visible:
@@ -340,6 +367,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.is_action_pressed("ui_cancel"):
 			get_viewport().set_input_as_handled()
 			_close_final_ending()
+		elif event.is_action_pressed("quest_log"):
+			get_viewport().set_input_as_handled()
+			_open_ending_rewards()
 		return
 	if event.is_action_pressed("skills_menu"):
 		get_viewport().set_input_as_handled()
@@ -390,8 +420,18 @@ func _resume_game() -> void:
 
 
 func _hud_menu_blocked() -> bool:
-	return main_menu_panel.visible or game_over_panel.visible or level_complete_panel.visible \
+	return _testing_tools_open() or _world_reading() or (story_player != null and story_player.is_open()) or main_menu_panel.visible or game_over_panel.visible or level_complete_panel.visible \
 		or dialogue_panel.visible or shop_panel.visible or pause_panel.visible or ending_panel.visible
+
+
+func _testing_tools_open() -> bool:
+	var tools := get_parent().get_node_or_null("TestingTools")
+	return tools!=null and tools.is_open()
+
+
+func _world_reading() -> bool:
+	var reader := get_parent().get_node_or_null("WorldPresentationFinish/Readables")
+	return reader != null and reader.is_open()
 
 
 func _close_side_panels() -> void:
@@ -420,6 +460,7 @@ func _toggle_quests() -> void:
 	if _hud_menu_blocked() or inventory_panel.visible or world_map_panel.visible:
 		return
 	skill_panel.hide()
+	_dismiss_zone_title()
 	_on_quest_updated()
 	quest_panel.show()
 	get_tree().paused = true
@@ -497,6 +538,73 @@ func _start_new_mode(mode: String) -> void:
 	_on_gold_changed(game_state.gold)
 	_update_inventory_panel()
 	_show_zone_title("training_passage")
+	_dismiss_zone_title()
+	story_player.play("opening")
+
+
+func _offer_story_at_rest() -> void:
+	call_deferred("_play_pending_story")
+
+
+func _play_pending_story() -> void:
+	if _hud_menu_blocked() or get_tree().paused or player == null or player.is_dead or boss_health_panel.visible: return
+	var transition := get_node_or_null("/root/RoomTransition")
+	if transition != null and transition.is_transitioning: return
+	# Only an actual safe lamp rest offers a chapter, never a reward click or hit.
+	var near_safe_lamp := false
+	for lamp in get_tree().get_nodes_in_group("checkpoint"):
+		if lamp.has_method("_has_nearby_threat") and not lamp._has_nearby_threat() and lamp.global_position.distance_to(player.global_position) < 140:
+			near_safe_lamp = true
+			break
+	if not near_safe_lamp: return
+	var pending := preload("res://StoryScenes.gd").pending(game_state)
+	if pending.is_empty(): return
+	_dismiss_zone_title()
+	story_player.play(pending)
+
+
+func _queue_campaign_scene(id: String) -> void:
+	if id.is_empty() or not preload("res://StoryScenes.gd").unlocked(game_state, id): return
+	if bool(game_state.story_scenes_seen.get(id, false)) or id in campaign_scene_queue: return
+	if id in ["fortress", "memories"]: campaign_scene_queue.append(id)
+	else: campaign_scene_queue.push_front(id)
+	campaign_scene_delay = 3.0
+
+
+func _track_campaign_milestones() -> void:
+	for id in ["fortress", "memories"]:
+		var available := preload("res://StoryScenes.gd").unlocked(game_state, id)
+		if available and campaign_milestones.has(id) and not bool(campaign_milestones[id]): _queue_campaign_scene(id)
+		campaign_milestones[id] = available
+
+
+func _process_campaign_scenes(delta: float) -> void:
+	if campaign_scene_queue.is_empty() or not bool(game_state.story_scenes_seen.get("opening", false)): return
+	if not _campaign_scene_safe():
+		# Require one uninterrupted quiet window, not accumulated safe frames.
+		campaign_scene_delay = 3.0
+		return
+	campaign_scene_delay -= maxf(0.0, delta)
+	if campaign_scene_delay > 0.0: return
+	var id: String = campaign_scene_queue.front()
+	if bool(game_state.story_scenes_seen.get(id, false)) or story_player.play(id):
+		campaign_scene_queue.pop_front()
+	campaign_scene_delay = 3.0
+
+
+func _campaign_scene_safe() -> bool:
+	if _hud_menu_blocked() or get_tree().paused or player == null or player.is_dead or boss_health_panel.visible: return false
+	if memory_toast_panel.visible or not memory_reveal_queue.is_empty() or zone_title_panel.visible: return false
+	var transition := get_node_or_null("/root/RoomTransition")
+	if transition != null and transition.is_transitioning: return false
+	# Wait until the player can safely stop; no freeze during a jump or another fight.
+	if not player.is_on_floor() or player.is_dashing or not player.attack_visual_timer.is_stopped(): return false
+	for group_name in ["enemy", "boss", "enemy_projectile"]:
+		for threat in get_tree().get_nodes_in_group(group_name):
+			if not threat is Node2D or threat.is_queued_for_deletion() or not threat.is_inside_tree(): continue
+			if threat.get("is_dead") == true: continue
+			if threat.global_position.distance_to(player.global_position) < 500.0: return false
+	return true
 
 
 func _show_zone_title(room_id: String) -> void:
@@ -547,8 +655,8 @@ func _show_zone_title(room_id: String) -> void:
 	}
 	var entry: Array = titles.get(room_id, [room_id.replace("_", " ").to_upper(), "An unfamiliar place"])
 	var subtitle: String = str(entry[1])
-	if room_id == "starfall_citadel" and game_state != null and bool(game_state.defeated_bosses.get("hollow_sovereign", false)):
-		subtitle = "A new light reaches the streets and gardens"
+	var story_subtitle := preload("res://WorldStory.gd").arrival(room_id, game_state)
+	if not story_subtitle.is_empty(): subtitle = story_subtitle
 	var zone_id := "echo_grotto" if room_id.begins_with("echo_") else ("sunken_shaft" if room_id.begins_with("shaft_") else ("ashen_bastion" if room_id.begins_with("ash_") else room_id))
 	if game_state != null and room_id not in ["echo_haven", "ash_hearth"] and game_state.get_zone_tier(zone_id) >= 1:
 		subtitle = "AWAKENED  •  STRONGER ENEMIES" if zone_id == "ashen_bastion" else "AWAKENED  •  STRONGER ENEMIES  •  RETURN QUEST [J]"
@@ -571,6 +679,7 @@ func _show_zone_banner(title: String, subtitle: String, duration: float = 1.55) 
 
 func _on_zone_tier_changed(zone_id: String, tier: int) -> void:
 	_update_objective_label()
+	_on_quest_updated()
 	if tier < 1 or main_menu_panel.visible:
 		return
 	if zone_id == "sunken_shaft":
@@ -825,10 +934,14 @@ func _on_map_travel_pressed() -> void:
 	var destination := _find_checkpoint_by_id(selected_lamp_id)
 	if destination != null and destination.has_method("activate_from_travel"):
 		destination.activate_from_travel()
-	player.set_checkpoint(target_position)
-	game_state.save_at_checkpoint(player, quest_manager, target_position, selected_lamp_id, target_name, target_room_id)
+	var saved: bool = game_state.save_at_checkpoint(player, quest_manager, target_position, selected_lamp_id, target_name, target_room_id)
+	if saved:
+		player.set_checkpoint(target_position)
 	map_allows_travel = false
 	travel_source_checkpoint = destination
+	if not saved:
+		_show_notification("TRAVEL COMPLETE - SAVE FAILED. PREVIOUS CHECKPOINT KEPT.")
+		return
 	_show_notification("FAST TRAVEL  •  " + target_name.to_upper())
 
 
@@ -1010,6 +1123,7 @@ func _open_shop(merchant: Node) -> void:
 		return
 	_close_side_panels()
 	active_merchant = merchant
+	_update_shop_portrait()
 	shop_mode = "forge" if merchant.is_in_group("town_service") and str(merchant.get("service_kind")) == "anvil" else "buy"
 	dialogue_panel.hide()
 	inventory_panel.hide()
@@ -1028,8 +1142,39 @@ func _close_shop() -> void:
 	shop_panel.hide()
 	_set_shop_dimmer_visible(false)
 	active_merchant = null
+	_update_shop_portrait()
 	selected_shop_item_id = ""
 	get_tree().paused = false
+
+
+func _portrait_for(npc: Node) -> Texture2D:
+	if is_instance_valid(npc) and npc.has_method("get_portrait_texture"):
+		return npc.get_portrait_texture() as Texture2D
+	return null
+
+
+func _update_shop_portrait() -> void:
+	shop_portrait.texture = _portrait_for(active_merchant)
+	shop_portrait.visible = shop_portrait.texture != null
+	shop_title_label.offset_left = 104.0 if shop_portrait.visible else 24.0
+	shop_gold_label.offset_left = 104.0 if shop_portrait.visible else 28.0
+	shop_gold_label.offset_right = 338.0 if shop_portrait.visible else 220.0
+
+
+func _update_dialogue_portrait() -> void:
+	dialogue_portrait.texture = _portrait_for(active_dialogue_npc)
+	dialogue_portrait.visible = dialogue_portrait.texture != null
+	var with_portrait := dialogue_portrait.visible
+	# Reserve a dedicated portrait column, retaining the original layout for
+	# speakers without art. Extra height keeps the narrower text above buttons.
+	speaker_label.offset_left = 136.0 if with_portrait else 20.0
+	dialogue_text.offset_left = speaker_label.offset_left
+	dialogue_panel.offset_top = -254.0 if with_portrait else -230.0
+	dialogue_text.offset_bottom = 128.0 if with_portrait else 104.0
+	dialogue_primary_button.offset_top = 140.0 if with_portrait else 116.0
+	dialogue_primary_button.offset_bottom = 178.0 if with_portrait else 154.0
+	dialogue_close_button.offset_top = dialogue_primary_button.offset_top
+	dialogue_close_button.offset_bottom = dialogue_primary_button.offset_bottom
 
 
 func _set_shop_dimmer_visible(should_show: bool) -> void:
@@ -1127,6 +1272,7 @@ func _on_shop_item_selected(index: int) -> void:
 
 
 func _update_shop_item_details() -> void:
+	shop_item_description_scroll.scroll_vertical = 0
 	if game_state == null or selected_shop_item_id.is_empty():
 		shop_item_name_label.text = "No weapon available"
 		shop_item_description_label.text = "Acquire a weapon to forge it."
@@ -1376,6 +1522,7 @@ func _on_shortcut_activated(shortcut_id: String) -> void:
 
 
 func _on_world_progress_changed(progress_id: String) -> void:
+	_on_quest_updated()
 	if progress_id in ["shaft_hollow_survey_ore", "shaft_hollow_survey_haul", "shaft_hollow_survey_seep"]:
 		var samples := 0
 		for event_id in ["shaft_hollow_survey_ore", "shaft_hollow_survey_haul", "shaft_hollow_survey_seep"]:
@@ -1416,6 +1563,7 @@ func _on_world_progress_changed(progress_id: String) -> void:
 	elif progress_id == "ash_arena_cleared":
 		_update_objective_label()
 		_show_notification("CINDER COLISEUM CLEARED  •  EMBLEM EARNED")
+		_present_encounter_story("ember_marshal")
 	elif progress_id == "ash_chapel_bells":
 		_update_objective_label()
 		_show_notification("CHAPEL BELLS ALIGNED  •  RELIQUARY OPEN")
@@ -1466,6 +1614,7 @@ func _on_access_denied(message: String) -> void:
 
 func _on_boss_progress_changed(_boss_id: String) -> void:
 	_update_objective_label()
+	_on_quest_updated()
 
 
 func _on_life_pickup_collected() -> void:
@@ -1480,7 +1629,12 @@ func _on_gold_changed(current_gold: int) -> void:
 
 
 func _on_mode_changed(mode: String) -> void:
+	if story_player != null: story_player.cancel()
+	campaign_scene_queue.clear()
 	_clear_memory_reveals()
+	presented_encounter_stories.clear()
+	campaign_milestones.clear()
+	_track_campaign_milestones()
 	mode_label.text = "MODE: " + mode.to_upper()
 	mode_label.modulate = Color(1.0, 0.42, 0.42, 1.0) if mode == "hardcore" else Color(0.45, 0.9, 1.0, 1.0)
 
@@ -1512,7 +1666,7 @@ func _queue_memory_reveal(item_id: String, amount: int) -> void:
 
 
 func _queue_story_moment(moment_id: String, count: int) -> void:
-	if not MEMORY_MOMENTS.has(moment_id):
+	if _story_moment(moment_id).is_empty():
 		return
 	memory_reveal_queue.append({"id": moment_id, "count": count})
 	_show_next_memory_reveal()
@@ -1521,13 +1675,23 @@ func _queue_story_moment(moment_id: String, count: int) -> void:
 func _show_next_memory_reveal() -> void:
 	if memory_toast_panel.visible or memory_reveal_queue.is_empty():
 		return
+	# Let native awakening/chapter warnings finish before the aftermath.
+	if str(memory_reveal_queue[0].get("id", "")).begins_with("victory:") and (zone_title_panel.visible or boss_health_panel.visible):
+		return
 	var queued: Dictionary = memory_reveal_queue.pop_front()
 	var item_id: String = str(queued.get("id", ""))
-	var moment: Dictionary = MEMORY_MOMENTS[item_id]
+	var moment := _story_moment(item_id)
+	# Cache rewards still announce items above a document; do not paint over them.
+	memory_toast_panel.offset_top = 105.0 if item_id.begins_with("record:") or item_id.begins_with("victory:") else 77.0
+	memory_toast_panel.offset_bottom = memory_toast_panel.offset_top + 124.0
 	memory_title_label.text = str(moment["title"])
 	memory_title_label.add_theme_color_override("font_color", moment["color"])
 	memory_text_label.text = str(moment["text"])
-	if item_id == "memory_complete":
+	if item_id.begins_with("victory:"):
+		memory_status_label.text = "%s  -  JOURNAL [J]" % str(moment["location"])
+	elif item_id.begins_with("record:"):
+		memory_status_label.text = "FIELD RECORD %d/%d  -  READ IN JOURNAL [J]" % [int(queued["count"]), preload("res://FieldRecords.gd").ENTRIES.size()]
+	elif item_id == "memory_complete":
 		var guardians := int(bool(game_state.defeated_bosses.get("abyss_warden", false))) + int(bool(game_state.defeated_bosses.get("echo_matriarch", false))) + int(bool(game_state.defeated_bosses.get("ash_castellan", false)))
 		memory_status_label.text = "THRONE PATH READY" if guardians == 3 else "THRONE PATH  -  GUARDIANS %d/3" % guardians
 	elif item_id.begins_with("dawn_echo_"):
@@ -1541,6 +1705,21 @@ func _show_next_memory_reveal() -> void:
 	memory_reveal_tween.tween_interval(5.0)
 	memory_reveal_tween.tween_property(memory_toast_panel, "modulate:a", 0.0, 0.45)
 	memory_reveal_tween.tween_callback(_finish_memory_reveal)
+
+
+func _story_moment(moment_id: String) -> Dictionary:
+	if MEMORY_MOMENTS.has(moment_id): return MEMORY_MOMENTS[moment_id]
+	var record := preload("res://FieldRecords.gd").moment(moment_id)
+	return preload("res://EncounterStory.gd").moment(moment_id) if record.is_empty() else record
+
+
+func _present_encounter_story(boss_id: String) -> void:
+	if presented_encounter_stories.has(boss_id) or not preload("res://EncounterStory.gd").cleared(game_state, boss_id): return
+	if preload("res://EncounterStory.gd").moment("victory:" + boss_id).is_empty(): return
+	presented_encounter_stories[boss_id] = true
+	_queue_campaign_scene(str(preload("res://StoryScenes.gd").BOSS_SCENES.get(boss_id, "")))
+	_queue_story_moment("victory:" + boss_id, 0)
+	_on_quest_updated()
 
 
 func _finish_memory_reveal() -> void:
@@ -1565,6 +1744,11 @@ func _on_inventory_changed() -> void:
 
 
 func _on_cache_opened(cache_id: String) -> void:
+	if not preload("res://ExplorationLedger.gd").route_for_cache(cache_id).is_empty():
+		_on_quest_updated()
+	if preload("res://FieldRecords.gd").found(game_state, cache_id):
+		_queue_story_moment("record:" + cache_id, preload("res://FieldRecords.gd").count(game_state))
+		_on_quest_updated()
 	if cache_id.ends_with("_trial_reserve") and SHAFT_RETURN_REQUIREMENTS.has(cache_id.trim_suffix("_trial_reserve")):
 		_update_objective_label()
 	if cache_id in ["ash_chapel_reliquary", "starfall_outer_watch", "starfall_silent_watch", "starfall_vault_bridge", "starfall_vault_depth", "starfall_root_crown", "starfall_court_victory"] or cache_id.begins_with("shaft_drift_") or cache_id.begins_with("echo_depths_") or cache_id.begins_with("ash_emberspine_") or cache_id.begins_with("starfall_ramparts_"):
@@ -1612,6 +1796,7 @@ func _on_room_changed(room_id: String) -> void:
 	_show_notification("AREA DISCOVERED  •  " + room_name)
 	_show_zone_title(room_id)
 	_update_objective_label()
+	_on_quest_updated()
 
 
 func _on_timeline_advanced(stage: int, _room_id: String) -> void:
@@ -1644,7 +1829,7 @@ func _on_boss_battle_started(boss: Node) -> void:
 	_on_boss_health_changed(boss.current_health, boss.max_health, boss)
 	_show_notification("BOSS ENCOUNTER  •  " + _boss_display_name(boss))
 	if str(boss.get("boss_id")) == "hollow_sovereign":
-		_show_zone_banner("HOLLOW SOVEREIGN", "THE THREE MEMORIES HAVE FOUND THEIR KEEPER", 2.0)
+		_show_zone_banner("HOLLOW SOVEREIGN", "THREE MEMORIES. ONE SILENCE TO BREAK.", 2.0)
 
 
 func _on_boss_health_changed(current_health: int, maximum_health: int, boss: Node) -> void:
@@ -1659,18 +1844,23 @@ func _on_boss_phase_changed(new_phase: int, boss: Node) -> void:
 
 func _on_boss_defeated(boss: Node) -> void:
 	boss_health_panel.hide()
+	_on_quest_updated()
 	if str(boss.get("boss_id")) == "hollow_sovereign":
 		_update_objective_label()
 		_show_final_ending()
 		return
 	var suffix := "  •  PATH OPEN" if boss.get("is_rematch") != true and str(boss.get("boss_id")) in ["abyss_warden", "echo_matriarch", "ash_castellan"] else ""
 	_show_notification(_boss_display_name(boss) + " DEFEATED" + suffix)
+	if boss.get("is_rematch") != true:
+		_present_encounter_story(str(boss.get("boss_id")))
 	_update_objective_label()
 
 
 func _show_final_ending() -> void:
 	if ending_panel.visible:
 		return
+	if story_player != null: story_player.cancel()
+	campaign_scene_queue.clear()
 	_clear_memory_reveals()
 	if zone_title_tween != null and zone_title_tween.is_valid():
 		zone_title_tween.kill()
@@ -1681,16 +1871,32 @@ func _show_final_ending() -> void:
 	shop_panel.hide()
 	_set_shop_dimmer_visible(false)
 	ending_backdrop.show()
+	$EndingPanel/SaveHint.text = preload("res://MainQuest.gd").ending_reward_hint(game_state, quest_manager.main_quest_rewards if quest_manager != null else {})
+	$EndingPanel/StoryScroll.scroll_vertical = 0
 	ending_panel.show()
 	get_tree().paused = true
 	ending_continue_button.grab_focus()
+	# Keep the existing reward/save epilogue underneath the illustrated ending.
+	if preload("res://StoryScenes.gd").unlocked(game_state, "ending") and not bool(game_state.story_scenes_seen.get("ending", false)):
+		story_player.play("ending")
 
 
-func _close_final_ending() -> void:
+func _close_final_ending(show_save_reminder: bool = true) -> void:
+	if story_player != null and story_player.active_id == "ending": story_player.finish()
 	ending_panel.hide()
 	ending_backdrop.hide()
 	get_tree().paused = false
-	_show_notification("THE ROAD REMAINS OPEN - SAVE YOUR VICTORY AT A LAMP")
+	if show_save_reminder: _show_notification("THE ROAD REMAINS OPEN - SAVE YOUR VICTORY AT A LAMP")
+
+
+func _open_ending_rewards() -> void:
+	if not ending_panel.visible or (story_player != null and story_player.is_open()): return
+	_close_final_ending(false)
+	if notification_tween != null and notification_tween.is_valid(): notification_tween.kill()
+	notification_label.modulate.a = 0.0
+	_toggle_quests()
+	# No reward is paid by navigation; keep the existing ordered claim action.
+	if $QuestPanel/MainRewardButton.visible: $QuestPanel/MainRewardButton.grab_focus()
 
 
 func _on_checkpoint_activated() -> void:
@@ -1721,6 +1927,12 @@ func _on_lamps_changed() -> void:
 			checkpoint._update_interaction_prompt()
 
 
+func _dismiss_zone_title() -> void:
+	if zone_title_tween != null and zone_title_tween.is_valid():
+		zone_title_tween.kill()
+	zone_title_panel.hide()
+
+
 func _on_npc_interaction_requested(_npc: Area2D) -> void:
 	if player == null or player.is_dead or level_complete_panel.visible:
 		return
@@ -1729,6 +1941,7 @@ func _on_npc_interaction_requested(_npc: Area2D) -> void:
 		return
 
 	active_dialogue_npc = _npc
+	_dismiss_zone_title()
 	if _npc.has_method("set_player_dialogue_active"):
 		_npc.set_player_dialogue_active(true)
 	active_town_line = _npc.get_next_line() if _npc.is_in_group("town_resident") and not _npc.is_in_group("hearth_quest_npc") and not _npc.is_in_group("hearth_gate_quest_npc") and not _npc.is_in_group("starfall_route_npc") and not _npc.is_in_group("dawn_archive_npc") else ""
@@ -1741,6 +1954,7 @@ func _on_npc_interaction_requested(_npc: Area2D) -> void:
 
 
 func _update_dialogue_content() -> void:
+	_update_dialogue_portrait()
 	if active_dialogue_npc != null and active_dialogue_npc.is_in_group("hearth_quest_npc"):
 		_update_hearth_quest_dialogue()
 		return
@@ -1770,27 +1984,27 @@ func _update_dialogue_content() -> void:
 	if quest_index == 0:
 		match state:
 			0:
-				dialogue_text.text = "Defeat all three creatures and return. Reward: 1 Skill Point, 2 XP and 30 Gold."
+				dialogue_text.text = ("You opened the road, but this camp still needs help. Clear three creatures nearby." if game_state != null and bool(game_state.defeated_bosses.get("void_sentinel", false)) else "The old road has trapped us both. Clear three creatures so we can prepare for the Sentinel.") + " Reward: 1 Skill Point, 2 XP and 30 Gold."
 				dialogue_primary_button.text = "Accept Mission"
 				dialogue_primary_button.show()
 			1:
 				dialogue_text.text = "The passage is still dangerous. Enemies defeated: %d/3." % int(quest_manager.get("quest_progress"))
 				dialogue_primary_button.hide()
 			2:
-				dialogue_text.text = "The passage is safe. Your reward: 1 skill point, 2 XP and 30 gold."
+				dialogue_text.text = ("The camp can breathe, and you have already opened the way beyond the Sentinel." if game_state != null and bool(game_state.defeated_bosses.get("void_sentinel", false)) else "The camp can breathe. The Sentinel still blocks the road; learn to dash before facing it.") + " Your reward: 1 skill point, 2 XP and 30 gold."
 				dialogue_primary_button.text = "Claim Reward"
 				dialogue_primary_button.show()
 	elif quest_index == 1:
 		match state:
 			0:
-				dialogue_text.text = "Find the violet sigil. Reward: 1 Max HP, 2 XP, 45 Gold and a Caretaker Charm."
+				dialogue_text.text = "My violet sigil lies above the passage. Find it for supplies; this errand won't seal your road. Reward: 1 Max HP, 2 XP, 45 Gold and a Caretaker Charm."
 				dialogue_primary_button.text = "Accept Mission"
 				dialogue_primary_button.show()
 			1:
 				dialogue_text.text = "The sigil should be resting somewhere above the old passage."
 				dialogue_primary_button.hide()
 			2:
-				dialogue_text.text = "You found it. Take 1 Max HP, 2 XP, 45 gold and my charm."
+				dialogue_text.text = "That sigil was mine before the road closed. Keep my charm for your own journey: 1 Max HP, 2 XP, 45 Gold and the Caretaker Charm."
 				dialogue_primary_button.text = "Return Sigil"
 				dialogue_primary_button.show()
 	else:
@@ -1807,7 +2021,7 @@ func _update_dialogue_content() -> void:
 				dialogue_primary_button.text = "Claim Reward"
 				dialogue_primary_button.show()
 			3:
-				dialogue_text.text = "You have outgrown my lessons, Wayfarer. The deeper echoes are yours to explore."
+				dialogue_text.text = preload("res://StoryRoute.gd").contact_line("eldric", game_state)
 				dialogue_primary_button.hide()
 
 
@@ -1816,18 +2030,20 @@ func _update_surveyor_dialogue() -> void:
 	var state := int(quest_manager.get("echo_survey_state"))
 	match state:
 		0:
-			dialogue_text.text = "Find three echo traces: Gallery, Archive, Tide Well. Reward: 1 SP, 3 XP, 80 Gold, 2 Ether Dust."
+			dialogue_text.text = "Haven needs its roads back. Bring traces from Gallery, Archive and Tide Well; listen to the Archive's memory. Reward: 1 SP, 3 XP, 80 Gold, 2 Ether Dust."
+			if quest_manager.get_echo_survey_progress() == 3:
+				dialogue_text.text = "You already found the three traces? Let me record your survey. Reward: 1 SP, 3 XP, 80 Gold and 2 Ether Dust."
 			dialogue_primary_button.text = "Accept Survey"
 			dialogue_primary_button.show()
 		1:
-			dialogue_text.text = "Traces recovered: %d/3. Search the Gallery, Archive and Tide Well." % quest_manager.get_echo_survey_progress()
+			dialogue_text.text = "Traces recovered: %d/3. Search Gallery, Archive and Tide Well. We need a record of the roads, not trophies from their wildlife." % quest_manager.get_echo_survey_progress()
 			dialogue_primary_button.hide()
 		2:
-			dialogue_text.text = "You found all three traces. Claim 1 SP, 3 XP, 80 Gold and 2 Ether Dust."
+			dialogue_text.text = "Three traces of roads we thought lost. Haven can begin planning beyond its walls. Take 1 SP, 3 XP, 80 Gold and 2 Ether Dust."
 			dialogue_primary_button.text = "Claim Reward"
 			dialogue_primary_button.show()
 		_:
-			dialogue_text.text = "The survey is complete. There is more to find beyond the Grotto."
+			dialogue_text.text = preload("res://StoryRoute.gd").contact_line("lyra", game_state)
 			dialogue_primary_button.hide()
 
 
@@ -1835,18 +2051,20 @@ func _update_hearth_quest_dialogue() -> void:
 	speaker_label.text = "MIRA"
 	match int(quest_manager.get("hearth_fan_state")):
 		0:
-			dialogue_text.text = "The Forge fan is still. Restore its airflow and make the road safer. Reward: 2 XP, 50 Gold and 2 Iron Fragments."
+			dialogue_text.text = "Fire should warm travelers, not bar their way. Restart the cooling fan high in Cinder Forge. Reward: 2 XP, 50 Gold, 2 Iron Fragments."
+			if game_state != null and bool(game_state.unlocked_shortcuts.get("ash_forge_fan", false)):
+				dialogue_text.text = "You already restored the Forge fan. Let me thank you properly. Reward: 2 XP, 50 Gold and 2 Iron Fragments."
 			dialogue_primary_button.text = "Accept Task"
 			dialogue_primary_button.show()
 		1:
 			dialogue_text.text = "The cooling fan is high in Cinder Forge. Reach it and start the airflow, then come back to me."
 			dialogue_primary_button.hide()
 		2:
-			dialogue_text.text = "I heard the vents go quiet. Thank you! Take 2 XP, 50 Gold and 2 Iron Fragments."
+			dialogue_text.text = "The fan is turning; the forge road can breathe again. Take 2 XP, 50 Gold and 2 Iron Fragments."
 			dialogue_primary_button.text = "Claim Reward"
 			dialogue_primary_button.show()
 		_:
-			dialogue_text.text = "The road is quieter now. More people will make it home tonight."
+			dialogue_text.text = preload("res://StoryRoute.gd").contact_line("mira", game_state)
 			dialogue_primary_button.hide()
 
 
@@ -1854,7 +2072,9 @@ func _update_hearth_gate_dialogue() -> void:
 	speaker_label.text = "TARIN"
 	match int(quest_manager.get("hearth_gate_state")):
 		0:
-			dialogue_text.text = "Two foes stalk the road outside our gate. Drive them off, then report back. Reward: 1 XP, 25 Gold and an Iron Fragment."
+			dialogue_text.text = "Two foes keep travelers from our shelter. Clear the gate road and come back. Reward: 1 XP, 25 Gold and an Iron Fragment."
+			if quest_manager.get_hearth_gate_progress() >= 2:
+				dialogue_text.text = "You cleared the gate road before I could ask. Report your work so I can pay you: 1 XP, 25 Gold and an Iron Fragment."
 			dialogue_primary_button.text = "Accept Task"
 			dialogue_primary_button.show()
 		1:
@@ -1873,19 +2093,21 @@ func _update_starfall_route_dialogue() -> void:
 	speaker_label.text = "ROOK"
 	match int(quest_manager.get("starfall_route_state")):
 		0:
-			dialogue_text.text = "Find reports on the watch walk, market balcony and garden skywalk. Reward: 1 SP, 4 XP, 100 Gold, 2 Ether Dust."
+			dialogue_text.text = "Starfall is more than its throne. Bring reports from the watch walk, market balcony and garden skywalk. Reward: 1 SP, 4 XP, 100 Gold, 2 Ether Dust."
+			if quest_manager.get_starfall_route_progress() == 3:
+				dialogue_text.text = "All three city reports, already gathered. Let us put them to use. Reward: 1 SP, 4 XP, 100 Gold and 2 Ether Dust."
 			dialogue_primary_button.text = "Accept Route"
 			dialogue_primary_button.show()
 		1:
 			dialogue_text.text = "Reports found: %d/3. Check the watch walk, market balcony and garden skywalk." % quest_manager.get_starfall_route_progress()
 			dialogue_primary_button.hide()
 		2:
-			dialogue_text.text = "All three reports arrived safely. Claim 1 SP, 4 XP, 100 Gold and 2 Ether Dust."
+			dialogue_text.text = "Watch, market, garden: now we know who still holds the city together. Take 1 SP, 4 XP, 100 Gold and 2 Ether Dust."
 			dialogue_primary_button.text = "Claim Reward"
 			dialogue_primary_button.show()
 		_:
 			if starfall_route_claimed_this_talk:
-				dialogue_text.text = "The route is complete. Now the watch knows every lamp is still burning."
+				dialogue_text.text = "The reports are safe. Speak to me again when you're ready to carry the city's news to Haven and Hearth."
 				dialogue_primary_button.hide()
 			else:
 				_update_starfall_courier_dialogue()
@@ -1894,15 +2116,15 @@ func _update_starfall_route_dialogue() -> void:
 func _update_starfall_courier_dialogue() -> void:
 	match int(quest_manager.get("starfall_courier_state")):
 		0:
-			dialogue_text.text = "Will you carry the watch's news to Whisperlight Haven and Cinder Hearth? Rest at both town lamps, then return. Reward: 3 XP, 75 Gold and a Resonance Shard."
-			dialogue_primary_button.text = "Accept Courier Circuit"
+			dialogue_text.text = "Take news to Whisperlight Haven and Cinder Hearth. Rest at both town lamps; return. Reward: 3 XP, 75 Gold, Resonance Shard."
+			dialogue_primary_button.text = "Accept Courier"
 			dialogue_primary_button.show()
 		1:
 			dialogue_text.text = "The towns can send their replies through their lamps. Stops reached: %d/2. Visit Whisperlight and Cinder Hearth." % quest_manager.get_starfall_courier_progress()
 			dialogue_primary_button.hide()
 		2:
 			dialogue_text.text = "Both towns answered. Claim 3 XP, 75 Gold and a Resonance Shard for carrying the circuit."
-			dialogue_primary_button.text = "Claim Courier Reward"
+			dialogue_primary_button.text = "Claim Reward"
 			dialogue_primary_button.show()
 		_:
 			dialogue_text.text = "The letters made it home. Now I have to carry the news that the throne is silent." if game_state != null and bool(game_state.defeated_bosses.get("hollow_sovereign", false)) else "Both havens know the city is open. Their letters are already on the return road."
@@ -1912,12 +2134,12 @@ func _update_starfall_courier_dialogue() -> void:
 func _update_dawn_archive_dialogue() -> void:
 	speaker_label.text = "ATLEY"
 	if game_state == null or not bool(game_state.defeated_bosses.get("hollow_sovereign", false)):
-		dialogue_text.text = "The library keeps the old roads in its books. I hope one day we can write what lies beyond them."
+		dialogue_text.text = preload("res://WorldStory.gd").atley_before_victory(game_state) if game_state != null else "The library keeps the names of those who traveled before us."
 		dialogue_primary_button.hide()
 		return
 	match int(quest_manager.get("dawn_archive_state")):
 		0:
-			dialogue_text.text = "Record echoes in Blackwater Cistern, Prism Archive and Ashen Chapel. Clear nearby foes and stay close. Reward: 1 SP, 4 XP, 120G, Dawn Chronicle."
+			dialogue_text.text = "Preserve the Cistern, Archive and Chapel voices. Clear nearby foes; stay close to record. Reward: 1 SP, 4 XP, 120G, Dawn Chronicle."
 			dialogue_primary_button.text = "Begin Dawn Archive"
 			dialogue_primary_button.show()
 		1:
@@ -2009,44 +2231,77 @@ func _close_dialogue() -> void:
 		player.set_physics_process(true)
 	resume_player_after_dialogue = false
 	active_dialogue_npc = null
+	_update_dialogue_portrait()
 	active_town_line = ""
 	starfall_route_claimed_this_talk = false
 
 
+func _claim_main_quest_reward() -> void:
+	if quest_manager == null or not quest_panel.visible: return
+	var index: int = preload("res://MainQuest.gd").next_reward(game_state, quest_manager.main_quest_rewards)
+	if quest_manager.claim_main_reward(index, player):
+		$QuestPanel/QuestScroll.scroll_vertical = 0
+		_show_notification("REWARD CLAIMED - SAVE AT A LAMP")
+
+
 func _on_quest_updated() -> void:
+	_track_campaign_milestones()
 	if quest_manager == null:
 		quest_tracker_label.text = "QUEST SYSTEM UNAVAILABLE"
 		return
 
-	quest_tracker_label.text = "%s\nREWARD: %s" % [quest_manager.get_tracker_text(), quest_manager.get_reward_text()]
+	var campaign = preload("res://MainQuest.gd")
+	var pending: int = campaign.next_reward(game_state, quest_manager.main_quest_rewards)
+	$QuestPanel/MainRewardButton.visible = pending >= 0
+	$QuestPanel/MainRewardButton.text = "Claim main reward %d/%d" % [pending + 1, campaign.STEPS.size()]
+	$QuestPanel/MainRewardButton.tooltip_text = campaign.reward_text(game_state, pending) if pending >= 0 else ""
+	$QuestPanel/QuestScroll.offset_bottom = 246.0 if pending >= 0 else 286.0
+	$QuestPanel/QuestScroll.offset_bottom -= 34.0
+	$QuestPanel/StoryScenesButton.offset_top = 220.0 if pending >= 0 else 256.0
+	$QuestPanel/StoryScenesButton.offset_bottom = 250.0 if pending >= 0 else 286.0
+	quest_tracker_label.text = "MAIN STORY - " + campaign.journal(game_state, quest_manager.main_quest_rewards).trim_prefix("MAIN QUEST - ")
+	quest_tracker_label.text += "\n\nROAD GUIDANCE\n" + preload("res://MainStory.gd").journal(game_state)
+	quest_tracker_label.text += "\n\nLOCAL TASKS - OPTIONAL SIDE QUESTS\n%s\nREWARD: %s" % [quest_manager.get_tracker_text(), quest_manager.get_reward_text()]
+	var narrative = preload("res://QuestNarrative.gd")
+	quest_tracker_label.text += "\n" + narrative.local_purpose(quest_manager)
 	if game_state != null and game_state.merchant_quest_state == 1:
 		var fragment_count := mini(int(game_state.inventory.get("iron_fragment", 0)), 1)
 		quest_tracker_label.text += "\nSIDE: A Fair Price  •  Iron Fragment %d/1" % fragment_count
+		quest_tracker_label.text += "\nWHY: Bring a salvaged fragment to the merchant; a usable road also needs supplies."
 	var survey_text: String = quest_manager.get_echo_survey_tracker_text()
+	survey_text = narrative.decorate(quest_manager, "echo_survey", survey_text)
 	if not survey_text.is_empty():
 		quest_tracker_label.text += "\n\n" + survey_text
 	var hearth_text: String = quest_manager.get_hearth_fan_tracker_text()
+	hearth_text = narrative.decorate(quest_manager, "hearth_fan", hearth_text)
 	if not hearth_text.is_empty():
 		quest_tracker_label.text += "\n\n" + hearth_text
 	var gate_text: String = quest_manager.get_hearth_gate_tracker_text()
+	gate_text = narrative.decorate(quest_manager, "hearth_gate", gate_text)
 	if not gate_text.is_empty():
 		quest_tracker_label.text += "\n\n" + gate_text
 	var city_text: String = quest_manager.get_starfall_route_tracker_text()
+	city_text = narrative.decorate(quest_manager, "starfall_route", city_text)
 	if not city_text.is_empty():
 		quest_tracker_label.text += "\n\n" + city_text
 	var courier_text: String = quest_manager.get_starfall_courier_tracker_text()
+	courier_text = narrative.decorate(quest_manager, "starfall_courier", courier_text)
 	if not courier_text.is_empty():
 		quest_tracker_label.text += "\n\n" + courier_text
 	var dawn_text: String = quest_manager.get_dawn_archive_tracker_text()
+	dawn_text = narrative.decorate(quest_manager, "dawn_archive", dawn_text)
 	if not dawn_text.is_empty():
 		quest_tracker_label.text += "\n\n" + dawn_text
 	var return_text: String = quest_manager.get_return_contract_tracker_text()
 	if not return_text.is_empty():
 		quest_tracker_label.text += "\n\n" + return_text
+		quest_tracker_label.text += "\nWHY: Optional return patrols recover supplies and confront returning threats. They do not undo the roads you already opened."
 	if game_state != null and game_state.current_room_id == "starfall_citadel":
 		_update_objective_label()
 	if dialogue_panel.visible:
 		_update_dialogue_content()
+	quest_tracker_label.text += preload("res://ExplorationLedger.gd").journal(game_state)
+	quest_tracker_label.text += preload("res://FieldRecords.gd").journal(game_state)
 
 
 func _setup_enemy_objective() -> void:
@@ -2090,6 +2345,21 @@ func _shaft_return_objective() -> String:
 
 
 func _update_objective_label() -> void:
+	_choose_objective_label()
+	# Long regional instructions must stay inside the center HUD, not collide
+	# with the menu. Preserve the full objective; wrap instead of truncating it.
+	objective_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	objective_label.offset_left = 10
+	objective_label.offset_right = -10
+	var available := maxf(objective_panel.size.x - 20, 1)
+	var font := objective_label.get_theme_font("font")
+	var pixels := 16
+	while pixels > 12 and font.get_string_size(objective_label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, pixels).x > available:
+		pixels -= 1
+	objective_label.add_theme_font_size_override("font_size", pixels)
+
+
+func _choose_objective_label() -> void:
 	var return_objective := _shaft_return_objective()
 	if not return_objective.is_empty():
 		objective_label.text = return_objective
@@ -2311,9 +2581,9 @@ func _update_objective_label() -> void:
 		return
 	if game_state != null and game_state.current_room_id == "ash_throne":
 		if bool(game_state.boss_rematches.get("ash_castellan", false)):
-			objective_label.text = "AWAKENED CASTELLAN DEFEATED  •  HEARTH LOOP OPEN"
+			objective_label.text = "REMATCH WON  •  HEARTH OPEN"
 		elif bool(game_state.defeated_bosses.get("ash_castellan", false)):
-			objective_label.text = "HEARTH LOOP OPEN  •  AWAKENED CASTELLAN OPTIONAL"
+			objective_label.text = "AWAKENED CASTELLAN OPTIONAL"
 		else:
 			objective_label.text = "DEFEAT THE ASH CASTELLAN"
 		return
@@ -2494,6 +2764,8 @@ func _on_staff_flow_pressed() -> void:
 
 
 func _on_player_died() -> void:
+	if story_player != null: story_player.cancel()
+	campaign_scene_queue.clear()
 	_clear_memory_reveals()
 	ending_panel.hide()
 	ending_backdrop.hide()
@@ -2520,20 +2792,20 @@ func _on_respawn_button_pressed() -> void:
 	if player == null or game_state == null:
 		return
 	if game_state.game_mode == "hardcore":
-		game_state.start_new_game("hardcore")
+		game_state.start_new_game("hardcore", true)
 		get_tree().reload_current_scene()
 		return
 	if game_state.load_game():
 		get_tree().reload_current_scene()
 	else:
-		game_state.start_new_game("normal")
+		game_state.start_new_game("normal", true)
 		get_tree().reload_current_scene()
 
 
 func _switch_to_normal_mode() -> void:
 	if game_state == null:
 		return
-	game_state.start_new_game("normal")
+	game_state.start_new_game("normal", true)
 	get_tree().paused = false
 	get_tree().reload_current_scene()
 

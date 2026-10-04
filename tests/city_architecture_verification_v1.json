@@ -1,0 +1,286 @@
+{
+  "version": 1,
+  "date": "2026-09-30",
+  "scope": "Settlement facade, architecture and readable notices; non-destructive continuation of the shared project.",
+  "asset_manifest": "res://art/visual_slice/city_architecture_manifest_v1.json",
+  "summary": {
+    "new_images": 6,
+    "materials": 3,
+    "atlas_pieces": 15,
+    "painted_existing_facades": 79,
+    "painted_market_walls": 3,
+    "terrace_arch_bays": 30,
+    "closed_roof_gaps": 6,
+    "grounded_root_house_bases": 6,
+    "retired_pilot_terrain_skirts": 108,
+    "readable_encounters": 53,
+    "additional_upper_city_notices": 11,
+    "total_readables": 474,
+    "readable_rooms": 39,
+    "terrain_edge_surfaces_rechecked": 3068,
+    "new_image_decoded_bytes_including_mipmaps": 14316897,
+    "original_pngs_sha256_equal": true,
+    "gameplay_collisions_changed": false,
+    "progression_changed": false,
+    "selected_tests_passed": 18,
+    "selected_tests_failed": 0
+  },
+  "tests": [
+    {
+      "Test": "basic_jump_routes_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 24.59,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-213417-032-5c2343fa\\basic_jump_routes_smoke.log"
+    },
+    {
+      "Test": "city_architecture_finish_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 7.66,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-213956-737-c4cf4923\\city_architecture_finish_smoke.log"
+    },
+    {
+      "Test": "city_parallax_runtime_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 25.11,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-213058-477-67d40679\\city_parallax_runtime_smoke.log"
+    },
+    {
+      "Test": "pilot_terrain_retirement_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 31.37,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-213712-465-8dd0f076\\pilot_terrain_retirement_smoke.log"
+    },
+    {
+      "Test": "residential_facade_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 6.99,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-213814-783-358afcad\\residential_facade_smoke.log"
+    },
+    {
+      "Test": "settlement_atmosphere_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 6.72,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-213821-816-70cb8afb\\settlement_atmosphere_smoke.log"
+    },
+    {
+      "Test": "settlement_building_art_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 6.85,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-214004-722-f1277572\\settlement_building_art_smoke.log"
+    },
+    {
+      "Test": "settlement_reading_occlusion_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 30.86,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-213743-883-f855fa40\\settlement_reading_occlusion_smoke.log"
+    },
+    {
+      "Test": "settlement_supports_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 5.39,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-214025-020-04b9afed\\settlement_supports_smoke.log"
+    },
+    {
+      "Test": "starfall_prop_art_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 9.28,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-214011-632-be8ef954\\starfall_prop_art_smoke.log"
+    },
+    {
+      "Test": "starfall_upper_art_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 4.51,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-212919-403-21cf72a5\\starfall_upper_art_smoke.log"
+    },
+    {
+      "Test": "starfall_upper_city_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 47.11,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-213123-636-22aa008a\\starfall_upper_city_smoke.log"
+    },
+    {
+      "Test": "starfall_upper_structure_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 3.64,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-212915-720-45080463\\starfall_upper_structure_smoke.log"
+    },
+    {
+      "Test": "terrain_edges_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 59.35,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-213925-622-6ca9e2d3\\terrain_edges_smoke.log"
+    },
+    {
+      "Test": "town_material_expansion_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 9.25,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-213703-157-e7e868fd\\town_material_expansion_smoke.log"
+    },
+    {
+      "Test": "visual_style_slice_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 8.89,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-213050-503-27ad6eba\\visual_style_slice_smoke.log"
+    },
+    {
+      "Test": "world_grounding_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 54.57,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-213830-812-764c3e96\\world_grounding_smoke.log"
+    },
+    {
+      "Test": "world_readables_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 53.31,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-212936-143-0a647bac\\world_readables_smoke.log"
+    }
+  ],
+  "native": {
+    "engine": "Godot 4.6.2",
+    "renderer": "Mobile / D3D12 on Windows",
+    "fixture": "res://tests/preview_city_architecture_finish.gd",
+    "log": ".tmp-city-finish-preview-handoff.log",
+    "views": [
+      {
+        "room": "starfall_citadel",
+        "camera_index": 0,
+        "path": "res://art/characters/preview_city_finish_starfall_citadel_0.png",
+        "player_on_floor": true
+      },
+      {
+        "room": "starfall_citadel",
+        "camera_index": 1,
+        "path": "res://art/characters/preview_city_finish_starfall_citadel_1.png",
+        "player_on_floor": true
+      },
+      {
+        "room": "starfall_citadel",
+        "camera_index": 2,
+        "path": "res://art/characters/preview_city_finish_starfall_citadel_2.png",
+        "player_on_floor": true
+      },
+      {
+        "room": "starfall_citadel",
+        "camera_index": 3,
+        "path": "res://art/characters/preview_city_finish_starfall_citadel_3.png",
+        "player_on_floor": true
+      },
+      {
+        "room": "starfall_citadel",
+        "camera_index": 4,
+        "path": "res://art/characters/preview_city_finish_starfall_citadel_4.png",
+        "player_on_floor": true
+      },
+      {
+        "room": "starfall_citadel",
+        "camera_index": 5,
+        "path": "res://art/characters/preview_city_finish_starfall_citadel_5.png",
+        "player_on_floor": true
+      },
+      {
+        "room": "starfall_citadel",
+        "camera_index": 6,
+        "path": "res://art/characters/preview_city_finish_starfall_citadel_6.png",
+        "player_on_floor": true
+      },
+      {
+        "room": "echo_haven",
+        "camera_index": 0,
+        "path": "res://art/characters/preview_city_finish_echo_haven_0.png",
+        "player_on_floor": true
+      },
+      {
+        "room": "echo_haven_outskirts",
+        "camera_index": 0,
+        "path": "res://art/characters/preview_city_finish_echo_haven_outskirts_0.png",
+        "player_on_floor": true
+      },
+      {
+        "room": "ash_hearth",
+        "camera_index": 0,
+        "path": "res://art/characters/preview_city_finish_ash_hearth_0.png",
+        "player_on_floor": true
+      },
+      {
+        "room": "ash_hearth",
+        "camera_index": 1,
+        "path": "res://art/characters/preview_city_finish_ash_hearth_1.png",
+        "player_on_floor": true
+      }
+    ],
+    "review": "All 11 camera compositions inspected. Final re-renders specifically confirmed removal of pilot skirts, floating gable gaps, small root-wall gaps and oversized flat chart stroke. Actual character physics settled before capture; every capture reports grounded=true."
+  },
+  "checks": [
+    "Shared cached AtlasTexture frames, clipped source regions and alpha arch voids.",
+    "512px materials and 1024px atlases with mipmaps; original PNG alpha preserved.",
+    "Uniform trim/capital scaling with cropped/repeated shafts; no per-tile nodes.",
+    "Translated-room collision/transform snapshots, idempotent art rebuilds, grounded instrument contacts.",
+    "Nested encounter reports update live in G modal; pause ownership and 360x640/640x360 panel checks.",
+    "Existing city route, parallax, settlements, 39-room terrain and world grounding regressions."
+  ],
+  "environment_notes": [
+    "Godot cannot access the root certificate store and cannot save editor settings outside the workspace in this sandbox; these messages also occur in passing baseline tests.",
+    "An initial standalone alpha audit launched without an explicit workspace log hit Godot's user:// log permission failure; repeated successfully with .tmp-city-alpha-final.log. No game code implicated.",
+    "Native previews may report D3D12 shader-cache write warnings on exit; no script errors in final preview."
+  ],
+  "remaining": [
+    "Physical phone FPS/RAM profiling is not performed.",
+    "Echo Haven approach gate and some other legacy structural assemblies still have blunt silhouettes/background transitions that warrant their own pass.",
+    "Some workshop tabletop props and receding skyline details are still code-drawn; do not interpret this as finishing every old schematic shape.",
+    "The broader non-city world and actor-animation backlog remains separate from this completed architecture pass."
+  ]
+}

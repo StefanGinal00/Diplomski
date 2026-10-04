@@ -1,0 +1,561 @@
+{
+  "version": 1,
+  "date": "2026-10-03",
+  "title": "Facade relief, street remnants, safe awning layouts and real library descent",
+  "scope": "Continuation of the shared-game repair backlog. Not an exhaustive whole-game completion.",
+  "changed_production_files": [
+    "PaintedSettlementBuildings.gd",
+    "FacadeReliefAtlas.gd",
+    "SettlementFacadeRelief.gd",
+    "SettlementCanopyPlacement.gd",
+    "SettlementStreetArt.gd",
+    "ResidentialFacadeDetails.gd",
+    "EchoHavenOutskirts.tscn",
+    "CinderTownExpansion.gd"
+  ],
+  "confirmed_repairs": [
+    {
+      "id": "root_window_wall_ownership",
+      "before": "Three Haven and two Hearth native-quarter windows had no owning facade, bypassing the silhouette reservation.",
+      "before_log": ".tmp-smoke-suite-20261003-170044-429-597fa1e3/facade_context_smoke.log",
+      "change": "Resolve the smallest painted wall containing the original opening before fitting the final trim.",
+      "after": "All 91 windows own a wall and remain wholly inside it, clear of platforms."
+    },
+    {
+      "id": "library_descent_exposed_landings",
+      "before": "Actual basic-jump player blocked on LibraryDescent6 -> 5 and on the return 4 -> 5. Wide earlier treads hid the landing under the next overhang.",
+      "before_log": ".tmp-smoke-suite-20261003-170325-606-ea6ce09b/settlement_traversal_smoke.log",
+      "change": "All seven LibraryDescent treads use 58px width at the unchanged 32px spacing and 45px rise. Other stair runs, doors and arrivals stay unchanged.",
+      "after": "36 bidirectional continuous routes, 412 legs, 6 no-jump street walks; double jump and dash disabled."
+    },
+    {
+      "id": "outer_haven_unpainted_bench_feet",
+      "before": "Native pixel ownership located two opaque cyan blocks at GateApproach/BenchFoot04_L and _R. Outskirts lacked the StreetArt renderer used by the town.",
+      "before_log": ".tmp-facade-pixel-audit.log",
+      "before_coverage_log": ".tmp-smoke-suite-20261003-173101-828-f71078a0/settlement_street_art_smoke.log",
+      "change": "Install the existing shared StreetArt renderer for GateApproach: six grounded benches, three stalls, retirement of twelve original leaf bench feet and stall posts. Preserve already-retired garden wedges and their existing grounded replacements.",
+      "after": "All three settlement street fixtures pass exact coverage, unchanged native physics/polygons/transforms and scoped visibility. Former cyan RGB(30,87,91) count is zero in final capture rectangle x=[70,300), y=[470,496)."
+    },
+    {
+      "id": "awning_opening_occlusion",
+      "before": "New reservation fixture reproduced four gate canopies intersecting actual final windows across Haven and its outskirts.",
+      "before_log": ".tmp-smoke-suite-20261003-174148-231-64dc32be/city_walkway_occlusion_smoke.log",
+      "change": "Shared one-time placement searches real nearby floors, ceiling clearance and final door/window reservations for cloth and slim posts. Use uniform texture scale. In two cramped street sites use compact supported open counters, not a forced tent.",
+      "after": "Five safe gate canopies, ten safe street canopies, two supported open counters. No cloth or posts cover openings or cross floors; rebuilds are idempotent. Scaled/translated synthetic tests reject impossible sites and exercise a real low-ceiling fallback."
+    }
+  ],
+  "added_art": {
+    "manifest": "art/visual_slice/facade_relief_manifest_v1.json",
+    "original_generated_sheets": 2,
+    "distinct_cutouts_generated_and_used": 12,
+    "wall_bound_details": 83,
+    "grounded_rear_piers": 13,
+    "decoded_import_bytes": 7447448,
+    "no_individual_process_callbacks": true,
+    "no_new_decorative_collision": true
+  },
+  "new_or_strengthened_tests": [
+    "tests/facade_context_smoke.gd",
+    "tests/canopy_placement_smoke.gd",
+    "tests/settlement_street_art_smoke.gd",
+    "tests/city_walkway_occlusion_smoke.gd",
+    "tests/settlement_traversal_smoke.gd"
+  ],
+  "verification": {
+    "latest_unique_tests": 43,
+    "passed": 43,
+    "failed": 0,
+    "source_runs": "Newest row per unique test from this continuation's isolated runners; earlier failing-before fixtures are retained separately.",
+    "coverage": {
+      "world_grounding": {
+        "rooms": 39,
+        "surfaces": 3161,
+        "contacts": 15388,
+        "portals": 112,
+        "outer_boundaries": 95
+      },
+      "scenery": {
+        "rooms": 39,
+        "painted": 245,
+        "water": 45,
+        "root_ribbons": 117,
+        "operation_reports": 130,
+        "retired_waystone_marks": 87
+      },
+      "boss_body": {
+        "types": 7,
+        "awakened_warden": true,
+        "feet_torso_head_sword_arrow_magic_contacts": 72
+      },
+      "boss_animation": {
+        "actors": 7,
+        "unique_transparent_frames": 84
+      },
+      "shaft_ranged": {
+        "live_encounters": 40,
+        "shots": 255,
+        "mana_spent": 202,
+        "special_arrows_spent": 51
+      },
+      "debug_panel": "Native F2 input, pause ownership, invincibility, flight/noclip, reset/refill and no cheat flags in saves."
+    },
+    "results": [
+      {
+        "Test": "boss_body_hitbox_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 27.94,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-173559-959-42fb8d9f/boss_body_hitbox_smoke.log"
+      },
+      {
+        "Test": "boss_frame_sequence_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 24.21,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-180125-561-49ddbef1/boss_frame_sequence_smoke.log"
+      },
+      {
+        "Test": "boss_lamp_reveal_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 1.88,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-180115-406-841057fb/boss_lamp_reveal_smoke.log"
+      },
+      {
+        "Test": "canopy_placement_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 0.44,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175447-760-c2f71c81/canopy_placement_smoke.log"
+      },
+      {
+        "Test": "chapter_settlements_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 23.38,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175452-114-985f9e4b/chapter_settlements_smoke.log"
+      },
+      {
+        "Test": "city_architecture_finish_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 5.55,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175820-861-09687989/city_architecture_finish_smoke.log"
+      },
+      {
+        "Test": "city_background_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 3,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175820-861-09687989/city_background_smoke.log"
+      },
+      {
+        "Test": "city_parallax_runtime_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 23.43,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175820-861-09687989/city_parallax_runtime_smoke.log"
+      },
+      {
+        "Test": "city_parallax_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 6.25,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175820-861-09687989/city_parallax_smoke.log"
+      },
+      {
+        "Test": "city_street_painted_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 3.83,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175820-861-09687989/city_street_painted_smoke.log"
+      },
+      {
+        "Test": "city_walkway_occlusion_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 5.83,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175820-861-09687989/city_walkway_occlusion_smoke.log"
+      },
+      {
+        "Test": "echo_settlement_expansion_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 3.38,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175452-114-985f9e4b/echo_settlement_expansion_smoke.log"
+      },
+      {
+        "Test": "facade_context_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 4.62,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175815-481-57682a2f/facade_context_smoke.log"
+      },
+      {
+        "Test": "fall_recovery_threat_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 12.53,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175831-117-89508369/fall_recovery_threat_smoke.log"
+      },
+      {
+        "Test": "hub_settlement_support_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 7.72,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175452-114-985f9e4b/hub_settlement_support_smoke.log"
+      },
+      {
+        "Test": "lamp_travel_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 34.45,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-180115-406-841057fb/lamp_travel_smoke.log"
+      },
+      {
+        "Test": "outer_boundary_collision_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 5.48,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175547-133-56612e01/outer_boundary_collision_smoke.log"
+      },
+      {
+        "Test": "pickup_claim_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 9.45,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175033-362-dccac9c7/pickup_claim_smoke.log"
+      },
+      {
+        "Test": "pickup_geometry_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 5.49,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175033-362-dccac9c7/pickup_geometry_smoke.log"
+      },
+      {
+        "Test": "pickup_motion_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 5.33,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175033-362-dccac9c7/pickup_motion_smoke.log"
+      },
+      {
+        "Test": "player_projectile_lifecycle_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 1,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-173732-903-c3eed7c5/player_projectile_lifecycle_smoke.log"
+      },
+      {
+        "Test": "projectile_sweep_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 1.34,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-173730-013-46063010/projectile_sweep_smoke.log"
+      },
+      {
+        "Test": "regional_ambient_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 49.13,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175841-450-7abc5c07/regional_ambient_smoke.log"
+      },
+      {
+        "Test": "resident_motion_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 1.14,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175553-625-2e2eb9ab/resident_motion_smoke.log"
+      },
+      {
+        "Test": "residential_facade_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 3.07,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-174628-838-7654c553/residential_facade_smoke.log"
+      },
+      {
+        "Test": "scenery_completion_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 38.6,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-173322-130-3e1ebfd2/scenery_completion_smoke.log"
+      },
+      {
+        "Test": "settlement_atmosphere_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 4.02,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175452-114-985f9e4b/settlement_atmosphere_smoke.log"
+      },
+      {
+        "Test": "settlement_backdrop_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 3.03,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175452-114-985f9e4b/settlement_backdrop_smoke.log"
+      },
+      {
+        "Test": "settlement_building_art_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 3.13,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175452-114-985f9e4b/settlement_building_art_smoke.log"
+      },
+      {
+        "Test": "settlement_civic_art_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 3.47,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175452-114-985f9e4b/settlement_civic_art_smoke.log"
+      },
+      {
+        "Test": "settlement_motion_budget_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 25.62,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175452-114-985f9e4b/settlement_motion_budget_smoke.log"
+      },
+      {
+        "Test": "settlement_portrait_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 22.18,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175452-114-985f9e4b/settlement_portrait_smoke.log"
+      },
+      {
+        "Test": "settlement_reading_occlusion_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 18.19,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175452-114-985f9e4b/settlement_reading_occlusion_smoke.log"
+      },
+      {
+        "Test": "settlement_street_art_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 3.74,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175452-114-985f9e4b/settlement_street_art_smoke.log"
+      },
+      {
+        "Test": "settlement_supports_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 3.4,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175452-114-985f9e4b/settlement_supports_smoke.log"
+      },
+      {
+        "Test": "settlement_traversal_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 15.23,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175452-114-985f9e4b/settlement_traversal_smoke.log"
+      },
+      {
+        "Test": "settlement_walkway_art_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 3.48,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175452-114-985f9e4b/settlement_walkway_art_smoke.log"
+      },
+      {
+        "Test": "shaft_fall_recovery_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 26.2,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-175831-117-89508369/shaft_fall_recovery_smoke.log"
+      },
+      {
+        "Test": "shaft_ranged_combat_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 97.85,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-173610-586-890a4f66/shaft_ranged_combat_smoke.log"
+      },
+      {
+        "Test": "starfall_upper_city_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 49.98,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-165051-448-875e3371/starfall_upper_city_smoke.log"
+      },
+      {
+        "Test": "testing_tools_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 26.57,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-180200-510-f8ea9c8d/testing_tools_smoke.log"
+      },
+      {
+        "Test": "world_grounding_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 82.57,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-173524-120-543a2d77/world_grounding_smoke.log"
+      },
+      {
+        "Test": "world_structure_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 22.35,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261003-171338-192-e443e762/world_structure_smoke.log"
+      }
+    ]
+  },
+  "native_preview": {
+    "script": "tests/preview_facade_context.gd",
+    "log": ".tmp-facade-route-final.log",
+    "renderer": "Godot 4.6.2 / Forward Mobile / D3D12 / NVIDIA GeForce RTX 4050 Laptop GPU",
+    "size": [
+      1280,
+      720
+    ],
+    "camera_views": 9,
+    "all_capture_results": 0,
+    "all_player_floor_contacts": true,
+    "all_images_visually_inspected": true,
+    "method": "Actual Game scene, streaming room activation, existing background/ambient ticks, native actor gravity settling and player controller floor settling. Camera placement is automated. No placeholder scene or cheat flight used. Only the isolated _tmp_facade_context_preview save is written/deleted.",
+    "captures": [
+      {
+        "file": "art/characters/preview_facade_context_echo_haven_0.png",
+        "sha256": "9792fad26225734ab3b3a04d72becc0707e8cc8f6d09c7b0f7e963b6d4d0b159"
+      },
+      {
+        "file": "art/characters/preview_facade_context_echo_haven_1.png",
+        "sha256": "0d1b592f7d8a77c758d9b1c788b6c1d4df50ed934250b7061497381fc297bb6a"
+      },
+      {
+        "file": "art/characters/preview_facade_context_echo_haven_2.png",
+        "sha256": "5727c532aa1e32ad6ba8a0e347011eece95f5d6a300bc0de8b71c5e5b4d95dcb"
+      },
+      {
+        "file": "art/characters/preview_facade_context_echo_haven_3.png",
+        "sha256": "e07a57f8c376c4d50019fbd400e8d8d56240aa5ba7b6c469b666edff0ee31a44"
+      },
+      {
+        "file": "art/characters/preview_facade_context_echo_haven_outskirts_0.png",
+        "sha256": "6b0238e4b9a065e75dc1123d9d3616cbf935e4607a4df4978a3cb99bb3397fab"
+      },
+      {
+        "file": "art/characters/preview_facade_context_echo_haven_outskirts_1.png",
+        "sha256": "990c685989e58436d3a1df88cc1b660932322cacf26df12e93b17595ea614926"
+      },
+      {
+        "file": "art/characters/preview_facade_context_echo_haven_outskirts_2.png",
+        "sha256": "fdf89b11dc1c9a3278ef6b9046ac9608b5a6de15617856d4230fcc239f8f0125"
+      },
+      {
+        "file": "art/characters/preview_facade_context_ash_hearth_0.png",
+        "sha256": "77d7f64821fe95ce5db3f89a891fbb2bd0c4872b658a7507a3dab1eb6fb8b4c1"
+      },
+      {
+        "file": "art/characters/preview_facade_context_ash_hearth_1.png",
+        "sha256": "625c059f3f613e869f24d3ed171cea27f60bac932ed6c9d5ab89f943385d280d"
+      }
+    ]
+  },
+  "import": {
+    "log": ".tmp-facade-relief-final-import.log",
+    "exit_code": 0,
+    "script_parse_errors": 0,
+    "environment_warnings": [
+      "Sandbox cannot read Windows root certificate store.",
+      "Native renderer cannot save its shader cache outside the allowed workspace.",
+      "Headless editor cannot save editor_settings-4.6.tres outside the allowed workspace."
+    ]
+  },
+  "limits": [
+    "No claim that every room is now visually finished or every possible gameplay bug is eliminated.",
+    "Native captures cover the three modified settlements, not a complete manual campaign playthrough.",
+    "Physical-phone memory, frame time and thermal profiling remain pending.",
+    "Existing user work and source images were preserved; only the two new generated PNGs were added without source-pixel edits.",
+    "Earlier combat/projectile/pickup fixes are regression-verified here, not claimed as new implementations in this pass."
+  ]
+}

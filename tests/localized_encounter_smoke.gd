@@ -23,7 +23,15 @@ func _run() -> void:
 	encounter.spawn_offsets.append(Vector2(-80, -31))
 	encounter.spawn_offsets.append(Vector2(80, -95))
 	encounter.zone_id = "sunken_shaft"
+	encounter.completion_event_id = "feedback_guardians_cleared"
+	encounter.encounter_title = "SUPPLY WATCH"
 	holder.add_child(encounter)
+	var state := root.get_node("GameState")
+	for id in ["feedback_first", "feedback_second"]:
+		var cache := load("res://ResonanceCache.tscn").instantiate() as Area2D
+		cache.cache_id = id
+		cache.required_event_ids = PackedStringArray([encounter.completion_event_id])
+		holder.add_child(cache)
 	var player_probe := Node2D.new()
 	player_probe.add_to_group("player")
 	holder.add_child(player_probe)
@@ -35,8 +43,17 @@ func _run() -> void:
 	encounter._on_body_entered(player_probe)
 	await process_frame
 	_check(encounter.spawned_enemies.size() == 2, "Localized encounter spawned its one-shot wave twice")
+	for enemy in encounter.spawned_enemies: enemy.die()
+	_check("REWARD UNSEALED" in encounter.status_label.text, "Cleared guardians do not advertise pending rewards")
+	state.open_cache("unrelated_feedback_cache")
+	_check("REWARD UNSEALED" in encounter.status_label.text, "Unrelated receipt marks reward claimed")
+	state.open_cache("feedback_first")
+	_check("REWARD UNSEALED" in encounter.status_label.text, "One receipt hides the second reward")
+	state.open_cache("feedback_second")
+	_check("REWARD CLAIMED" in encounter.status_label.text, "All reward receipts not reflected")
 	holder.queue_free()
 	await process_frame
+	state.delete_save()
 	if failures.is_empty():
 		print("LOCALIZED ENCOUNTER TEST PASSED")
 		quit(0)

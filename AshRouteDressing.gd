@@ -49,9 +49,15 @@ func _site_anchor(index: int) -> Vector2:
 
 func _ready() -> void:
 	super._ready()
+	preload("res://FieldReserveArt.gd").attach(get_node("Site6"), "ash")
+	var layout := Node2D.new()
+	layout.name = "RegionalSignLayout"
+	layout.set_script(preload("res://RegionalFieldSignLayout.gd"))
+	add_child(layout)
 	if not Engine.is_editor_hint():
 		var state := get_node("/root/GameState")
 		state.shortcut_changed.connect(_on_progress)
+		state.cache_opened.connect(_on_progress)
 		state.zone_tier_changed.connect(_on_tier)
 		_refresh_ash()
 
@@ -59,6 +65,8 @@ func _ready() -> void:
 func _build_site(index: int, data: Array, at: Vector2) -> void:
 	super._build_site(index, data, at)
 	var site := get_node("Site%d" % index)
+	if int(data[0]) < 0:
+		site.get_node("RouteClue").text = "CLIMB TO " + String(data[3]) + "\n" + String(data[4])
 	# Ash paints opaque chamber backgrounds in the parent's _draw at z=0.
 	# Negative-depth scenery would disappear behind those backgrounds.
 	site.z_index = 0
@@ -178,16 +186,22 @@ func _refresh_ash() -> void:
 	reserve.get_node("FieldSeal").modulate = Color(0.4, 1, 0.55) if complete else Color.WHITE
 	reserve.get_node("GuardianSeal").modulate = Color(0.4, 1, 0.55) if guarded else Color.WHITE
 	reserve.get_node("ReserveLatch").modulate = Color(0.4, 1, 0.55) if complete and guarded else Color.WHITE
-	reserve.get_node("RouteClue").text = String(_sites()[6][3]) + "\nFIELD TASK: " + ("DONE" if complete else "PENDING") + " | GUARDIANS: " + ("DONE" if guarded else "PENDING") + "\nAFTER THE CASTELLAN: RETURN TO THIS GALLERY"
+	reserve.get_node("RouteClue").text = String(_sites()[6][3]) + "\nFIELD TASK: " + ("DONE" if complete else "PENDING") + " | GUARDIANS: " + ("DONE" if guarded else "PENDING") + "\n" + _return_status(state)
 	var guide := get_node_or_null("FieldGuide")
 	if guide == null:
 		return
 	var advice := "Signals: %d/3. Light foot, then span, then crown. Clear nearby foes and stand close to each signal." % count if region == "causeway" else "Records: %d/2. Copy the two side-niche records in either order; the original bells still need high, low, far." % count
 	if returned:
-		advice = "The returning guardians are quiet. Their reserve and the upper cache are separate, one-time finds. Save at a lamp."
+		advice = _return_status(state).capitalize() + ". The return reserve and the upper cache are separate, one-time finds. Save at a lamp."
 	elif complete and guarded:
 		advice = "The upper reserve is unsealed. " + ("The final gallery's return trial is now awake." if state.get_zone_tier("ashen_bastion") >= 1 else "After the Castellan falls, revisit the final gallery for the return trial.")
 	elif complete:
 		advice = "The field task is complete. Defeat both upper-niche guardians to unseal its reserve and meet the return-trial prerequisites."
 	guide.dialogue_lines = PackedStringArray([advice, "The signal shelters are not safe zones or checkpoints." if region == "causeway" else "The original bell reliquary needs only the bells. The separate upper reserve also requires both records and its guardians.", "Leave resting grazers alone if you want a quieter journey. Supplies can be empty; rest at a lamp to save."])
 	guide.next_line_index = 0
+
+
+func _return_status(state: Node) -> String:
+	var ledger = preload("res://ExplorationLedger.gd")
+	var route: Array = ledger.route_for_cache("ash_%s_field_return_reserve" % region)
+	return ledger.return_status(state, route) if not route.is_empty() else "RETURN AFTER THE CASTELLAN"

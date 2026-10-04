@@ -36,6 +36,7 @@ var zone_tier: int = 0
 
 
 func _ready() -> void:
+	preload("res://MobAttackPresentation.gd").attach(self, "broodling")
 	if not counts_for_nest:
 		remove_from_group("nest_brood")
 	anchor_x = global_position.x
@@ -51,6 +52,15 @@ func _ready() -> void:
 	health_bar.value = current_health
 	target_player = get_tree().get_first_node_in_group("player") as Player
 	warning_icon.hide()
+
+
+func suspend_room_combat() -> void:
+	if is_dead: return
+	var cooldown := attack_cooldown
+	_begin_recovery()
+	attack_cooldown = maxf(cooldown, attack_cooldown)
+	contact_cooldown = maxf(contact_cooldown, 0.6)
+	velocity = Vector2.ZERO
 
 
 func _physics_process(delta: float) -> void:
@@ -151,6 +161,7 @@ func _try_contact_damage() -> void:
 			var push := -1.0 if body.global_position.x < global_position.x else 1.0
 			body.take_damage(1, Vector2(push * 150.0, -135.0))
 			contact_cooldown = 0.85
+			get_node("AttackPresentation").contact(body)
 			return
 
 

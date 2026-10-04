@@ -1,0 +1,498 @@
+{
+  "date": "2026-09-30",
+  "scope": "Latest screenshots: cliff joins, lift bracing, empty corridors, Sunken Shaft void fall, temporary debug testing window.",
+  "root_cause": "Sunken Shaft west boundary is x=-3400 but lowest branch floor starts x=-3300. Physics audit found no support from x=-3390 to -3310 (10-unit samples). WestTerminalFloor closes only that terminal gap at y=715 with 108-unit width and overlap. Climbing openings remain unchanged.",
+  "changes": {
+    "testing_tools": {
+      "key": "F2",
+      "debug_build_only": true,
+      "controls": [
+        "invincibility",
+        "flight",
+        "optional noclip",
+        "restore health/mana",
+        "recover to safe ground"
+      ],
+      "flight": "WASD / arrows; Space up; Shift fast",
+      "cheat_flags_saved": false,
+      "release": "CanvasLayer queues itself for deletion before constructing controls; player branches guarded by OS.is_debug_build()."
+    },
+    "recovery": "Per-room last safe grounded position, validated body clearance and floor support; no heal/checkpoint/save/progression mutation. Skips transitions, dead players, intentional debug flight. Fallback samples clear floors in current room.",
+    "terrain": "Global outer walls continue into lowest bedrock; interior/local shaft edges no longer use broad opaque rectangles that cover side branches. Atlas seams feathered with overlap and cached materials. Narrow interior crags end in painted caps.",
+    "lifts": "Replaced filled TerrainTie wedges with separate wall ledger/socket/brace or open trestle posts; new wood UV runs along each beam.",
+    "decoration": {
+      "rooms": 39,
+      "global_cluster_count": 2489,
+      "visible_cluster_count_in_audit": 2481,
+      "foreground_growth_count": 5863,
+      "ceiling_lips": 294,
+      "per_room_limits": {
+        "clusters": 120,
+        "growth": 180,
+        "ceiling_lips": 40
+      },
+      "animation_limit_mobile": 8,
+      "animation_limit_normal": 18,
+      "static_props_process": false,
+      "physics": false
+    },
+    "ceilings": "Two authored Lower Gallery pockets below intact Pump Hall floors, with matched CollisionPolygon2D. Tested standing/jumping at four positions; no shaft mouths closed.",
+    "labels": "HoistIdentity and RoomSign* routed through existing G reading UI."
+  },
+  "art": {
+    "manifest": "art/visual_slice/corridor_repair_manifest_v1.json",
+    "new_pngs": 7,
+    "available_segments": 34,
+    "alpha_preserved": true,
+    "source_copy_sha256_match": true,
+    "maximum_import_width": {
+      "clusters_and_beams": 768,
+      "overhangs": 1024
+    },
+    "mipmaps": true
+  },
+  "tests": [
+    {
+      "Test": "basic_jump_routes_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 8.43,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193303-211-86a5f858/basic_jump_routes_smoke.log"
+    },
+    {
+      "Test": "corridor_dressing_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 17.65,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193825-012-c4e1b419/corridor_dressing_smoke.log"
+    },
+    {
+      "Test": "drop_through_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 6.51,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193124-132-40c1eaf1/drop_through_smoke.log"
+    },
+    {
+      "Test": "encounter_streaming_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 10.69,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193315-399-02e4a534/encounter_streaming_smoke.log"
+    },
+    {
+      "Test": "gameplay_review_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 17.87,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193359-376-9a9c9443/gameplay_review_smoke.log"
+    },
+    {
+      "Test": "living_world_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 17.66,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193057-641-19d2aae5/living_world_smoke.log"
+    },
+    {
+      "Test": "natural_mound_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 5,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193147-080-50e444b6/natural_mound_smoke.log"
+    },
+    {
+      "Test": "shaft_expanded_route_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 3.63,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193311-752-b3617fe9/shaft_expanded_route_smoke.log"
+    },
+    {
+      "Test": "shaft_fall_recovery_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 8.72,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193514-618-5a0c5b9e/shaft_fall_recovery_smoke.log"
+    },
+    {
+      "Test": "shaft_zone_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 16.41,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193130-657-ea1f541b/shaft_zone_smoke.log"
+    },
+    {
+      "Test": "terrain_envelope_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 0.47,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193541-018-55f26783/terrain_envelope_smoke.log"
+    },
+    {
+      "Test": "testing_tools_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 8.26,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193506-266-bba0c0a7/testing_tools_smoke.log"
+    },
+    {
+      "Test": "world_ambience_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 8.8,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193115-317-f380fc03/world_ambience_smoke.log"
+    },
+    {
+      "Test": "world_grounding_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 17.27,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193326-102-7f52ae1d/world_grounding_smoke.log"
+    },
+    {
+      "Test": "world_readables_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 17.17,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193152-110-fb126486/world_readables_smoke.log"
+    },
+    {
+      "Test": "world_spawn_clearance_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 15.97,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193343-389-3a6d937c/world_spawn_clearance_smoke.log"
+    },
+    {
+      "Test": "world_structure_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 18.36,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20260930-193039-265-cac9ecc4/world_structure_smoke.log"
+    }
+  ],
+  "room_counts": [
+    {
+      "ceiling_lips": 0,
+      "clusters": 3,
+      "growth": 15,
+      "room": "training_passage",
+      "visible_clusters": 2
+    },
+    {
+      "ceiling_lips": 3,
+      "clusters": 38,
+      "growth": 150,
+      "room": "sunken_shaft",
+      "visible_clusters": 38
+    },
+    {
+      "ceiling_lips": 14,
+      "clusters": 101,
+      "growth": 180,
+      "room": "shaft_hollow",
+      "visible_clusters": 101
+    },
+    {
+      "ceiling_lips": 20,
+      "clusters": 93,
+      "growth": 180,
+      "room": "shaft_drift",
+      "visible_clusters": 93
+    },
+    {
+      "ceiling_lips": 9,
+      "clusters": 96,
+      "growth": 180,
+      "room": "shaft_crossing",
+      "visible_clusters": 96
+    },
+    {
+      "ceiling_lips": 13,
+      "clusters": 103,
+      "growth": 180,
+      "room": "shaft_gallery",
+      "visible_clusters": 103
+    },
+    {
+      "ceiling_lips": 14,
+      "clusters": 116,
+      "growth": 180,
+      "room": "shaft_cistern",
+      "visible_clusters": 115
+    },
+    {
+      "ceiling_lips": 12,
+      "clusters": 118,
+      "growth": 180,
+      "room": "shaft_approach",
+      "visible_clusters": 116
+    },
+    {
+      "ceiling_lips": 0,
+      "clusters": 38,
+      "growth": 180,
+      "room": "echo_grotto",
+      "visible_clusters": 38
+    },
+    {
+      "ceiling_lips": 0,
+      "clusters": 31,
+      "growth": 178,
+      "room": "echo_gallery",
+      "visible_clusters": 31
+    },
+    {
+      "ceiling_lips": 12,
+      "clusters": 85,
+      "growth": 180,
+      "room": "echo_depths",
+      "visible_clusters": 84
+    },
+    {
+      "ceiling_lips": 0,
+      "clusters": 47,
+      "growth": 180,
+      "room": "echo_archive",
+      "visible_clusters": 47
+    },
+    {
+      "ceiling_lips": 1,
+      "clusters": 39,
+      "growth": 169,
+      "room": "echo_tide_well",
+      "visible_clusters": 38
+    },
+    {
+      "ceiling_lips": 6,
+      "clusters": 54,
+      "growth": 180,
+      "room": "echo_causeway",
+      "visible_clusters": 54
+    },
+    {
+      "ceiling_lips": 6,
+      "clusters": 52,
+      "growth": 180,
+      "room": "echo_vault",
+      "visible_clusters": 51
+    },
+    {
+      "ceiling_lips": 0,
+      "clusters": 37,
+      "growth": 180,
+      "room": "echo_nest",
+      "visible_clusters": 37
+    },
+    {
+      "ceiling_lips": 0,
+      "clusters": 5,
+      "growth": 13,
+      "room": "echo_sanctum",
+      "visible_clusters": 5
+    },
+    {
+      "ceiling_lips": 0,
+      "clusters": 54,
+      "growth": 135,
+      "room": "echo_haven",
+      "visible_clusters": 54
+    },
+    {
+      "ceiling_lips": 1,
+      "clusters": 29,
+      "growth": 106,
+      "room": "echo_haven_outskirts",
+      "visible_clusters": 29
+    },
+    {
+      "ceiling_lips": 15,
+      "clusters": 55,
+      "growth": 180,
+      "room": "ash_causeway",
+      "visible_clusters": 55
+    },
+    {
+      "ceiling_lips": 14,
+      "clusters": 84,
+      "growth": 180,
+      "room": "ash_emberspine",
+      "visible_clusters": 84
+    },
+    {
+      "ceiling_lips": 12,
+      "clusters": 49,
+      "growth": 176,
+      "room": "ash_forge",
+      "visible_clusters": 49
+    },
+    {
+      "ceiling_lips": 16,
+      "clusters": 71,
+      "growth": 180,
+      "room": "ash_barracks",
+      "visible_clusters": 71
+    },
+    {
+      "ceiling_lips": 6,
+      "clusters": 16,
+      "growth": 40,
+      "room": "ash_arena",
+      "visible_clusters": 16
+    },
+    {
+      "ceiling_lips": 12,
+      "clusters": 61,
+      "growth": 180,
+      "room": "ash_reservoir",
+      "visible_clusters": 61
+    },
+    {
+      "ceiling_lips": 13,
+      "clusters": 65,
+      "growth": 180,
+      "room": "ash_chapel",
+      "visible_clusters": 65
+    },
+    {
+      "ceiling_lips": 5,
+      "clusters": 15,
+      "growth": 31,
+      "room": "ash_throne",
+      "visible_clusters": 15
+    },
+    {
+      "ceiling_lips": 1,
+      "clusters": 17,
+      "growth": 85,
+      "room": "ash_hearth",
+      "visible_clusters": 17
+    },
+    {
+      "ceiling_lips": 12,
+      "clusters": 33,
+      "growth": 155,
+      "room": "ash_hearth_outskirts",
+      "visible_clusters": 33
+    },
+    {
+      "ceiling_lips": 10,
+      "clusters": 103,
+      "growth": 180,
+      "room": "starfall_citadel",
+      "visible_clusters": 103
+    },
+    {
+      "ceiling_lips": 0,
+      "clusters": 86,
+      "growth": 180,
+      "room": "starfall_outskirts",
+      "visible_clusters": 86
+    },
+    {
+      "ceiling_lips": 13,
+      "clusters": 81,
+      "growth": 180,
+      "room": "starfall_ramparts",
+      "visible_clusters": 80
+    },
+    {
+      "ceiling_lips": 11,
+      "clusters": 120,
+      "growth": 180,
+      "room": "starfall_silent_gate",
+      "visible_clusters": 120
+    },
+    {
+      "ceiling_lips": 2,
+      "clusters": 101,
+      "growth": 180,
+      "room": "starfall_memory_vault",
+      "visible_clusters": 101
+    },
+    {
+      "ceiling_lips": 3,
+      "clusters": 100,
+      "growth": 180,
+      "room": "starfall_rooted_hall",
+      "visible_clusters": 100
+    },
+    {
+      "ceiling_lips": 7,
+      "clusters": 21,
+      "growth": 50,
+      "room": "starfall_empty_court",
+      "visible_clusters": 21
+    },
+    {
+      "ceiling_lips": 11,
+      "clusters": 120,
+      "growth": 180,
+      "room": "starfall_soul_crucible",
+      "visible_clusters": 120
+    },
+    {
+      "ceiling_lips": 14,
+      "clusters": 120,
+      "growth": 180,
+      "room": "starfall_sunless_passage",
+      "visible_clusters": 120
+    },
+    {
+      "ceiling_lips": 6,
+      "clusters": 32,
+      "growth": 60,
+      "room": "starfall_hollow_throne",
+      "visible_clusters": 32
+    }
+  ],
+  "native_review": {
+    "renderer": "D3D12 Forward Mobile",
+    "gpu": "NVIDIA RTX 4050 Laptop GPU",
+    "preview_script": "tests/preview_corridor_repair.gd",
+    "log": ".tmp-corridor-preview-final.log",
+    "grounded_camera_targets": 16,
+    "screenshot_count": 17,
+    "testing_panel_screenshot": "art/characters/preview_testing_tools.png"
+  },
+  "limitations": [
+    "No physical-phone FPS or memory measurement.",
+    "Windows certificate-store warning during Godot launch; sandboxed editor-settings write and renderer shader-cache write denied on exit. No project script/runtime errors in the passing test logs.",
+    "Latest fall screenshot alone did not establish exact player coordinates; fixed the independently reproduced west-bottom gap and added general out-of-room recovery."
+  ]
+}

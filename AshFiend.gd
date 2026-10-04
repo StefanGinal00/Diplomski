@@ -5,6 +5,7 @@ var applied_tier: int = 0
 
 func _ready() -> void:
 	super._ready()
+	get_node("AttackPresentation").style = "fiend"
 	var game_state := get_node_or_null("/root/GameState")
 	if game_state == null:
 		return

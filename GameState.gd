@@ -49,12 +49,13 @@ const FORGE_RECIPES := {
 const ITEM_DEFINITIONS := {
 	"worn_sword": {"name": "Basic Sword", "type": "weapon", "weapon_class": "sword", "preferred_slot": "primary_weapon", "damage": 1, "cooldown": 0.35, "range": 34, "description": "A balanced beginner blade. Reliable at close range and always available at the start of a journey.", "droppable": false, "base_price": 0},
 	"spiritglass_blade": {"name": "Spiritglass Blade", "type": "weapon", "weapon_class": "sword", "preferred_slot": "primary_weapon", "damage": 1, "cooldown": 0.48, "range": 46, "bonus_family": "spirit", "bonus_damage": 1, "description": "Long reach, slower swing. Deals +1 damage to Spirits.", "droppable": true, "base_price": 155},
-	"hunter_bow": {"name": "Hunter Bow", "type": "weapon", "weapon_class": "bow", "preferred_slot": "secondary_weapon", "damage": 1, "cooldown": 0.58, "range": 520, "description": "A light ranged weapon. Hold Up or Down while attacking to aim diagonally. Basic arrows are unlimited; special arrows are consumed.", "droppable": true, "base_price": 110},
-	"thorn_bow": {"name": "Thorn Bow", "type": "weapon", "weapon_class": "bow", "preferred_slot": "secondary_weapon", "damage": 1, "cooldown": 0.46, "range": 420, "bonus_family": "beast", "bonus_damage": 1, "description": "Quick, short-ranged shots. Deals +1 damage to Beasts.", "droppable": true, "base_price": 170},
-	"apprentice_staff": {"name": "Runed Staff", "type": "weapon", "weapon_class": "staff", "preferred_slot": "secondary_weapon", "damage": 2, "cooldown": 0.72, "range": 440, "description": "A focus for runic magic. Uses regenerating mana and can switch between every learned spell with [R].", "droppable": true, "base_price": 135},
-	"sunder_staff": {"name": "Sunder Staff", "type": "weapon", "weapon_class": "staff", "preferred_slot": "secondary_weapon", "damage": 3, "cooldown": 0.95, "range": 350, "bonus_family": "construct", "bonus_damage": 1, "description": "Heavy, short-range spells. Deals +1 damage to Constructs.", "droppable": true, "base_price": 190},
+	"hunter_bow": {"name": "Hunter Bow", "type": "weapon", "weapon_class": "bow", "preferred_slot": "secondary_weapon", "damage": 1, "cooldown": 0.58, "range": 300, "description": "A light ranged weapon. Hold Up or Down while attacking to aim diagonally. Basic arrows are unlimited; special arrows are consumed.", "droppable": true, "base_price": 110},
+	"thorn_bow": {"name": "Thorn Bow", "type": "weapon", "weapon_class": "bow", "preferred_slot": "secondary_weapon", "damage": 1, "cooldown": 0.46, "range": 250, "bonus_family": "beast", "bonus_damage": 1, "description": "Quick, short-ranged shots. Deals +1 damage to Beasts.", "droppable": true, "base_price": 170},
+	"apprentice_staff": {"name": "Runed Staff", "type": "weapon", "weapon_class": "staff", "preferred_slot": "secondary_weapon", "damage": 2, "cooldown": 0.72, "range": 270, "description": "A focus for runic magic. Uses regenerating mana and can switch between every learned spell with [R].", "droppable": true, "base_price": 135},
+	"sunder_staff": {"name": "Sunder Staff", "type": "weapon", "weapon_class": "staff", "preferred_slot": "secondary_weapon", "damage": 3, "cooldown": 0.95, "range": 230, "bonus_family": "construct", "bonus_damage": 1, "description": "Heavy, short-range spells. Deals +1 damage to Constructs.", "droppable": true, "base_price": 190},
 	"guardian_band": {"name": "Guardian Band", "type": "defense", "preferred_slot": "defense", "description": "Heavy protection. Reduces each hit of 2 or more damage by 1, but every hit still deals at least 1 damage.", "droppable": true, "base_price": 90},
 	"wind_cloak": {"name": "Wind Cloak", "type": "defense", "preferred_slot": "defense", "description": "Light protection. Reduces Dash cooldown by 25% once Dash is unlocked.", "droppable": true, "base_price": 110},
+	"wayfarer_mantle": {"name": "Wayfarer Mantle", "type": "defense", "preferred_slot": "defense", "description": "First-clear reward for The Road Remains. While equipped: Dash cooldown -20%; hits of 3 or more damage deal 1 less. Replaces other defense gear; does not grant Dash.", "droppable": false, "base_price": 0},
 	"tideguard_mantle": {"name": "Tideguard Mantle", "type": "defense", "preferred_slot": "defense", "description": "Negates damage from tidal surges. Offers no protection against enemy attacks. Equipping it replaces your other defense gear.", "droppable": false, "base_price": 0},
 	"ember_arrow": {"name": "Ember Arrow", "type": "ammo", "damage": 2, "description": "A special arrow that deals 2 damage and burns bright on impact. Select it with [R] while using a bow.", "droppable": true, "base_price": 8},
 	"frost_rune": {"name": "Frost Rune", "type": "spell_tome", "spell_id": "frost_orb", "description": "Permanently teaches Frost Orb: a slower projectile that pierces two enemies for 2 mana.", "droppable": false, "base_price": 70},
@@ -87,6 +88,8 @@ const ITEM_DEFINITIONS := {
 var save_path: String = "user://savegame.json"
 var music_enabled: bool = true
 var session_started: bool = false
+## Transient UI handoff only. Never persisted or inferred from an old save.
+var opening_after_reload: bool = false
 var game_mode: String = MODE_NORMAL
 var gold: int = 0
 var inventory: Dictionary = {STARTING_WEAPON: 1}
@@ -98,6 +101,9 @@ var selected_spell: String = "arc_bolt"
 var unlocked_spells: Array[String] = []
 var zone_tiers: Dictionary = {"training_passage": 0}
 var defeated_bosses: Dictionary = {}
+## Stable placement IDs, checkpointed together with quest and reward progress.
+var defeated_enemies: Dictionary = {}
+var destroyed_props: Dictionary = {}
 var boss_rematches: Dictionary = {}
 var unlocked_shortcuts: Dictionary = {}
 var opened_caches: Dictionary = {}
@@ -109,6 +115,7 @@ var target_entrance_id: String = "default"
 var has_player_state: bool = false
 var player_state: Dictionary = {}
 var quest_state: Dictionary = {}
+var story_scenes_seen: Dictionary = {}
 var has_checkpoint: bool = false
 var checkpoint_position: Vector2 = Vector2.ZERO
 var checkpoint_lamp_id: String = ""
@@ -116,13 +123,93 @@ var checkpoint_lamp_name: String = "Save Lamp"
 var discovered_lamps: Dictionary = {}
 var last_saved_unix_time: int = 0
 var last_load_used_backup: bool = false
+var checkpoint_write_in_progress: bool = false
 var merchant_quest_state: int = 0
 var merchant_discount_unlocked: bool = false
 var town_purchase_counts: Dictionary = {}
 
 
-func start_new_game(mode: String = MODE_NORMAL) -> void:
+func _ready() -> void:
+	get_tree().node_added.connect(_track_world_enemy)
+	get_tree().node_added.connect(_track_world_prop)
+
+
+func _track_world_prop(actor: Node) -> void:
+	if not actor.is_in_group("breakable") or not actor.has_signal("destroyed"):
+		return
+	var key := world_actor_key(actor)
+	if key.is_empty(): return
+	if bool(destroyed_props.get(key, false)):
+		# Restore absence without rerolling loot or replaying a break effect.
+		actor.set("is_destroyed", true)
+		actor.process_mode = Node.PROCESS_MODE_DISABLED
+		if actor is CanvasItem: actor.hide()
+		actor.queue_free()
+		return
+	actor.connect("destroyed", _record_prop_destroyed.bind(key), CONNECT_ONE_SHOT)
+
+
+func _record_prop_destroyed(key: String) -> void:
+	destroyed_props[key] = true
+
+
+func world_actor_key(actor: Node) -> String:
+	var ancestor := actor.get_parent()
+	while ancestor != null:
+		if ancestor.scene_file_path == "res://Game.tscn":
+			return str(ancestor.get_path_to(actor))
+		ancestor = ancestor.get_parent()
+	return ""
+
+
+func _track_world_enemy(actor: Node) -> void:
+	if actor.is_queued_for_deletion(): return
+	if actor.scene_file_path == "res://Game.tscn" and not actor.is_node_ready():
+		actor.ready.connect(_reconcile_world_defeats.bind(actor), CONNECT_ONE_SHOT | CONNECT_DEFERRED)
+	# node_added can run before scripted actors assign their groups/identity in
+	# _ready. Retry once then; do not rely solely on serialized scene groups.
+	if actor.has_signal("defeated") and not actor.is_node_ready():
+		var retry := _track_world_enemy.bind(actor)
+		if not actor.ready.is_connected(retry):
+			actor.ready.connect(retry, CONNECT_ONE_SHOT)
+	if not actor.is_in_group("enemy") or not actor.has_signal("defeated"):
+		return
+	# Bosses and restartable arena waves own their encounter-level persistence.
+	if actor.is_in_group("boss") or actor.is_in_group("neutral_creature") or bool(actor.get_meta("checkpoint_persistence_exempt", false)):
+		return
+	var placement := world_actor_key(actor)
+	if placement.is_empty(): return
+	var key := str(actor.get_meta("checkpoint_enemy_key", placement))
+	if bool(defeated_enemies.get(key, false)):
+		# Never call die()/emit defeated here: that would replay XP, loot and quests.
+		actor.set("is_dead", true)
+		actor.process_mode = Node.PROCESS_MODE_DISABLED
+		actor.remove_from_group("enemy")
+		if actor.is_in_group("nest_brood"): actor.remove_from_group("nest_brood")
+		if actor is CanvasItem: actor.hide()
+		actor.queue_free()
+		return
+	var record := _record_enemy_defeat.bind(key)
+	if not actor.is_connected("defeated", record):
+		actor.connect("defeated", record, CONNECT_ONE_SHOT)
+
+
+func _record_enemy_defeat(key: String) -> void:
+	defeated_enemies[key] = true
+
+
+func _reconcile_world_defeats(world: Node) -> void:
+	# A second, idempotent pass after scene construction also covers actors
+	# whose groups were assigned late and any scene-ready restoration hooks.
+	if not is_instance_valid(world) or not world.is_inside_tree() or world.is_queued_for_deletion(): return
+	for actor in world.find_children("*", "Node", true, false):
+		if actor.has_signal("defeated"):
+			_track_world_enemy(actor)
+
+
+func start_new_game(mode: String = MODE_NORMAL, play_opening_after_reload: bool = false) -> void:
 	game_mode = mode if mode == MODE_HARDCORE else MODE_NORMAL
+	opening_after_reload = play_opening_after_reload
 	session_started = true
 	gold = 0
 	inventory = {STARTING_WEAPON: 1}
@@ -134,6 +221,8 @@ func start_new_game(mode: String = MODE_NORMAL) -> void:
 	unlocked_spells.clear()
 	zone_tiers = {"training_passage": 0}
 	defeated_bosses.clear()
+	defeated_enemies.clear()
+	destroyed_props.clear()
 	boss_rematches.clear()
 	unlocked_shortcuts.clear()
 	opened_caches.clear()
@@ -145,6 +234,7 @@ func start_new_game(mode: String = MODE_NORMAL) -> void:
 	has_player_state = false
 	player_state.clear()
 	quest_state.clear()
+	story_scenes_seen.clear()
 	has_checkpoint = false
 	checkpoint_position = Vector2.ZERO
 	checkpoint_lamp_id = ""
@@ -626,38 +716,72 @@ func get_lamp_position(lamp_id: String) -> Vector2:
 
 
 func save_at_checkpoint(player, quest_manager, position: Vector2, lamp_id: String = "", lamp_name: String = "Save Lamp", room_id: String = "") -> bool:
+	if checkpoint_write_in_progress: return false
+	checkpoint_write_in_progress = true
+	var previous_player := player_state
+	var previous_quest := quest_state
+	var previous_has_player := has_player_state
 	capture_player(player)
 	if not lamp_id.is_empty():
 		checkpoint_resting.emit(lamp_id)
 	capture_quest(quest_manager)
+	# Stage checkpoint metadata; publish it only after disk replacement succeeds.
+	# Rest/quest progress may still occur in the live session if saving fails.
+	var data := _build_save_data().duplicate(true)
+	data.has_checkpoint = true
+	data.checkpoint_position = [position.x, position.y]
+	data.checkpoint_lamp_id = lamp_id
+	data.checkpoint_lamp_name = lamp_name
+	data.last_saved_unix_time = int(Time.get_unix_time_from_system())
+	var destination_room := room_id if not room_id.is_empty() else current_room_id
+	if not lamp_id.is_empty():
+		data.discovered_lamps[lamp_id] = {"name": lamp_name, "room_id": destination_room, "room_path": current_room_path, "position": [position.x, position.y]}
+	if not _write_checkpoint_data(data):
+		player_state = previous_player
+		quest_state = previous_quest
+		has_player_state = previous_has_player
+		checkpoint_write_in_progress = false
+		return false
 	has_checkpoint = true
 	checkpoint_position = position
 	checkpoint_lamp_id = lamp_id
 	checkpoint_lamp_name = lamp_name
+	last_saved_unix_time = int(data.last_saved_unix_time)
 	if not lamp_id.is_empty():
-		register_lamp(lamp_id, lamp_name, room_id if not room_id.is_empty() else current_room_id, position)
-	last_saved_unix_time = int(Time.get_unix_time_from_system())
+		register_lamp(lamp_id, lamp_name, destination_room, position)
+	save_completed.emit()
+	if OS.is_debug_build():
+		print("CHECKPOINT SAVED: ", lamp_id, " | defeated placements: ", defeated_enemies.size())
+	checkpoint_write_in_progress = false
+	return true
+
+
+func _write_checkpoint_data(data: Dictionary) -> bool:
 	var temporary_path := save_path + ".tmp"
 	var file := FileAccess.open(temporary_path, FileAccess.WRITE)
 	if file == null:
-		push_error("Could not open temporary save file: " + temporary_path)
+		push_warning("Could not open temporary save file: " + temporary_path)
 		return false
-	file.store_string(JSON.stringify(_build_save_data(), "  "))
+	file.store_string(JSON.stringify(data, "  "))
+	file.flush()
+	var write_error := file.get_error()
 	file.close()
-	if has_save_file() and _read_save_file(save_path) is Dictionary:
-		_copy_save_file(save_path, _get_backup_path())
+	if write_error != OK or not _read_save_file(temporary_path) is Dictionary:
+		push_warning("Could not finish writing temporary save: " + temporary_path)
+		return false
+	if _read_save_file(save_path) is Dictionary:
+		if not _copy_save_file(save_path, _get_backup_path()):
+			push_warning("Could not protect previous save; checkpoint cancelled.")
+			return false
 	var primary_absolute := ProjectSettings.globalize_path(save_path)
 	var temporary_absolute := ProjectSettings.globalize_path(temporary_path)
-	if FileAccess.file_exists(save_path):
-		DirAccess.remove_absolute(primary_absolute)
-	if DirAccess.rename_absolute(temporary_absolute, primary_absolute) != OK:
-		if FileAccess.file_exists(_get_backup_path()):
-			_copy_save_file(_get_backup_path(), save_path)
-		push_error("Could not finalize save file: " + save_path)
+	# Rename over the destination without first deleting the working primary.
+	if _replace_save_file(temporary_absolute, primary_absolute) != OK:
+		push_warning("Could not finalize save file: " + save_path)
 		return false
 	if not FileAccess.file_exists(_get_backup_path()):
-		_copy_save_file(save_path, _get_backup_path())
-	save_completed.emit()
+		if not _copy_save_file(save_path, _get_backup_path()):
+			push_warning("Checkpoint saved, but its initial backup could not be created.")
 	return true
 
 
@@ -675,6 +799,9 @@ func load_game() -> bool:
 		last_load_used_backup = true
 		_copy_save_file(_get_backup_path(), save_path)
 	_apply_save_data(parsed)
+	if OS.is_debug_build():
+		print("CHECKPOINT LOADED: ", checkpoint_lamp_id, " | defeated placements: ", defeated_enemies.size(), " | backup: ", last_load_used_backup)
+	opening_after_reload = false
 	session_started = true
 	_emit_full_state()
 	mode_changed.emit(game_mode)
@@ -698,7 +825,7 @@ func get_save_summary() -> Dictionary:
 
 
 func delete_save() -> void:
-	for path in [save_path, _get_backup_path(), save_path + ".tmp"]:
+	for path in [save_path, _get_backup_path(), save_path + ".tmp", save_path + ".copytmp", _get_backup_path() + ".copytmp"]:
 		if FileAccess.file_exists(path):
 			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
 
@@ -720,10 +847,14 @@ func _build_save_data() -> Dictionary:
 		"equipped_items": equipped_items, "weapon_upgrades": weapon_upgrades, "active_weapon_slot": active_weapon_slot,
 		"selected_arrow_type": selected_arrow_type, "selected_spell": selected_spell, "unlocked_spells": unlocked_spells,
 		"zone_tiers": zone_tiers, "defeated_bosses": defeated_bosses, "boss_rematches": boss_rematches,
+		"defeated_enemies": defeated_enemies,
+		"destroyed_props": destroyed_props,
 		"unlocked_shortcuts": unlocked_shortcuts, "opened_caches": opened_caches, "current_room_path": current_room_path,
 		"current_room_id": current_room_id, "timeline_stage": timeline_stage, "target_entrance_id": target_entrance_id,
 		"discovered_rooms": discovered_rooms,
 		"player_state": player_state, "quest_state": quest_state,
+		"story_scenes_seen": story_scenes_seen,
+		"story_scene_catalog": 2,
 		"has_checkpoint": has_checkpoint, "checkpoint_position": [checkpoint_position.x, checkpoint_position.y],
 		"checkpoint_lamp_id": checkpoint_lamp_id, "checkpoint_lamp_name": checkpoint_lamp_name,
 		"discovered_lamps": discovered_lamps, "last_saved_unix_time": last_saved_unix_time,
@@ -745,6 +876,8 @@ func _apply_save_data(data: Dictionary) -> void:
 	unlocked_spells.assign(data.get("unlocked_spells", []))
 	zone_tiers = Dictionary(data.get("zone_tiers", {"training_passage": 0})).duplicate(true)
 	defeated_bosses = Dictionary(data.get("defeated_bosses", {})).duplicate(true)
+	defeated_enemies = Dictionary(data.get("defeated_enemies", {})).duplicate(true)
+	destroyed_props = Dictionary(data.get("destroyed_props", {})).duplicate(true)
 	boss_rematches = Dictionary(data.get("boss_rematches", {})).duplicate(true)
 	unlocked_shortcuts = Dictionary(data.get("unlocked_shortcuts", {})).duplicate(true)
 	opened_caches = Dictionary(data.get("opened_caches", {})).duplicate(true)
@@ -801,6 +934,19 @@ func _apply_save_data(data: Dictionary) -> void:
 	merchant_quest_state = int(data.get("merchant_quest_state", 0))
 	merchant_discount_unlocked = bool(data.get("merchant_discount_unlocked", false))
 	town_purchase_counts = Dictionary(data.get("town_purchase_counts", {})).duplicate(true)
+	story_scenes_seen.clear()
+	var saved_scenes: Dictionary = Dictionary(data.get("story_scenes_seen", {}))
+	for id in preload("res://StoryScenes.gd").ORDER:
+		if saved_scenes.get(id, false) == true: story_scenes_seen[id] = true
+	# Older saves do not receive a backlog of automatic interludes.
+	if not data.has("story_scenes_seen"):
+		story_scenes_seen["opening"] = true
+		for id in preload("res://StoryScenes.gd").ORDER:
+			if preload("res://StoryScenes.gd").unlocked(self, id): story_scenes_seen[id] = true
+	elif int(data.get("story_scene_catalog", 1)) < 2:
+		# Existing three-scene saves archive only newly added, already passed events.
+		for id in preload("res://StoryScenes.gd").ORDER:
+			if id not in preload("res://StoryScenes.gd").ORIGINAL_SCENES and preload("res://StoryScenes.gd").unlocked(self, id): story_scenes_seen[id] = true
 	var saved_position: Array = data.get("checkpoint_position", [0.0, 0.0])
 	if saved_position.size() >= 2:
 		checkpoint_position = Vector2(float(saved_position[0]), float(saved_position[1]))
@@ -843,9 +989,16 @@ func _read_save_file(path: String):
 func _copy_save_file(source_path: String, destination_path: String) -> bool:
 	if not FileAccess.file_exists(source_path):
 		return false
-	if FileAccess.file_exists(destination_path):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(destination_path))
-	return DirAccess.copy_absolute(
+	var staging := destination_path + ".copytmp"
+	if DirAccess.copy_absolute(
 		ProjectSettings.globalize_path(source_path),
-		ProjectSettings.globalize_path(destination_path)
-	) == OK
+		ProjectSettings.globalize_path(staging)
+	) != OK:
+		return false
+	if not _read_save_file(staging) is Dictionary:
+		return false
+	return _replace_save_file(ProjectSettings.globalize_path(staging), ProjectSettings.globalize_path(destination_path)) == OK
+
+
+func _replace_save_file(staging_absolute: String, destination_absolute: String) -> Error:
+	return DirAccess.rename_absolute(staging_absolute, destination_absolute)

@@ -1,4 +1,8 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://StarfallPropArt.gd" id="route_props"]
+
+[ext_resource type="Script" path="res://RoomPaintedDepth.gd" id="90_painted_depth"]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
@@ -20,6 +24,15 @@ size = Vector2(120, 10)
 size = Vector2(470, 12)
 
 [node name="StarfallOutskirts" type="Node2D"]
+
+[node name="PropArt" type="Node2D" parent="."]
+script = ExtResource("route_props")
+theme = "outskirts"
+
+[node name="PaintedDepth" type="Node2D" parent="."]
+script = ExtResource("90_painted_depth")
+profile = "rampart"
+entry_plate_path = NodePath("DuskSky")
 
 [node name="DuskSky" type="Polygon2D" parent="."]
 z_index = -8

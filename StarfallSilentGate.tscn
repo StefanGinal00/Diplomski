@@ -1,4 +1,6 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://RoomPaintedDepth.gd" id="90_painted_depth"]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://StarfallRelay.tscn" id="2_relay"]
@@ -23,6 +25,11 @@ size = Vector2(120, 10)
 size = Vector2(540, 12)
 
 [node name="StarfallSilentGate" type="Node2D"]
+
+[node name="PaintedDepth" type="Node2D" parent="."]
+script = ExtResource("90_painted_depth")
+profile = "silent_gate"
+entry_plate_path = NodePath("Sky")
 
 [node name="Sky" type="Polygon2D" parent="."]
 z_index = -9

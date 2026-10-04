@@ -134,7 +134,9 @@ func _run() -> void:
 	await process_frame
 	watch = game.get_node(OUTSKIRTS + "/FieldOperations")
 	_check(watch.completed and watch.get_node("LowerWatch").completed and watch.get_node("ReturnReward").opened, "Complete watch progress reset")
-	_check("REPORTS COLLECTED 2/2" in game.get_node(OUTSKIRTS + "/FieldDressing/Site0/RouteClue").text and "returning guardians are quiet" in watch.get_node("WatchScout0").dialogue_lines[0], "Saved completed watch cues/advice reset")
+	# Current guidance distinguishes winning the patrol from claiming its loot;
+	# this saved run has already claimed the reward, not merely won the fight.
+	_check("REPORTS COLLECTED 2/2" in game.get_node(OUTSKIRTS + "/FieldDressing/Site0/RouteClue").text and watch.get_node("WatchScout0").dialogue_lines[0].begins_with("Claimed."), "Saved completed watch cues/claimed-reward advice reset")
 	state.set_current_room("ash_emberspine")
 	await process_frame
 	spine = game.get_node("AshEmberspine")

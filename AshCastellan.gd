@@ -64,6 +64,7 @@ func _ready() -> void:
 	challenge_prompt.visible = is_rematch
 	if game_state != null:
 		game_state.room_changed.connect(_on_room_changed)
+	preload("res://BossAppearance.gd").attach(self)
 
 
 func _on_room_changed(room_id: String) -> void:
@@ -95,6 +96,8 @@ func _on_room_changed(room_id: String) -> void:
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
+		return
+	if get_node("EncounterSafety").should_suspend():
 		return
 	if not is_instance_valid(target_player):
 		target_player = get_tree().get_first_node_in_group("player") as Player
@@ -140,7 +143,8 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, 850.0 * delta)
 	else:
 		var horizontal_distance: float = target_player.global_position.x - global_position.x
-		velocity.x = signf(horizontal_distance) * walk_speed if absf(horizontal_distance) > 85.0 else 0.0
+		var desired := signf(horizontal_distance) * walk_speed if absf(horizontal_distance) > 85.0 else 0.0
+		velocity.x = preload("res://BossLocomotion.gd").approach(velocity.x, desired, delta)
 		muzzle.position.x = 26.0 * signf(horizontal_distance)
 		if is_zero_approx(eruption_cooldown):
 			_start_eruption()
@@ -149,7 +153,7 @@ func _physics_process(delta: float) -> void:
 		elif is_zero_approx(volley_cooldown):
 			_fire_volley()
 	move_and_slide()
-	position.x = clampf(position.x, arena_left_x, arena_right_x)
+	preload("res://BossLocomotion.gd").stop_at_edge(self, arena_left_x, arena_right_x, 0.5)
 	if charge_remaining > 0.0 and is_on_wall():
 		charge_remaining = 0.0
 		recovery_remaining = 0.5
@@ -181,6 +185,7 @@ func _start_charge() -> void:
 func _fire_volley() -> void:
 	if target_player == null or target_player.is_dead or get_parent() == null:
 		return
+	get_node("CombatPresentation").release("volley")
 	var direction := (target_player.global_position - muzzle.global_position).normalized()
 	var angles: Array[float] = [-0.12, 0.12]
 	if phase == 3:
@@ -211,6 +216,7 @@ func _start_eruption() -> void:
 
 
 func _release_eruption() -> void:
+	get_node("CombatPresentation").release("eruption")
 	eruption_windup = 0.0
 	eruption_flash = 0.22
 	for mark in eruption_marks:
@@ -220,7 +226,7 @@ func _release_eruption() -> void:
 		for mark in eruption_marks:
 			if absf(target_player.global_position.x - (global_position.x + mark.position.x)) < 32.0:
 				var push := signf(target_player.global_position.x - global_position.x)
-				target_player.take_damage(2 if phase >= 2 else 1, Vector2(push * 160.0, -210.0))
+				target_player.take_damage(3, Vector2(push * 160.0, -210.0))
 				break
 	armor.color = _combat_color()
 
@@ -236,7 +242,7 @@ func _try_contact_damage() -> void:
 	for body in contact_area.get_overlapping_bodies():
 		if body is Player and not body.is_dead:
 			var direction := -1.0 if body.global_position.x < global_position.x else 1.0
-			body.take_damage(2, Vector2(direction * 210.0, -170.0))
+			body.take_damage(3 if charge_remaining > 0.0 else 2, Vector2(direction * 210.0, -170.0))
 			contact_cooldown = 0.9
 			return
 

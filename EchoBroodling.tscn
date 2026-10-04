@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://EchoBroodling.gd" id="1_brood"]
 [ext_resource type="PackedScene" path="res://XPOrb.tscn" id="2_xp"]
 [ext_resource type="PackedScene" path="res://GoldPickup.tscn" id="3_gold"]
+[ext_resource type="Script" path="res://BroodlingAppearance.gd" id="4_art"]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
 size = Vector2(27, 18)
@@ -28,9 +29,12 @@ color = Color(1, 0.76, 0.43, 1)
 polygon = PackedVector2Array(-8, -4, -2, -4, -2, -1, -8, -1)
 
 [node name="WarningIcon" type="Polygon2D" parent="."]
-position = Vector2(0, -22)
+position = Vector2(0, -36)
 color = Color(1, 0.43, 0.54, 1)
 polygon = PackedVector2Array(0, -8, 7, 4, -7, 4)
+
+[node name="Appearance" type="Sprite2D" parent="."]
+script = ExtResource("4_art")
 
 [node name="ContactArea" type="Area2D" parent="."]
 collision_layer = 0

@@ -16,6 +16,8 @@ func _run() -> void:
 	for tier in [0, 1]:
 		state.set_zone_tier("sunken_shaft", tier)
 		for scene_name in ROOMS:
+			# Encounters are deliberately dormant outside their active room.
+			state.set_current_room(preload("res://WorldLayout.gd").ROOM_NODES.find_key(scene_name))
 			var room := load("res://%s.tscn" % scene_name).instantiate() as Node2D
 			room.process_mode = Node.PROCESS_MODE_DISABLED
 			root.add_child(room)
@@ -27,6 +29,10 @@ func _run() -> void:
 			encounter._on_body_entered(probe)
 			await process_frame
 			_check(encounter.spawned_enemies.size() == 2, scene_name + ": guardians missing")
+			if encounter.spawned_enemies.is_empty():
+				room.queue_free()
+				await process_frame
+				continue
 			var crawler: CharacterBody2D = encounter.spawned_enemies[0]
 			crawler.process_mode = Node.PROCESS_MODE_ALWAYS
 			var floor_y: float = route.get_node("Niche4_Crest").global_position.y

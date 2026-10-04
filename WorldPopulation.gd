@@ -111,7 +111,7 @@ func _schedule_room_unload(room_name: String) -> void:
 	var has_streamed_actor := bool(populated_rooms.get(room_name, false))
 	if not has_streamed_actor:
 		for child in room.find_children("*", "Node", true, false):
-			if _is_streamed_population_node(child):
+			if _is_streamed_population_node(child) or child.has_method("suspend_encounter_population"):
 				has_streamed_actor = true
 				break
 	if not has_streamed_actor:
@@ -137,11 +137,22 @@ func unload_room_population(room_name: String) -> void:
 	var room := get_parent().get_node_or_null(room_name) as Node2D
 	if room == null:
 		return
+	# Also cover explicit unloads, not only door/visibility notifications. A
+	# projectile may be parented elsewhere while its owning mob is unloaded.
+	for projectile in get_tree().get_nodes_in_group("enemy_projectile"):
+		var source: Node = projectile.get("source")
+		if room.is_ancestor_of(projectile) or (is_instance_valid(source) and room.is_ancestor_of(source)):
+			projectile._retire()
 	var snapshot: Dictionary = {}
+	for encounter in room.find_children("*", "Node", true, false):
+		if encounter.has_method("suspend_encounter_population"):
+			encounter.suspend_encounter_population()
 	for child in room.find_children("*", "Node", true, false):
 		var child_name := String(child.name)
 		if not _is_streamed_population_node(child) or child.is_queued_for_deletion():
 			continue
+		if child.has_method("suspend_room_combat"):
+			child.suspend_room_combat()
 		var kind := _streamed_population_kind(child)
 		var state_key := String(child.get_meta("streamed_population_key", child_name))
 		var removed := bool(child.get("is_destroyed")) if kind == "crate" else bool(child.get("is_dead"))
@@ -319,6 +330,8 @@ func _populate(room: Node2D, data: Dictionary) -> void:
 
 
 func _build_growth(room: Node2D, data: Dictionary) -> void:
+	if room.has_node("EchoEntryGrowthArt"):
+		return
 	var tint: Color = data["tint"]
 	var index := 0
 	for at in data["growth"]:
@@ -332,3 +345,9 @@ func _build_growth(room: Node2D, data: Dictionary) -> void:
 			leaf.polygon = PackedVector2Array([Vector2(x - 6.0, at.y), Vector2(x - 2.0, at.y - height), Vector2(x + 3.0, at.y - height - 5.0), Vector2(x + 1.0, at.y - height), Vector2(x + 7.0, at.y)])
 			room.add_child(leaf)
 		index += 1
+	if preload("res://EchoEntryGrowthArt.gd").KINDS.has(String(room.name)):
+		var art := Node2D.new()
+		art.name = "EchoEntryGrowthArt"
+		art.set_script(preload("res://EchoEntryGrowthArt.gd"))
+		art.anchors = data["growth"].duplicate()
+		room.add_child(art)

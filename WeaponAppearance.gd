@@ -3,6 +3,7 @@ extends Node2D
 ## Native weapon art only. No collision, input, timers or damage ownership.
 ## Pixel-space grip anchors in the six existing combat atlas cells.
 const GRIPS := [Vector2(476, 235), Vector2(451, 192), Vector2(235, 246), Vector2(464, 280), Vector2(449, 188), Vector2(238, 266)]
+const Impact = preload("res://ProjectileImpact.gd")
 var active := false
 var weapon_class := ""
 var weapon_id := ""
@@ -17,6 +18,26 @@ var accent := Color.WHITE
 func _ready() -> void:
 	process_priority = 2 # Appearance has already selected its body frame.
 	visibility_changed.connect(_clear_hidden)
+	var actor := get_parent() as Player
+	if actor != null:
+		actor.melee_contacted.connect(_on_melee_contacted)
+
+
+func _on_melee_contacted(target_point: Vector2, kind: String, aim: Vector2, item_id: String) -> void:
+	var actor := get_parent() as Player
+	if actor == null or actor.is_dead or not is_visible_in_tree():
+		return
+	# Large enemies can have an origin far outside the sword. Keep the cosmetic
+	# contact inside the existing overlap rectangle; this is not a surface query.
+	var cast := actor.attack_cast
+	var point := cast.to_local(target_point)
+	var rectangle := cast.shape as RectangleShape2D
+	if rectangle != null:
+		var half := rectangle.size * 0.5
+		point = point.clamp(-half, half)
+	else:
+		point = Vector2.ZERO
+	Impact.spawn(actor, cast.to_global(point), aim, "spirit_slash" if item_id == "spiritglass_blade" else "slash", actor.attack_visual.color, kind)
 
 
 func _clear_hidden() -> void:

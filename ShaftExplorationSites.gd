@@ -59,6 +59,7 @@ func _ready() -> void:
 	resident.set("route_marker_names", PackedStringArray(["CampStop0", "CampStop1"]))
 	resident.set("coat_color", expansion.plan["tone"])
 	add_child(resident)
+	preload("res://OpeningResidentArt.gd").attach(resident, 2 if id == "hollow" else 1, 26)
 	resident.get_node("NameLabel").position.x = -130.0
 	resident.get_node("NameLabel").size.x = 260.0
 	var sign := Label.new()

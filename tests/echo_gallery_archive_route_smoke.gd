@@ -106,7 +106,7 @@ func _archive_entry() -> bool:
 func _visit_echo_post(post: Area2D, tier: int) -> bool:
 	if echo_stage == "archive" and tier == 1 and not archive_backtrack:
 		return true # Read clue; Zenith must be recorded before Dawn.
-	if echo_stage != "archive":
+	if echo_stage not in ["archive", "gallery"]:
 		return await super._visit_echo_post(post, tier)
 	# A patrolling shade can arrive below the balcony AFTER its first lane
 	# clearance. Follow the listening post's live threat hint, descend, fight
@@ -122,6 +122,7 @@ func _visit_echo_post(post: Area2D, tier: int) -> bool:
 		if not post._has_threat():
 			break
 		var threat: Node2D = post._nearest_threat()
+		print("LISTEN RETRY: ", echo_stage, " tier ", tier, " clearing ", threat.name, " before physical return")
 		var target_x: float = _route_geometry().to_local(threat.global_position).x
 		if not await _connected_step(_echo_floor(tier, target_x), "Echo/listening-guard-descent"):
 			return false
@@ -130,7 +131,7 @@ func _visit_echo_post(post: Area2D, tier: int) -> bool:
 		for named in ["BranchStep1", "BranchStep2", "HiddenShelfA", "HiddenShelfB"]:
 			if not await _connected_step(_route_geometry().get_node("Tier%02d%s" % [tier, named]), "Echo/listening-return"):
 				return false
-	_check(false, "Archive listening failed after three physical attempts: " + str(post.name))
+	_check(false, echo_stage + " listening failed after three physical attempts: " + str(post.name))
 	return false
 
 

@@ -45,7 +45,7 @@ func _run() -> void:
 	player.global_position = boss.global_position + Vector2(-125.0, 0.0)
 	await create_timer(2.5).timeout
 	_check(boss.active, "Warden did not activate near player")
-	_check(soundscape.current_track == "boss", "Boss music did not start")
+	_check(soundscape.current_track == "boss_abyss_warden", "Boss music did not start")
 	await shaft.get_node("ReturnDoor").activate(player)
 	_check(state.current_room_id == "sunken_shaft" and shaft.get_node("ReturnDoor").status_label.text == "BATTLE SEALED", "Warden fight allowed retreat to the passage")
 	var position_before_lift: Vector2 = player.global_position

@@ -89,6 +89,12 @@ func _run() -> void:
 	var generated_crate = game.get_node("EchoGrotto/LongTraversal/TraversalCrate00")
 	generated_crate.empty_drop_chance = 1.0
 	generated_crate.take_damage(99)
+	var wounded_crate = game.get_node("EchoGrotto/LongTraversal/TraversalCrate02")
+	wounded_crate.take_damage(1)
+	var crate_health := int(wounded_crate.current_health)
+	var crate_damage: float = wounded_crate.get_node("Visual").damage_fraction
+	var crate_position: Vector2 = wounded_crate.position
+	_check(crate_health > 0 and crate_damage > 0, "Streaming fixture crate did not survive with visible damage")
 	await process_frame
 	state.set_current_room("training_passage")
 	population.unload_room_population("EchoGrotto")
@@ -101,6 +107,9 @@ func _run() -> void:
 	_check(game.get_node("EchoGrotto/EchoWisp").current_health == authored_health, "An authored enemy lost its health after a streamed-room reload")
 	_check(not game.get_node("EchoGrotto").has_node("FarWisp") and not game.get_node("EchoGrotto").has_node("ForgottenCrate"), "A defeated authored enemy or destroyed authored crate respawned")
 	_check(not game.get_node("EchoGrotto/LongTraversal").has_node("TraversalCrate00"), "A destroyed generated traversal crate respawned")
+	wounded_crate = game.get_node("EchoGrotto/LongTraversal/TraversalCrate02")
+	_check(wounded_crate.current_health == crate_health and wounded_crate.get_node("Visual").damage_fraction == crate_damage, "Streamed crate lost its damaged appearance")
+	_check(wounded_crate.position == crate_position, "Streamed crate lost its settled position")
 	state.set_current_room("ash_hearth_outskirts")
 	await process_frame
 	var grazer = game.get_node("CinderHearthOutskirts/AshGrazer")

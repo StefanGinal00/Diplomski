@@ -1,0 +1,400 @@
+{
+  "date": "2026-09-30",
+  "pass": "Global collision-registered terrain edges and crawler target validation",
+  "status": "Implemented and focused verification passed; not a claim that the entire art/gameplay backlog is complete",
+  "assets_manifest": "art/visual_slice/terrain_edge_manifest_v1.json",
+  "new_images": 6,
+  "modular_variants": 24,
+  "coverage": {
+    "families": {
+      "basalt": 579,
+      "citadel": 853,
+      "iron": 82,
+      "moss": 1242,
+      "shale": 304,
+      "timber": 8
+    },
+    "rooms": [
+      {
+        "edges": 5,
+        "room": "training_passage"
+      },
+      {
+        "edges": 81,
+        "room": "sunken_shaft"
+      },
+      {
+        "edges": 107,
+        "room": "shaft_hollow"
+      },
+      {
+        "edges": 73,
+        "room": "shaft_drift"
+      },
+      {
+        "edges": 123,
+        "room": "shaft_crossing"
+      },
+      {
+        "edges": 115,
+        "room": "shaft_gallery"
+      },
+      {
+        "edges": 111,
+        "room": "shaft_cistern"
+      },
+      {
+        "edges": 116,
+        "room": "shaft_approach"
+      },
+      {
+        "edges": 102,
+        "room": "echo_grotto"
+      },
+      {
+        "edges": 91,
+        "room": "echo_gallery"
+      },
+      {
+        "edges": 98,
+        "room": "echo_depths"
+      },
+      {
+        "edges": 90,
+        "room": "echo_archive"
+      },
+      {
+        "edges": 118,
+        "room": "echo_tide_well"
+      },
+      {
+        "edges": 94,
+        "room": "echo_causeway"
+      },
+      {
+        "edges": 95,
+        "room": "echo_vault"
+      },
+      {
+        "edges": 96,
+        "room": "echo_nest"
+      },
+      {
+        "edges": 7,
+        "room": "echo_sanctum"
+      },
+      {
+        "edges": 57,
+        "room": "echo_haven"
+      },
+      {
+        "edges": 57,
+        "room": "echo_haven_outskirts"
+      },
+      {
+        "edges": 71,
+        "room": "ash_causeway"
+      },
+      {
+        "edges": 103,
+        "room": "ash_emberspine"
+      },
+      {
+        "edges": 71,
+        "room": "ash_forge"
+      },
+      {
+        "edges": 70,
+        "room": "ash_barracks"
+      },
+      {
+        "edges": 7,
+        "room": "ash_arena"
+      },
+      {
+        "edges": 71,
+        "room": "ash_reservoir"
+      },
+      {
+        "edges": 71,
+        "room": "ash_chapel"
+      },
+      {
+        "edges": 7,
+        "room": "ash_throne"
+      },
+      {
+        "edges": 44,
+        "room": "ash_hearth"
+      },
+      {
+        "edges": 64,
+        "room": "ash_hearth_outskirts"
+      },
+      {
+        "edges": 106,
+        "room": "starfall_citadel"
+      },
+      {
+        "edges": 100,
+        "room": "starfall_outskirts"
+      },
+      {
+        "edges": 105,
+        "room": "starfall_ramparts"
+      },
+      {
+        "edges": 103,
+        "room": "starfall_silent_gate"
+      },
+      {
+        "edges": 107,
+        "room": "starfall_memory_vault"
+      },
+      {
+        "edges": 100,
+        "room": "starfall_rooted_hall"
+      },
+      {
+        "edges": 9,
+        "room": "starfall_empty_court"
+      },
+      {
+        "edges": 106,
+        "room": "starfall_soul_crucible"
+      },
+      {
+        "edges": 109,
+        "room": "starfall_sunless_passage"
+      },
+      {
+        "edges": 8,
+        "room": "starfall_hollow_throne"
+      }
+    ],
+    "total": 3068
+  },
+  "implementations": [
+    "TerrainEdgeArt.gd draws existing horizontal collision surfaces with authored alpha endcaps and uniformly scaled, repeated/cropped centers. Collision dimensions and traversal unchanged.",
+    "Six shared texture families distinguish wet limestone, mine shale, basalt, citadel masonry, iron and timber; old rectangular faces/lips hidden only on collision-registered rectangles.",
+    "Crawler requires ground support at attack acquisition, revalidates live target/range/height/LOS before charge release and tier-one follow-up, and turns away from body wall contact.",
+    "All RouteFieldDressing pump sites install existing painted machinery regardless of biome; pump render depth leaves characters and readable plaques in front."
+  ],
+  "tests": [
+    {
+      "Test": "crawler_navigation_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 22.48,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202004-449-42c9b302\\crawler_navigation_smoke.log"
+    },
+    {
+      "Test": "shaft_guard_combat_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 18.73,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202027-365-8d1c632d\\shaft_guard_combat_smoke.log"
+    },
+    {
+      "Test": "shaft_guard_patrol_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 18.78,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202811-722-56259c0f\\shaft_guard_patrol_smoke.log"
+    },
+    {
+      "Test": "enemy_perception_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 17.64,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202830-830-c275bead\\enemy_perception_smoke.log"
+    },
+    {
+      "Test": "sentry_medium_range_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 16.52,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202112-839-2ba7148a\\sentry_medium_range_smoke.log"
+    },
+    {
+      "Test": "sentry_cover_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 23.93,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202129-404-8a0760e6\\sentry_cover_smoke.log"
+    },
+    {
+      "Test": "terrain_edges_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 78.16,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202153-520-2791eff6\\terrain_edges_smoke.log"
+    },
+    {
+      "Test": "gameplay_review_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 61.1,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202311-758-fdb94dd5\\gameplay_review_smoke.log"
+    },
+    {
+      "Test": "corridor_dressing_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 43.49,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202412-910-f0471b99\\corridor_dressing_smoke.log"
+    },
+    {
+      "Test": "basic_jump_routes_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 26.6,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202456-450-d339a297\\basic_jump_routes_smoke.log"
+    },
+    {
+      "Test": "shaft_fall_recovery_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 19.8,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202523-090-dbf8afca\\shaft_fall_recovery_smoke.log"
+    },
+    {
+      "Test": "testing_tools_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 21.52,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202542-930-a5194e2a\\testing_tools_smoke.log"
+    },
+    {
+      "Test": "world_grounding_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 67.5,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202604-489-8725ad47\\world_grounding_smoke.log"
+    },
+    {
+      "Test": "player_projectile_lifecycle_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 1.69,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202712-046-5b4e20c6\\player_projectile_lifecycle_smoke.log"
+    },
+    {
+      "Test": "enemy_projectile_contact_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 31.94,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202713-805-607d731f\\enemy_projectile_contact_smoke.log"
+    },
+    {
+      "Test": "encounter_streaming_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 38.26,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-202745-814-479e1db5\\encounter_streaming_smoke.log"
+    },
+    {
+      "Test": "echo_machinery_art_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 32.54,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": "C:\\Users\\Stefan\\Documents\\diplomski\\.tmp-smoke-suite-20260930-203231-551-6717d7a0\\echo_machinery_art_smoke.log"
+    }
+  ],
+  "smoke_summary": {
+    "selected": 17,
+    "passed": 17,
+    "entire_suite": false
+  },
+  "new_test": "crawler_navigation_smoke.gd: 30/60/120 Hz wall cases, stale windups after cover/death/height/range changes, airborne acquisition and tier-one covered follow-up.",
+  "pre_fix_reproduction": {
+    "log": ".tmp-crawler-before.log",
+    "failures": [
+      "stale windup after cover",
+      "stale windup after target death",
+      "stale windup after target height change",
+      "stale windup after range loss",
+      "airborne charge acquisition"
+    ],
+    "wall_fixture": "Original wide-wall fixture already turned via the floor probe; explicit contact handling covers thinner walls."
+  },
+  "fixture_repairs": [
+    "enemy_perception_smoke settles crawler on its real floor before testing grounded acquisition; both blocked-LOS and clear-LOS assertions remain.",
+    "shaft_guard_patrol_smoke activates the owned room before invoking its ambush, matching the existing inactive-room spawn guard. Empty spawns fail clearly rather than indexing an empty array.",
+    "echo_machinery_art_smoke checks every authored pump schema for painted coverage, retaining live pressure-gauge state and collision/progression invariants."
+  ],
+  "initial_verification_note": "Initial terrain_edges run timed out at 180s while import/native capture were active. Isolated rerun passed in 69.1s; final broad-run pass 78.16s.",
+  "native_preview": {
+    "renderer": "Godot 4.6.2 Forward Mobile / D3D12 / RTX 4050 Laptop",
+    "script": "tests/preview_terrain_edges.gd",
+    "screenshot_glob": "art/characters/preview_terrain_edges_*.png",
+    "rooms": 6,
+    "unique_camera_positions": 19,
+    "all_player_positions_supported": true,
+    "actors": "Ground CharacterBody2D actors receive 90 physics ticks before preview freezes them, avoiding misleading un-settled spawn heights.",
+    "logs": [
+      ".tmp-terrain-edge-preview-grounded.log",
+      ".tmp-terrain-edge-preview-final.log"
+    ],
+    "known_environment_errors": [
+      "Windows root certificate store read denied",
+      "Godot shader cache write denied on native shutdown",
+      "Headless editor cannot save AppData editor settings"
+    ],
+    "runtime_script_errors": 0,
+    "limitations": "Finite camera samples, not continuous manual full-world traversal. Desktop native renderer, not phone hardware."
+  },
+  "raw_shape_audit": {
+    "log": ".tmp-terrain-edge-primitives.log",
+    "matches": 286,
+    "note": "Mostly ropes, rails, conduits, active barriers and trim. Match count is not defect count.",
+    "full_audit": "tests/terrain_edge_primitive_audit_v1.json"
+  },
+  "next_review_candidates": [
+    "Large close-up city facade blocks and flat arcade trim in Starfall Citadel views 1/2 need a separate architecture pass.",
+    "Remaining schematic conduit/rail lines need review per gameplay role, not indiscriminate hiding.",
+    "Long generated containment status label in starfall_soul_crucible remains in readability audit.",
+    "Measure exported-build memory, frame pacing and rendering on actual target phone."
+  ],
+  "performance": {
+    "texture_size_limit": 1024,
+    "mipmaps": true,
+    "new_continuous_processors": 0,
+    "per_tile_nodes": 0,
+    "note": "One cached static draw node per treated solid, shared six texture resources; no mobile FPS claim."
+  }
+}

@@ -27,6 +27,8 @@ func _ready() -> void:
 	phase_remaining = idle_duration + initial_offset
 	monitoring = false
 	_update_visuals()
+	var style := "roots" if get_script().resource_path.ends_with("RootSnare.gd") else ("soul" if get_script().resource_path.ends_with("SoulPulse.gd") else "fire")
+	preload("res://EnvironmentHazardArt.gd").attach(self, style)
 
 
 func _process(delta: float) -> void:

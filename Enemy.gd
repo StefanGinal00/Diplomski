@@ -39,8 +39,12 @@ var default_sprite_modulate: Color
 @onready var awareness_area: Area2D = $AwarenessArea
 @onready var top_hitbox: Area2D = $TopHitbox
 @onready var health_bar: ProgressBar = $HealthBar
+@onready var body_collision: CollisionShape2D = $CollisionShape2D
 
 func _ready() -> void:
+	if not is_in_group("neutral_creature"):
+		preload("res://CompactMobAppearance.gd").attach(self, "fiend" if get_script().resource_path == "res://AshFiend.gd" else "enemy")
+	preload("res://MobAttackPresentation.gd").attach(self, "enemy")
 	current_health = max_health
 	default_sprite_modulate = sprite.modulate
 	health_bar.max_value = max_health
@@ -71,6 +75,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, knockback_recovery * delta)
 	else:
 		_update_horizontal_movement()
+		_avoid_patrol_edges(delta)
 
 	move_and_slide()
 	_try_contact_damage()
@@ -113,6 +118,42 @@ func _update_horizontal_movement() -> void:
 	velocity.x = direction * move_speed
 
 
+func _avoid_patrol_edges(delta: float) -> void:
+	# Grounded walking/chasing only. Airborne motion and hit knockback stay
+	# physical; this does not create an invisible wall at the platform edge.
+	if not is_on_floor() or is_zero_approx(velocity.x):
+		return
+	var heading := signf(velocity.x)
+	var half: Vector2 = body_collision.shape.size * 0.5
+	var foot := body_collision.global_transform * Vector2(heading * half.x, half.y)
+	foot.x += heading * maxf(6.0, absf(velocity.x) * delta)
+	var excluded: Array[RID] = [get_rid()]
+	var supported := false
+	# Actors crossing the probe are neither ground nor a reason to stop a
+	# chase on solid terrain. Look past them to the actual supporting floor.
+	for pass_index in range(8):
+		var query := PhysicsRayQueryParameters2D.create(foot + Vector2(0, -5), foot + Vector2(0, 24), collision_mask, excluded)
+		var hit := get_world_2d().direct_space_state.intersect_ray(query)
+		if hit.is_empty(): break
+		if hit.collider is StaticBody2D and not hit.collider.is_in_group("enemy"):
+			supported = hit.normal.y < -0.5
+			break
+		excluded.append(hit.collider.get_rid())
+	# A contact can persist for a tick while moving away (especially at 120 Hz).
+	# Only turn if the desired movement actually points into that wall.
+	var walking_into_wall := is_on_wall() and get_wall_normal().dot(Vector2(heading, 0)) < -0.1
+	if supported and not walking_into_wall:
+		return
+	if is_instance_valid(target_player) and target_player.get("is_dead") != true:
+		# Hold the safe edge while the target is beyond it. Turning the patrol
+		# every tick here would jitter against the chase direction.
+		velocity.x = 0.0
+		return
+	direction = -int(heading)
+	sprite.flip_h = direction < 0
+	velocity.x = 0.0 # Resume the patrol away from the obstacle next tick.
+
+
 func _update_hit_feedback(delta: float) -> void:
 	if hit_flash_remaining <= 0.0:
 		return
@@ -148,6 +189,7 @@ func _damage_player_if_possible(body: Node) -> bool:
 		Vector2(contact_knockback.x * knockback_direction, contact_knockback.y)
 	)
 	damage_cooldown_remaining = contact_damage_cooldown
+	get_node("AttackPresentation").contact(body)
 	return true
 
 

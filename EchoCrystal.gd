@@ -14,14 +14,23 @@ var age: float = 0.0
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+	var state := get_node_or_null("/root/GameState")
+	if state != null:
+		state.shortcut_changed.connect(_on_visual_event)
 	_update_visuals()
 	prompt.hide()
+	set_process(false) # Static event-driven art replaces the old spinning glow.
 
 
 func _process(delta: float) -> void:
 	age += delta
 	glow.modulate.a = 0.68 + sin(age * 2.8) * 0.22
 	glow.rotation += delta * 0.35
+
+
+func _on_visual_event(event_id: String) -> void:
+	if event_id == "echo_resonator_" + crystal_id:
+		_update_visuals()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -55,6 +64,7 @@ func _update_visuals() -> void:
 	core.color = Color(0.48, 1.0, 0.72, 1.0) if active else Color(0.37, 0.67, 0.95, 1.0)
 	glow.color = Color(0.22, 1.0, 0.62, 0.42) if active else Color(0.2, 0.68, 1.0, 0.3)
 	prompt.text = "RESONATOR ACTIVE" if active else "[E] ATTUNE " + crystal_name.to_upper()
+	$DeviceArt.set_status(active)
 
 
 func _on_body_entered(body: Node) -> void:

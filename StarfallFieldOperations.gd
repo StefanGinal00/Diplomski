@@ -46,7 +46,7 @@ func _ready() -> void:
 		"StarfallMemoryVault":
 			for index in range(3):
 				requirements.append(prefix + "_record_%d" % index)
-				_sign(branch_point(1 + index * 2) + Vector2(-230, -210))
+				_sign(branch_point(1 + index * 2) + Vector2(-230, -170), true)
 		"StarfallRootedHall":
 			for index in range(2):
 				requirements.append(prefix + "_seedbed_%d" % index)
@@ -110,8 +110,13 @@ func _control(title: String, tier: int, event_id: String, needed: PackedStringAr
 	control.set("active_label", ready_text if not ready_text.is_empty() else ("COVER RAISED" if room_name == "StarfallOutskirts" else "WARD VERIFIED"))
 	control.set("active_prompt", "WORK COMPLETE - SAVE AT A LAMP")
 	add_child(control)
+	var art := Node2D.new()
+	art.name = "TaskArt"
+	art.set_script(preload("res://StarfallTaskArt.gd"))
+	art.kind = {"StarfallOutskirts": "winch", "StarfallSilentGate": "terminal", "StarfallRootedHall": "seedbed", "StarfallSunlessPassage": "beacon"}[room_name]
+	control.add_child(art)
 	controls.append(control)
-	_sign(control.position + Vector2(-230, -280))
+	_sign(control.position + Vector2(-230, -170), true)
 
 
 func _landmark(point: Vector2, plant: bool) -> void:
@@ -121,6 +126,14 @@ func _landmark(point: Vector2, plant: bool) -> void:
 	visual.polygon = PackedVector2Array([Vector2(-30, 0), Vector2(-23, -28), Vector2(-5, -14), Vector2(0, -60), Vector2(10, -23), Vector2(32, -41), Vector2(24, 0)]) if plant else PackedVector2Array([Vector2(-14, 0), Vector2(-8, -35), Vector2(-20, -49), Vector2(0, -78), Vector2(20, -49), Vector2(8, -35), Vector2(14, 0)])
 	add_child(visual)
 	landmarks.append(visual)
+	var art := Node2D.new()
+	art.name = "LandmarkArt%d" % (landmarks.size() - 1)
+	art.set_script(preload("res://StarfallTaskArt.gd"))
+	art.kind = "growth" if plant else "lantern"
+	art.position = point
+	art.landmark_path = NodePath("../" + String(visual.name))
+	art.event_id = requirements[landmarks.size() - 1]
+	add_child(art)
 
 
 func _build_containment(index: int) -> void:
@@ -138,7 +151,7 @@ func _build_containment(index: int) -> void:
 	trial.get("spawn_offsets").append(Vector2(-85, -86 if index == 0 else -33))
 	trial.get("spawn_offsets").append(Vector2(85, -33))
 	add_child(trial)
-	_sign(trial.position + Vector2(-230, -370))
+	_sign(trial.position + Vector2(-230, -270), true)
 
 
 func _build_cover(tier: int) -> void:
@@ -196,10 +209,11 @@ func _build_return() -> void:
 	add_child(cache)
 
 
-func _sign(point: Vector2) -> void:
+func _sign(point: Vector2, compact: bool = false) -> void:
 	var sign := Label.new()
 	sign.position = point
-	sign.size = Vector2(460, 170)
+	sign.size = Vector2(460, 84 if compact else 170)
+	sign.set_meta("compact_field_sign", compact)
 	sign.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	sign.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	sign.add_theme_font_size_override("font_size", 11)
@@ -239,6 +253,19 @@ func _refresh() -> void:
 	elif bool(state.defeated_bosses.get("hollow_sovereign", false)):
 		return_text = "RETURN PATROL AWAKE - FINISH LOCAL TASK/GUARDIANS, THEN VISIT FINAL GALLERY"
 	for sign in signs:
+		if sign.get_meta("compact_field_sign", false):
+			var local_hint: String = {
+				"StarfallOutskirts": "REPAIR THE WINCH TO RAISE ROAD COVER",
+				"StarfallSilentGate": "POWER ITS ORIGINAL RELAY, THEN INSPECT THIS TERMINAL",
+				"StarfallMemoryVault": "BREAK THE MARKED RECORD CASE IN THIS BRANCH",
+				"StarfallRootedHall": "OPEN ROOT CHANNELS, THEN RESTORE THIS SEEDBED",
+				"StarfallSoulCrucible": "POWER THE CHANNEL, THEN RE-ENTER THIS CHAMBER",
+				"StarfallSunlessPassage": "LIGHT BEACONS IN ORDER; ANCHOR CONTROLS BRIDGES",
+			}[room_name]
+			sign.text = String(PROFILES[room_name][0]) + "\n" + (detail if completed else local_hint) + "\nPROGRESS %d/%d - SAVE AT A LAMP" % [count, requirements.size()]
+			if room_name == "StarfallRootedHall":
+				sign.text += "\nGRAZERS ARE NEUTRAL; NO NEED TO HARM THEM."
+			continue
 		sign.text = String(PROFILES[room_name][0]) + "\n" + detail + "\n" + return_text + "\nOPTIONAL DISCOVERY; SAVE PROGRESS AT A LAMP"
 		if room_name == "StarfallRootedHall":
 			sign.text += "\nGRAZERS ARE NEUTRAL; NO NEED TO HARM THEM. THIS IS NOT A SAFE ZONE."

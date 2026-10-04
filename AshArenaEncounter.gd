@@ -67,12 +67,17 @@ func _spawn_wave() -> void:
 		if wave < TOTAL_WAVES or not enemy.is_in_group("mini_boss"):
 			enemy.set("xp_orb_scene", null)
 			enemy.set("gold_pickup_scene", null)
+		enemy.set_meta("checkpoint_persistence_exempt", true)
 		combatants.add_child(enemy)
 		enemy.defeated.connect(_on_enemy_defeated)
 		if enemy.is_in_group("mini_boss"):
 			marshal = enemy
 			enemy.health_changed.connect(_on_marshal_health_changed)
 			enemy.phase_changed.connect(_on_marshal_phase_changed)
+			var music := get_parent().get_node_or_null("AmbientSoundscape")
+			if music != null:
+				music.register_boss(enemy)
+			enemy.battle_started.emit()
 
 
 func _on_enemy_defeated() -> void:

@@ -138,6 +138,8 @@ func _color(key: String) -> Color:
 
 
 func _draw() -> void:
+	if has_node("CameraPainting") and get_node("CameraPainting").texture != null:
+		return # Runtime has one painted owner; retain silhouettes for editor overview.
 	var viewport_size := size
 	if viewport_size.x < 2.0 or viewport_size.y < 2.0:
 		viewport_size = get_viewport_rect().size

@@ -1,0 +1,179 @@
+{
+  "date": "2026-10-04",
+  "scope": "Living route composition and physical route variety; incremental world polish, not a claim that all game artwork is complete.",
+  "implementation": {
+    "rooms_audited": 39,
+    "reused_route_cutouts": 48,
+    "new_raster_sources": 0,
+    "additional_understory_details": 1468,
+    "visible_flat_ground_details_total": 7253,
+    "foreground_included": 2863,
+    "hanging_and_canopy_details_total": 3501,
+    "ceiling_seep_sources": 163,
+    "max_seep_sources_per_room": 12,
+    "terrain_profiles": 6,
+    "physical_contours": 105,
+    "contour_rooms": 18,
+    "slope_aligned_props": 898,
+    "lowered_vaults": 22,
+    "previous_lowered_vaults": 6,
+    "painted_pressure_pipes": 9,
+    "compact_return_markers": 6,
+    "animation_budget_desktop_low_cost": [
+      18,
+      8
+    ],
+    "contact_budget_desktop_low_cost": [
+      12,
+      6
+    ],
+    "notes": [
+      "Existing registered sprites are composed into uneven low foreground and taller rear foliage. Both soft grass layers respond to contact; rigid stone/log props stay rigid.",
+      "Six rounded physical profiles include shelves, shoulders and saddles. Native support floors remain untouched.",
+      "Additional crate/item settling aprons deliberately reduce contour coverage compared with older snapshots; safety/placement is preferred to preserving the old raw contour count.",
+      "Adaptive ceiling search preserves landing margins, arenas/town exclusions, verified jump headroom, and real upper/lower supports. Removed supports retire vaults, without regrowing them during a visit.",
+      "Tiny intermittent drops trace to the first real floor. No drops in dry Ash rooms. No individual processing, particle emitters or colliders added by decoration.",
+      "Native task/return status remains in the G report and marker parent modulation. Source controller nodes are retained."
+    ]
+  },
+  "verification": {
+    "passed": 10,
+    "total": 10,
+    "tests": [
+      {
+        "Test": "route_relief_physics_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 14.89,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261004-134840-505-7c9b3cd1/route_relief_physics_smoke.log"
+      },
+      {
+        "Test": "route_relief_world_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 26.04,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261004-140128-706-e2571093/route_relief_world_smoke.log"
+      },
+      {
+        "Test": "route_vault_traversal_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 82.39,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261004-135034-917-4c073abe/route_vault_traversal_smoke.log"
+      },
+      {
+        "Test": "route_richness_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 26.58,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261004-135536-617-fe28a4a0/route_richness_smoke.log"
+      },
+      {
+        "Test": "reactive_foliage_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 0.75,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261004-135149-550-d24c5904/reactive_foliage_smoke.log"
+      },
+      {
+        "Test": "ambient_continuity_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 0.57,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261004-135825-139-078079f3/ambient_continuity_smoke.log"
+      },
+      {
+        "Test": "basic_jump_routes_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 9.95,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261004-135825-802-d4743308/basic_jump_routes_smoke.log"
+      },
+      {
+        "Test": "painted_tasks_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 14.04,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261004-135835-802-0a4ac66e/painted_tasks_smoke.log"
+      },
+      {
+        "Test": "scenery_completion_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 24.73,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261004-140257-327-87f2d8c7/scenery_completion_smoke.log"
+      },
+      {
+        "Test": "world_grounding_smoke.gd",
+        "Status": "PASS",
+        "Seconds": 24.97,
+        "ExitCode": 0,
+        "PassedMarker": true,
+        "Errors": [],
+        "Log": ".tmp-smoke-suite-20261004-140423-064-7d89d590/world_grounding_smoke.log"
+      }
+    ],
+    "controller_checks": {
+      "standing_crouched_profile_walks": 24,
+      "profile_dashes": 12,
+      "profile_jumps": 6,
+      "profile_loot_drops": 18,
+      "world_contour_walks": 36,
+      "vault_jumps_and_walks": 110,
+      "existing_route_hops": 509
+    },
+    "grounding": {
+      "rooms": 39,
+      "surfaces": 3161,
+      "contacts": 15138,
+      "portals": 112,
+      "outer_boundaries": 95
+    },
+    "native_preview": {
+      "script": "tests/preview_living_routes.gd",
+      "log": ".tmp-living-routes-delivery.log",
+      "renderer": "Godot 4.6.2 D3D12 Mobile / NVIDIA RTX 4050 Laptop GPU",
+      "resolution": [
+        1280,
+        720
+      ],
+      "captures_reviewed": 7,
+      "room_views": 5,
+      "live_brush": {
+        "contacts": 46,
+        "peak_observed_bend_radians": 0.26303849816679,
+        "recovered_bend": 0
+      },
+      "images": [
+        "art/characters/preview_living_routes_shaft_gallery.png",
+        "art/characters/preview_living_routes_shaft_drift.png",
+        "art/characters/preview_living_routes_echo_depths.png",
+        "art/characters/preview_living_routes_starfall_rooted_hall.png",
+        "art/characters/preview_living_routes_ash_barracks.png",
+        "art/characters/preview_living_routes_brush.png",
+        "art/characters/preview_living_routes_recovered.png"
+      ],
+      "warnings": "Sandbox native shader-cache write (f.is_null/_save_to_cache) and Windows certificate-store warnings; all seven captures completed, no script errors observed. Frame-rate performance has not been benchmarked."
+    },
+    "cleanup": "Test-owned processes exited. Test saves isolated from user progress.",
+    "whitespace_check": "Targeted git diff --check passed."
+  }
+}

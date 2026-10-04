@@ -1,0 +1,30 @@
+{
+  "mode": "built-in image_gen",
+  "date": "2026-09-30",
+  "intent": "generate",
+  "source_policy": "Built-in imagegen; copied byte-for-byte into the project, original RGBA alpha preserved. SHA-256 of each source and workspace copy verified equal.",
+  "assets": [
+    {
+      "prompt_index": 0,
+      "source": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-b5a3d231-98f6-46d5-b7ef-2666ad59ee29.png",
+      "saved_path": "art/visual_slice/starfall_parallax_towers_v1.png",
+      "sha256": "83BF3CB35FB6D520910E4DF5740BCA29853667D075D4844C64ED89952E1A27DA",
+      "actual_dimensions": [1536, 1024],
+      "variants": ["bell tower", "vaulted archive", "domed observatory"]
+    },
+    {
+      "prompt_index": 1,
+      "source": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-1297c636-c7c7-49c9-b7cd-c04ffd493925.png",
+      "saved_path": "art/visual_slice/starfall_parallax_quarters_v1.png",
+      "sha256": "35E6EF6D815FFBAB0823AE47CAF0ABD884FD2AFAC79224359B4D61837E4CC06D",
+      "actual_dimensions": [1536, 1024],
+      "variants": ["merchant gables", "cloister library", "artisan tenements"]
+    }
+  ],
+  "godot_import": {"size_limit": 1536, "mipmaps": true, "fix_alpha_border": true, "decoded_bytes_both_atlases_including_mips": 16777208},
+  "consumers": ["CityParallaxAtlas.gd", "StarfallParallaxCity.gd", "StarfallCitadel.tscn"],
+  "prompts": [
+    "Use case: stylized-concept\nAsset type: transparent parallax architecture sprite sheet for a 2D side-scrolling dark-fantasy city. Landscape 1536x1024, THREE columns, ONE row.\nPrimary request: THREE separate monumental Starfall city buildings, painted frontal elevations, full silhouettes from roof tip to foundation. Left: slender tall gothic municipal bell tower with asymmetrical adjoining wing and slate spires. Center: broad vaulted royal archive, multiple stepped gables, small buttresses and central pointed roof. Right: cylindrical astronomical observatory integrated into a square masonry base, aged copper dome and narrow side turret.\nStyle: richly textured hand-painted 2D matte illustration, original design, worn blue-grey limestone blockwork, darker slate roof shingles, carved cornices, recessed windows, occasional dim warm amber window lights. Cool indigo nocturnal palette and restrained rim light from upper left. Architectural detail must remain readable but softer and less bright than foreground characters. Front orthographic view for a side-scroller; not isometric, no strong vanishing point.\nComposition: one entire building centered inside each 512x1024 cell, height about 900px, widths 350-440px, same foundation baseline near y=985. All building foundations completely solid. Generous clear gutters between the three cutouts, complete spires uncut with margin above. Do not connect the buildings. GENUINELY TRANSPARENT RGBA background everywhere outside the architecture, including between roof silhouettes. No sky, landscape, terrain, platforms, clouds, ground plane or disconnected shadow. No text, captions, logos, borders, watermark, characters, modern architecture or glowing outlines.",
+    "Use case: stylized-concept\nAsset type: transparent mid-distance city neighborhood sprites for a 2D side-scroller. A landscape 1536x1024 sheet with THREE separate cutouts in ONE row, each inside a 512px-wide cell.\nPrimary request: three varied compact groups of attached medieval city houses for Starfall's parallax background. Left group: three narrow merchant townhouses with irregular steep slate gables, tiny stone balconies and six storeys. Center group: a quiet cloister library block with four staggered gables, stone arcades at its base, carved lintels and several narrow chimneys. Right group: an artisan tenement cluster with two taller roofs, enclosed timber bay windows, stone supports and modest hanging signs with NO letters. Build upward; all groups have complete solid foundations at y=985, different roof heights around 500-850px. Each group roughly 420px wide, clear transparent gutters, no pieces touching adjacent groups or image edge.\nStyle: original detailed painterly 2D gothic fantasy architecture, frontal elevation, flat orthographic side-scroller view, not isometric. Muted desaturated blue-grey limestone and plaster, indigo slate, dark wood, subtle brass trims. Rich physical texture, worn mortar and roof tiles, sparse warm amber windows. Soft cool dusk light from upper-left, background contrast lower than playable buildings. No foreground props, people or ground outside each foundation.\nBackground: GENUINELY TRANSPARENT RGBA, including empty sky above rooftops and between groups. No visible grey/black backdrop, sky, stars, fog, platform, landscape, external cast shadow, text, captions, watermark or layout grid."
+  ]
+}

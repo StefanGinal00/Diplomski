@@ -2,6 +2,7 @@ extends Node2D
 
 const POST_SCENE := preload("res://SluiceValve.tscn")
 const POST_SCRIPT := preload("res://EchoListeningPost.gd")
+const DEVICE_ART := preload("res://EchoDeviceArt.gd")
 const ENCOUNTER := preload("res://LocalizedEncounter.tscn")
 const CACHE := preload("res://ResonanceCache.tscn")
 const WISP := preload("res://ShaftWisp.tscn")
@@ -39,6 +40,7 @@ func _ready() -> void:
 		post.set("threat_root", route.get_parent())
 		post.set("room_id", route.RETURN_TARGETS[route_id][0])
 		post.connect("heard", _on_heard)
+		DEVICE_ART.attach(post, "receiver")
 		add_child(post)
 		posts.append(post)
 		var sign := Label.new()

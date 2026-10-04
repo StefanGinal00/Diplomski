@@ -1,5 +1,34 @@
 # Character art pilot — 2026-09-26
 
+Latest larger batch: [eight settlement portraits and two backgrounds](SETTLEMENT_ART_BATCH.md).
+Mira, Tarin, Korin, Selen, Nalim, Ivara, Nalia and Aurel now have explicit
+dialogue/shop/forge identities. The two settlement paintings are integrated
+behind existing terrain; this does not replace world NPC sprites or houses.
+
+Previous quest portraits: [Eldric and Lyra](QUEST_PORTRAITS.md), with explicit
+scene assignments, 256px imports, quest-action/reward regression coverage
+and baseline-size screenshots. World NPC sprites remain unchanged.
+
+Latest new bitmap art: [Neris and Orin UI portraits](NPC_PORTRAITS.md), generated
+with built-in imagegen and integrated into dialogue/shop/forge. Original images
+are preserved; 256px imports serve the small UI insets. World NPC bodies are
+unchanged. The shop's long descriptions now scroll clear of purchase buttons.
+
+Latest gait pass: [turn/restart and motion-boundary fixes](WALK_CYCLE_ATTEMPT.md).
+The attempted four-frame sheet failed transparency validation and is NOT
+integrated; the existing artwork is unchanged. Exact attempts/prompts recorded.
+
+Latest incoming-hit pass: [player damage and Second Breath feedback](PLAYER_DAMAGE.md),
+with accepted-damage-only tint/bursts and unchanged combat immunity.
+
+Latest contact pass: [sword cut/spark effects](MELEE_CONTACTS.md), with
+both-facing/crouched actual-hit review and the shared bounded effect budget.
+
+Latest projectile pass: [six native projectile variants](PROJECTILES.md),
+including distinct arrows, ember, arc/Sunder and frost presentation plus
+bounded actor/terrain/prop contact bursts, with unchanged combat mechanics
+and normal-zoom review.
+
 Latest weapon pass: [native weapon art and hand registration](WEAPONS.md).
 The old opaque attack polygons are now suppressed; a separate presenter
 draws registered sword/bow/staff geometry over the existing body atlas.
@@ -57,6 +86,11 @@ Forward Mobile renderer. Preview and smoke tests use isolated temporary
 saves. Known sandbox-only diagnostics: root certificate store; shader-cache
 write during GPU capture; editor-settings write during editor import. Final
 preview has no script errors or out-of-range frame accesses.
+
+Native resident attention/gesture and lifecycle polish is documented in
+[RESIDENT_CONVERSATIONS.md](RESIDENT_CONVERSATIONS.md), with staged opening/reply
+captures and the remaining market crowding/nameplate work. No new bitmap art
+was generated for that pass.
 
 ## Exact generation prompts
 

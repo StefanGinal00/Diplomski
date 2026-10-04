@@ -35,6 +35,7 @@ var echo_followup_ready: bool = false
 
 
 func _ready() -> void:
+	preload("res://MobAttackPresentation.gd").attach(self, "shade")
 	anchor_x = global_position.x
 	var game_state := get_node_or_null("/root/GameState")
 	if game_state != null:
@@ -48,6 +49,19 @@ func _ready() -> void:
 	health_bar.value = current_health
 	target_player = get_tree().get_first_node_in_group("player") as Player
 	telegraph.hide()
+
+
+func suspend_room_combat() -> void:
+	if is_dead: return
+	telegraph_remaining = 0.0
+	dash_remaining = 0.0
+	echo_followup_ready = false
+	recovery_remaining = maxf(recovery_remaining, 0.55)
+	attack_cooldown = maxf(attack_cooldown, 1.0)
+	contact_cooldown = maxf(contact_cooldown, 0.6)
+	velocity = Vector2.ZERO
+	telegraph.hide()
+	body_visual.color = Color(0.28, 0.68, 0.72, 1.0) if zone_tier >= 1 else Color(0.43, 0.35, 0.7, 1.0)
 
 
 func _physics_process(delta: float) -> void:
@@ -142,6 +156,7 @@ func _try_contact_damage() -> void:
 			var direction := signf(body.global_position.x - global_position.x)
 			body.take_damage(1, Vector2(direction * 155.0, -115.0))
 			contact_cooldown = 0.9
+			get_node("AttackPresentation").contact(body)
 			return
 
 

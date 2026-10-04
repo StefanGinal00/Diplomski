@@ -51,7 +51,7 @@ func _run() -> void:
 	player.global_position = boss.global_position + Vector2(-200.0, 92.0)
 	await create_timer(0.35).timeout
 	_check(boss.active, "Matriarch did not activate")
-	_check(soundscape.current_track == "boss", "Matriarch boss music did not start")
+	_check(soundscape.current_track == "boss_echo_matriarch", "Matriarch boss music did not start")
 	_check("ECHO MATRIARCH" in ui.boss_health_label.text, "Matriarch HUD name missing")
 	await sanctum.get_node("ReturnDoor").activate(player)
 	_check(state.current_room_id == "echo_sanctum" and sanctum.get_node("ReturnDoor").status_label.text == "BATTLE SEALED", "Matriarch fight allowed retreat")

@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-03",
+  "scope": "Player-reactive route vegetation and physically walkable shallow terrain relief",
+  "implementation": {
+    "terrain_profiles": 3,
+    "rounded_collision_and_paint_share_surface": true,
+    "contours": 134,
+    "eligible_rooms_with_contours": 20,
+    "rooms_audited": 39,
+    "slope_aligned_props": 842,
+    "nominal_rise_world_px": [22, 30],
+    "player_floor_snap_px": 6,
+    "native_floor_rectangles_preserved": true,
+    "landing_margin_world_px": 110,
+    "soft_family_type_combinations_tested": 17,
+    "wind_budget_desktop_low_cost": [18, 8],
+    "contact_budget_desktop_low_cost": [12, 6],
+    "spatial_cell_world_px": 96,
+    "max_contact_motes": 36,
+    "new_bitmap_assets": 0,
+    "notes": "Reuses existing registered atlases. Town streets, authored one-way platforms, bridges/machinery and protected arenas are not reshaped. Contact springs and motes have no individual processing callbacks. New relief is retired when a late wall conflicts or its support is disabled."
+  },
+  "tests": [
+    {"name":"reactive_foliage_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-203757-287-35c7757a/reactive_foliage_smoke.log","coverage":"17 soft family/type combinations, both directions, settling, swept dash contact, anchoring, wind continuity, room/teleport cleanup, budgets, translated-room particle coordinates"},
+    {"name":"ambient_continuity_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-203758-728-4f79a87c/ambient_continuity_smoke.log"},
+    {"name":"route_relief_physics_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-203637-063-adcc6dcb/route_relief_physics_smoke.log","coverage":"12 bidirectional standing/crouching walks, 6 dashes, 3 jumps, 9 gold/XP/material drops, continuous downhill floor contact"},
+    {"name":"route_relief_world_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-203156-550-a4f3c9e5/route_relief_world_smoke.log","coverage":"39 rooms, 134 contours, 842 slope props, 40 real-controller walks in 20 rooms, headroom/device/landing clearance, re-entry, scaled-room and late-wall/disabled-support fixture"},
+    {"name":"route_richness_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-203206-919-fe4ac02a/route_richness_smoke.log","coverage":"All 39 rooms, all 48 route cutouts, 5684 flat-ground clusters, 3493 hanging details, 6 lowered vaults, footprint and re-entry checks"},
+    {"name":"world_grounding_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-203303-377-a10202b4/world_grounding_smoke.log","coverage":"39 rooms, 3161 registered surfaces, 15059 contacts, 112 portals, 95 outer boundaries"},
+    {"name":"basic_jump_routes_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-203217-075-ee16a4f6/basic_jump_routes_smoke.log","coverage":"509 real-controller hops in 10 rooms"},
+    {"name":"drop_through_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-203236-962-3e03bab2/drop_through_smoke.log"},
+    {"name":"route_vault_traversal_smoke.gd","status":"PASS","log":".tmp-smoke-suite-20261003-203442-737-acefc02e/route_vault_traversal_smoke.log","coverage":"30 real-controller walking/jumping checks below the 6 lowered vaults"}
+  ],
+  "runtime_review": {
+    "script":"tests/preview_route_relief.gd",
+    "log":".tmp-route-relief-preview-final.log",
+    "renderer":"Godot 4.6.2 D3D12 Forward Mobile / NVIDIA RTX 4050 Laptop GPU",
+    "real_player_brush_contacts":21,
+    "observed_grass_bend_radians":0.21507027325472,
+    "observed_recovered_bend_radians":0,
+    "captures":[
+      "art/characters/preview_route_relief_sunken_shaft.png",
+      "art/characters/preview_route_relief_echo_depths.png",
+      "art/characters/preview_route_relief_ash_barracks.png",
+      "art/characters/preview_route_relief_starfall_sunless_passage.png",
+      "art/characters/preview_route_reaction_brush.png",
+      "art/characters/preview_route_reaction_recovered.png"
+    ],
+    "warnings":"The sandbox reports Windows certificate-store access and native shader-cache write warnings. Captures succeed; no runtime script errors. This is not a frame-rate benchmark."
+  }
+}

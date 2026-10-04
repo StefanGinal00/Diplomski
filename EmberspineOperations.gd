@@ -111,6 +111,7 @@ func _on_event(event_id: String) -> void:
 
 func _sign(point: Vector2) -> void:
 	var sign := Label.new()
+	sign.name = "RouteHint"
 	sign.position = point
 	sign.size = Vector2(440, 110)
 	sign.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

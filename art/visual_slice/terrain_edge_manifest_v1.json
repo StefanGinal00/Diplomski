@@ -1,0 +1,338 @@
+{
+  "version": 1,
+  "date": "2026-09-30",
+  "mode": "built-in image_gen",
+  "purpose": "24 original modular terrain-edge variants, uniformly scaled cached static drawing; source PNG alpha preserved",
+  "assets": [
+    {
+      "id": "shale",
+      "filename": "terrain_edge_shale_v1.png",
+      "prompt": "Use case: stylized-concept\nAsset type: transparent modular 2D platformer terrain-edge atlas, original game assets.\nPrimary request: four distinct very long thin horizontal dry mine slate and layered blue-grey shale strips for a dark hand-painted cavern exploration game.\nComposition: landscape 1536x1024 PNG, strict ONE column by FOUR equal 256px-high rows. ONE separate horizontal strip in each row, from x=32 to x=1504. Each strip has its walkable upper edge on exactly y=64 within its row, and a naturally chipped underside ending around y=194. Keep clear transparent margins all around and between rows. Each upper edge must be continuous, nearly horizontal, with only 2-3 pixels of tiny weathering. Front orthographic side elevation, no perspective, no visible deep top surface. All four strips have compatible thickness and scale. Full-width nearly rectangular body, with chipped natural endcaps and irregular lower silhouette. No big triangular stalactites, no big foliage above the top, no floating objects.\nRows top to bottom: 1 fine fractured shale layers with root threads; 2 cracked heavier dark slate; 3 weathered stone with a narrow muted moss lip; 4 stratified rough mine rock with a few rust mineral streaks.\nStyle: detailed painterly realistic materials at side-scrolling game scale, readable small surface facets, soft neutral upper-left light. Palette: desaturated blue-grey, charcoal, muted earthy olive.\nConstraints: genuine alpha-transparent background, no checkerboard painted into image, no backdrop, no ground or cast shadow outside object. No text, labels, numbers, UI, characters, watermark. All strips completely visible, not touching each other or the image edges.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-f70395bb-9f19-4b55-8d9c-5525f319d119.png",
+      "path": "art/visual_slice/terrain_edge_shale_v1.png",
+      "frames": [
+        {
+          "rect": [
+            21,
+            97,
+            1475,
+            163
+          ],
+          "surface_y": 105,
+          "top_max": 105,
+          "top_min": 99
+        },
+        {
+          "rect": [
+            31,
+            314,
+            1475,
+            171
+          ],
+          "surface_y": 323,
+          "top_max": 324,
+          "top_min": 316
+        },
+        {
+          "rect": [
+            32,
+            545,
+            1473,
+            178
+          ],
+          "surface_y": 554,
+          "top_max": 555,
+          "top_min": 547
+        },
+        {
+          "rect": [
+            28,
+            779,
+            1468,
+            177
+          ],
+          "surface_y": 786,
+          "top_max": 786,
+          "top_min": 781
+        }
+      ],
+      "sha256": "40174D757B44364FA505DF49AE7109A72A95466FFC807595D0A9751D2A808CB1"
+    },
+    {
+      "id": "moss",
+      "filename": "terrain_edge_moss_v1.png",
+      "prompt": "Use case: stylized-concept\nAsset type: transparent modular 2D platformer terrain-edge atlas, original game assets.\nPrimary request: four distinct very long thin horizontal damp limestone cave ledges strips for a dark hand-painted cavern exploration game.\nComposition: landscape 1536x1024 PNG, strict ONE column by FOUR equal 256px-high rows. ONE separate horizontal strip in each row, from x=32 to x=1504. Each strip has its walkable upper edge on exactly y=64 within its row, and a naturally chipped underside ending around y=194. Keep clear transparent margins all around and between rows. Each upper edge must be continuous, nearly horizontal, with only 2-3 pixels of tiny weathering. Front orthographic side elevation, no perspective, no visible deep top surface. All four strips have compatible thickness and scale. Full-width nearly rectangular body, with chipped natural endcaps and irregular lower silhouette. No big triangular stalactites, no big foliage above the top, no floating objects.\nRows top to bottom: 1 rounded limestone with fine hanging roots; 2 moss-seamed wet rock slabs; 3 eroded crag with subtle pale lichen; 4 dark river-worn limestone with narrow fernless moss trim.\nStyle: detailed painterly realistic materials at side-scrolling game scale, readable small surface facets, soft neutral upper-left light. Palette: cool dark grey-green stone, olive moss, restrained wet highlights.\nConstraints: genuine alpha-transparent background, no checkerboard painted into image, no backdrop, no ground or cast shadow outside object. No text, labels, numbers, UI, characters, watermark. All strips completely visible, not touching each other or the image edges.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-839cd759-e8b3-43b9-b8ab-31faffc17856.png",
+      "path": "art/visual_slice/terrain_edge_moss_v1.png",
+      "frames": [
+        {
+          "rect": [
+            27,
+            91,
+            1482,
+            168
+          ],
+          "surface_y": 95,
+          "top_max": 95,
+          "top_min": 93
+        },
+        {
+          "rect": [
+            27,
+            309,
+            1482,
+            176
+          ],
+          "surface_y": 314,
+          "top_max": 314,
+          "top_min": 311
+        },
+        {
+          "rect": [
+            27,
+            543,
+            1482,
+            175
+          ],
+          "surface_y": 546,
+          "top_max": 547,
+          "top_min": 545
+        },
+        {
+          "rect": [
+            27,
+            768,
+            1482,
+            187
+          ],
+          "surface_y": 772,
+          "top_max": 773,
+          "top_min": 770
+        }
+      ],
+      "sha256": "8D6F22DD73AB1A483A5291779795C2E8FE84D5D88E21B637F4FB3233772C33C3"
+    },
+    {
+      "id": "basalt",
+      "filename": "terrain_edge_basalt_v1.png",
+      "prompt": "Use case: stylized-concept\nAsset type: transparent modular 2D platformer terrain-edge atlas, original game assets.\nPrimary request: four distinct very long thin horizontal volcanic basalt and cinder ledges strips for a dark hand-painted cavern exploration game.\nComposition: landscape 1536x1024 PNG, strict ONE column by FOUR equal 256px-high rows. ONE separate horizontal strip in each row, from x=32 to x=1504. Each strip has its walkable upper edge on exactly y=64 within its row, and a naturally chipped underside ending around y=194. Keep clear transparent margins all around and between rows. Each upper edge must be continuous, nearly horizontal, with only 2-3 pixels of tiny weathering. Front orthographic side elevation, no perspective, no visible deep top surface. All four strips have compatible thickness and scale. Full-width nearly rectangular body, with chipped natural endcaps and irregular lower silhouette. No big triangular stalactites, no big foliage above the top, no floating objects.\nRows top to bottom: 1 jagged dark basalt; 2 cracked black cinder and reddish seams; 3 layered ash stone; 4 eroded basalt with small embedded iron veins.\nStyle: detailed painterly realistic materials at side-scrolling game scale, readable small surface facets, soft neutral upper-left light. Palette: charcoal, ash grey, subdued rusty brown, absolutely no bright lava or glowing outlines.\nConstraints: genuine alpha-transparent background, no checkerboard painted into image, no backdrop, no ground or cast shadow outside object. No text, labels, numbers, UI, characters, watermark. All strips completely visible, not touching each other or the image edges.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-d37a79d3-e6f7-4b8f-a3d3-6a0e6c861564.png",
+      "path": "art/visual_slice/terrain_edge_basalt_v1.png",
+      "frames": [
+        {
+          "rect": [
+            42,
+            93,
+            1452,
+            162
+          ],
+          "surface_y": 97,
+          "top_max": 99,
+          "top_min": 95
+        },
+        {
+          "rect": [
+            40,
+            317,
+            1455,
+            183
+          ],
+          "surface_y": 320,
+          "top_max": 322,
+          "top_min": 319
+        },
+        {
+          "rect": [
+            42,
+            554,
+            1451,
+            184
+          ],
+          "surface_y": 556,
+          "top_max": 557,
+          "top_min": 556
+        },
+        {
+          "rect": [
+            42,
+            783,
+            1452,
+            184
+          ],
+          "surface_y": 786,
+          "top_max": 786,
+          "top_min": 785
+        }
+      ],
+      "sha256": "DC554A7655304E452902313555ED1BB35CBF18E8AA8A395760F6EC6D5E0FDAFF"
+    },
+    {
+      "id": "citadel",
+      "filename": "terrain_edge_citadel_v1.png",
+      "prompt": "Use case: stylized-concept\nAsset type: transparent modular 2D platformer terrain-edge atlas, original game assets.\nPrimary request: four distinct very long thin horizontal ancient weathered gothic city stone ledges strips for a dark hand-painted cavern exploration game.\nComposition: landscape 1536x1024 PNG, strict ONE column by FOUR equal 256px-high rows. ONE separate horizontal strip in each row, from x=32 to x=1504. Each strip has its walkable upper edge on exactly y=64 within its row, and a naturally chipped underside ending around y=194. Keep clear transparent margins all around and between rows. Each upper edge must be continuous, nearly horizontal, with only 2-3 pixels of tiny weathering. Front orthographic side elevation, no perspective, no visible deep top surface. All four strips have compatible thickness and scale. Full-width nearly rectangular body, with chipped natural endcaps and irregular lower silhouette. No big triangular stalactites, no big foliage above the top, no floating objects.\nRows top to bottom: 1 fractured blue-grey masonry cornice; 2 worn lilac-grey carved coping; 3 eroded city foundation with narrow stone reliefs; 4 crumbling old pale stone ledge with subtle engraved star motifs.\nStyle: detailed painterly realistic materials at side-scrolling game scale, readable small surface facets, soft neutral upper-left light. Palette: slate blue, muted grey lavender, soot and desaturated stone.\nConstraints: genuine alpha-transparent background, no checkerboard painted into image, no backdrop, no ground or cast shadow outside object. No text, labels, numbers, UI, characters, watermark. All strips completely visible, not touching each other or the image edges.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-a2756e13-1041-4c11-abb0-aefe60df7caa.png",
+      "path": "art/visual_slice/terrain_edge_citadel_v1.png",
+      "frames": [
+        {
+          "rect": [
+            34,
+            101,
+            1467,
+            142
+          ],
+          "surface_y": 104,
+          "top_max": 104,
+          "top_min": 103
+        },
+        {
+          "rect": [
+            31,
+            329,
+            1473,
+            156
+          ],
+          "surface_y": 331,
+          "top_max": 332,
+          "top_min": 331
+        },
+        {
+          "rect": [
+            32,
+            560,
+            1472,
+            181
+          ],
+          "surface_y": 563,
+          "top_max": 564,
+          "top_min": 562
+        },
+        {
+          "rect": [
+            31,
+            806,
+            1473,
+            158
+          ],
+          "surface_y": 808,
+          "top_max": 809,
+          "top_min": 808
+        }
+      ],
+      "sha256": "E5AFEC914A222DB4FBB19CA636AEAD8FED89975EDBB833407994864AC41D3E08"
+    },
+    {
+      "id": "iron",
+      "filename": "terrain_edge_iron_v1.png",
+      "prompt": "Use case: stylized-concept\nAsset type: transparent modular 2D platformer terrain-edge atlas, original game assets.\nPrimary request: four distinct very long thin horizontal rusted industrial mine iron walkway edges strips for a dark hand-painted cavern exploration game.\nComposition: landscape 1536x1024 PNG, strict ONE column by FOUR equal 256px-high rows. ONE separate horizontal strip in each row, from x=32 to x=1504. Each strip has its walkable upper edge on exactly y=64 within its row, and a naturally chipped underside ending around y=194. Keep clear transparent margins all around and between rows. Each upper edge must be continuous, nearly horizontal, with only 2-3 pixels of tiny weathering. Front orthographic side elevation, no perspective, no visible deep top surface. All four strips have compatible thickness and scale. Full-width nearly rectangular body, with chipped natural endcaps and irregular lower silhouette. No big triangular stalactites, no big foliage above the top, no floating objects.\nRows top to bottom: 1 riveted iron girders and a thin grating top; 2 aged steel coping with closely spaced bolts; 3 worn iron truss fascia with narrow horizontal metal struts; 4 dark rusted plated beam with small reinforcement brackets.\nStyle: detailed painterly realistic materials at side-scrolling game scale, readable small surface facets, soft neutral upper-left light. Palette: dark iron, muted oxidized copper, desaturated rust brown.\nConstraints: genuine alpha-transparent background, no checkerboard painted into image, no backdrop, no ground or cast shadow outside object. No text, labels, numbers, UI, characters, watermark. All strips completely visible, not touching each other or the image edges.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-42538866-b6fc-4437-a1e2-04ee233cdc77.png",
+      "path": "art/visual_slice/terrain_edge_iron_v1.png",
+      "frames": [
+        {
+          "rect": [
+            29,
+            102,
+            1479,
+            148
+          ],
+          "surface_y": 108,
+          "top_max": 108,
+          "top_min": 105
+        },
+        {
+          "rect": [
+            29,
+            338,
+            1479,
+            164
+          ],
+          "surface_y": 343,
+          "top_max": 344,
+          "top_min": 343
+        },
+        {
+          "rect": [
+            29,
+            565,
+            1479,
+            158
+          ],
+          "surface_y": 575,
+          "top_max": 575,
+          "top_min": 573
+        },
+        {
+          "rect": [
+            29,
+            797,
+            1479,
+            153
+          ],
+          "surface_y": 800,
+          "top_max": 801,
+          "top_min": 799
+        }
+      ],
+      "sha256": "B92D1E43847153CFD2ED036EC35437AA529F40739F8844FB48A72258BE96CCCB"
+    },
+    {
+      "id": "timber",
+      "filename": "terrain_edge_timber_v1.png",
+      "prompt": "Use case: stylized-concept\nAsset type: transparent modular 2D platformer terrain-edge atlas, original game assets.\nPrimary request: four distinct very long thin horizontal old mine timber walkway edges strips for a dark hand-painted cavern exploration game.\nComposition: landscape 1536x1024 PNG, strict ONE column by FOUR equal 256px-high rows. ONE separate horizontal strip in each row, from x=32 to x=1504. Each strip has its walkable upper edge on exactly y=64 within its row, and a naturally chipped underside ending around y=194. Keep clear transparent margins all around and between rows. Each upper edge must be continuous, nearly horizontal, with only 2-3 pixels of tiny weathering. Front orthographic side elevation, no perspective, no visible deep top surface. All four strips have compatible thickness and scale. Full-width nearly rectangular body, with chipped natural endcaps and irregular lower silhouette. No big triangular stalactites, no big foliage above the top, no floating objects.\nRows top to bottom: 1 uneven endgrain planks on a weathered beam; 2 mossy timber fascia with iron nails; 3 cracked heavy oak boards bound by small straps; 4 old narrow boardwalk on a dark split wood beam.\nStyle: detailed painterly realistic materials at side-scrolling game scale, readable small surface facets, soft neutral upper-left light. Palette: natural dark umber and grey wood, dull iron, restrained olive moss.\nConstraints: genuine alpha-transparent background, no checkerboard painted into image, no backdrop, no ground or cast shadow outside object. No text, labels, numbers, UI, characters, watermark. All strips completely visible, not touching each other or the image edges.",
+      "source": "C:\\Users\\Stefan\\.codex\\generated_images\\01a0b098-652a-7fc3-9fac-c3b350bd7ba9\\exec-8e5bebab-da25-46aa-adec-ac9038e49d95.png",
+      "path": "art/visual_slice/terrain_edge_timber_v1.png",
+      "frames": [
+        {
+          "rect": [
+            30,
+            108,
+            1475,
+            137
+          ],
+          "surface_y": 111,
+          "top_max": 117,
+          "top_min": 110
+        },
+        {
+          "rect": [
+            31,
+            338,
+            1474,
+            156
+          ],
+          "surface_y": 341,
+          "top_max": 343,
+          "top_min": 341
+        },
+        {
+          "rect": [
+            36,
+            574,
+            1465,
+            162
+          ],
+          "surface_y": 579,
+          "top_max": 581,
+          "top_min": 576
+        },
+        {
+          "rect": [
+            32,
+            808,
+            1472,
+            139
+          ],
+          "surface_y": 811,
+          "top_max": 817,
+          "top_min": 810
+        }
+      ],
+      "sha256": "67BC32353445E4EB45B4334AA37088FCFC68B5904478B06EE7C4046D5884A989"
+    }
+  ],
+  "import": {
+    "size_limit": 1024,
+    "mipmaps": true,
+    "alpha": "Original PNGs verified byte-for-byte against tool outputs; no raster post-processing",
+    "runtime": "TerrainEdgeArt.gd cached static draw lists, fixed-width endcaps and tiled/cropped centers; no per-segment Node/process/physics"
+  }
+}

@@ -57,6 +57,7 @@ func _cover_case(scene_name: String, tier: int) -> void:
 		await physics_frame
 		warned_through_cover = warned_through_cover or sentry.warning_ray.visible
 	_check(shots == before and not warned_through_cover, label + ": targets player through solid cover")
+	_check(not sentry.get_node("SentryAttackCue").charging, label + ": painted charge visible through cover")
 	cover.position.y = 250
 	await _wait_for_warning(sentry)
 	_check(sentry.warning_ray.visible, label + ": no warning after leaving cover")
@@ -71,6 +72,7 @@ func _cover_case(scene_name: String, tier: int) -> void:
 	for frame in range(90):
 		await physics_frame
 	_check(not sentry.warning_ray.visible and shots == before, label + ": cover failed to cancel windup")
+	_check(not sentry.get_node("SentryAttackCue").charging and sentry.get_node("SentryAttackCue").progress == 0, label + ": cancelled painted charge survived cover")
 	for ray in sentry.spread_rays:
 		_check(not ray.visible, label + ": spread warning remained behind cover")
 	cover.position.y = 250

@@ -5,6 +5,7 @@ const LOOP_SECONDS := 8.0
 const SILENT_DB := -60.0
 const AMBIENT_DB := -24.0
 const BOSS_DB := -20.0
+const Music = preload("res://BossMusic.gd")
 
 var enabled: bool = true
 var boss_active: bool = false
@@ -16,6 +17,12 @@ var players: Array[AudioStreamPlayer] = []
 var streams: Dictionary = {}
 var fade_tween: Tween
 var game_state: Node
+var active_boss: WeakRef
+const STORY_DUCK_DB := -7.0
+var voice_levels: Array[float] = [SILENT_DB, SILENT_DB]
+var reading_gain_db := 0.0
+var story_reading := false
+var reading_tween: Tween
 
 
 func _ready() -> void:
@@ -37,6 +44,7 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
+	if reading_tween != null and reading_tween.is_valid(): reading_tween.kill()
 	if fade_tween != null and fade_tween.is_valid():
 		fade_tween.kill()
 	for player in players:
@@ -61,15 +69,24 @@ func register_boss(boss: Node) -> void:
 		var defeat_callback := _on_boss_defeated.bind(boss)
 		if not boss.defeated.is_connected(defeat_callback):
 			boss.defeated.connect(defeat_callback)
+	var safety := boss.get_node_or_null("EncounterSafety")
+	if safety != null:
+		var cancel_callback := _on_boss_cancelled.bind(boss)
+		if not safety.interrupted.is_connected(cancel_callback):
+			safety.interrupted.connect(cancel_callback)
+	var exit_callback := _on_boss_cancelled.bind(boss)
+	if not boss.tree_exiting.is_connected(exit_callback):
+		boss.tree_exiting.connect(exit_callback)
 
 
 func _on_mode_changed(_mode: String) -> void:
 	if game_state != null and game_state.session_started:
-		_play_track(_track_for_room(str(game_state.current_room_id)))
+		_play_track(boss_track_id if boss_active else ("finale" if finale_active else _track_for_room(str(game_state.current_room_id))))
 
 
 func _on_room_changed(room_id: String) -> void:
 	boss_active = false
+	active_boss = null
 	boss_track_id = "boss"
 	finale_active = false
 	_play_track(_track_for_room(room_id))
@@ -77,16 +94,30 @@ func _on_room_changed(room_id: String) -> void:
 
 func _on_boss_started(boss: Node) -> void:
 	boss_active = true
+	active_boss = weakref(boss)
 	finale_active = false
-	boss_track_id = "hollow_boss" if str(boss.get("boss_id")) == "hollow_sovereign" else "boss"
+	boss_track_id = Music.track_for(str(boss.get("boss_id")))
 	_play_track(boss_track_id)
 
 
 func _on_boss_defeated(boss: Node) -> void:
+	if active_boss == null or active_boss.get_ref() != boss:
+		return
 	boss_active = false
+	active_boss = null
 	if game_state != null:
 		finale_active = str(boss.get("boss_id")) == "hollow_sovereign"
 		_play_track("finale" if finale_active else _track_for_room(str(game_state.current_room_id)))
+
+
+func _on_boss_cancelled(boss: Node) -> void:
+	if active_boss == null or active_boss.get_ref() != boss:
+		return
+	active_boss = null
+	boss_active = false
+	finale_active = false
+	if game_state != null:
+		_play_track(_track_for_room(str(game_state.current_room_id)))
 
 
 func set_enabled(should_enable: bool) -> void:
@@ -101,8 +132,8 @@ func set_enabled(should_enable: bool) -> void:
 		current_track = ""
 		fade_tween = create_tween()
 		fade_tween.set_parallel(true)
-		for player in players:
-			fade_tween.tween_property(player, "volume_db", SILENT_DB, 0.35)
+		for index in range(players.size()):
+			fade_tween.tween_method(_set_voice_level.bind(index), voice_levels[index], SILENT_DB, 0.35)
 		fade_tween.set_parallel(false)
 		fade_tween.tween_callback(_stop_all)
 	elif game_state != null and game_state.session_started:
@@ -117,9 +148,33 @@ func _track_for_room(room_id: String) -> String:
 
 
 func _stop_all() -> void:
-	for player in players:
-		player.stop()
-		player.volume_db = SILENT_DB
+	for index in range(players.size()):
+		_release_player(players[index])
+		_set_voice_level(SILENT_DB, index)
+
+
+func set_story_reading(reading: bool) -> void:
+	if story_reading == reading: return
+	story_reading = reading
+	if reading_tween != null and reading_tween.is_valid(): reading_tween.kill()
+	reading_tween = create_tween()
+	reading_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	reading_tween.tween_method(_set_reading_gain, reading_gain_db, STORY_DUCK_DB if reading else 0.0, 0.45)
+
+
+func _set_reading_gain(gain_db: float) -> void:
+	reading_gain_db = gain_db
+	for index in range(players.size()): _set_voice_level(voice_levels[index], index)
+
+
+func _set_voice_level(level_db: float, index: int) -> void:
+	voice_levels[index] = level_db
+	players[index].volume_db = maxf(SILENT_DB, level_db + reading_gain_db)
+
+
+func _release_player(player: AudioStreamPlayer) -> void:
+	player.stop()
+	player.stream = null
 
 
 func _play_track(track_id: String) -> void:
@@ -132,20 +187,22 @@ func _play_track(track_id: String) -> void:
 	var incoming := players[next_index]
 	incoming.stop()
 	incoming.stream = _get_stream(track_id)
-	incoming.volume_db = SILENT_DB
+	_set_voice_level(SILENT_DB, next_index)
 	incoming.play()
-	var target_db := BOSS_DB if track_id in ["boss", "hollow_boss"] else AMBIENT_DB
+	var target_db := BOSS_DB if Music.TRACKS.has(track_id) or track_id in ["boss", "hollow_boss"] else AMBIENT_DB
 	fade_tween = create_tween()
 	fade_tween.set_parallel(true)
-	fade_tween.tween_property(incoming, "volume_db", target_db, 1.2)
-	fade_tween.tween_property(previous, "volume_db", SILENT_DB, 1.2)
+	fade_tween.tween_method(_set_voice_level.bind(next_index), voice_levels[next_index], target_db, 1.2)
+	fade_tween.tween_method(_set_voice_level.bind(active_player_index), voice_levels[active_player_index], SILENT_DB, 1.2)
 	fade_tween.set_parallel(false)
-	fade_tween.tween_callback(previous.stop)
+	fade_tween.tween_callback(_release_player.bind(previous))
 	active_player_index = next_index
 	current_track = track_id
 
 
-func _get_stream(track_id: String) -> AudioStreamWAV:
+func _get_stream(track_id: String) -> AudioStream:
+	if Music.TRACKS.has(track_id):
+		return Music.load_track(track_id)
 	if streams.has(track_id):
 		return streams[track_id]
 	var frequencies: Array[float]

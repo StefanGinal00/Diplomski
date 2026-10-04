@@ -1,0 +1,231 @@
+{
+  "revision": 1,
+  "date": "2026-10-03",
+  "scope": "Static corridor decoration clearance and hoist construction fitting across 39 existing rooms; no new source artwork or gameplay geometry.",
+  "production_files": [
+    "WorldSupport.gd",
+    "WorldCorridorDressing.gd",
+    "HoistClearancePlacement.gd",
+    "LiftMechanismArt.gd"
+  ],
+  "findings": [
+    {
+      "issue": "Ground decoration placement used an undersized fixed footprint instead of actual registered sprite geometry.",
+      "before": {
+        "underestimated": 170
+      },
+      "after": {
+        "underestimated": 0
+      },
+      "baseline_log": ".tmp-smoke-suite-20261003-182541-791-fbb34571/corridor_clearance_smoke.log"
+    },
+    {
+      "issue": "Decorative crag caps / corridor lips overlapped unrelated solid terrain, including superseded outer boundary walls.",
+      "before": {
+        "solid_overlap": 106
+      },
+      "after": {
+        "solid_overlap": 0
+      },
+      "baseline_log": ".tmp-smoke-suite-20261003-182541-791-fbb34571/corridor_clearance_smoke.log",
+      "note": "Ground root contact with supporting floor is intentionally excluded, not counted as an unrelated solid overlap."
+    },
+    {
+      "issue": "Fixed-height winch heads clipped platform/ceiling rectangles at 10 terminals.",
+      "before": {
+        "lift_overlap": 10
+      },
+      "after": {
+        "lift_overlap": 0,
+        "full_gantries": 40,
+        "deck_only": 0
+      },
+      "baseline_log": ".tmp-smoke-suite-20261003-182541-791-fbb34571/corridor_clearance_smoke.log"
+    }
+  ],
+  "final_corridor_audit": {
+    "rooms": 39,
+    "visible_ground_clusters": 2502,
+    "visible_ceiling_lips": 248,
+    "visible_interior_crag_caps": 7,
+    "hoists": 40,
+    "deck_only": 0,
+    "solid_overlap": 0,
+    "underestimated": 0,
+    "unsupported": 0,
+    "lift_overlap": 0,
+    "log": ".tmp-smoke-suite-20261003-185329-314-0451f4b5/corridor_clearance_smoke.log"
+  },
+  "protections": [
+    "All decoration remains non-solid and static; existing 120-cluster / 40-lip per-room budgets retained.",
+    "Actual sprite bounds and full floor width support, vertical-wall checks, late terrain/device refresh, native collision snapshots and scaled/translated fixtures.",
+    "Winch fitting uses the complete above-footing mast volume, uniform scale, attached pulley bearings/deck sockets and unchanged native lift transform/collider/destination.",
+    "A two-world-pixel footing band allows intentional contact with nearly coplanar floor segments; a scaled one-pixel Tide Well regression fixture protects the complete gantry.",
+    "Late/raised/disabled ceilings and narrow side walls reflow only artwork; impossible synthetic headroom keeps a native deck without a fabricated clipped head.",
+    "Repeated stable installations retain their instances; no idle per-frame geometry solver.",
+    "Regional ambience / natural contours / physical boundaries / shaft transport and recovery regressions remain passing."
+  ],
+  "tests": [
+    {
+      "Test": "corridor_clearance_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 21.46,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261003-185329-314-0451f4b5/corridor_clearance_smoke.log"
+    },
+    {
+      "Test": "hoist_clearance_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 0.66,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261003-185328-088-7f9f8cd8/hoist_clearance_smoke.log"
+    },
+    {
+      "Test": "world_structure_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 24.46,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261003-185016-034-7b338219/world_structure_smoke.log"
+    },
+    {
+      "Test": "corridor_dressing_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 26.09,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261003-184428-954-4851f317/corridor_dressing_smoke.log"
+    },
+    {
+      "Test": "world_grounding_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 26.28,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261003-184428-923-40704973/world_grounding_smoke.log"
+    },
+    {
+      "Test": "shaft_return_lift_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 19.6,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261003-184157-675-1fc66cb2/shaft_return_lift_smoke.log"
+    },
+    {
+      "Test": "terrain_envelope_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 0.77,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261003-184207-869-6f74441b/terrain_envelope_smoke.log"
+    },
+    {
+      "Test": "shaft_fall_recovery_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 10.57,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261003-184506-260-f0d15b95/shaft_fall_recovery_smoke.log"
+    },
+    {
+      "Test": "outer_boundary_collision_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 2.59,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261003-184506-260-f3726ace/outer_boundary_collision_smoke.log"
+    },
+    {
+      "Test": "shaft_infrastructure_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 21.02,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261003-184506-248-eb4ae902/shaft_infrastructure_smoke.log"
+    },
+    {
+      "Test": "natural_mound_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 6.97,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261003-184817-001-36dc5639/natural_mound_smoke.log"
+    },
+    {
+      "Test": "regional_ambient_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 23.14,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261003-184816-979-526805a9/regional_ambient_smoke.log"
+    },
+    {
+      "Test": "shaft_room_identity_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 14.1,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261003-184817-002-81dc22ae/shaft_room_identity_smoke.log"
+    },
+    {
+      "Test": "world_ambience_smoke.gd",
+      "Status": "PASS",
+      "Seconds": 11.68,
+      "ExitCode": 0,
+      "PassedMarker": true,
+      "Errors": [],
+      "Log": ".tmp-smoke-suite-20261003-184817-022-f5077b4c/world_ambience_smoke.log"
+    }
+  ],
+  "passed_unique_tests": 14,
+  "native_preview": {
+    "script": "tests/preview_corridor_clearance.gd",
+    "log": ".tmp-corridor-clearance-final.log",
+    "renderer": "Godot 4.6.2 Forward Mobile / Direct3D 12, desktop NVIDIA RTX 4050",
+    "size": [
+      1280,
+      720
+    ],
+    "visually_inspected": true,
+    "grounded_player_assertion": true,
+    "shots": [
+      "art/characters/preview_corridor_clearance_final_training_passage.png",
+      "art/characters/preview_corridor_clearance_final_sunken_shaft.png",
+      "art/characters/preview_corridor_clearance_final_shaft_drift.png",
+      "art/characters/preview_corridor_clearance_final_shaft_approach.png",
+      "art/characters/preview_corridor_clearance_final_echo_tide_well.png",
+      "art/characters/preview_corridor_clearance_final_starfall_citadel.png",
+      "art/characters/preview_corridor_clearance_final_starfall_sunless_passage.png",
+      "art/characters/preview_corridor_clearance_final_echo_tide_well_upper.png"
+    ],
+    "note": "Staged actual Game camera views with isolated temporary save; nearby CharacterBody2D actors settle for 70 physics ticks before freeze. Player settles on native collision. These are not an end-to-end manual campaign or physical-phone benchmark."
+  },
+  "source_art": "Reuses existing corridor / structural atlases. No source PNG pixels edited or new generated production images claimed.",
+  "editor_import": {
+    "log": ".tmp-corridor-clearance-import.log",
+    "exit_code": 0,
+    "script_errors": 0,
+    "known_sandbox_warnings": [
+      "Windows root certificate store",
+      "Cannot save AppData Godot editor settings"
+    ]
+  },
+  "native_renderer_warning": "The sandbox cannot write the external Godot shader cache (_save_to_cache f.is_null warning); all 8 final captures saved with result 0.",
+  "remaining": "Whole-world visual polish, gameplay puzzle glyph integration, additional actor animations and a full manual campaign review remain a broader backlog, not marked complete by this continuation."
+}

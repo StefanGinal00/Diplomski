@@ -3,6 +3,7 @@ extends Area2D
 signal interaction_requested(npc: Area2D)
 
 @export var resident_name: String = "Resident"
+@export var portrait_texture: Texture2D
 @export var dialogue_lines: PackedStringArray = ["The roads beyond the gate are dangerous. Rest here a while."]
 @export var timeline_dialogue_stage: int = -1
 @export var timeline_dialogue_lines: PackedStringArray = []
@@ -33,6 +34,7 @@ var social_partner: Area2D
 var social_initiator: bool = false
 var social_reply_started: bool = false
 var player_dialogue_active: bool = false
+var dialogue_requires_player: bool = false
 
 @onready var coat: Polygon2D = $Coat
 @onready var accent: Polygon2D = $Accent
@@ -58,11 +60,49 @@ func _ready() -> void:
 	pause_remaining += fposmod(position.x * 0.013, 0.7)
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+	visibility_changed.connect(_on_visibility_changed)
+
+
+func _on_visibility_changed() -> void:
+	if not is_visible_in_tree():
+		_end_social_exchange(true)
+		player_in_range = null
+		player_dialogue_active = false
+		dialogue_requires_player = false
+		prompt.hide()
+
+
+func _exit_tree() -> void:
+	_end_social_exchange(true)
+
+
+func _refresh_player_reference() -> void:
+	if not is_instance_valid(player_in_range) or player_in_range.is_queued_for_deletion() or player_in_range.is_dead or not player_in_range.is_visible_in_tree():
+		player_in_range = null
+		prompt.hide()
+		if dialogue_requires_player:
+			player_dialogue_active = false
+			dialogue_requires_player = false
+
+
+func get_attention_target() -> Node2D:
+	if is_instance_valid(player_in_range) and not player_in_range.is_queued_for_deletion() and not player_in_range.is_dead and player_in_range.is_visible_in_tree():
+		return player_in_range
+	if social_remaining > 0 and is_instance_valid(social_partner) and not social_partner.is_queued_for_deletion() and social_partner.is_visible_in_tree():
+		return social_partner
+	return null
+
+
+func _available_for_social() -> bool:
+	return is_visible_in_tree() and not is_queued_for_deletion() and indoor_state.is_empty() and not player_dialogue_active and not is_instance_valid(player_in_range) and social_remaining <= 0 and social_cooldown <= 0
 
 
 func _process(delta: float) -> void:
+	_refresh_player_reference()
 	accent.modulate.a = 0.86 + 0.14 * sin(Time.get_ticks_msec() * 0.002 + position.x)
 	social_cooldown = maxf(social_cooldown - delta, 0.0)
+	if player_dialogue_active:
+		return
 	if not indoor_state.is_empty():
 		_update_interior(delta)
 		return
@@ -92,6 +132,7 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	_refresh_player_reference()
 	if player_in_range == null or player_dialogue_active or not indoor_state.is_empty() or event.is_echo() or not event.is_action_pressed("interact"):
 		return
 	interaction_requested.emit(self)
@@ -100,8 +141,12 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func set_player_dialogue_active(active: bool) -> void:
 	player_dialogue_active = active
+	dialogue_requires_player = active and is_instance_valid(player_in_range)
 	if active:
 		_end_social_exchange(true)
+		prompt.hide()
+	else:
+		prompt.visible = is_instance_valid(player_in_range) and indoor_state.is_empty() and is_visible_in_tree()
 
 
 func _update_interior(delta: float) -> void:
@@ -132,15 +177,15 @@ func _update_interior(delta: float) -> void:
 
 
 func _try_social_exchange() -> void:
-	if current_stop_marker == null or not current_stop_marker.is_in_group("town_social_spot") or social_cooldown > 0.0 or talk_partner.is_empty():
+	if not _available_for_social() or not is_instance_valid(current_stop_marker) or not current_stop_marker.is_in_group("town_social_spot") or talk_partner.is_empty():
 		return
 	var partner := get_node_or_null(talk_partner) as Area2D
-	if partner == null or not partner.has_method("_receive_social_exchange") or partner.get("social_remaining") > 0.0:
+	if partner == null or partner == self or not partner.has_method("_available_for_social") or not partner._available_for_social():
 		return
-	var partner_stop := partner.get("current_stop_marker") as Marker2D
-	if partner_stop == null or not partner_stop.is_in_group("town_social_spot") or global_position.distance_to(partner.global_position) > 110.0:
+	var partner_stop = partner.get("current_stop_marker")
+	if not is_instance_valid(partner_stop) or not partner_stop.is_in_group("town_social_spot") or global_position.distance_to(partner.global_position) > 110.0:
 		return
-	if partner.get("player_in_range") != null or partner.get("player_dialogue_active") or partner.get("indoor_state") != "" or partner.get("social_cooldown") > 0.0:
+	if not partner._receive_social_exchange(self):
 		return
 	social_partner = partner
 	social_initiator = true
@@ -149,10 +194,11 @@ func _try_social_exchange() -> void:
 	social_cooldown = 7.0
 	pause_remaining = maxf(pause_remaining, 3.5)
 	_show_social_line()
-	partner.call("_receive_social_exchange", self)
 
 
-func _receive_social_exchange(partner: Area2D) -> void:
+func _receive_social_exchange(partner: Area2D) -> bool:
+	if not _available_for_social() or not is_instance_valid(partner) or partner == self or not partner.is_visible_in_tree():
+		return false
 	social_partner = partner
 	social_initiator = false
 	social_reply_started = false
@@ -161,9 +207,13 @@ func _receive_social_exchange(partner: Area2D) -> void:
 	pause_remaining = maxf(pause_remaining, 3.5)
 	social_bubble.hide()
 	bubble_backdrop.hide()
+	return true
 
 
 func _update_social(delta: float) -> void:
+	if not is_instance_valid(social_partner) or social_partner.is_queued_for_deletion() or not social_partner.is_visible_in_tree() or social_partner.get("social_partner") != self or global_position.distance_to(social_partner.global_position) > 110.0:
+		_end_social_exchange(true)
+		return
 	social_remaining = maxf(social_remaining - delta, 0.0)
 	if social_initiator and not social_reply_started and social_remaining <= 1.7:
 		social_reply_started = true
@@ -190,16 +240,36 @@ func _show_social_line() -> void:
 
 func _end_social_exchange(cancel_partner: bool) -> void:
 	social_remaining = 0.0
-	social_bubble.hide()
-	bubble_backdrop.hide()
-	var partner := social_partner
+	social_initiator = false
+	social_reply_started = false
+	if is_instance_valid(social_bubble):
+		social_bubble.hide()
+	if is_instance_valid(bubble_backdrop):
+		bubble_backdrop.hide()
+	# Keep a Variant until validity is checked: a typed freed reference can fail
+	# assignment during streamed-room/scene teardown.
+	var partner = social_partner
 	social_partner = null
-	if cancel_partner and is_instance_valid(partner):
+	if cancel_partner and is_instance_valid(partner) and not partner.is_queued_for_deletion() and partner.get("social_partner") == self:
 		partner.call("_end_social_exchange", false)
+
+
+func get_portrait_texture() -> Texture2D:
+	return portrait_texture
 
 
 func get_next_line() -> String:
 	var game_state := get_node_or_null("/root/GameState")
+	var story: Dictionary = preload("res://ResidentStory.gd").resolve(self, game_state)
+	if not story.is_empty():
+		var story_set := int(story.id)
+		if current_dialogue_set != story_set:
+			current_dialogue_set = story_set
+			next_line_index = 0
+		var lines: PackedStringArray = story.lines
+		var story_line := lines[next_line_index % lines.size()]
+		next_line_index += 1
+		return story_line
 	var use_victory_lines: bool = game_state != null and bool(game_state.defeated_bosses.get("hollow_sovereign", false)) and not victory_dialogue_lines.is_empty()
 	var use_timeline_lines: bool = game_state != null and timeline_dialogue_stage >= 0 and game_state.timeline_stage >= timeline_dialogue_stage and not timeline_dialogue_lines.is_empty()
 	var dialogue_set := 100 if use_victory_lines else (timeline_dialogue_stage if use_timeline_lines else 0)
@@ -215,7 +285,7 @@ func get_next_line() -> String:
 
 
 func _on_body_entered(body: Node) -> void:
-	if body is Player:
+	if body is Player and not body.is_dead and is_visible_in_tree() and indoor_state.is_empty():
 		player_in_range = body
 		_end_social_exchange(true)
 		prompt.show()

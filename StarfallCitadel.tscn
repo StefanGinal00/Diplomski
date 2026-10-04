@@ -1,4 +1,14 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=31 format=3]
+
+[ext_resource type="Script" path="res://StarfallParallaxCity.gd" id="art_city_parallax"]
+
+[ext_resource type="Script" path="res://SettlementAtmosphere.gd" id="art_atmosphere"]
+
+[ext_resource type="Script" path="res://StarfallPropArt.gd" id="civic_props"]
+
+[ext_resource type="Script" path="res://RemainingRoomArt.gd" id="remaining_art"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/citadel_sky_depth_v1.png" id="city_sky_image"]
+[ext_resource type="Shader" path="res://art/visual_slice/city_panorama.gdshader" id="city_sky_shader"]
 
 [ext_resource type="PackedScene" path="res://StarfallGate.tscn" id="1_gate"]
 [ext_resource type="PackedScene" path="res://StarfallWard.tscn" id="2_ward"]
@@ -11,9 +21,18 @@
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="9_door"]
 [ext_resource type="Script" path="res://TownLifeExpansion.gd" id="10_life"]
 [ext_resource type="Script" path="res://VisualStyleSlice.gd" id="11_art"]
+[ext_resource type="Script" path="res://TownNameplateLayout.gd" id="name_layout"]
+[ext_resource type="Script" path="res://TownMaterialExpansion.gd" id="art_materials"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/city_wall_citadel_v1.png" id="art_masonry"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/starfall_roof_tiles_v1.png" id="art_tiles"]
+[ext_resource type="Texture2D" path="res://art/characters/nalia_portrait_v1.png" id="art_nalia"]
+[ext_resource type="Texture2D" path="res://art/characters/aurel_portrait_v1.png" id="art_aurel"]
 
 [sub_resource type="RectangleShape2D" id="FloorShape"]
 size = Vector2(6250, 18)
+
+[sub_resource type="ShaderMaterial" id="CitySkyMaterial"]
+shader = ExtResource("city_sky_shader")
 
 [sub_resource type="RectangleShape2D" id="RoofShape"]
 size = Vector2(6250, 12)
@@ -36,17 +55,47 @@ size = Vector2(860, 10)
 [node name="StarfallCitadel" type="Node2D"]
 script = ExtResource("7_decor")
 
+[node name="ParallaxArchitecture" type="Node2D" parent="."]
+script = ExtResource("art_city_parallax")
+
+[node name="PropArt" type="Node2D" parent="."]
+script = ExtResource("civic_props")
+
+[node name="SettlementAtmosphere" type="Node2D" parent="."]
+script = ExtResource("art_atmosphere")
+
 [node name="VisualStyleSlice" type="Node2D" parent="."]
 script = ExtResource("11_art")
 theme = "city"
+wall_texture = ExtResource("art_masonry")
+roof_texture = ExtResource("art_tiles")
+
+[node name="MaterialExpansion" type="Node2D" parent="."]
+script = ExtResource("art_materials")
+theme = "starfall"
+primary_texture = ExtResource("art_masonry")
+secondary_texture = ExtResource("art_tiles")
+
+[node name="NameplateLayout" type="Node2D" parent="."]
+script = ExtResource("name_layout")
 
 [node name="LibraryRooftop" type="Node2D" parent="."]
 script = ExtResource("10_life")
 settlement = "starfall"
 
+[node name="RemainingArt" type="Node2D" parent="."]
+script = ExtResource("remaining_art")
+artwork = "citadel_sky"
+layout = "city"
+route_path = NodePath("")
+plate_path = NodePath("Sky")
+
 [node name="Sky" type="Polygon2D" parent="."]
 z_index = -10
-color = Color(0.055, 0.075, 0.14, 1)
+texture_filter = 2
+texture = ExtResource("city_sky_image")
+material = SubResource("CitySkyMaterial")
+uv = PackedVector2Array(0, 0, 1536, 0, 1536, 1024, 0, 1024)
 polygon = PackedVector2Array(0, -1950, 6250, -1950, 6250, 500, 0, 500)
 
 [node name="FarCity" type="Polygon2D" parent="."]
@@ -483,6 +532,7 @@ text = "BEYOND THE WALL - DANGER"
 horizontal_alignment = 1
 
 [node name="MarketTrader" parent="." instance=ExtResource("6_service")]
+portrait_texture = ExtResource("art_nalia")
 position = Vector2(3250, 367)
 service_kind = "shop"
 service_id = "starfall_market_shop"
@@ -490,6 +540,7 @@ service_name = "Nalia - Market"
 service_color = Color(0.93, 0.57, 0.64, 1)
 
 [node name="Apothecary" parent="." instance=ExtResource("6_service")]
+portrait_texture = ExtResource("art_aurel")
 position = Vector2(3960, 367)
 service_kind = "shop"
 service_id = "starfall_apothecary_shop"

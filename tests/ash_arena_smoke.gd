@@ -64,6 +64,7 @@ func _run() -> void:
 		_check(arena.wave == expected_wave, "Arena skipped wave %d" % expected_wave)
 		if expected_wave == 4:
 			var marshal = arena.marshal
+			_check(game.get_node("AmbientSoundscape").current_track == "boss_ember_marshal", "Marshal final wave has no unique music")
 			_check(marshal != null and marshal.is_in_group("mini_boss") and arena.enemies_remaining == 3, "Final wave lacks Marshal and two guards")
 			_check(marshal.is_in_group("family_demon") and marshal.current_health == marshal.max_health, "Marshal family or health is wrong")
 			marshal.take_damage(int(marshal.max_health / 2))
@@ -76,9 +77,12 @@ func _run() -> void:
 				projectiles += int(node.is_in_group("enemy_projectile"))
 			_check(projectiles == 3, "Marshal phase two did not fire three bolts")
 		_kill_wave(arena)
+		_check(not ui.presented_encounter_stories.has("ember_marshal"), "Arena story appeared before the final intermission completed")
 		await create_timer(1.75).timeout
 		await process_frame
 	_check(arena.completed and bool(state.unlocked_shortcuts.get("ash_arena_cleared", false)), "Arena victory was not recorded")
+	_check(ui.presented_encounter_stories.has("ember_marshal"), "Native four-wave victory did not present its story")
+	_check(game.get_node("AmbientSoundscape").current_track == "ash_arena", "Arena victory left combat music playing")
 	_check(state.has_item("marshal_emblem") and state.gold == gold_before + 100, "Arena did not award emblem and 100 Gold once")
 	_check(player.skill_points * player.xp_per_level + player.xp == xp_before + 7, "Arena did not award 7 XP once")
 	_check(not arena.start_trial(player) and state.gold == gold_before + 100, "Cleared Arena restarted or paid twice")

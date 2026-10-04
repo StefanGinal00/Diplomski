@@ -1,4 +1,6 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://CompactMobAppearance.gd" id="compact_mob_art"]
 
 [ext_resource type="Script" path="res://RootStalker.gd" id="1_stalker"]
 [ext_resource type="PackedScene" path="res://XPOrb.tscn" id="2_xp"]
@@ -36,8 +38,8 @@ polygon = PackedVector2Array(-10, -5, -4, -5, -4, -2, -10, -2, 4, -5, 10, -5, 10
 
 [node name="WarningLine" type="Line2D" parent="."]
 visible = false
-points = PackedVector2Array(8, 25, 105, 25)
-width = 5.0
+points = PackedVector2Array(4, 15, 98, 15)
+width = 2.0
 default_color = Color(1, 0.66, 0.35, 0.9)
 
 [node name="StrikeArea" type="Area2D" parent="."]
@@ -58,3 +60,8 @@ mouse_filter = 2
 max_value = 6.0
 value = 6.0
 show_percentage = false
+
+[node name="PaintedMobAppearance" type="Sprite2D" parent="."]
+script = ExtResource("compact_mob_art")
+identity = "root"
+heated = false

@@ -1,4 +1,6 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://RoomPaintedDepth.gd" id="90_painted_depth"]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://Checkpoint.tscn" id="2_lamp"]
@@ -29,6 +31,10 @@ course_id = &"forge"
 course_width = 4000.0
 legacy_width = 1000.0
 ground_y = 420.0
+
+[node name="PaintedDepth" type="Node2D" parent="."]
+script = ExtResource("90_painted_depth")
+profile = "forge"
 
 [node name="Backdrop" type="Polygon2D" parent="."]
 z_index = -4

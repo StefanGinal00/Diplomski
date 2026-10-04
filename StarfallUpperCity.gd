@@ -24,6 +24,16 @@ func _ready() -> void:
 	_build_district_workplaces()
 	_build_connections()
 	_build_lift()
+	var civic_art := Node2D.new()
+	civic_art.name = "CivicArt"
+	civic_art.set_script(preload("res://StarfallUpperCityArt.gd"))
+	add_child(civic_art)
+	for layer in ["walkways", "skyline"]:
+		var structure_art := Node2D.new()
+		structure_art.name = "WalkwayArt" if layer == "walkways" else "SkylineArt"
+		structure_art.set_script(preload("res://StarfallUpperStructureArt.gd"))
+		structure_art.layer = layer
+		add_child(structure_art)
 	if not Engine.is_editor_hint() and get_parent().get_parent().get_node_or_null("RoomActivityDirector") == null:
 		call_deferred("activate_room_population")
 
@@ -170,7 +180,10 @@ func _stairs(stair_name: String, start: Vector2, finish: Vector2) -> void:
 	var outline := PackedVector2Array([start + Vector2(-60, 12)])
 	for i in range(1, count + 1):
 		var point := start.lerp(finish, float(i) / count)
-		_deck("%sStep%02d" % [stair_name, i], point, 132, Color(0.44, 0.45, 0.57))
+		# Keep the gate's headroom clear at the street end of the garden stair.
+		# Centre/rise stay identical; a 72px landing is wider than the player.
+		var width := 72 if stair_name=="GardenGrandStair" and i==1 else 132
+		_deck("%sStep%02d" % [stair_name, i], point, width, Color(0.44, 0.45, 0.57))
 		route.append(point)
 		outline.append(point + Vector2(-60, 12))
 	outline.append(finish + Vector2(60, 50))

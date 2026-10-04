@@ -115,10 +115,45 @@ func _ready() -> void:
 		var at := _site_anchor(index)
 		anchors.append(at)
 		_build_site(index, data, at)
+	if region in ["shaft", "hollow", "crossing", "shaft_gallery", "shaft_cistern", "shaft_approach"]:
+		var paint := preload("res://EchoPaintedProps.gd").new()
+		paint.name = "PaintedProps"
+		add_child(paint)
+		for index in range(_sites().size()):
+			if _sites()[index][2] == "pump": preload("res://EchoMachineryArt.gd").attach(get_node("Site%d" % index), "pump")
+			preload("res://ShaftFixtureArt.gd").attach(get_node("Site%d" % index), _sites()[index][2])
+	if String(room.name) in ["EchoGrotto", "EchoGallery", "PrismArchive", "TideWell", "EchoNest", "CrystalCauseway", "UndertowVault", "EchoDepths"]:
+		var painted := Node2D.new()
+		painted.name = "PaintedProps"
+		painted.set_script(preload("res://EchoPaintedProps.gd"))
+		add_child(painted)
+		var sign_layout := Node2D.new()
+		sign_layout.name = "FieldSignLayout"
+		sign_layout.set_script(preload("res://EchoFieldSignLayout.gd"))
+		add_child(sign_layout)
+		if String(room.name) == "EchoNest":
+			for index in range(_sites().size()):
+				if _sites()[index][2] == "nursery":
+					preload("res://EchoNestArt.gd").attach(get_node("Site%d" % index))
+		if String(room.name) in ["TideWell", "UndertowVault"]:
+			for index in range(_sites().size()):
+				var machine_kind: String = _sites()[index][2]
+				if machine_kind in ["pump", "pressure"]:
+					preload("res://EchoMachineryArt.gd").attach(get_node("Site%d" % index), machine_kind)
+	if not has_node("PaintedProps"):
+		var paint := preload("res://EchoPaintedProps.gd").new()
+		paint.name = "PaintedProps"
+		add_child(paint)
+	# Pump stores also exist in Ash and other field families. The old
+	# region whitelist left their giant overview gauge visible in play.
+	for index in range(_sites().size()):
+		if _sites()[index][2] == "pump":
+			preload("res://EchoMachineryArt.gd").attach(get_node("Site%d" % index), "pump")
 	if not Engine.is_editor_hint() and region in ["gallery", "archive"]:
 		var state := get_node_or_null("/root/GameState")
 		if state != null:
 			state.shortcut_changed.connect(_on_record_changed)
+			state.cache_opened.connect(_on_record_changed)
 			state.zone_tier_changed.connect(_on_record_tier_changed)
 		_refresh_records()
 	if not Engine.is_editor_hint() and room.get_parent().get_node_or_null("RoomActivityDirector") == null:
@@ -291,6 +326,7 @@ func _build_resident(at: Vector2) -> void:
 	npc.get_node("NameLabel").z_index = 2
 	npc.get_node("NameLabel").add_theme_color_override("font_outline_color", Color(0.025, 0.035, 0.07))
 	npc.get_node("NameLabel").add_theme_constant_override("outline_size", 4)
+	preload("res://EchoGuideAppearance.gd").attach(npc, region)
 
 
 func _on_record_changed(event_id: String) -> void:
@@ -333,11 +369,11 @@ func _refresh_records() -> void:
 		return
 	var lines: Array[String] = []
 	if returned:
-		lines.append("The awakened guardians are quiet. Their reserve and the original discovery cache are separate; neither refills on a visit. Save your finds at a lamp.")
+		lines.append(("The awakened guardians are quiet. The return reserve is already claimed." if bool(state.opened_caches.get("echo_%s_field_return_reserve" % region, false)) else "The awakened guardians are quiet; collect their return reserve.") + " It is separate from the original discovery cache. Save your finds at a lamp.")
 	elif complete and awakened:
 		lines.append("The records are complete, and the caves have awakened. Seek the return trial in the side alcove by the grove above, then claim its separate reserve.")
 	elif complete:
-		lines.append("The records are complete. The discovery cache is unsealed in the high dead-end chamber. After the Matriarch falls, return for the awakened trial.")
+		lines.append(("The discovery cache is already claimed." if bool(state.opened_caches.get("echo_%s_route_discovery" % region, false)) else "The records are complete. The discovery cache is unsealed in the high dead-end chamber.") + " After the Matriarch falls, return for the awakened trial.")
 	elif region == "gallery":
 		lines.append("Witnesses recorded: %d/2. Listen to the western and eastern witnesses in either order. Their sound lenses brighten when each record is kept." % witness_count)
 		lines.append("Both listening posts are in raised side chambers. Follow the sound lenses, clear nearby foes, then stand still while listening.")

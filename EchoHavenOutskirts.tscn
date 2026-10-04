@@ -1,4 +1,16 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=16 format=3]
+
+[ext_resource type="Script" path="res://PaintedSettlementBuildings.gd" id="art_houses"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/city_wall_echo_v1.png" id="art_wall"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/echo_roof_v1.png" id="art_roof"]
+[ext_resource type="Texture2D" path="res://art/visual_slice/echo_door_v1.png" id="art_door"]
+
+[ext_resource type="Script" path="res://ResidentialFacadeDetails.gd" id="art_residential"]
+
+[ext_resource type="Script" path="res://SettlementAtmosphere.gd" id="art_atmosphere"]
+[ext_resource type="Script" path="res://SettlementStreetArt.gd" id="art_street"]
+
+[ext_resource type="Script" path="res://RemainingRoomArt.gd" id="remaining_art"]
 
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="1_door"]
 [ext_resource type="PackedScene" path="res://EchoShade.tscn" id="2_shade"]
@@ -14,9 +26,31 @@ size = Vector2(12, 390)
 
 [node name="EchoHavenOutskirts" type="Node2D"]
 
+[node name="SettlementAtmosphere" type="Node2D" parent="."]
+script = ExtResource("art_atmosphere")
+
+[node name="ResidentialFacadeDetails" type="Node2D" parent="."]
+script = ExtResource("art_residential")
+
+[node name="PaintedBuildings" type="Node2D" parent="."]
+script = ExtResource("art_houses")
+wall_texture = ExtResource("art_wall")
+roof_texture = ExtResource("art_roof")
+door_texture = ExtResource("art_door")
+
+[node name="StreetArt" type="Node2D" parent="."]
+script = ExtResource("art_street")
+
 [node name="GateApproach" type="Node2D" parent="."]
 script = ExtResource("5_district")
 district = "outskirts"
+
+[node name="RemainingArt" type="Node2D" parent="."]
+script = ExtResource("remaining_art")
+artwork = "echo_road"
+layout = "district"
+route_path = NodePath("GateApproach")
+plate_path = NodePath("Backdrop")
 
 [node name="Backdrop" type="Polygon2D" parent="."]
 z_index = -6

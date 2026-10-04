@@ -116,6 +116,8 @@ func _build_pumps() -> void:
 	var second: Rect2 = expansion.call("_branch_rect", 2)
 	_control("IntakePump", _floor_point("BranchRoom0", first.position.x + 340), 0, "INTAKE PUMP")
 	_control("CrownPump", _floor_point("BranchRoom2", second.end.x - 260), 1, "CROWN PUMP")
+	for named in ["IntakePump", "CrownPump"]:
+		preload("res://FieldMachineryArt.gd").attach(get_node(named), "control")
 	_build_resident(_floor_point("MainRoom0", 600), "Tova, Pump Engineer")
 	for index in range(2):
 		var room_index := 1 if index == 0 else 5

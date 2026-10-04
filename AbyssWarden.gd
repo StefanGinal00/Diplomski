@@ -62,10 +62,13 @@ func _ready() -> void:
 	target_player = get_tree().get_first_node_in_group("player") as Player
 	telegraph.hide()
 	challenge_prompt.visible = is_rematch
+	preload("res://BossAppearance.gd").attach(self)
 
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
+		return
+	if get_node("EncounterSafety").should_suspend():
 		return
 	if not is_instance_valid(target_player):
 		target_player = get_tree().get_first_node_in_group("player") as Player
@@ -105,13 +108,13 @@ func _physics_process(delta: float) -> void:
 		body_visual.color = Color(0.35, 0.55, 0.65, 1.0)
 	else:
 		body_visual.color = _combat_color()
-		_move_toward_player()
+		_move_toward_player(delta)
 		if is_zero_approx(charge_cooldown):
 			_start_charge_windup()
 		elif is_zero_approx(shot_cooldown):
 			_fire_volley()
 	move_and_slide()
-	global_position.x = clampf(global_position.x, arena_anchor_x + arena_left_offset, arena_anchor_x + arena_right_offset)
+	preload("res://BossLocomotion.gd").stop_at_edge(self, arena_anchor_x + arena_left_offset, arena_anchor_x + arena_right_offset, 0.9, true)
 	if charge_remaining > 0.0 and is_on_wall():
 		charge_remaining = 0.0
 		recovery_remaining = 0.9
@@ -124,18 +127,20 @@ func _combat_color() -> Color:
 	return Color(0.65, 0.2, 0.48, 1.0) if phase == 2 else Color(0.21, 0.46, 0.57, 1.0)
 
 
-func _move_toward_player() -> void:
+func _move_toward_player(delta: float = 1.0 / 60.0) -> void:
 	var difference := target_player.global_position.x - global_position.x
 	if absf(difference) < 76.0:
-		velocity.x = move_toward(velocity.x, 0.0, 220.0)
+		velocity.x = preload("res://BossLocomotion.gd").approach(velocity.x, 0.0, delta)
 	else:
-		velocity.x = signf(difference) * movement_speed * (1.25 if phase == 2 else 1.0)
+		velocity.x = preload("res://BossLocomotion.gd").approach(velocity.x, signf(difference) * movement_speed * (1.25 if phase == 2 else 1.0), delta)
 	muzzle.position.x = 22.0 * signf(difference)
 	eye.position.x = 8.0 * signf(difference)
 
 
 func _start_charge_windup() -> void:
 	charge_direction = signf(target_player.global_position.x - global_position.x)
+	if is_zero_approx(charge_direction):
+		charge_direction = -1.0 if get_node("PaintedAppearance").flip_h else 1.0
 	windup_remaining = 0.68 if phase == 1 else 0.5
 	charge_cooldown = (3.0 if phase == 1 else 2.35) if is_rematch else (3.8 if phase == 1 else 2.9)
 	velocity.x = 0.0
@@ -148,6 +153,7 @@ func _fire_volley() -> void:
 	shot_cooldown = (1.5 if phase == 1 else 1.0) if is_rematch else (1.85 if phase == 1 else 1.2)
 	if projectile_scene == null or get_parent() == null:
 		return
+	get_node("CombatPresentation").release("volley")
 	var base_direction := (target_player.global_position - muzzle.global_position).normalized()
 	var angles: Array[float] = [0.0]
 	if phase == 2 or is_rematch:
@@ -167,7 +173,7 @@ func _try_contact_damage() -> void:
 	for body in contact_area.get_overlapping_bodies():
 		if body is Player and not body.is_dead:
 			var direction := -1.0 if body.global_position.x < global_position.x else 1.0
-			body.take_damage(2 if phase == 2 else 1, Vector2(direction * 210.0, -180.0))
+			body.take_damage(3 if charge_remaining > 0.0 else 1, Vector2(direction * 210.0, -180.0))
 			contact_cooldown = 1.0
 			return
 

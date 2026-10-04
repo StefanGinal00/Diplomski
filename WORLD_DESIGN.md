@@ -1,5 +1,198 @@
 # World structure (working plan)
 
+## Painted reserve markers - 2026-09-29
+
+Three generated, alpha-preserving 2D assets now replace the flat status-marker
+bodies in five Shaft, six Ash and seven Starfall sites. Native seals still
+display progress; the actual loot caches and terrain are unchanged. Preview
+inspection corrected a Shaft timber-overlap layer. See FIELD_RESERVE_ART.md.
+
+## Regional route readability - 2026-09-29
+
+126 field captions across 18 Shaft/Ash/Starfall routes now use event-driven
+terrain-aware placement, including late-loaded operation boards. Ash shelter
+captions direct players upward from their actual approach gallery. Cache boards,
+encounter headings and selected guides now distinguish victory from collection.
+Geometry, spawns and rewards are unchanged. See REGIONAL_ROUTE_READABILITY.md.
+
+## Regional exploration ledger - 2026-09-29
+
+26 existing optional routes across Shaft, Echo, Ash and Starfall now have
+visited-only journal guidance, accurate return-readiness states, small local
+reserve supplies and persistent recovered dispatches. No copied geometry or new
+mandatory gates. Already claimed caches do not pay again; saved enemy defeats and
+streaming are unchanged. See EXPLORATION_LEDGER.md for scope and remaining work.
+
+## Optional encounter streaming - 2026-09-29
+
+Triggered ambush enemies now unload with room population after the existing grace
+window and restore only surviving actors on return. HP, position and patrol anchors
+are retained within the session; defeated foes/rewards are not repeated. Off-room
+deferred spawns and invalid completion callbacks are guarded. No map geometry,
+enemy roster or reward amounts changed. See `ENCOUNTER_STREAMING.md`.
+
+## Actual attack flipbooks and remaining mob bodies - 2026-09-28
+
+Twenty materials now have six generated frames each, plus four six-pose body
+sets replacing imp/fiend/root/sentry placeholders (144 new frames total).
+Preparation, active flight and breakup select different images; native combat
+timing remains unchanged. Five ordinary-mob scenes also show painted art in the
+editor. [Assets, exact prompts, integration and limits](art/characters/COMBAT_FLIPBOOKS.md).
+
+## Painted enemy attack materials - 2026-09-28
+
+Twenty RGBA effects now cover seven bosses, regular contact/charge/leap mobs,
+root strikes and normal/crystal/fire shooters. Native damage and warning timing
+are unchanged. Materials animate through bounded transforms/fades; dedicated
+per-attack flipbooks remain future work. [Coverage and verification](art/characters/ENEMY_ATTACK_MATERIALS.md).
+
+## Expanded painted boss animations - 2026-09-28
+
+All seven bosses/minibosses now use twelve painted frames each (84 total):
+six locomotion poses, idle, two anticipation poses, release and two recovery
+poses. Matriarch uses a wingbeat cycle. User-approved local extraction removes
+generated backgrounds; registered RGBA atlases, dynamic frame masks and updated
+charge/death echoes are active in gameplay. Attack rules remain unchanged.
+[Assets, exact prompts, implementation and verification](art/characters/BOSS_TWELVE_FRAME_ANIMATIONS.md).
+
+## Sentinel combat-flow correction - 2026-09-28
+
+First boss now accelerates/brakes, plants before casting, commits aim and
+facing, recovers before pivoting, and cancels pending attacks on player defeat
+or room exit. Shared boss animation no longer flashes idle between physics
+ticks at high render FPS. Existing four-pose art remains a limitation; other
+boss combat controllers are not claimed finished by this pass.
+[Changes, verification and in-arena samples](art/characters/SENTINEL_COMBAT_FLOW.md).
+
+## Boss motion and surface finishing - 2026-09-28
+
+Seven encounter actors now use distance-driven stride, short pose transitions,
+cosmetic hit recoil and shared authoritative windup sampling. Attack priority
+and timed warning progress are covered by a new motion test. Thirty-seven
+arena surface accents reuse existing stone textures without changing collision
+or broken-platform silhouettes. Real Warden warning/charge/recovery was sampled
+through its physics state machine in eight GPU captures.
+[Details and reviewed samples](art/characters/BOSS_MOTION_FINISH.md).
+
+## Boss combat animation and arenas - 2026-09-28
+
+All seven bosses/minibosses now have synchronized visual attack presentation,
+committed charge facing, key-pose motion, themed projectile/impact effects,
+phase cues and cosmetic defeat fades. Existing rematches and higher-tier Marshal
+have awakened auras. Seven arenas have persistent painted relics; redundant
+geometric overlays were retired without changing terrain or attack authority.
+[Implementation, assets, exact prompts and limits](art/characters/BOSS_COMBAT_POLISH.md).
+
+## Painted boss bodies - 2026-09-28
+
+Six major encounters now have unique painted 2D sprite sheets with idle, movement,
+wind-up and recovery states. Combat warning graphics, collisions, attacks and rewards
+remain unchanged. [Assets, exact prompts and reviewed live-scale preview](art/characters/BOSS_APPEARANCE_BATCH.md).
+
+## Additional field-guide silhouettes - 2026-09-28
+
+Dena, Leth, Aven and Rovan now each use a unique painted four-pose sheet.
+The existing guides remain lazy-spawned with their room; expedition guides only
+receive appearance art in their supported profiles. No dialogue, patrol, rewards,
+or progression authority changed. See [assets and exact generation prompts](art/characters/ECHO_ADDITIONAL_GUIDES.md).
+
+## Echo waterworks guides and devices - 2026-09-28
+
+Rill, Taren and Odel have unique generated 2D bodies (12 new poses), bringing
+painted field-guide coverage to six regions. Six flow/bridge/drain controls now
+use paintings; all 18 explicitly dressed small Echo devices have textured art.
+Their interaction prompts find clear overhead bands instead of sitting in floors.
+Native dialogue, movement, progression and save authority unchanged. Ten targeted
+tests pass, with twelve GPU captures inspected. Other guides, oversized geometric
+camp gear and root terrain/label polish remain; map artwork is not complete.
+[Saved assets, prompts and limits](art/characters/ECHO_WATERWORKS_BATCH.md).
+
+## Echo field guides and instruments - 2026-09-28
+
+Venn, Oris and Senn have distinct generated 2D bodies (12 poses total), native
+walking/talk-facing presentation and grounded feet. Names/prompts clear the low
+camp walkway. Two resonators and ten listening receivers use painted instruments
+with unchanged native task/state authority; the root resonator paintings are
+grounded on existing supports. Duplicate Nest tent contour retired safely.
+Other guides, valve/anchor/drain artwork and root scenery remain next priorities.
+Ten targeted regressions pass; nine GPU views inspected. Not a full visual signoff.
+[Assets, exact prompts and QA](art/characters/ECHO_GUIDES_AND_DEVICES.md).
+
+## Echo fauna batch and entry flora - 2026-09-28
+
+Five generated species sheets (20 poses) now dress 49 observed Echo fauna actors:
+moths, bats, skimmers, mineral crawlers and newts. Existing ground-based neutral
+AI, grace and streaming remain unchanged. Seven first-route spawn anchors moved
+off return doors onto supported patrol floors. Ten grounded plant/mineral
+clusters replace 50 floating triangles in five entry courts.
+Field NPC bodies, remaining geometric devices/scenery and nameplate readability
+are the next visual priorities; map artwork is not yet complete.
+[Assets, exact prompts and QA](art/characters/ECHO_FAUNA_BATCH.md).
+
+## Echo Shade appearance - 2026-09-28
+
+Generated six-pose 2D wraith replaces EchoShade's body polygons wherever its
+scene is used. Native windup, dash/followup, recovery and hit flash drive the
+presentation; warning lane draws above art. Combat/physics code is unchanged.
+Four live AI cycles and four GPU views cover direction, tier and readability.
+Small fauna and entry-room geometric decoration still need dedicated artwork.
+[Asset, exact prompt and QA](art/characters/ECHO_SHADE_ART.md).
+
+## Grounded Echo organic scenery - 2026-09-28
+
+Two generated RGBA assets replace geometric mushrooms/minerals across eight
+Echo routes: 261 mushroom and 80 mineral clusters on verified existing floors.
+Unsupported/crowded anchors are skipped; geometry, progression and streaming
+are unchanged. Grazer art now excludes other Echo species such as moths/bats.
+Six targeted tests pass; eight GPU scenery views reviewed. Remaining placeholders
+include EchoShade and small species-specific fauna, so map art is not complete.
+[Assets, exact prompts and QA](art/visual_slice/ECHO_ORGANIC_SCENERY.md).
+
+## Echo neutral fauna appearance — 2026-09-28
+
+Echo neutral creatures now use a generated six-pose moss grazer, opt-in by their
+existing echo_grotto zone. Sleep, wander, warning and hit visuals read native
+state; actor streaming and non-Echo fauna remain unchanged. Name labels sit
+below health bars to avoid low overhead steps. Geometric flora is still pending.
+[Source, exact prompt and QA](art/characters/ECHO_GRAZER_ART.md).
+
+## Echo Broodling appearance — 2026-09-28
+
+One generated six-pose 2D sheet replaces the polygon body of authored and
+spawned Echo Broodlings. Art follows native patrol/windup/leap/recovery and hit
+feedback; physics, drops, AI timing and nest progress remain unchanged. Warning
+icon moved above the health bar. Neutral fauna and geometric flora remain
+follow-up work. [Source, prompt and QA](art/characters/ECHO_BROODLING_ART.md).
+
+## Echo Nest silk props — 2026-09-28
+
+Two generated alpha sprites replace the closed/spent nursery placeholders at
+both Echo Nest side sites. Existing habitat containers control all 12 sprite
+variants; no new gameplay, collision, polling or persistence logic. Art is
+floor-anchored below existing branch steps. Nearby geometric flora and creature
+silhouettes still require their own pass. See [assets and QA](art/visual_slice/ECHO_NEST_ART.md).
+
+## Background rollout checkpoint — 2026-09-27
+
+Follow-up user review found entry-room polygons and embedded city backgrounds
+still hiding paintings. [Coverage/readability repair](art/visual_slice/BACKGROUND_QUALITY_REPAIR.md)
+adds explicit retirement, full-width city panorama, native 1536px imports,
+upright background repetition, terrain materials and pressure-cell detail.
+Texture assignment alone is not an acceptance check: inspect entry, join and
+expanded route in both editor and runtime. Remaining placeholder actors,
+interaction symbols and foreground silhouettes still need dedicated passes.
+
+The remaining Shaft, Echo and Ash rooms now use 24 distinct generated 2D
+paintings over 342 existing chamber/shaft masks, including boss arenas,
+expedition wings, settlement approaches, training passage and the upper
+Starfall sky. Existing village and Starfall route art remains intact.
+No geometry or progression changes were made for this rollout. See
+[coverage, exact prompts and visual checks](art/visual_slice/WORLD_BACKGROUND_ROLLOUT.md).
+Next visual work is foreground terrain, unfinished town buildings/props and
+remaining enemy/boss sprites; backgrounds being covered does not mean those
+prototype shapes are finished. Texture streaming and phone performance
+profiling remain separate follow-ups.
+
 The game is a connected 2D world, not a level-select sequence. A **zone** is a large region with a shared visual identity; each main zone has enemies and a boss, while Starfall Citadel is a fully peaceful city **inside** the fourth and final region. A **room** is a smaller place connected by doors, shafts or shortcuts. Starfall's safe city is an intentional exception: its districts share one continuous scene. Players can revisit every unlocked route; defeating a boss opens the next zone but does not close the previous one.
 
 The Training Passage and Void Sentinel are the prologue. Four main zones are the current target for the finished game. Room names beyond the currently playable route are working names, not claims that the content already exists.
@@ -27,6 +220,20 @@ The Training Passage and Void Sentinel are the prologue. Four main zones are the
 - All four combat zones now have a connected first-pass boss route. After the Castellan, Starfall is one continuous safe city from the gate through Lantern Ward, Market and Celestial Garden, with upper walkways and a reversible return door. Its far-edge gate leads through Outer Watch, Silent Gate, Memory Vault and Rooted Hall to Empty Court, then along an upper spur to Soul Crucible, Sunless Passage and the Hollow Throne. The Guardian's lower arena remains optional. Defeating the Hollow Sovereign opens a short working-draft epilogue, then allows continued exploration. There is no door to unbuilt content or credits sequence yet.
 
 ## Currently playable
+
+- Driftworks now has a mine/pumpworks painting across 24 chamber/link masks, iron texture on 73 original walking surfaces and four static transparent ore carts. The shared expedition art supports distinct Shaft/Starfall palettes and assets without changing routes, collision, pump tasks or streamed population. Carts are decorative, not extra loot or obstacles. Other Shaft rooms and placeholder foreground machinery still need art. See `art/visual_slice/DRIFTWORKS_ART.md` for exact prompts and verification.
+
+- Broken Ramparts now has a distinct defensive-gallery painting across all eight main chambers, four side chambers and their twelve connecting backplates. Its 105 original walking surfaces have masonry textures/rims, and four static transparent watch pillars replace part of the prototype ruin dressing. The art preserves original chamber shapes, shaft openings, collision, tasks and streamed population; it is Starfall-only. See `art/visual_slice/BROKEN_RAMPARTS_ART.md` for saved images, exact prompts and remaining visual scope.
+
+- Empty Court and Hollow Throne now have distinct painted backgrounds with camera-relative parallax/haze, a separate transparent 2D throne sprite, sixteen textured stone walking surfaces and two foundations below the floors. Eight named prototype background leaves are hidden; original terrain silhouettes, jump edges, collisions, bosses, doors, warnings and lamp/reward rules are unchanged. This is arena scenery, not final boss-character art. See `art/visual_slice/STARFALL_ARENA_ART.md` for saved assets, prompts, checks and remaining scope.
+
+- Five additional painted Starfall backgrounds now distinguish the outer defenses, Silent Gate, Rooted Hall, Soul Crucible and Sunless Passage. Their entrance plates and expanded chambers/shafts add 70 painted surfaces; with Memory Vault, all six StarfallDescent routes are covered. The shared system now covers nine rooms / 135 surfaces, with camera-relative painting/haze layers and inactive-room sleep. Starfall sampling limits excessive magnification with continuous mirrored imagery. This does not finish the separate expedition wing, Empty Court, boss arena, city sky or foreground architecture. Asset provenance and exact prompts: `art/visual_slice/STARFALL_ROUTE_BACKDROPS.md`.
+
+- Four more rooms now have generated 2D painted backgrounds clipped to their existing entrance/chamber/shaft silhouettes: Blackwater Cistern, Prism Archive, Cinder Forge and Starfall Memory Vault (65 surfaces total). A shared-per-room shader provides camera-relative far imagery and a second subtle haze plane, with inactive-room sleep and 1024px mipmapped imports. Background geometry and gameplay are unchanged. Remaining room-specific rollout and exact asset prompts are tracked in `art/visual_slice/ROOM_PAINTED_DEPTH.md`; other rooms do not yet have these new paintings, and foreground placeholder architecture still needs art work.
+
+- Upper Starfall's 79 steps, four terraces and skybridge now have static stone/metal facing aligned to their unchanged collision tops. Four distant buildings have low-contrast trim and 136 arched windows. These are depth-separated 2D details, not new platforms or routes; large stair backings and remaining workshop props still need further art work.
+
+- Upper Starfall now has a static 2D civic-detail pass over its existing textured houses: ten facades/doors, forty arched windows, twelve lanterns, twelve planted containers, three shaped bells and a banded telescope. This changes scenery only, not traversal, population, services or rewards. Large terrace/skyline shapes and some workplace props remain prototype art; this is not a claim that the city or all maps are visually finished. See `art/visual_slice/STARFALL_UPPER_DETAILS.md`.
 
 - Four expedition detours remain on the **first-visit forward route**: Wisp Hollow → Driftworks → Drowned Crossing, Whispering Gallery → Resonant Depths → Prism Archive, Broken Causeway → Emberspine → Cinder Forge, and Outer Watch → Broken Ramparts → Silent Gate. Their original direct links become shortcuts on revisits. Expedition danger rooms use an explicit chamber graph: eight broad rooms with continuous ground, reversible shafts at different X positions, four optional side chambers and one alternate loop. A route must include both ascents and descents. Small jump platforms are reserved for shafts, ruined bridges and deliberate traversal challenges; they must never be used as the floor of every room. Boss arenas remain deliberately shorter. Dimensions are not measured completion times.
 - Expanded routes distribute hostiles, neutral creatures, flora, caches and sometimes-empty breakable crates across their full length, with side shafts or niches and return shortcuts. Boss arenas remain intentionally shorter. Inactive rooms stop processing and rendering at runtime, though mobile memory and frame-rate still need profiling. Enemy placement, rewards and the 5–10 minute goal require hands-on balancing.
@@ -620,3 +827,423 @@ normal-zoom and enlarged both-facing captures were reviewed. See
 `art/characters/WEAPONS.md`. Next: projectile graphics, diagonal/crouched
 limb polish and hand-painted material detail, then walk-cycle and NPC art.
 No new bitmap generation, streaming or mobile-control work in this pass.
+
+### Native projectile readability (2026-09-26)
+
+The next visual pass gives hunter/thorn/ember arrows and arc/Sunder/frost
+spells distinct native silhouettes and restrained trails. Presentation follows
+actual flight rotation and existing frost scale; no damage, collision,
+range, lifetime or hit-budget changes. Old polygons retain palette metadata
+without rendering twice. No new particle nodes or persistent effect objects.
+
+Six-variant/six-direction invariants and eight combat/restore regressions pass;
+two staged D3D12 captures were inspected at enlarged and normal camera zoom.
+Details: `art/characters/PROJECTILES.md`. Next: impact readability, attack limb
+polish, walk passing frames and service-NPC art. Full-map pacing and mobile
+profiling remain separate acceptance work, not certified by these tests.
+
+### Projectile contact feedback (2026-09-26)
+
+Player arrows and spells now emit brief cosmetic actor/terrain/breakable
+contact bursts. Terrain sparks are smaller and fan back toward the incoming
+shot; frost shards and magic rings retain weapon identity. Contact feedback
+does not imply an invulnerable enemy accepted damage. Impact origin uses the
+projectile overlap position, not an exact material/surface-normal raycast.
+
+Effects last 0.22 seconds with a global cap of 24; saturated visuals do not
+suppress hits. No collision nodes or RNG changes. Room/transition/rest and
+hidden/deleted-parent cleanup prevent lingering effects; pause freezes them.
+Seven targeted tests pass, including 36 direct contact cases, seven physical
+shots and the existing overlapping-target combat regression. Enlarged and
+normal-zoom staged captures were inspected. Next: melee/enemy contact
+presentation and attack limb/walk polish, then service-NPC art. This remains
+native prototype VFX, not final painted art or mobile-performance approval.
+
+### Sword contact presentation (2026-09-26)
+
+Actual deduplicated melee contacts now emit short Worn Sword/Spiritglass
+cut/spark effects, with distinct prop tint and mirrored direction. Large
+target origins are clamped to the existing hit rectangle for presentation.
+Empty/rejected swings create no fake contact. Invulnerable contact is not
+damage confirmation; no terrain-hit mechanics or combat balance changed.
+
+This reuses the projectile effect's shared cap/lifetime/cleanup. The 48-case
+actual-ShapeCast test and eight regressions pass; three staged D3D12 captures
+were reviewed, including a crouched left-facing hit. See
+`art/characters/MELEE_CONTACTS.md`. Next: enemy-hit presentation, body/limb
+animation polish and service-NPC art. Maps, streaming and mobile controls
+were not changed in this pass; full playthrough/mobile profiling remain.
+
+### Incoming player hit readability (2026-09-26)
+
+Accepted post-defense damage now has an explicit presentation event rather
+than relying solely on HP deltas. Ordinary hits use a brief warm body tint
+and local directional burst; Second Breath uses a gold ring/tint, including
+the equal-before/after-HP case. Existing hurt poses and invulnerability alpha
+remain. Rejected hits, healing and rest do not produce fake damage feedback.
+
+Body tint survives a full shared burst budget; pause and room/rest/hidden/
+respawn/teardown cleanup are covered. No damage, armor, knockback, recovery,
+cooldown or input changes. No shake, fullscreen flash or hit-stop. Fatal hits
+still use existing hiding; final death animation remains pending. Targeted
+tests plus three normal-zoom staged captures are documented in
+`art/characters/PLAYER_DAMAGE.md`. Next: movement/limb polish and service-NPC
+art. Full-map pacing, final assets and mobile profiling remain separate.
+
+### Gait boundaries and blocked four-frame artwork (2026-09-26)
+
+Existing walk presentation now restarts on actual direction reversal/idle
+restart, excludes attack/hurt/crouch/dash/airborne travel, and clears motion
+history on room/rest/transition boundaries even for short relocations.
+Physics, collision and combat remain unchanged. Real-movement regression
+coverage is in tests/player_gait_transition_smoke.gd.
+
+The intended four-frame companion sheet is NOT integrated. Built-in imagegen
+produced an opaque checkerboard in the generation and both corrections;
+all three were rejected by pixel-alpha inspection. No live art was replaced.
+Exact prompts, outputs and inactive draft scripts are documented in
+art/characters/WALK_CYCLE_ATTEMPT.md. CLI/API fallback requires explicit user
+confirmation and an API key; none was used. Keep new walk/NPC artwork pending
+until a valid asset workflow is available. Existing art remains usable.
+
+### Resident attention and conversation cleanup (2026-09-26)
+
+The existing town routes/interiors/social exchanges now coordinate attention:
+residents face their partner or player, only the current speaker gestures,
+and player dialogue pauses an in-progress interior entrance. Hiding or removing
+an actor, separating partners and room deactivation clear the paired exchange.
+Stale player references no longer keep a resident frozen in dialogue; hidden
+actors reset stride history. No routes, population, collisions or text changed.
+
+12 targeted regressions pass, with two in-room speaker/reply captures reviewed.
+See art/characters/RESIDENT_CONVERSATIONS.md. Next: reduce existing market
+crowding and overlapping nameplates, then continue service-NPC presentation.
+Final NPC art, the blocked walk sheet, full-map pacing and mobile profiling
+remain pending; this does not complete the map/art pass.
+
+### First generated NPC portraits (2026-09-26)
+
+Neris now has an explicitly assigned dialogue portrait; Orin has his own
+shop/forge portrait. Both are new built-in imagegen bitmap assets, preserved
+at original resolution with 256px Godot imports for the small UI insets.
+Speakers without portraits retain the previous text layout; neither picture
+is reused as an identity for unrelated NPCs. World sprites are unchanged.
+
+The portrait column/header avoids text and buttons, and long shop descriptions
+now use a bounded scroll area instead of overflowing onto the buy button.
+10 targeted tests pass; four baseline-size GPU captures were reviewed.
+Exact prompts, provenance, screenshots and scope are in
+art/characters/NPC_PORTRAITS.md. Next: extend the approved portrait style to
+other key NPCs, resolve transparent world-character artwork separately, and
+reduce existing market crowding/nameplate overlap. Mobile profiling and the
+remaining map/art work are not claimed complete by this delivery.
+
+### Eldric and Lyra quest portraits (2026-09-26)
+
+Two additional built-in imagegen portraits now appear in the existing quest
+dialogue panel: Eldric at the starting passage and Lyra in Echo Haven. Their
+scene assignments use optional FriendlyNPC portrait exports; other quest NPCs
+remain unchanged until their own art is made. 256px imports serve 96px insets.
+No quests, rewards, movement, collision or save formats changed.
+
+All 14 dialogue states fit the existing portrait layout; connected button
+acceptance/reward flows are tested. Nine targeted tests pass, and two staged
+960x540 GPU captures were reviewed. Details and exact prompts are in
+art/characters/QUEST_PORTRAITS.md. Remaining work includes other key NPC
+portraits, world-character sprites and town crowding/nameplate cleanup.
+
+### Larger settlement art batch (2026-09-26)
+
+Eight additional original portraits are integrated: Mira, Tarin, Korin and
+Selen in Cinder Hearth; Nalim and Ivara in Echo Haven; Nalia and Aurel in
+Starfall Citadel. TownService now exposes an optional portrait like residents
+and quest NPCs. No generic/shared portrait is assigned to unrelated services.
+All portraits import at 256px, retaining untouched high-resolution originals.
+
+Echo Haven and Cinder Hearth have separate painted background assets applied
+to fourteen existing background polygons. Echo's six district pockets and
+five connecting shafts share continuous UV coordinates; Cinder covers the
+original street and eastern sky. Camera UV parallax sleeps with inactive rooms.
+No room silhouette, collider, door, actor, quest or economy changes are made.
+Foreground houses and world NPC bodies remain prototypes for a later art pass.
+
+Thirteen unique targeted smoke tests pass; ten 960x540 GPU captures were
+reviewed. This is not full-suite validation, mobile profiling or completion
+of the map art. Exact source paths/prompts and retained source PNGs are tracked
+in art/characters/SETTLEMENT_ART_BATCH.md. Next art work: foreground building
+sets and transparent animated character/enemy assets with explicit alpha QA.
+
+### Settlement building material pass (2026-09-27)
+
+Six built-in ImageGen surface textures now dress Echo Haven and Cinder Hearth
+houses: cool masonry/slate/teal timber and warm brick/clay/chestnut timber.
+The original courts, UpperVillage houses and expanded neighborhoods are
+included. 98 textured polygons share six 512px mipmapped imports, with 59
+static window trims and decorative roof caps. Original silhouettes, terrain,
+colliders, room doors, NPC route markers, save formats and economy are intact.
+
+Ten targeted tests pass and four staged GPU views were reviewed. This is a
+building-material pass, not final architectural redesign or complete map art.
+Prompts/provenance: art/visual_slice/BUILDING_MATERIALS.md. Remaining art work:
+settlement props/flora, visual diversity of larger civic buildings, mob/NPC
+sprites and animations, and room-by-room foreground/background polish.
+
+### Settlement street-detail pass (2026-09-27)
+
+Echo Haven and Cinder Hearth now replace 141 simple decoration shapes with
+static detailed benches, striped market displays, banded barrels, planked
+carts/spoked wheels and leafy flowering plants. Moon Forge's display has
+ingots and a hammer rather than general market goods. This extends existing
+code-native decoration; no new bitmap asset or gameplay feature was added.
+Two cached drawing nodes have no processing callbacks, physics or timers and
+hide with inactive rooms. Original actors, routes, collision, room doors,
+loot/economy and save behavior remain unchanged.
+
+Eleven targeted tests pass and four GPU close-ups were reviewed. Scope and
+limitations: art/visual_slice/STREET_DETAILS.md. Next work remains civic
+building identity/grounding, crowded labels, world-character/enemy art and
+other biomes; neither the entire map nor mobile performance is finalized.
+
+### Settlement readability and grounding (2026-09-27)
+
+Echo Haven, Cinder Hearth and Starfall Citadel now resolve crowded runtime
+NPC names into three vertical lanes. Active resident dialogue, nearby
+interactions and services have priority; only overflow labels are hidden.
+Social bubbles/prompts reserve space, and new streamed residents join the
+registry. Hidden rooms skip layout work. Interaction targeting is unchanged.
+
+Four upper houses now have open visual porticos, and six Cinder eastern
+buildings have low foundations reaching their existing street. These are
+static drawings without new obstacles or changes to actor/door/route positions.
+Fifteen targeted tests pass and four GPU captures were reviewed. Details and
+limitations: art/visual_slice/SETTLEMENT_READABILITY.md. Next art work remains
+distinct civic-building silhouettes, character/enemy art and animation, and
+other-biome foregrounds/backgrounds. Complete map-art/mobile acceptance remains
+open; this is not a full-suite checkpoint.
+
+### Cinder civic landmark pass (2026-09-27)
+
+Six EasternDistricts facades now have distinct visual roles: foundry bell
+and chimney, timbered caravan inn, school chalkboard, archive pilasters and
+scroll, library rose window/book relief, and barracks parapet/shield. Existing
+wall/roof textures are retained. One static code-native renderer adds no
+physics, actors, doors, services or per-frame processing. Routes and original
+scene geometry are unchanged. These marks do not imply new enterable interiors.
+
+Thirteen targeted tests pass; six staged GPU views were reviewed. Details:
+art/visual_slice/CINDER_CIVIC_ART.md. Platform art still crosses some facades;
+next work should integrate the existing walkable surfaces visually without
+changing tested routes, then extend landmark identity to Echo and Starfall.
+Full-map art and mobile profiling remain unfinished.
+
+### Cinder walkable-surface art (2026-09-27)
+
+44 existing surfaces now have distinct facing: 36 stone steps, five timber
+galleries and three paved street sections across the old court and expanded
+districts. One static renderer replaces only the original leaf plates, using
+existing collision bounds; no route, jump distance, collision/one-way flag,
+door, actor or save changes. Bright top edges remain above roof decoration
+but below NPC bodies/names. Small gallery brackets add no gameplay surfaces.
+
+Thirteen targeted tests pass and five GPU views were reviewed. Details:
+art/visual_slice/CINDER_WALKWAYS.md. Next visual cleanup: upper-watch sky edge
+blending and the prototype field-office panel, then Echo/Starfall route and
+landmark treatment. Existing layouts still cross some facade ornaments;
+this pass does not claim final architecture, complete maps or mobile profiling.
+
+### Hearth board and sky readability (2026-09-27)
+
+Cinder's eastern sky now fades over its top 140px without extending room
+geometry or changing parallax. The field office uses a framed seven-row
+status table, separates tasks/guards/return patrols and explicitly distinguishes
+victory from reward collection. The board alone moves east into clear wall
+space under the watch gallery; original NPCs/stops, task rules, rewards and
+saves are unchanged. It remains a world-space sign, not the final quest UI.
+
+Four staged GPU views cover first-clear/return data and camera movement near
+the former sky seam. Details: art/visual_slice/HEARTH_BOARD_AND_SKY.md.
+Next: extend readable landmarks and surface dressing to Echo/Starfall while
+preserving their distinct identity. Full-map art and mobile UI/performance
+acceptance remain open.
+
+### Echo/Starfall image-material expansion (2026-09-27)
+
+Four new original ImageGen textures are integrated: Echo mineral limestone
+and teal walkway timber, Starfall silver-lavender masonry and indigo slate.
+Source PNGs are retained unchanged; each imports at 512px with mipmaps.
+Echo's 57 existing floor/stair/balcony/nook surfaces use the two cool
+materials. Starfall's 27 original facade/roof polygons include ten upper-city
+houses; six additional decorative material plates dress the three market
+buildings behind their existing windows, stalls, doors and signs.
+
+No existing geometry, visibility, physics, routes, actors, quest rules or
+save formats change. Fourteen targeted tests pass and five staged GPU views
+were reviewed. Exact prompts/provenance: art/visual_slice/ECHO_STARFALL_MATERIALS.md.
+This is not complete map art or mobile profiling. Echo's older field-board
+layout and Starfall upper-city backgrounds/surface dressing remain follow-ups.
+
+### Starfall background ownership correction (2026-09-27)
+
+Removed the separate market panorama after the user's overlap screenshot.
+The city now uses one serialized full-height Sky image for street and upper
+districts, with horizontal repetition and vertical clamping. The facade art
+module no longer generates a painting; RemainingArt animates the same Sky.
+See art/visual_slice/CITY_BACKGROUND_UNIFICATION.md for editor/runtime capture
+evidence and the editor-harness shutdown limitation. This is a focused visual
+integration repair, not a claim that the entire map's final artwork is done.
+
+### City terrace and masonry pass (2026-09-27)
+
+Four flat upper-terrace undersides now use shallow stone arcades, district
+tints and hanging-garden ivy. Six stair backings and three bell supports use
+existing masonry. Four background buildings receive recessed facade bays
+and pilasters. No route, collider, original silhouette or save data changed.
+Details and staged preview coverage: art/visual_slice/CITY_ARCADES.md.
+
+### Starfall civic life and outskirts props (2026-09-27)
+
+Expanded the visual pass to 12 garden planters, four upper-city workplaces,
+four abandoned Outskirts caravans, six barricades and 28 deep-route ruin
+silhouettes. Static botanical geometry replaces circular canopies; props use
+slats, hoops, tools, paper lanterns and torn cloth. Task devices, population,
+loot and traversal remain unchanged. Notes and remaining work are recorded
+in art/visual_slice/STARFALL_CIVIC_AND_OUTSKIRTS_PROPS.md.
+
+### Starfall task presentation (2026-09-27)
+
+Seven progress registers and nine optional stations now have read-only,
+event-driven presentation with distinct winch/terminal/seedbed/beacon forms
+and locked/pending/done symbols. Five large restored landmark polygons are
+replaced visually with plants/lanterns without changing their event IDs.
+Task gates, reach, interaction text, saved flags and rewards remain owned by
+the original controllers. See art/visual_slice/STARFALL_TASK_PRESENTATION.md.
+
+### Starfall side-room coverage (2026-09-28)
+
+Fixed 35 omitted branch/niche painting masks across six Starfall routes and
+Blackwater Cistern. These share the existing per-room image/material/UV space.
+Thirty Starfall side floors receive shallow edge detail and themed wall-side
+props; their technical labels are hidden without changing actual task text.
+No route/collision or save logic changes. See
+art/visual_slice/STARFALL_BRANCH_COVERAGE.md for tests and editor limitations.
+
+### Starfall scenery/readability (2026-09-28)
+
+Replaced filled Rooted Hall root decoration with thin clipped bark strokes;
+150 existing decorative surfaces in the other inner Starfall routes now use
+stone/iron. Decorative cable/ribbon strokes are clipped to authored room masks.
+Fourteen side-task signs are compact, with twelve full instruction signs
+retained at entrances/reserves. No task, reward, movement or save-rule changes.
+Details: art/visual_slice/STARFALL_SCENERY_READABILITY.md.
+
+### Shared breakable presentation (2026-09-28)
+
+Supply crates now use region-specific planks, bands, rope or seals, plus
+health-driven cracks and bounded short-lived splinters. Streamed damage
+restores visually without replaying hits; idle art has no frame processing.
+Loot tables, physical size and quest/destruction rules remain unchanged.
+Details and remaining placement/art issues: art/visual_slice/CRATE_PRESENTATION.md.
+
+### Bounded crate grounding (2026-09-28)
+
+Newly loaded crates share a one-time, room-batched floor-placement pass.
+Only clear downward moves of at most 48 px are allowed, with no horizontal
+movement or collider resizing. World audit: 470 placed on nearby supports,
+one already grounded, 85 unresolved authored sites out of 556 inspected.
+Streaming retains corrected positions and damage. No loot or quest changes.
+Runtime behavior, safety checks and remaining review groups are documented
+in art/visual_slice/CRATE_FLOOR_PLACEMENT.md.
+
+### Authored crate-placement exceptions (2026-09-28)
+
+All 85 previously unresolved crate sites now have explicit corrected anchors
+on existing floors. The full mapped-room audit finds 556 supported crates,
+with no unsupported sites; other crates keep the downward-only placement rule.
+Names, populations, loot and quest callbacks are preserved. Old restored
+positions migrate once; revisits retain corrected positions and damage.
+This finishes the audited crate-placement backlog, not the remaining map art.
+Details: art/visual_slice/CRATE_AUTHORED_ANCHORS.md.
+
+### Echo devices and local sign readability (2026-09-28)
+
+Eighteen existing Echo devices now have five distinct native 2D silhouettes
+and explicit active/recording markers. Compact station artwork fits beneath
+low shelves without changing interaction shapes or reach. Ten local operation
+signs are shortened; five entry signs keep full exploration and return clues.
+No puzzle, reward, route or save-rule changes. Static art redraws only on state
+changes; receiver gameplay processing is retained. Echo scenery and older
+labels remain a separate unfinished pass.
+Details: art/visual_slice/ECHO_DEVICE_PRESENTATION.md.
+
+### Echo scenery silhouettes (2026-09-28)
+
+Eight Echo routes now use faceted crystal clusters, rounded fungi and smaller
+textured rock formations in place of repeated flat cones. Known decorative
+pillars/ribbons are clipped to authored rooms; opaque alcove-mouth trapezoids
+no longer hide the painting. This cosmetic pass preserves source geometry,
+floor topology, hazards, devices and save rules, with no idle art processing.
+Field-site props, creature placeholders and old labels still require work.
+Details: art/visual_slice/ECHO_SCENERY_PRESENTATION.md.
+
+### Generated Echo prop artwork (2026-09-28)
+
+Three generated transparent 2D sprites now replace 121 field props across
+eight explicitly scoped Echo rooms: 11 mineral carts, five archive shelves
+and 105 cave ferns. Shared source textures retain full resolution and mipmaps;
+sprites use uniform scale and the existing floor anchors. Clues, rails, quest
+devices and breakable supplies are preserved. Archive book-delivery carts
+await their own cargo variant; other props/actors and label layout remain.
+Asset provenance, final prompts and limitations:
+art/visual_slice/ECHO_GENERATED_PROPS.md.
+
+### Echo camp and archive furniture follow-up (2026-09-28)
+
+Three additional generated RGBA assets replace six canvas shelters, eight
+field/reading desks and the archive's book-delivery cart: 136 painted props
+in total across the same eight Echo rooms. Desks now layer in front of shelves;
+small bivouac tents fit beneath raised walkway tops. No checkpoint, population,
+loot, physics or save rules changed. Thick foreground platform decoration still
+occludes some props; actor art and label crowding also remain unfinished.
+Assets, exact prompts and review limits: art/visual_slice/ECHO_CAMP_PROPS.md.
+
+### Echo prop clearance follow-up (2026-09-28)
+
+The Grotto camp shelter is no longer obscured by oversized ledge undersides:
+89 one-way ledges now keep their art within collision depth. Three Archive
+bookcases, the Indexer's desk and the book cart fit on audited clear floor
+spans without crossing platforms. Decorative cart rails follow the artwork;
+all NPC/loot/site anchors, traversal collision and quest rules are unchanged.
+Clue-label layout, creature art and oversized solid-floor foundations remain.
+Details: art/visual_slice/ECHO_PROP_CLEARANCE.md.
+
+### Echo field-clue readability (2026-09-28)
+
+75 existing field clues in eight Echo rooms now use bounded, obstacle-aware
+text placement and readable outlines. Layout reserves space for operation
+instructions, preserves every original clue/status string and runs only at
+creation or text-size changes. No NPC, collision, reward or save changes.
+Operation/door labels and creature nameplates are outside this layout pass;
+actor art, remaining machinery and large solid-floor foundations still need work.
+Details: art/visual_slice/ECHO_FIELD_SIGN_LAYOUT.md.
+
+### Echo water machinery (2026-09-28)
+
+Two generated RGBA assets replace four machinery assemblies in Tide Well and
+Undertow Vault: two maintenance pumps and two pressure-gauge stations. The
+small pump bases remain grounded, and the upper dial clears its adjacent stair.
+Needles/checkmarks read native regulator state without adding switches or
+changing collision, rewards, progress or population. Only changed relevant
+events redraw the gauges. Remaining equipment/creature art and foundation
+silhouettes are still pending. Assets/prompts: art/visual_slice/ECHO_MACHINERY.md.
+
+### Buried tunnel ceiling safety (2026-10-04)
+
+Lowered route vaults use opaque dark interiors, irregular geological side
+edges and detailed hanging stone/root rims. This follows the solid-terrain
+cross-section principle of the supplied references without filling playable
+air above a ceiling: some supports are floors for the next vertical tier.
+The existing 22 physical profiles and jump clearances remain unchanged.
+Only their bounded visual interior/silhouette is rebuilt; no actors, rewards,
+doors or native terrain are moved. Eight real-room lower/upper-tier captures
+and the focused mass/lifecycle test document this pass. Previous interactive
+foliage, six walkable relief profiles and canopy drips remain in place.

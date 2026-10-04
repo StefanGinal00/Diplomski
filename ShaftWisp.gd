@@ -46,6 +46,7 @@ var zone_tier: int = 0
 
 
 func _ready() -> void:
+	preload("res://MobAttackPresentation.gd").attach(self, "wisp")
 	anchor_position = global_position
 	default_body_color = body_visual.color
 	target_player = get_tree().get_first_node_in_group("player") as Player
@@ -53,6 +54,16 @@ func _ready() -> void:
 	current_health = max_health
 	health_bar.max_value = max_health
 	health_bar.value = current_health
+
+
+func suspend_room_combat() -> void:
+	if is_dead: return
+	state = State.HOVER
+	state_time = maxf(state_time, 0.85)
+	contact_cooldown_remaining = maxf(contact_cooldown_remaining, 0.6)
+	velocity = Vector2.ZERO
+	body_visual.scale = Vector2.ONE
+	body_visual.color = default_body_color
 
 
 func _physics_process(delta: float) -> void:
@@ -165,6 +176,7 @@ func _try_contact_damage() -> void:
 			var knockback_direction := (body.global_position - global_position).normalized()
 			body.take_damage(contact_damage, Vector2(knockback_direction.x * 150.0, -115.0))
 			contact_cooldown_remaining = contact_cooldown
+			get_node("AttackPresentation").contact(body)
 			if state == State.DIVE:
 				state = State.RECOVER
 				state_time = recover_duration

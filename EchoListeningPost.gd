@@ -104,6 +104,8 @@ func _refresh() -> void:
 		return
 	core.color = Color(0.35, 0.96, 0.75) if attuned else Color(0.53, 0.65, 1.0)
 	$Glow.color = Color(core.color, 0.24)
+	if has_node("DeviceArt"):
+		$DeviceArt.set_status(attuned, listening)
 	prompt.visible = nearby_player != null
 	if attuned:
 		prompt.text = "RECORD ATTUNED"

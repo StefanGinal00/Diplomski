@@ -5,7 +5,7 @@ signal defeated
 
 @export var zone_id: String = "sunken_shaft"
 @export var max_health: int = 3
-@export var detection_range: float = 210.0
+@export var detection_range: float = 310.0
 @export var windup_time: float = 0.65
 @export var shot_cooldown: float = 1.8
 @export var projectile_scene: PackedScene
@@ -32,6 +32,8 @@ var spread_rays: Array[Line2D] = []
 
 
 func _ready() -> void:
+	preload("res://CompactMobAppearance.gd").attach(self, "sentry")
+	preload("res://SentryAttackCue.gd").attach(self)
 	var game_state := get_node_or_null("/root/GameState")
 	if game_state != null:
 		zone_tier = game_state.get_zone_tier(zone_id)
@@ -44,6 +46,13 @@ func _ready() -> void:
 	health_bar.value = current_health
 	warning_ray.hide()
 	target_player = get_tree().get_first_node_in_group("player") as Player
+	preload("res://StaticSentryPlacement.gd").request(self)
+
+
+func suspend_room_combat() -> void:
+	if is_dead: return
+	_cancel_windup()
+	cooldown_remaining = maxf(cooldown_remaining, 0.6)
 
 
 func _physics_process(delta: float) -> void:
@@ -57,7 +66,9 @@ func _physics_process(delta: float) -> void:
 	var distance := global_position.distance_to(target_player.global_position)
 	if distance > detection_range or not _has_clear_shot():
 		_cancel_windup()
-		cooldown_remaining = minf(cooldown_remaining + delta, shot_cooldown)
+		# Cover cancels the telegraph, not the entire recharge. A player emerging
+		# from a ledge gets a fresh full warning instead of another long idle wait.
+		cooldown_remaining = maxf(cooldown_remaining - delta, 0.0)
 		return
 	var target_direction := (target_player.global_position - muzzle.global_position).normalized()
 	if windup_remaining > 0.0:
@@ -124,14 +135,23 @@ func _fire() -> void:
 		projectile.global_position = muzzle.global_position
 		projectile.setup(aim_direction.rotated(angle), self)
 		projectile.set("speed", 185.0)
+		projectile.set("max_range", 370.0)
+		projectile.set("lifetime", 2.0)
 		(projectile.get_node("Core") as Polygon2D).color = Color(0.83, 0.48, 1.0, 1.0) if zone_tier >= 1 else projectile_color
 		(projectile.get_node("Glow") as Polygon2D).color = Color(0.6, 0.2, 0.85, 0.32) if zone_tier >= 1 else projectile_glow_color
+	var material_frame := 13 if projectile_color.r > projectile_color.b else 16
+	get_node("PaintedMobAppearance").contact()
+	var burst := preload("res://BossBurst.gd").spawn(get_parent(), muzzle.global_position, projectile_color, "contact", Vector2(10, 10), 0.14, material_frame)
+	if burst != null:
+		burst.global_rotation = aim_direction.angle()
+		# The flame atlas is painted upward; crystal/thorn sequences face right.
+		burst.paint_rotation = PI * 0.5 if material_frame == 13 else 0.0
 
 
 func _apply_attack_tier() -> void:
 	if zone_tier < 1:
 		return
-	detection_range = 230.0
+	detection_range = maxf(detection_range,330.0)
 	windup_time = 0.78
 	shot_cooldown = 1.65
 	if spread_rays.is_empty():

@@ -1,0 +1,399 @@
+{
+  "version": 1,
+  "date": "2026-10-03",
+  "scope": "Post body/city continuation: terrain-safe pickup collection, shallow spawn grounding, continuous ambient selection, boss-aware fall recovery, broad combat/actor/development-tool regression.",
+  "previous_pass": "res://tests/body_city_repair_verification_v1.json",
+  "fixes": [
+    {
+      "id": "shallow_pickup_floor_overlap",
+      "cause": "The downward ray began at FOOT-1, inside supporting terrain when a reward's center was clear but its lower seven pixels overlapped a thin floor.",
+      "change": "A one-time maximum 2.1px center-overlap recovery plus center-to-foot continuous fall sweep registers rewards on the support. No upward search through arbitrary ceilings; unique/settle opt-outs retained.",
+      "before_log": ".tmp-smoke-suite-20261003-155935-733-10c19c01/pickup_geometry_smoke.log",
+      "regression": "pickup_geometry_smoke.gd: three pickup types at two shallow spawn heights."
+    },
+    {
+      "id": "cover_blocked_pickup_claim",
+      "cause": "Magnet sight was blocked by walls, but native Area body_entered callbacks awarded gold/items/XP without checking that cover.",
+      "change": "All three reward owners check terrain sight before claims; cached native overlaps retry after cover is removed. Immediate single-claim locking and rejected-reward handling retained.",
+      "before_log": ".tmp-smoke-suite-20261003-155935-733-10c19c01/pickup_geometry_smoke.log",
+      "regression": "pickup_geometry_smoke.gd: native contacts across a one-pixel wall, unchanged rewards while blocked, automatic collection after removal."
+    },
+    {
+      "id": "ambient_selection_pose_reset",
+      "cause": "select_visible rested every active ornament at each 0.25s selection, independently of the 0.05/0.1s animation tick.",
+      "change": "Compute the next active set first; rest only outgoing props. Retained grass, cloth and vines keep their current pose. Standard/low-cost 18/8 cap unchanged.",
+      "before_log": ".tmp-smoke-suite-20261003-160711-473-2fd6b82e/ambient_continuity_smoke.log",
+      "regression": "ambient_continuity_smoke.gd: eight consecutive selections, exact outgoing retirement, budget reduction, real painted grass crossfade and vine rotation."
+    },
+    {
+      "id": "boss_torso_recovery_safety",
+      "cause": "Fall recovery queried only the player's walking mask, excluding the damage-only painted boss torso/head receiver.",
+      "change": "The safety query additionally considers CombatHurtbox.LAYER and resolves proxy actors. Player walking collision mask, health and checkpoint stay unchanged; occupied cached recovery points are rejected.",
+      "before_log": ".tmp-smoke-suite-20261003-161049-439-f0deb760/fall_recovery_threat_smoke.log",
+      "regression": "fall_recovery_threat_smoke.gd: actual Warden ContactArea overlaps the player above its old foot collider; safe fallback rejects that stale point."
+    }
+  ],
+  "summary": {
+    "latest_unique_tests": 39,
+    "latest_pass": 39,
+    "latest_fail": 0,
+    "world_rooms": 39,
+    "foreground_plants_rechecked": 5859,
+    "natural_mounds_rechecked": 30,
+    "earth_shoulders_rechecked": 180,
+    "real_ranged_shaft_encounters": 40,
+    "real_ranged_shaft_shots": 255,
+    "mixed_shaft_encounters": 15,
+    "mixed_real_sword_attacks": 191,
+    "boss_body_weapon_cases": 72,
+    "native_captures": 6,
+    "new_generated_assets": 0,
+    "original_bitmap_pixels_unchanged": true
+  },
+  "test_revisions": [
+    "combat_flipbook_smoke.gd was asserting the retired 6x4 runtime body grid and fixed -112px offset. It now verifies all six semantic states in both facings against registered opaque foot contact, uniform scale and unchanged native gameplay. The original 144 source-frame uniqueness/alpha checks remain.",
+    "The ambient fixture uses approximate comparisons for engine single-precision node rotations; exact rest-call counts still detect the production reset bug."
+  ],
+  "tests": [
+    {
+      "test": "ambient_continuity_smoke.gd",
+      "status": "PASS",
+      "seconds": 1.58,
+      "results": ".tmp-smoke-suite-20261003-160848-258-0c65d8e3/results.json",
+      "log": ".tmp-smoke-suite-20261003-160848-258-0c65d8e3/ambient_continuity_smoke.log"
+    },
+    {
+      "test": "boss_appearance_smoke.gd",
+      "status": "PASS",
+      "seconds": 3.35,
+      "results": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/results.json",
+      "log": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/boss_appearance_smoke.log"
+    },
+    {
+      "test": "boss_arena_finish_smoke.gd",
+      "status": "PASS",
+      "seconds": 28.45,
+      "results": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/results.json",
+      "log": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/boss_arena_finish_smoke.log"
+    },
+    {
+      "test": "boss_body_hitbox_smoke.gd",
+      "status": "PASS",
+      "seconds": 15.28,
+      "results": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/results.json",
+      "log": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/boss_body_hitbox_smoke.log"
+    },
+    {
+      "test": "boss_combat_presentation_smoke.gd",
+      "status": "PASS",
+      "seconds": 29.4,
+      "results": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/results.json",
+      "log": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/boss_combat_presentation_smoke.log"
+    },
+    {
+      "test": "boss_defeat_echo_smoke.gd",
+      "status": "PASS",
+      "seconds": 36.06,
+      "results": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/results.json",
+      "log": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/boss_defeat_echo_smoke.log"
+    },
+    {
+      "test": "boss_encounter_safety_smoke.gd",
+      "status": "PASS",
+      "seconds": 25.07,
+      "results": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/results.json",
+      "log": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/boss_encounter_safety_smoke.log"
+    },
+    {
+      "test": "boss_frame_sequence_smoke.gd",
+      "status": "PASS",
+      "seconds": 19.61,
+      "results": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/results.json",
+      "log": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/boss_frame_sequence_smoke.log"
+    },
+    {
+      "test": "boss_lamp_reveal_smoke.gd",
+      "status": "PASS",
+      "seconds": 2.49,
+      "results": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/results.json",
+      "log": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/boss_lamp_reveal_smoke.log"
+    },
+    {
+      "test": "boss_locomotion_smoke.gd",
+      "status": "PASS",
+      "seconds": 19.58,
+      "results": ".tmp-smoke-suite-20261003-160421-670-90d6a1f9/results.json",
+      "log": ".tmp-smoke-suite-20261003-160421-670-90d6a1f9/boss_locomotion_smoke.log"
+    },
+    {
+      "test": "boss_motion_smoke.gd",
+      "status": "PASS",
+      "seconds": 29.37,
+      "results": ".tmp-smoke-suite-20261003-160421-670-90d6a1f9/results.json",
+      "log": ".tmp-smoke-suite-20261003-160421-670-90d6a1f9/boss_motion_smoke.log"
+    },
+    {
+      "test": "boss_music_smoke.gd",
+      "status": "PASS",
+      "seconds": 30.79,
+      "results": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/results.json",
+      "log": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/boss_music_smoke.log"
+    },
+    {
+      "test": "boss_transition_readability_smoke.gd",
+      "status": "PASS",
+      "seconds": 28.27,
+      "results": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/results.json",
+      "log": ".tmp-smoke-suite-20261003-155638-691-c3cdbc6d/boss_transition_readability_smoke.log"
+    },
+    {
+      "test": "combat_flipbook_smoke.gd",
+      "status": "PASS",
+      "seconds": 2.14,
+      "results": ".tmp-smoke-suite-20261003-160327-529-7eca308d/results.json",
+      "log": ".tmp-smoke-suite-20261003-160327-529-7eca308d/combat_flipbook_smoke.log"
+    },
+    {
+      "test": "combat_readability_smoke.gd",
+      "status": "PASS",
+      "seconds": 2.9,
+      "results": ".tmp-smoke-suite-20261003-155454-459-da6c1007/results.json",
+      "log": ".tmp-smoke-suite-20261003-155454-459-da6c1007/combat_readability_smoke.log"
+    },
+    {
+      "test": "enemy_perception_smoke.gd",
+      "status": "PASS",
+      "seconds": 16.5,
+      "results": ".tmp-smoke-suite-20261003-160451-241-6721a0b0/results.json",
+      "log": ".tmp-smoke-suite-20261003-160451-241-6721a0b0/enemy_perception_smoke.log"
+    },
+    {
+      "test": "fall_recovery_threat_smoke.gd",
+      "status": "PASS",
+      "seconds": 19.98,
+      "results": ".tmp-smoke-suite-20261003-161240-709-97354994/results.json",
+      "log": ".tmp-smoke-suite-20261003-161240-709-97354994/fall_recovery_threat_smoke.log"
+    },
+    {
+      "test": "living_actor_cycles_smoke.gd",
+      "status": "PASS",
+      "seconds": 10.55,
+      "results": ".tmp-smoke-suite-20261003-161810-359-3353969a/results.json",
+      "log": ".tmp-smoke-suite-20261003-161810-359-3353969a/living_actor_cycles_smoke.log"
+    },
+    {
+      "test": "living_world_smoke.gd",
+      "status": "PASS",
+      "seconds": 62.52,
+      "results": ".tmp-smoke-suite-20261003-161251-947-d5fd2092/results.json",
+      "log": ".tmp-smoke-suite-20261003-161251-947-d5fd2092/living_world_smoke.log"
+    },
+    {
+      "test": "pickup_claim_smoke.gd",
+      "status": "PASS",
+      "seconds": 19.72,
+      "results": ".tmp-smoke-suite-20261003-160209-664-38ef7c23/results.json",
+      "log": ".tmp-smoke-suite-20261003-160209-664-38ef7c23/pickup_claim_smoke.log"
+    },
+    {
+      "test": "pickup_geometry_smoke.gd",
+      "status": "PASS",
+      "seconds": 9.84,
+      "results": ".tmp-smoke-suite-20261003-160209-664-38ef7c23/results.json",
+      "log": ".tmp-smoke-suite-20261003-160209-664-38ef7c23/pickup_geometry_smoke.log"
+    },
+    {
+      "test": "pickup_motion_smoke.gd",
+      "status": "PASS",
+      "seconds": 16.41,
+      "results": ".tmp-smoke-suite-20261003-160421-670-90d6a1f9/results.json",
+      "log": ".tmp-smoke-suite-20261003-160421-670-90d6a1f9/pickup_motion_smoke.log"
+    },
+    {
+      "test": "projectile_sweep_smoke.gd",
+      "status": "PASS",
+      "seconds": 1.28,
+      "results": ".tmp-smoke-suite-20261003-161821-431-ff843ccd/results.json",
+      "log": ".tmp-smoke-suite-20261003-161821-431-ff843ccd/projectile_sweep_smoke.log"
+    },
+    {
+      "test": "resident_conversation_smoke.gd",
+      "status": "PASS",
+      "seconds": 20.16,
+      "results": ".tmp-smoke-suite-20261003-161301-308-9bd343d3/results.json",
+      "log": ".tmp-smoke-suite-20261003-161301-308-9bd343d3/resident_conversation_smoke.log"
+    },
+    {
+      "test": "resident_motion_smoke.gd",
+      "status": "PASS",
+      "seconds": 1.51,
+      "results": ".tmp-smoke-suite-20261003-161301-308-9bd343d3/results.json",
+      "log": ".tmp-smoke-suite-20261003-161301-308-9bd343d3/resident_motion_smoke.log"
+    },
+    {
+      "test": "resident_painted_art_smoke.gd",
+      "status": "PASS",
+      "seconds": 48.53,
+      "results": ".tmp-smoke-suite-20261003-161301-308-9bd343d3/results.json",
+      "log": ".tmp-smoke-suite-20261003-161301-308-9bd343d3/resident_painted_art_smoke.log"
+    },
+    {
+      "test": "residential_facade_smoke.gd",
+      "status": "PASS",
+      "seconds": 4.6,
+      "results": ".tmp-smoke-suite-20261003-161301-308-9bd343d3/results.json",
+      "log": ".tmp-smoke-suite-20261003-161301-308-9bd343d3/residential_facade_smoke.log"
+    },
+    {
+      "test": "sentinel_combat_flow_smoke.gd",
+      "status": "PASS",
+      "seconds": 33.79,
+      "results": ".tmp-smoke-suite-20261003-155454-459-da6c1007/results.json",
+      "log": ".tmp-smoke-suite-20261003-155454-459-da6c1007/sentinel_combat_flow_smoke.log"
+    },
+    {
+      "test": "sentry_cover_smoke.gd",
+      "status": "PASS",
+      "seconds": 27.82,
+      "results": ".tmp-smoke-suite-20261003-161522-772-6f0cc166/results.json",
+      "log": ".tmp-smoke-suite-20261003-161522-772-6f0cc166/sentry_cover_smoke.log"
+    },
+    {
+      "test": "sentry_medium_range_smoke.gd",
+      "status": "PASS",
+      "seconds": 13.81,
+      "results": ".tmp-smoke-suite-20261003-161522-772-6f0cc166/results.json",
+      "log": ".tmp-smoke-suite-20261003-161522-772-6f0cc166/sentry_medium_range_smoke.log"
+    },
+    {
+      "test": "settlement_motion_budget_smoke.gd",
+      "status": "PASS",
+      "seconds": 21.54,
+      "results": ".tmp-smoke-suite-20261003-160421-670-90d6a1f9/results.json",
+      "log": ".tmp-smoke-suite-20261003-160421-670-90d6a1f9/settlement_motion_budget_smoke.log"
+    },
+    {
+      "test": "shaft_fall_recovery_smoke.gd",
+      "status": "PASS",
+      "seconds": 30.57,
+      "results": ".tmp-smoke-suite-20261003-161240-709-97354994/results.json",
+      "log": ".tmp-smoke-suite-20261003-161240-709-97354994/shaft_fall_recovery_smoke.log"
+    },
+    {
+      "test": "shaft_guard_combat_smoke.gd",
+      "status": "PASS",
+      "seconds": 23.02,
+      "results": ".tmp-smoke-suite-20261003-155454-459-da6c1007/results.json",
+      "log": ".tmp-smoke-suite-20261003-155454-459-da6c1007/shaft_guard_combat_smoke.log"
+    },
+    {
+      "test": "shaft_hollow_entry_combat_smoke.gd",
+      "status": "PASS",
+      "seconds": 27.89,
+      "results": ".tmp-smoke-suite-20261003-155454-459-da6c1007/results.json",
+      "log": ".tmp-smoke-suite-20261003-155454-459-da6c1007/shaft_hollow_entry_combat_smoke.log"
+    },
+    {
+      "test": "shaft_mixed_combat_smoke.gd",
+      "status": "PASS",
+      "seconds": 42.94,
+      "results": ".tmp-smoke-suite-20261003-155454-459-da6c1007/results.json",
+      "log": ".tmp-smoke-suite-20261003-155454-459-da6c1007/shaft_mixed_combat_smoke.log"
+    },
+    {
+      "test": "shaft_ranged_combat_smoke.gd",
+      "status": "PASS",
+      "seconds": 64.41,
+      "results": ".tmp-smoke-suite-20261003-163405-676-215257af/results.json",
+      "log": ".tmp-smoke-suite-20261003-163405-676-215257af/shaft_ranged_combat_smoke.log"
+    },
+    {
+      "test": "testing_tools_smoke.gd",
+      "status": "PASS",
+      "seconds": 35.02,
+      "results": ".tmp-smoke-suite-20261003-161510-175-e6e43646/results.json",
+      "log": ".tmp-smoke-suite-20261003-161510-175-e6e43646/testing_tools_smoke.log"
+    },
+    {
+      "test": "world_ambience_smoke.gd",
+      "status": "PASS",
+      "seconds": 19.85,
+      "results": ".tmp-smoke-suite-20261003-161201-272-f4eafff9/results.json",
+      "log": ".tmp-smoke-suite-20261003-161201-272-f4eafff9/world_ambience_smoke.log"
+    },
+    {
+      "test": "world_grounding_smoke.gd",
+      "status": "PASS",
+      "seconds": 55.58,
+      "results": ".tmp-smoke-suite-20261003-162850-898-daf82e7c/results.json",
+      "log": ".tmp-smoke-suite-20261003-162850-898-daf82e7c/world_grounding_smoke.log"
+    }
+  ],
+  "native_review": {
+    "script": "res://tests/preview_ambient_continuity.gd",
+    "log": ".tmp-ambient-continuity-preview-final.log",
+    "exit_code": 0,
+    "renderer": "Godot 4.6.2 Forward Mobile / D3D12, RTX 4050 Laptop GPU",
+    "viewport": [
+      1280,
+      720
+    ],
+    "low_cost": true,
+    "all_native_floor_contacts": true,
+    "active_props_each_capture": 8,
+    "read_only_pixel_comparison": {
+      "training_passage_different_pixels": 83113,
+      "echo_haven_different_pixels": 55408,
+      "starfall_citadel_different_pixels": 3685,
+      "note": "Whole-view RGB differences include moving mist/air as well as selected ornaments; they are not an isolated per-prop motion measurement. No pixel files were modified by this audit."
+    },
+    "captures": [
+      {
+        "room": "training_passage",
+        "sample": 0,
+        "path": "art/characters/preview_ambient_continuity_training_passage_0.png"
+      },
+      {
+        "room": "training_passage",
+        "sample": 1,
+        "path": "art/characters/preview_ambient_continuity_training_passage_1.png"
+      },
+      {
+        "room": "echo_haven",
+        "sample": 0,
+        "path": "art/characters/preview_ambient_continuity_echo_haven_0.png"
+      },
+      {
+        "room": "echo_haven",
+        "sample": 1,
+        "path": "art/characters/preview_ambient_continuity_echo_haven_1.png"
+      },
+      {
+        "room": "starfall_citadel",
+        "sample": 0,
+        "path": "art/characters/preview_ambient_continuity_starfall_citadel_0.png"
+      },
+      {
+        "room": "starfall_citadel",
+        "sample": 1,
+        "path": "art/characters/preview_ambient_continuity_starfall_citadel_1.png"
+      }
+    ],
+    "method": "Native gravity settles the player. Two samples per view drive the real shared ambient tick and its selection; actors are frozen for repeatable composition. These are reviewed camera captures, not a recorded full fight."
+  },
+  "editor_import": {
+    "log": ".tmp-loot-ambient-final-import.log",
+    "exit_code": 0,
+    "script_parse_errors": 0,
+    "known_environment_warnings": [
+      "Root certificate store access is unavailable in the sandbox.",
+      "Native renderer reports a shader disk-cache write warning, but all six captures were saved successfully.",
+      "Editor settings outside the writable workspace could not be persisted."
+    ]
+  },
+  "limitations": [
+    "39 focused tests do not prove the absence of every possible game bug.",
+    "Full manual campaign traversal, exhaustive room composition/animation/AI polish and physical-phone performance testing remain outside this completed continuation.",
+    "No new bitmap assets were generated in this pass; the fixes use existing painted frames and preserve all original image files."
+  ]
+}

@@ -272,7 +272,12 @@ func _platform(label: String, left: float, right: float, y: float, color: Color,
 
 func _stair_run(prefix: String, x: float, y: float, count: int, dx: float, dy: float, color: Color) -> void:
 	for step in range(count):
-		_platform("%s%d" % [prefix, step], x + step * dx, x + step * dx + 118, y + step * dy, color.lightened(float(step % 3) * 0.06), true, 10)
+		# Every descent tread needs an exposed landing. Mixing 118px upper
+		# treads with 58px lower ones buried the fifth step under the fourth.
+		# Uniform 58px treads overlap by 26px at the same 32px spacing, retaining
+		# the basic-jump rise and the existing clear portal approach.
+		var width := 58 if prefix=="LibraryDescent" else 118
+		_platform("%s%d" % [prefix, step], x + step * dx, x + step * dx + width, y + step * dy, color.lightened(float(step % 3) * 0.06), true, 10)
 
 
 func _house(label: String, center: Vector2, size: Vector2, wall: Color, window_color: Color) -> void:

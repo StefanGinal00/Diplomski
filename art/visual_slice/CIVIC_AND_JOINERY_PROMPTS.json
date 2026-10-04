@@ -1,0 +1,40 @@
+{
+  "date": "2026-09-30",
+  "mode": "built-in image_gen",
+  "usage": "Original 2D settlement scenery; files copied unchanged with alpha; max imported edge 1024 with mipmaps.",
+  "assets": [
+    {
+      "key": "civic_landmarks_v1",
+      "sha256_source_and_final": "451D51AD04507D3A934020E4CCCBFB070B4509B8D5F3D4B1752D3BAEDE9DE7AC",
+      "prompt": "Use case: stylized-concept\nAsset type: original production 2D side-scroller scenery sprite atlas, transparent PNG.\nPrimary request: Four separate painted objects in an evenly spaced 2 by 2 grid on a 1536 by 1024 canvas. Top left: low broad weathered blue-gray stone village fountain with a little carved star finial, copper spout and quiet turquoise water in its basin, solid plinth on flat ground. Top right: roofed wooden community notice board on two stout legs, five small weathered pinned papers without readable writing. Bottom left: arched wrought-iron garden trellis with climbing dark ivy and sparse pale violet flowers, two clearly visible stone feet. Bottom right: a brass celestial armillary with interlocking spherical rings on a short carved stone pedestal, base on flat ground.\nStyle: detailed hand-painted dark fantasy, believable chipped stone, aged brass, weathered wood, muted indigo shadows, restrained warm highlights. Consistent front elevation for 2D platformer, very slight view of top surfaces, not isometric, no cast shadow outside object.\nLayout: each complete object contained within its own 768 by 512 cell, at least 35px transparent margin all around each cell. Similar visual weight. No overlaps, no scenery, no floor strip, no people, no lettering or labels or grid lines, no watermark. Actual transparent alpha background and clear silhouette edges.",
+      "source": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-ab15dead-b23f-40f3-b660-8bd67d8efec3.png",
+      "final": "art/visual_slice/civic_landmarks_v1.png",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "key": "settlement_hanging_v1",
+      "sha256_source_and_final": "A1212C6D4788F3D5D56D18419BDA715955FEC76CA11304381A9179D42A13C072",
+      "prompt": "Use case: stylized-concept\nAsset type: original hand-painted 2D side-scroller hanging decor sprite atlas, actual transparent PNG.\nPrimary request: Six separate hanging objects in a precise 3 columns by 2 rows grid on a 1536 by 1024 canvas. Top row, left to right: antique dark brass cage lantern with a dim turquoise crystal and a short suspension chain with clearly visible top ring; soot-dark iron cage lantern with a small warm amber flame and short chain/top ring; graceful old brass lantern with dim cream glass and short chain/top ring. Bottom row, left to right: narrow weathered teal embroidered cloth pennant hung from a short horizontal wooden bar with two suspension cords converging at a top ring; burnt red cloth banner with stitched golden geometric border hung the same way; indigo cloth banner with subtle silver star embroidery hung the same way.\nStyle: high-detail painted dark fantasy, restrained light emission without exterior glow, textured cloth folds, worn metal, tactile thread edges. Front elevation of 2D scenery, not isometric, not pixel art.\nConstraints: each object entirely within its 512 by 512 cell with 45px transparent margins, exactly one object per cell; narrow vertical silhouettes, full suspension hardware visible, no unrelated ornaments, no text or watermarks, no opaque background, no contact shadows. These are scenery, not interface icons.",
+      "source": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-b2ca5a99-ee4c-495f-9afd-99a9000ba07f.png",
+      "final": "art/visual_slice/settlement_hanging_v1.png",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "key": "settlement_joinery_v1",
+      "sha256_source_and_final": "5464C8EECFC562538E1AB62EB292537EEEE1A7CA13168E4D63B814A522C8EB73",
+      "prompt": "Use case: stylized-concept\nAsset type: original detailed 2D platformer architecture cutout atlas on transparent alpha.\nPrimary request: Six distinct modular construction pieces, precise 3 columns by 2 rows grid, 1536 by 1024 canvas. Top left: tall straight weathered wooden support post, iron bands and bolts, ending in broad chipped blue-gray stone footing, flat floor contact. Top middle: horizontal heavy timber lintel, visible end-grain, a few iron straps, naturally rough but straight bottom. Top right: triangular timber knee brace with vertical short post at RIGHT side and horizontal short beam at TOP joined by a diagonal brace, rough carpentry, iron bolt plates, transparent triangular gap. Bottom left: tall straight warmer scorched-oak support post with copper straps and a basalt stone footing. Bottom middle: short horizontal block of stacked dark basalt masonry with weathered mortar and irregular top stone lip, rectangular structural section. Bottom right: triangular heavy blue-gray carved stone corbel bracket, flat top, vertical right edge, curved underside and a few ivy leaves.\nStyle: painted dark fantasy 2D side elevation, textured material detail, muted slate/wood/brown, natural wear, consistent neutral light. Not 3D perspective or isometric. Separate complete objects, 35px transparent margin inside each 512 by 512 cell. Tall posts narrow and full height, horizontal pieces wide and short; no touching neighbors. No background, floor, shadows outside pieces, text, watermarks, labels, grid lines or extra objects.",
+      "source": "C:/Users/Stefan/.codex/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-c9f089a4-e451-4b5e-9794-7922da2d121f.png",
+      "final": "art/visual_slice/settlement_joinery_v1.png",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    }
+  ]
+}

@@ -5,7 +5,7 @@ signal defeated
 signal shot_fired(direction: Vector2)
 
 @export var max_health: int = 2
-@export var detection_range: float = 220.0
+@export var detection_range: float = 285.0
 @export var shot_interval: float = 1.4
 @export var projectile_scene: PackedScene
 @export var xp_orb_scene: PackedScene
@@ -18,6 +18,8 @@ var shot_cooldown_remaining: float = 0.6
 var is_dead: bool = false
 var target_player: Node2D
 var default_sprite_modulate: Color
+var has_clear_shot := false
+const Perception := preload("res://EnemyPerception.gd")
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var muzzle: Marker2D = $Muzzle
@@ -32,29 +34,41 @@ func _ready() -> void:
 	target_player = get_tree().get_first_node_in_group("player") as Node2D
 
 
-func _process(delta: float) -> void:
+func suspend_room_combat() -> void:
+	has_clear_shot=false
+	shot_cooldown_remaining=maxf(shot_cooldown_remaining,0.6)
+
+func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
+	shot_cooldown_remaining = maxf(shot_cooldown_remaining-delta,0.0)
 	if not is_instance_valid(target_player):
 		target_player = get_tree().get_first_node_in_group("player") as Node2D
 	if target_player == null or target_player.get("is_dead") == true:
+		has_clear_shot=false
 		return
 
 	var distance_to_player := global_position.distance_to(target_player.global_position)
 	if distance_to_player > detection_range:
-		shot_cooldown_remaining = minf(shot_cooldown_remaining + delta, shot_interval)
+		has_clear_shot=false
 		return
 
 	var horizontal_direction := -1.0 if target_player.global_position.x < global_position.x else 1.0
 	sprite.flip_h = horizontal_direction < 0.0
 	muzzle.position.x = 13.0 * horizontal_direction
-	shot_cooldown_remaining = maxf(shot_cooldown_remaining - delta, 0.0)
+	if not Perception.clear_sight(self,target_player,muzzle.global_position):
+		has_clear_shot=false
+		return
+	if not has_clear_shot:
+		# Time in cover spends cooldown, but never spends the visible warning.
+		shot_cooldown_remaining=maxf(shot_cooldown_remaining,minf(0.35,shot_interval*0.4))
+	has_clear_shot=true
 	if is_zero_approx(shot_cooldown_remaining):
 		_shoot_at_player()
 
 
 func _shoot_at_player() -> void:
-	if projectile_scene == null or target_player == null or get_parent() == null:
+	if projectile_scene == null or not is_instance_valid(target_player) or target_player.get("is_dead")==true or get_parent() == null:
 		return
 
 	var projectile := projectile_scene.instantiate() as Area2D

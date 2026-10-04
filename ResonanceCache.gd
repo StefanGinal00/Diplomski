@@ -9,6 +9,7 @@ extends Area2D
 var nearby_player: Player
 var opened: bool = false
 var age: float = 0.0
+var record_label: Label
 
 @onready var lid: Polygon2D = $Lid
 @onready var core: Polygon2D = $Core
@@ -23,8 +24,22 @@ func _ready() -> void:
 	opened = game_state != null and bool(game_state.opened_caches.get(cache_id, false))
 	if game_state != null and not required_event_ids.is_empty():
 		game_state.shortcut_changed.connect(_on_shortcut_changed)
+	if preload("res://FieldRecords.gd").ENTRIES.has(cache_id):
+		record_label = Label.new()
+		record_label.name = "FieldRecordLabel"
+		record_label.position = Vector2(-58, -29)
+		record_label.size = Vector2(116, 14)
+		record_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		record_label.add_theme_font_size_override("font_size", 9)
+		record_label.add_theme_color_override("font_color", Color("e5cc99"))
+		add_child(record_label)
+		prompt.offset_top = -61
+		prompt.offset_bottom = -41
 	_refresh_visuals()
 	prompt.hide()
+	var paint := preload("res://CachePaintedArt.gd").new()
+	paint.name = "PaintedCache"
+	add_child(paint)
 
 
 func _process(delta: float) -> void:
@@ -50,9 +65,15 @@ func open(player: Player) -> bool:
 	if game_state == null or not _requirements_met(game_state) or not game_state.open_cache(cache_id):
 		return false
 	opened = true
+	get_node("PaintedCache").begin_opening()
 	game_state.add_gold(gold_reward)
 	if not reward_item_id.is_empty():
 		game_state.add_item(reward_item_id)
+	# Authored field reserves keep their original reward and gain local supplies.
+	# open_cache already recorded the receipt, so reentry/reload cannot repay.
+	var extra := preload("res://ExplorationLedger.gd").bonus(cache_id)
+	for item_id in extra:
+		game_state.add_item(str(item_id), int(extra[item_id]))
 	var weapon_class := str(game_state.get_item_definition(game_state.get_active_weapon_id()).get("weapon_class", "sword"))
 	match weapon_class:
 		"bow":
@@ -79,6 +100,8 @@ func _refresh_visuals() -> void:
 	rune_halo.default_color = memory_color
 	rune_halo.modulate.a = 0.28 if sealed else 0.87
 	prompt.text = "CACHE EMPTY" if opened else ("SEALS %d/%d" % [required_event_ids.size() - _remaining_seals(game_state), required_event_ids.size()] if sealed else "[E] OPEN " + cache_name.to_upper())
+	if record_label != null:
+		record_label.text = "RECORDED [J]" if opened else "FIELD RECORD"
 
 
 func _requirements_met(game_state: Node) -> bool:

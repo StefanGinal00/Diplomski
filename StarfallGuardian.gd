@@ -63,10 +63,13 @@ func _ready() -> void:
 	charge_line.hide()
 	volley_line.hide()
 	_hide_floor_marks()
+	preload("res://BossAppearance.gd").attach(self)
 
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
+		return
+	if get_node("EncounterSafety").should_suspend():
 		return
 	if not is_instance_valid(target_player):
 		target_player = get_tree().get_first_node_in_group("player") as Player
@@ -122,7 +125,8 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, 850.0 * delta)
 	else:
 		var horizontal_distance: float = target_player.global_position.x - global_position.x
-		velocity.x = signf(horizontal_distance) * (52.0 if phase == 1 else 67.0) if absf(horizontal_distance) > 85.0 else 0.0
+		var desired := signf(horizontal_distance) * (52.0 if phase == 1 else 67.0) if absf(horizontal_distance) > 85.0 else 0.0
+		velocity.x = preload("res://BossLocomotion.gd").approach(velocity.x, desired, delta)
 		muzzle.position.x = 26.0 * (-1.0 if horizontal_distance < 0.0 else 1.0)
 		if is_zero_approx(pulse_cooldown):
 			_start_pulse()
@@ -131,7 +135,7 @@ func _physics_process(delta: float) -> void:
 		elif is_zero_approx(volley_cooldown):
 			_start_volley()
 	move_and_slide()
-	position.x = clampf(position.x, arena_left_x, arena_right_x)
+	preload("res://BossLocomotion.gd").stop_at_edge(self, arena_left_x, arena_right_x, 0.55)
 	if charge_remaining > 0.0 and is_on_wall():
 		charge_remaining = 0.0
 		recovery_remaining = 0.55
@@ -164,6 +168,7 @@ func _start_volley() -> void:
 
 
 func _fire_volley() -> void:
+	get_node("CombatPresentation").release("volley")
 	volley_line.hide()
 	eye.color = Color(0.83, 0.98, 1.0, 1.0)
 	if get_parent() == null:
@@ -199,6 +204,7 @@ func _start_pulse() -> void:
 
 
 func _release_pulse() -> void:
+	get_node("CombatPresentation").release("pulse")
 	pulse_flash = 0.26
 	for index in pulse_indices:
 		var mark: Polygon2D = floor_marks[index]
@@ -209,7 +215,7 @@ func _release_pulse() -> void:
 			var mark: Polygon2D = floor_marks[index]
 			if absf(target_player.global_position.x - mark.global_position.x) < 66.0 and target_player.global_position.y > mark.global_position.y - 65.0:
 				var push := -1.0 if target_player.global_position.x < global_position.x else 1.0
-				target_player.take_damage(2, Vector2(push * 145.0, -200.0))
+				target_player.take_damage(3, Vector2(push * 145.0, -200.0))
 				break
 	recovery_remaining = 0.4
 

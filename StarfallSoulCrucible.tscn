@@ -1,4 +1,6 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=17 format=3]
+
+[ext_resource type="Script" path="res://RoomPaintedDepth.gd" id="90_painted_depth"]
 
 [ext_resource type="Script" path="res://StarfallSoulCrucible.gd" id="1_controller"]
 [ext_resource type="PackedScene" path="res://RoomDoor.tscn" id="2_door"]
@@ -30,6 +32,11 @@ size = Vector2(210, 12)
 
 [node name="StarfallSoulCrucible" type="Node2D"]
 script = ExtResource("1_controller")
+
+[node name="PaintedDepth" type="Node2D" parent="."]
+script = ExtResource("90_painted_depth")
+profile = "crucible"
+entry_plate_path = NodePath("Sky")
 
 [node name="Sky" type="Polygon2D" parent="."]
 z_index = -9
