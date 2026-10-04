@@ -1,6 +1,17 @@
 # Visual style pilot — Echo Grotto / Starfall market
 
-Latest regional ambient fauna (2026-10-04): [four original transparent sheets, 24 wing poses, saved paths and exact built-in ImageGen prompts](ambient_fauna_manifest_v1.json),
+Latest material-aware ground contact (2026-10-04): [four original transparent sheets, 24 dust phases, saved paths and exact built-in ImageGen prompts](ground_dust_manifest_v1.json),
+with [13 focused passes and 16 inspected native views](../../tests/ground_dust_verification_v1.json).
+Soil, slate, ash and limestone powder briefly react to actual walking and jump
+landings. The full animation stays above the measured floor tangent and shrinks
+beside walls/overhangs; iron and timber retain only tiny grains. Normal mode
+cross-fades two frames; low-cost mode uses one. The existing contact coordinator
+owns the bounded 8/3 puff pool without per-effect nodes, colliders or callbacks.
+Four byte-preserved 512px mipmapped imports use 3,721,008 decoded bytes. The first
+soil sheet was rejected for crossing cell gutters and regenerated; no source
+pixels were edited. This is ground response, not a new enemy effect.
+
+Previous regional ambient fauna (2026-10-04): [four original transparent sheets, 24 wing poses, saved paths and exact built-in ImageGen prompts](ambient_fauna_manifest_v1.json),
 with [12 focused passes and 12 inspected native captures](../../tests/ambient_fauna_verification_v1.json).
 Tiny cave, mine, ash and Starfall moths use fixed-scale registered thorax pivots,
 bounded orbits and eased retreat when the player passes their vegetation.

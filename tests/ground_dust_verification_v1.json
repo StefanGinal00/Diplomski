@@ -1,0 +1,180 @@
+{
+  "date": "2026-10-04",
+  "scope": "Ground-contact visual response and resident-route verification. No authored terrain, actor AI, combat, dialogue, saves or progression is changed.",
+  "implementation": {
+    "new_source_sheets": 4,
+    "animation_phases": 24,
+    "manifest": "art/visual_slice/ground_dust_manifest_v1.json",
+    "source_decoded_bytes_with_mipmaps": 3721008,
+    "dust": {
+      "materials": [
+        "moss",
+        "shale",
+        "basalt",
+        "citadel"
+      ],
+      "manufactured_surfaces": "Iron and timber retain the existing at-most-two tiny grains; no soil cloud.",
+      "lifetime_seconds": {
+        "step": 0.36,
+        "landing": 0.48
+      },
+      "max_width_world_units": 30.4,
+      "step_width_world_units": 14,
+      "puff_caps": {
+        "normal": 8,
+        "low": 3
+      },
+      "existing_grain_caps": {
+        "normal": 40,
+        "low": 12
+      },
+      "new_per_effect_nodes": 0,
+      "new_frame_callbacks": 0,
+      "normal_render": "Cross-fade neighboring atlas phases",
+      "low_render": "Nearest single atlas phase",
+      "placement": "Snapshots the actual physics contact and floor normal; ray plus full-envelope shape queries shrink/omit effects beside walls or beneath low ledges. Dynamic actors are ignored, saturated shape results fail conservatively.",
+      "silence_guards": [
+        "Idle",
+        "Passive platform transport",
+        "Shallow initial spawn",
+        "Room warp",
+        "Death",
+        "Test flight",
+        "Noclip"
+      ],
+      "notes": [
+        "The same effect coordinator already used by WorldAmbience drives both grains and puffs.",
+        "No decorative collider, floor mutation or source-image pixel edits are introduced.",
+        "Native review reduced opacity from the initial version and verified small effects remain below the body."
+      ]
+    },
+    "resident_routes": {
+      "rooms_audited": 39,
+      "residents": 111,
+      "route_legs": 368,
+      "spatial_samples": 11654,
+      "unsupported_samples": 0,
+      "extreme_floor_offsets": 0,
+      "abrupt_height_changes": 0,
+      "notes": "Read-only sampling of authored linear route legs plus existing movement, conversation, painted-body and walk-cycle regressions. No NPC fix is claimed because this audit did not find a failing route."
+    }
+  },
+  "verification": {
+    "passed": 13,
+    "total": 13,
+    "tests": [
+      {
+        "test": "ground_contact_assets_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-161029-931-83115900"
+      },
+      {
+        "test": "ground_contact_fx_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-161029-931-83115900"
+      },
+      {
+        "test": "ground_dust_animation_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-161029-931-83115900"
+      },
+      {
+        "test": "ground_patrol_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-161029-931-83115900"
+      },
+      {
+        "test": "resident_conversation_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-160527-710-fc04081e"
+      },
+      {
+        "test": "resident_motion_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-160527-710-fc04081e"
+      },
+      {
+        "test": "resident_painted_art_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-160527-710-fc04081e"
+      },
+      {
+        "test": "resident_route_grounding_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-160527-710-fc04081e"
+      },
+      {
+        "test": "route_relief_physics_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-160727-366-96931c21"
+      },
+      {
+        "test": "world_ambience_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-160734-402-e8fce5bc"
+      },
+      {
+        "test": "ambient_fauna_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-160834-041-21361ebc"
+      },
+      {
+        "test": "walk_cycle_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-160844-272-718e5b51"
+      },
+      {
+        "test": "ambient_contact_priority_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-161329-331-394ed6fa"
+      }
+    ],
+    "fixtures": [
+      "24 registered crop bounds, cached frame identity, source alpha and 512px mipmapped memory budget",
+      "Both facing directions and sloped supporting planes; dust quads remain above the floor tangent",
+      "Walls, zero clearance, intervening actors and an overhanging ledge above the ankle ray",
+      "Normal/low pool changes, large delta expiration, room/warp clear, manufactured surfaces",
+      "Actual player steps, idle, jump landing, slope contacts, passive transport, warp/death/flight/noclip"
+    ],
+    "terrain_regression": "24 actual-controller bidirectional standing/crouching walks across six physical profiles, with dash/jump/loot checks.",
+    "native_preview": {
+      "script": "tests/preview_ground_dust.gd",
+      "log": ".tmp-ground-dust-preview-final.log",
+      "renderer": "D3D12 Forward Mobile / RTX 4050, 1280x720",
+      "captures_reviewed": 16,
+      "rooms": [
+        "echo_depths",
+        "sunken_shaft",
+        "ash_barracks",
+        "starfall_citadel"
+      ],
+      "phases": [
+        "idle",
+        "step",
+        "landing",
+        "settled"
+      ],
+      "paths": "art/characters/preview_ground_dust_<room>_<phase>.png",
+      "real_walk_contacts": 4,
+      "real_jump_landings": 4,
+      "notes": [
+        "Actual player controller and static floor collision remain enabled; scenery and encounters are otherwise frozen for preview framing.",
+        "Each contact reports the correct regional material. Sunken Shaft step normal is (0.302854, -0.953037), not a flat-floor assumption.",
+        "All 16 final frames inspected; landings are shown at effect age 0.2 seconds."
+      ]
+    },
+    "editor_import": {
+      "log": ".tmp-ground-contact-final-import.log",
+      "asset_import_and_class_registration_completed": true,
+      "script_errors_in_final_import": 0,
+      "initial_issue_fixed": "Invalid Rect2 * float expression replaced by independently scaled position and size before passing tests."
+    },
+    "limitations": [
+      "Focused test selection, not full-suite certification, full normal-health campaign or physical-phone/FPS benchmark.",
+      "The resident route audit samples authored paths, not a continuous multi-hour NPC simulation; no new AI or unique resident bodies were added.",
+      "Native rendering retains sandbox shader-cache write messages; editor import cannot save global settings outside workspace; host root-certificate warning remains.",
+      "The discarded first moss sheet remains recoverable as a local ignored temporary asset and the original ImageGen output; it is not referenced by the game.",
+      "Final test logs are local ignored artifacts; sources, tests, reports and screenshots are versioned."
+    ]
+  }
+}

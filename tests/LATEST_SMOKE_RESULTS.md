@@ -1,5 +1,18 @@
 # Smoke-suite checkpoints - latest 2026-10-04
 
+## Material-aware footstep and landing dust - 2026-10-04
+
+13 focused tests pass; all 16 final native views were inspected. Four original
+transparent sheets add 24 low dust phases, blended at the real floor contact
+and aligned to its normal. Full-envelope clearance handles walls and overhangs;
+metal/timber retain only tiny grains. One existing coordinator owns an 8/3 puff
+pool, with no per-effect nodes or new callbacks. Four real walks and four native
+jump landings verify regional material and slope contact. The 512px mipmapped
+imports total 3,721,008 decoded bytes. A new read-only route audit covers 111
+residents, 368 legs and 11,654 samples without finding missing support or abrupt
+floor-height changes; no NPC repair is claimed from a passing audit.
+Detailed evidence and scope: [ground_dust_verification_v1.json](ground_dust_verification_v1.json).
+
 ## Regional reactive moth habitats - 2026-10-04
 
 12 focused tests pass; all 12 native 1280x720 captures were inspected. Four

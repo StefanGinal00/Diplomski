@@ -1,5 +1,17 @@
 # Automated smoke tests
 
+The 2026-10-04 ground-contact continuation is recorded in
+`ground_dust_verification_v1.json`: 13 focused passes and 16 inspected final
+native captures. `ground_dust_animation_smoke.gd` covers all 24 shared phases,
+floor/slope registration, mirrored bounds, wall/overhang clearance, intervening
+actors, finite 8/3 pools and the sub-4-MiB import budget. Existing contact tests
+also check puff retirement on idle, warp, death, flight and noclip. The native
+`preview_ground_dust.gd` uses real player walking and jump landings in four
+regions. `resident_route_grounding_smoke.gd` independently samples 368 route
+legs across 111 residents: 11,654 supported samples, no abrupt height changes.
+This passing audit did not require NPC movement changes and is not a continuous
+campaign or full-suite/performance sign-off.
+
 The 2026-10-04 regional fauna continuation is recorded in
 `ambient_fauna_verification_v1.json`: 12 focused passes and 12 inspected native
 views. `ambient_fauna_smoke.gd` checks all 24 generated wing poses, registered

@@ -1,0 +1,744 @@
+{
+  "version": 1,
+  "date": "2026-10-04",
+  "purpose": "Small ordinary soil, mineral, ash and limestone footstep/landing dust in a side-view painterly game",
+  "generation": {
+    "mode": "built-in image_gen",
+    "intent": "generate",
+    "transparent_background": true,
+    "calls": 5,
+    "accepted_sheets": 4,
+    "source_pixels_edited": false,
+    "rejected_iteration": {
+      "family": "moss",
+      "source": "$CODEX_HOME/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-54fb526d-f2b0-4f35-b9a9-4163403ac8ac.png",
+      "reason": "Bottom-row silhouettes crossed their cell boundary; regenerated with explicit wide-gutter correction rather than clipping the shared shape."
+    }
+  },
+  "source_size": [
+    1536,
+    1024
+  ],
+  "grid": [
+    3,
+    2
+  ],
+  "phases_per_material": 6,
+  "registration": {
+    "consumer": "GroundDustAtlas.gd",
+    "alpha_crop_threshold": 0.02,
+    "horizontal_anchor": "Fixed original cell centre; world scale stays fixed as dust expands.",
+    "vertical_anchor": "Registered lowest alpha row stays on the contact tangent plane.",
+    "pixels": "Source PNGs are byte-preserved. Only engine atlas UVs/crops and animation blend weights vary."
+  },
+  "import": {
+    "size_limit": 512,
+    "mipmaps": true,
+    "compression": "lossless",
+    "decoded_bytes_with_mipmaps": 3721008,
+    "shared_frames": 24
+  },
+  "assets": [
+    {
+      "family": "moss",
+      "path": "art/visual_slice/ground_dust_moss_v2.png",
+      "source": "$CODEX_HOME/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-53187dc6-fdba-44d2-a876-4b64bd91cfe4.png",
+      "sha256": "11C0A707E9142DE87772279303F0516D70DD3AB9063C8F48A035A0CFD980B8D2",
+      "source_hash_matches_saved": true,
+      "prompt": "Use case: stylized-concept. Asset type: transparent production sprite sheet, small ground-contact dust animation for painterly side-view 2D dark fantasy platformer. Exactly SIX frames in a regular THREE columns by TWO rows grid on a landscape canvas. Each isolated cell shows one stage of the SAME low, broad, gently curling footstep dust puff, seen exactly from the side. Row-major animation: 1 tiny initial kick; 2 low spreading puff; 3 rolling wispy puff; 4 expanded thin curl; 5 breaking into fading wisps; 6 sparse residual wisps. Leave wide transparent gutters and generous empty padding in each cell. One fixed invisible floor baseline near the lower fifth of every cell; all visible dust stays ABOVE that baseline, emanating from its center. Maintain identical scale and camera across frames; progression must expand and dissolve rather than recenter or zoom. Real fine painterly particulate detail, ragged soft feathered silhouette, layered semi-transparent dusty wisps, readable delicate shapes. Muted natural material colors. This is ordinary kicked-up ground powder, NOT an explosion, magic, smoke bomb or attack. Genuinely transparent RGBA background, preserve soft alpha at dust edges. No scenery, ground surface, solid stones, characters, shoes, fire, sparks, lighting halos, shadows below dust, borders, frame lines, text, labels or watermark. Palette: muted grey olive and desaturated warm umber woodland soil, a few minute organic chaff flecks contained inside the dust silhouette, cool cavern light. More wispy than billowing. Critical production correction: keep the COMPLETE alpha silhouette of every dust puff strictly inside the middle 70% of its own cell horizontally, with at least 70 transparent pixels between silhouettes in neighboring cells. No overlap anywhere, especially bottom-left and bottom-center frames. Maximum puff width about 350 pixels in a 512-pixel cell. Keep phase 1 smaller and phases 3-5 broader at the same world scale, but leave the wide cell gutters completely alpha-zero. Fine ordinary muted grey-olive soil dust.",
+      "alpha_registration": {
+        "boxes_by_alpha_02_10_30_50": [
+          [
+            [
+              164,
+              337,
+              166,
+              94
+            ],
+            [
+              171,
+              338,
+              152,
+              92
+            ],
+            [
+              176,
+              338,
+              133,
+              91
+            ],
+            [
+              179,
+              339,
+              121,
+              90
+            ]
+          ],
+          [
+            [
+              619,
+              311,
+              305,
+              120
+            ],
+            [
+              623,
+              313,
+              296,
+              116
+            ],
+            [
+              623,
+              315,
+              294,
+              113
+            ],
+            [
+              624,
+              317,
+              289,
+              111
+            ]
+          ],
+          [
+            [
+              1084,
+              268,
+              389,
+              164
+            ],
+            [
+              1089,
+              271,
+              382,
+              160
+            ],
+            [
+              1092,
+              273,
+              375,
+              157
+            ],
+            [
+              1099,
+              274,
+              363,
+              155
+            ]
+          ],
+          [
+            [
+              63,
+              722,
+              436,
+              177
+            ],
+            [
+              66,
+              725,
+              431,
+              173
+            ],
+            [
+              68,
+              728,
+              426,
+              168
+            ],
+            [
+              70,
+              731,
+              420,
+              164
+            ]
+          ],
+          [
+            [
+              579,
+              741,
+              403,
+              156
+            ],
+            [
+              582,
+              747,
+              399,
+              148
+            ],
+            [
+              585,
+              756,
+              394,
+              138
+            ],
+            [
+              600,
+              760,
+              378,
+              133
+            ]
+          ],
+          [
+            [
+              1105,
+              760,
+              371,
+              131
+            ],
+            [
+              1105,
+              760,
+              367,
+              129
+            ],
+            [
+              1106,
+              761,
+              341,
+              125
+            ],
+            [
+              1106,
+              763,
+              328,
+              118
+            ]
+          ]
+        ],
+        "family": "moss",
+        "gutter_alpha": 0.00392156885936856,
+        "size": [
+          1536,
+          1024
+        ],
+        "transparent_fraction": 0.865044911702474
+      }
+    },
+    {
+      "family": "shale",
+      "path": "art/visual_slice/ground_dust_shale_v1.png",
+      "source": "$CODEX_HOME/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-dce472bb-2208-4413-a9d3-7945c7002eb9.png",
+      "sha256": "29BEE12FFFAF3CB5A5C4955EB9ABE29AB72FF94FB7232CDCFFF9C5180FEA1192",
+      "source_hash_matches_saved": true,
+      "prompt": "Use case: stylized-concept. Asset type: transparent production sprite sheet, small ground-contact dust animation for painterly side-view 2D dark fantasy platformer. Exactly SIX frames in a regular THREE columns by TWO rows grid on a landscape canvas. Each isolated cell shows one stage of the SAME low, broad, gently curling footstep dust puff, seen exactly from the side. Row-major animation: 1 tiny initial kick; 2 low spreading puff; 3 rolling wispy puff; 4 expanded thin curl; 5 breaking into fading wisps; 6 sparse residual wisps. Leave wide transparent gutters and generous empty padding in each cell. One fixed invisible floor baseline near the lower fifth of every cell; all visible dust stays ABOVE that baseline, emanating from its center. Maintain identical scale and camera across frames; progression must expand and dissolve rather than recenter or zoom. Real fine painterly particulate detail, ragged soft feathered silhouette, layered semi-transparent dusty wisps, readable delicate shapes. Muted natural material colors. This is ordinary kicked-up ground powder, NOT an explosion, magic, smoke bomb or attack. Genuinely transparent RGBA background, preserve soft alpha at dust edges. No scenery, ground surface, solid stones, characters, shoes, fire, sparks, lighting halos, shadows below dust, borders, frame lines, text, labels or watermark. Palette: cool slate grey and dusty blue-grey crushed mine stone powder, fine mineral grain, quiet neutral ambient light. Low horizontal chalky rolls, not heavy smoke.",
+      "alpha_registration": {
+        "boxes_by_alpha_02_10_30_50": [
+          [
+            [
+              177,
+              391,
+              161,
+              82
+            ],
+            [
+              187,
+              393,
+              130,
+              79
+            ],
+            [
+              193,
+              394,
+              106,
+              77
+            ],
+            [
+              199,
+              395,
+              100,
+              75
+            ]
+          ],
+          [
+            [
+              601,
+              349,
+              336,
+              125
+            ],
+            [
+              612,
+              359,
+              309,
+              113
+            ],
+            [
+              623,
+              364,
+              270,
+              107
+            ],
+            [
+              628,
+              366,
+              256,
+              104
+            ]
+          ],
+          [
+            [
+              1050,
+              328,
+              433,
+              146
+            ],
+            [
+              1059,
+              335,
+              409,
+              138
+            ],
+            [
+              1068,
+              337,
+              379,
+              135
+            ],
+            [
+              1073,
+              339,
+              355,
+              132
+            ]
+          ],
+          [
+            [
+              52,
+              773,
+              457,
+              160
+            ],
+            [
+              63,
+              786,
+              419,
+              145
+            ],
+            [
+              71,
+              793,
+              405,
+              137
+            ],
+            [
+              78,
+              796,
+              392,
+              133
+            ]
+          ],
+          [
+            [
+              570,
+              785,
+              421,
+              147
+            ],
+            [
+              578,
+              799,
+              404,
+              132
+            ],
+            [
+              582,
+              802,
+              398,
+              127
+            ],
+            [
+              584,
+              804,
+              394,
+              124
+            ]
+          ],
+          [
+            [
+              1105,
+              824,
+              350,
+              109
+            ],
+            [
+              1128,
+              839,
+              316,
+              92
+            ],
+            [
+              1143,
+              840,
+              289,
+              90
+            ],
+            [
+              1145,
+              841,
+              143,
+              88
+            ]
+          ]
+        ],
+        "family": "shale",
+        "gutter_alpha": 0.0235294122248888,
+        "size": [
+          1536,
+          1024
+        ],
+        "transparent_fraction": 0.853394826253255
+      }
+    },
+    {
+      "family": "basalt",
+      "path": "art/visual_slice/ground_dust_basalt_v1.png",
+      "source": "$CODEX_HOME/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-1530f83a-41b6-4ef4-80ad-c688d0b6d203.png",
+      "sha256": "3F3E9361B1D6E20D3C3F4F42650BF893AA8D094A855D7D64B346BDFBDFED1429",
+      "source_hash_matches_saved": true,
+      "prompt": "Use case: stylized-concept. Asset type: transparent production sprite sheet, small ground-contact dust animation for painterly side-view 2D dark fantasy platformer. Exactly SIX frames in a regular THREE columns by TWO rows grid on a landscape canvas. Each isolated cell shows one stage of the SAME low, broad, gently curling footstep dust puff, seen exactly from the side. Row-major animation: 1 tiny initial kick; 2 low spreading puff; 3 rolling wispy puff; 4 expanded thin curl; 5 breaking into fading wisps; 6 sparse residual wisps. Leave wide transparent gutters and generous empty padding in each cell. One fixed invisible floor baseline near the lower fifth of every cell; all visible dust stays ABOVE that baseline, emanating from its center. Maintain identical scale and camera across frames; progression must expand and dissolve rather than recenter or zoom. Real fine painterly particulate detail, ragged soft feathered silhouette, layered semi-transparent dusty wisps, readable delicate shapes. Muted natural material colors. This is ordinary kicked-up ground powder, NOT an explosion, magic, smoke bomb or attack. Genuinely transparent RGBA background, preserve soft alpha at dust edges. No scenery, ground surface, solid stones, characters, shoes, fire, sparks, lighting halos, shadows below dust, borders, frame lines, text, labels or watermark. Palette: desaturated russet-grey, warm charcoal and ochre ash residue, fine dry cinder dust with no glowing embers and no flames. Low feathery curls, transparent gaps, no black opaque backdrop.",
+      "alpha_registration": {
+        "boxes_by_alpha_02_10_30_50": [
+          [
+            [
+              172,
+              311,
+              196,
+              103
+            ],
+            [
+              176,
+              312,
+              191,
+              100
+            ],
+            [
+              178,
+              314,
+              189,
+              98
+            ],
+            [
+              179,
+              314,
+              187,
+              97
+            ]
+          ],
+          [
+            [
+              604,
+              275,
+              339,
+              139
+            ],
+            [
+              609,
+              289,
+              317,
+              125
+            ],
+            [
+              611,
+              290,
+              300,
+              123
+            ],
+            [
+              616,
+              290,
+              295,
+              123
+            ]
+          ],
+          [
+            [
+              1076,
+              238,
+              409,
+              177
+            ],
+            [
+              1082,
+              239,
+              402,
+              175
+            ],
+            [
+              1085,
+              239,
+              379,
+              174
+            ],
+            [
+              1087,
+              240,
+              376,
+              173
+            ]
+          ],
+          [
+            [
+              30,
+              661,
+              466,
+              208
+            ],
+            [
+              33,
+              662,
+              455,
+              205
+            ],
+            [
+              37,
+              663,
+              435,
+              203
+            ],
+            [
+              41,
+              664,
+              427,
+              201
+            ]
+          ],
+          [
+            [
+              527,
+              675,
+              484,
+              194
+            ],
+            [
+              531,
+              678,
+              477,
+              190
+            ],
+            [
+              539,
+              694,
+              468,
+              173
+            ],
+            [
+              555,
+              696,
+              443,
+              170
+            ]
+          ],
+          [
+            [
+              1058,
+              704,
+              431,
+              162
+            ],
+            [
+              1081,
+              705,
+              408,
+              161
+            ],
+            [
+              1097,
+              705,
+              391,
+              160
+            ],
+            [
+              1101,
+              706,
+              387,
+              158
+            ]
+          ]
+        ],
+        "family": "basalt",
+        "gutter_alpha": 0.00784313771873713,
+        "size": [
+          1536,
+          1024
+        ],
+        "transparent_fraction": 0.833264668782552
+      }
+    },
+    {
+      "family": "citadel",
+      "path": "art/visual_slice/ground_dust_citadel_v1.png",
+      "source": "$CODEX_HOME/generated_images/01a0b098-652a-7fc3-9fac-c3b350bd7ba9/exec-5fbeab7d-a8ab-46fd-aa2c-f95e621e2011.png",
+      "sha256": "7CDBE9462BF592A2D201857B8231804C9F481D6633F73D6B4CE4BE810329B524",
+      "source_hash_matches_saved": true,
+      "prompt": "Use case: stylized-concept. Asset type: transparent production sprite sheet, small ground-contact dust animation for painterly side-view 2D dark fantasy platformer. Exactly SIX frames in a regular THREE columns by TWO rows grid on a landscape canvas. Each isolated cell shows one stage of the SAME low, broad, gently curling footstep dust puff, seen exactly from the side. Row-major animation: 1 tiny initial kick; 2 low spreading puff; 3 rolling wispy puff; 4 expanded thin curl; 5 breaking into fading wisps; 6 sparse residual wisps. Leave wide transparent gutters and generous empty padding in each cell. One fixed invisible floor baseline near the lower fifth of every cell; all visible dust stays ABOVE that baseline, emanating from its center. Maintain identical scale and camera across frames; progression must expand and dissolve rather than recenter or zoom. Real fine painterly particulate detail, ragged soft feathered silhouette, layered semi-transparent dusty wisps, readable delicate shapes. Muted natural material colors. This is ordinary kicked-up ground powder, NOT an explosion, magic, smoke bomb or attack. Genuinely transparent RGBA background, preserve soft alpha at dust edges. No scenery, ground surface, solid stones, characters, shoes, fire, sparks, lighting halos, shadows below dust, borders, frame lines, text, labels or watermark. Palette: pale weathered limestone grey with a very restrained lavender-grey undertone, thin chalk dust over an ancient city walkway. Natural powder, no glow, no stars, no magic.",
+      "alpha_registration": {
+        "boxes_by_alpha_02_10_30_50": [
+          [
+            [
+              185,
+              356,
+              132,
+              83
+            ],
+            [
+              194,
+              362,
+              119,
+              76
+            ],
+            [
+              201,
+              380,
+              85,
+              56
+            ],
+            [
+              205,
+              381,
+              77,
+              55
+            ]
+          ],
+          [
+            [
+              618,
+              341,
+              304,
+              103
+            ],
+            [
+              625,
+              350,
+              282,
+              92
+            ],
+            [
+              626,
+              356,
+              254,
+              84
+            ],
+            [
+              626,
+              359,
+              252,
+              80
+            ]
+          ],
+          [
+            [
+              1097,
+              287,
+              399,
+              157
+            ],
+            [
+              1102,
+              294,
+              388,
+              148
+            ],
+            [
+              1113,
+              300,
+              369,
+              141
+            ],
+            [
+              1119,
+              303,
+              360,
+              137
+            ]
+          ],
+          [
+            [
+              49,
+              723,
+              457,
+              218
+            ],
+            [
+              56,
+              737,
+              441,
+              197
+            ],
+            [
+              72,
+              743,
+              423,
+              189
+            ],
+            [
+              73,
+              745,
+              421,
+              186
+            ]
+          ],
+          [
+            [
+              572,
+              767,
+              424,
+              171
+            ],
+            [
+              582,
+              769,
+              406,
+              161
+            ],
+            [
+              590,
+              771,
+              393,
+              157
+            ],
+            [
+              597,
+              772,
+              381,
+              154
+            ]
+          ],
+          [
+            [
+              1108,
+              811,
+              378,
+              120
+            ],
+            [
+              1121,
+              818,
+              362,
+              107
+            ],
+            [
+              1131,
+              821,
+              351,
+              101
+            ],
+            [
+              1138,
+              824,
+              330,
+              97
+            ]
+          ]
+        ],
+        "family": "citadel",
+        "gutter_alpha": 0.0235294122248888,
+        "size": [
+          1536,
+          1024
+        ],
+        "transparent_fraction": 0.87811024983724
+      }
+    }
+  ],
+  "verification": "tests/ground_dust_verification_v1.json"
+}
