@@ -2,6 +2,8 @@ extends Node
 ## Room-scoped budget. Decoration never changes physics or hazard telegraphs.
 const VINES := preload("res://art/visual_slice/regional_hanging_vines_v1.png")
 const Machinery = preload("res://FieldMachineryArt.gd")
+const LampFlame := preload("res://CheckpointLampArt.gd")
+const IndustrialMachine := preload("res://IndustrialLandmarkArt.gd")
 const Response := preload("res://FoliageResponse.gd")
 const BRUSH_CELL := 96.0
 var rooms := {}
@@ -155,28 +157,79 @@ func sample_brushing(from: Vector2, to: Vector2, velocity: Vector2, delta: float
 				seen[prop.get_instance_id()] = true; brush_queries += 1
 				if prop.is_visible_in_tree() and Response.crosses(prop.reaction_bounds(),from,to): touched.append(prop)
 	touched.sort_custom(func(a: Node2D,b: Node2D): return a.global_position.distance_squared_to(to)<b.global_position.distance_squared_to(to))
+	var touching_now: Array[Node2D] = []
+	var forces: Array[float] = []
 	for prop in touched:
-		if not prop in brushing and brushing.size()>=brush_budget(): continue
 		var force := clampf(velocity.x/165.0,-1.5,1.5)*0.25
-		if absf(velocity.x)<12 and velocity.y>30:
-			force = signf(prop.global_position.x-to.x+0.01)*minf(velocity.y/600,0.3)
+		# Roots and cloth hanging from their top also respond to the player's
+		# head on an upward jump. Grounded grass still needs a landing or pass.
+		var hanging: bool = prop.reaction_bounds().get_center().y>prop.global_position.y
+		if absf(velocity.x)<12 and (velocity.y>30 or (hanging and velocity.y < -30)):
+			force = signf(prop.global_position.x-to.x+0.01)*minf(absf(velocity.y)/600,0.3)
 		if absf(force)<0.01: continue
+		touching_now.append(prop); forces.append(force)
+		if touching_now.size()>=brush_budget(): break
+	for index in touching_now.size():
+		var prop := touching_now[index]
+		var force := forces[index]
+		_reserve_brush_slot(prop,touching_now,to)
 		var fresh: bool = prop.brush(force)
 		if not prop in brushing: brushing.append(prop)
 		brush_contacts += 1
 		if fresh and is_instance_valid(brush_motes) and not low_quality:
 			brush_motes.burst(Vector2(clampf(to.x,prop.reaction_bounds().position.x,prop.reaction_bounds().end.x),prop.reaction_bounds().end.y),force,brush_palette)
 
+func _reserve_brush_slot(prop: Node2D, touching_now: Array[Node2D], at: Vector2) -> void:
+	if prop in brushing or brushing.size()<brush_budget(): return
+	# A remote settling clump must not make the next plant unresponsive. Keep
+	# the nearest current contacts, then use spare slots for the fading trail.
+	var retired := -1
+	var farthest := -1.0
+	for index in brushing.size():
+		var candidate := brushing[index]
+		if candidate in touching_now: continue
+		var distance := candidate.global_position.distance_squared_to(at)
+		if distance>farthest: farthest = distance; retired = index
+	if retired>=0:
+		brushing[retired].reset_response()
+		brushing.remove_at(retired)
+
+func _animation_bounds(node: Node2D) -> Rect2:
+	if node.has_method("reaction_bounds"): return node.reaction_bounds()
+	if node.has_meta("ceiling_seep"): return node.footprint
+	return Rect2(node.global_position,Vector2.ZERO)
+
+func _animation_distance_squared(node: Node2D, point: Vector2) -> float:
+	var bounds := _animation_bounds(node)
+	return point.distance_squared_to(Vector2(clampf(point.x,bounds.position.x,bounds.end.x),clampf(point.y,bounds.position.y,bounds.end.y)))
+
+func _animation_category(node: Node2D) -> int:
+	if node is LampFlame and node.lamp.is_revealed and (node.lamp.is_active or node.lamp.is_resting): return 1
+	if node is Machinery and is_instance_valid(node.wheel): return 2
+	if node is IndustrialMachine and is_instance_valid(node.rotor) and node.enabled: return 2
+	return 0
+
 func select_visible(world_view: Rect2) -> void:
 	var visible: Array[Node2D] = []
+	var padded := world_view.grow(100)
 	for node in candidates:
 		if not is_instance_valid(node) or not node.is_visible_in_tree(): continue
-		if world_view.grow(100).has_point(node.global_position):
+		var bounds := _animation_bounds(node)
+		if padded.has_point(node.global_position) or (bounds.has_area() and padded.intersects(bounds)):
 			visible.append(node)
 	var center := world_view.get_center()
-	visible.sort_custom(func(a: Node2D, b: Node2D): return a.global_position.distance_squared_to(center) < b.global_position.distance_squared_to(center))
+	visible.sort_custom(func(a: Node2D, b: Node2D): return _animation_distance_squared(a,center) < _animation_distance_squared(b,center))
 	var next_active: Array[Node2D] = []
+	# A dense grass band must not monopolize every visible animation slot.
+	# Lit lamps and moving rotors share small reservations, not extra budgets.
+	for category in [1,2]:
+		var reserved := 0
+		for node in visible:
+			if _animation_category(node)!=category: continue
+			next_active.append(node); reserved += 1
+			if reserved>=(1 if low_quality else 2): break
 	for node in visible:
+		if node in next_active: continue
 		next_active.append(node)
 		if next_active.size() >= animation_budget(): break
 	# Camera selection runs every quarter-second, independently of the slower

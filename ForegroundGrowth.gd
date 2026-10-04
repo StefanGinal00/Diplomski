@@ -19,7 +19,10 @@ func configure(family: String, variant: int, anchor: Vector2, display_height: fl
 	kind = variant
 	height = display_height
 	support = floor_rect
-	global_position = anchor
+	# Targets, supports and brush queries are all in world units. A translated
+	# or non-uniformly scaled room must not enlarge or flatten a small tuft.
+	top_level = true
+	global_transform = Transform2D(0,Vector2.ONE,0,anchor)
 	phase = fposmod(anchor.x * 0.037 + anchor.y * 0.021, TAU)
 	z_index = 3
 	set_meta("ambient_motion", true)
@@ -27,6 +30,7 @@ func configure(family: String, variant: int, anchor: Vector2, display_height: fl
 	set_meta("player_reactive",true)
 	set_process(false)
 	player = get_tree().get_first_node_in_group("player") as Node2D
+	reference_height = 1.0
 	for i in 4: reference_height = maxf(reference_height, Atlas.DATA[atlas_id].boxes[kind*4+i][3])
 	art = Sprite2D.new()
 	art.name = "Leaves"
@@ -34,9 +38,14 @@ func configure(family: String, variant: int, anchor: Vector2, display_height: fl
 	echo = Sprite2D.new()
 	echo.name = "BreezeBlend"
 	add_child(echo)
-	Atlas.show(art,atlas_id,kind*4,height,0,1,reference_height,"root")
+	# Each painted pose has its own root pivot and trimmed width. Reserve the
+	# actual four-pose envelope once, not a guessed symmetric width each frame.
+	footprint = Rect2()
+	for frame in 4:
+		Atlas.show(art,atlas_id,kind*4+frame,height,0,1,reference_height,"root")
+		var bounds := art.global_transform*art.get_rect()
+		footprint = bounds if not footprint.has_area() else footprint.merge(bounds)
 	Atlas.show(echo,atlas_id,kind*4+1,height,0,1,reference_height,"root")
-	footprint = Rect2(anchor-Vector2(height*1.0,height),Vector2(height*2,height))
 	modulate = Color(0.68,0.78,0.76,0.94) if family=="cave" else Color(0.8,0.77,0.72,0.94)
 	rest()
 
@@ -54,6 +63,11 @@ func animate(age: float) -> void:
 
 func reaction_bounds() -> Rect2:
 	return footprint
+
+func placement_bounds() -> Rect2:
+	# The maximum spring bend is .42 rad, plus .025 wind. Keep that soft
+	# silhouette clear of walls/reading art too; roots remain fixed in place.
+	return footprint.grow_individual(height*.46,0,height*.46,0)
 
 func brush(force: float) -> bool:
 	return response.push(force)

@@ -1,5 +1,21 @@
 # Smoke-suite checkpoints - latest 2026-10-04
 
+## Reactive scenery and grounded reading signs - 2026-10-04
+
+18 focused tests pass; 12 native camera captures were inspected. Grass uses
+actual painted/flex bounds and rebuilds when its support changes. New nearby
+contacts no longer lose to old settling plants; upward jumps brush roots.
+Flames and machinery retain part of the unchanged animation budget, and lamp
+state updates immediately even outside that budget. Drops release from eight
+registered opaque tips along 132 fully supported fall corridors.
+
+All 596 readables remain available, with 585 grounded generic pedestals and
+four cue-only fallbacks. A first-visit regression reproduces eight stale sign
+fits before the fix and zero afterward across 39 rooms. Reentry, restoration
+of disabled support, narrow scaled ledges and door clearance are covered.
+110 actual-player ceiling traversal checks also pass. Detailed results and
+limitations: [reactive_followthrough_verification_v1.json](reactive_followthrough_verification_v1.json).
+
 ## Buried tunnel ceilings and release regression - 2026-10-04
 
 13 focused tests pass, including all 22 lowered vaults across 39 audited

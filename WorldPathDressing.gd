@@ -119,10 +119,12 @@ func _add_seeps(palette: String, floors: Array[Rect2], reserved: Array[Rect2]) -
 	for detail in details:
 		if seeps.size()>=12: return
 		if detail.kind!="hanging" or detail.variant not in [3,4]: continue
-		var at := Vector2(detail.footprint.get_center().x,detail.footprint.end.y)
+		var at: Vector2 = detail.drip_anchor()
 		var floor_rect := Support.below(at+Vector2(0,2),floors,310)
 		if not floor_rect.has_area() or floor_rect.position.y-at.y<45: continue
-		var volume := Rect2(at-Vector2(4,0),Vector2(8,floor_rect.position.y-at.y-.25))
+		var volume := preload("res://CanopySeep.gd").path_bounds(at,floor_rect,detail)
+		if volume.position.x<floor_rect.position.x+1 or volume.end.x>floor_rect.end.x-1: continue
+		volume.size.y -= 1.25
 		if not Placement.clear(volume,terrain_signature) or not Placement.clear(volume.grow(5),reserved): continue
 		var clear := true
 		for prior in occupied:

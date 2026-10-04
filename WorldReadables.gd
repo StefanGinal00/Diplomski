@@ -17,6 +17,9 @@ var body: Label
 var close_button: Button
 var marker: Label
 var marker_art: Sprite2D
+const SIGN_OFFSET := Vector2(22,-10)
+const Support := preload("res://WorldSupport.gd")
+var sign_relative_bounds := Rect2(31,-3,22,36)
 
 func _ready() -> void:
 	name = "Readables"
@@ -81,6 +84,14 @@ func _ready() -> void:
 	game.add_child.call_deferred(marker)
 	var sign := preload("res://FieldMachineryArt.gd").sprite(marker, 5, Vector2(20, 25), Vector2(22, 36))
 	marker_art = sign
+	# The atlas includes transparent padding. Register the opaque pedestal's
+	# full footprint once so neither its right-hand offset nor its foot row
+	# can silently hang beyond a short landing.
+	var pixels := sign.texture.get_image()
+	var used := pixels.get_used_rect()
+	var painted := Rect2(Vector2(used.position)-sign.texture.get_size()/2,Vector2(used.size))
+	sign_relative_bounds = sign.transform*painted
+	sign_relative_bounds.position += SIGN_OFFSET
 	sign.z_index = -26 # The sign belongs behind actors; only its small cue is above.
 	marker.hide()
 	get_viewport().size_changed.connect(_layout)
@@ -137,6 +148,15 @@ func register_room(id: String, nodes: Array = []) -> void:
 			var at: Vector2 = _supported_anchor(node, nodes)
 			found.append({"title": null, "text": node, "at": at})
 			_retire(node)
+	for entry in found:
+		if is_instance_valid(entry.get("physical_board")): continue
+		# Keep the original reading location if its support disappears. Do not
+		# transfer a clue to another tier just to make its optional sign fit.
+		if not entry.has("sign_hint"): entry["sign_hint"] = entry.at
+		var fit := _fit_near_sign(entry.sign_hint,nodes)
+		entry["sign_supported"] = not fit.is_empty()
+		entry["sign_support"] = fit.get("support",Rect2())
+		entry.at = fit.get("at",entry.sign_hint)
 	rooms[id] = found
 	entries.assign(found)
 	nearest = -1
@@ -180,16 +200,11 @@ func _retire(label: Label) -> void:
 	label.modulate.a = 0
 
 func _supported_anchor(label: Label, nodes: Array) -> Vector2:
-	var at: Vector2 = label.global_position + Vector2(label.size.x * 0.5, 0)
+	var at: Vector2 = label.get_global_transform()*Vector2(label.size.x*.5,0)
 	var best := INF
 	var anchor := at
 	var support := Rect2()
-	for node in nodes:
-		if not node is StaticBody2D: continue
-		var col := node.get_node_or_null("CollisionShape2D") as CollisionShape2D
-		if col == null or col.disabled or not col.shape is RectangleShape2D: continue
-		var rect: Rect2 = col.global_transform * Rect2(-col.shape.size * 0.5, col.shape.size)
-		if rect.size.x < 40 or rect.size.y > 32: continue
+	for rect in _sign_supports(nodes):
 		var foot := Vector2(clampf(at.x, rect.position.x + 10, rect.end.x - 10), rect.position.y - 35)
 		var cost := foot.distance_squared_to(at)
 		if cost < best:
@@ -208,23 +223,64 @@ func _clear_supported_sign(anchor: Vector2,nodes: Array) -> Vector2:
 
 func _clear_door_mouth(anchor: Vector2,support: Rect2,nodes: Array) -> Vector2:
 	if not support.has_area(): return anchor
-	# The single physical sign is offset 42px from its reading anchor. Keep
-	# it on this same ledge but beside a door, not planted inside its opening.
+	var fit := _fit_on_support(anchor,support,nodes)
+	return fit.get("at",anchor)
+
+func _sign_supports(nodes: Array) -> Array[Rect2]:
+	var floors: Array[Rect2] = []
+	for node in nodes:
+		if not is_instance_valid(node) or not node is CollisionShape2D or node.disabled or not node.shape is RectangleShape2D or not is_zero_approx(node.global_rotation): continue
+		var parent: Node = node.get_parent()
+		if not parent is StaticBody2D or parent.is_in_group("enemy") or parent.is_in_group("breakable"): continue
+		var title := String(parent.name).to_lower()
+		if "ceiling" in title or "roof" in title or "topwall" in title: continue
+		var rect: Rect2 = node.global_transform*Rect2(-node.shape.size/2,node.shape.size)
+		if rect.size.x>=sign_relative_bounds.size.x+2 and rect.size.y<=80 and rect.size.x>rect.size.y:
+			floors.append(rect)
+	return floors
+
+func _fit_near_sign(anchor: Vector2,nodes: Array) -> Dictionary:
+	var best := INF
+	var selected := {}
+	for support in _sign_supports(nodes):
+		# Only repair the existing intended landing. A missing floor should
+		# hide the pedestal, never teleport a clue up or down a shaft.
+		if absf(support.position.y-anchor.y-sign_relative_bounds.end.y)>26: continue
+		var center_x := anchor.x+sign_relative_bounds.get_center().x
+		if center_x<support.position.x-112 or center_x>support.end.x+112: continue
+		var fit := _fit_on_support(anchor,support,nodes)
+		if fit.is_empty(): continue
+		var cost: float = fit.at.distance_squared_to(anchor)
+		if cost<best: best=cost; selected=fit
+	return selected
+
+func _fit_on_support(anchor: Vector2,support: Rect2,nodes: Array) -> Dictionary:
+	if support.size.x<sign_relative_bounds.size.x+2: return {}
+	# Fit the actual painted rectangle, not just the reading anchor. This is
+	# required even when there are no doors anywhere near the landing.
 	var doors: Array[Vector2] = []
 	for node in nodes:
+		if not is_instance_valid(node): continue
 		if (node is LevelExit or node.is_in_group("room_door")) and absf(node.global_position.y-support.position.y)<85:
 			var art:=node.get_node_or_null("FinishedDevice") as Sprite2D
 			doors.append(Vector2(art.global_position.x if art!=null else node.global_position.x,node.global_position.y))
-	if doors.is_empty(): return anchor
-	var selected := anchor
+	var members: Array[Node] = []; members.assign(nodes)
+	var solids := Support.solids(members)
+	var selected := {}
 	var best := INF
 	for offset in [0,-48,48,-84,84,-112,112]:
-		var sign_x := clampf(anchor.x+42+offset,support.position.x+12,support.end.x-12)
-		var score := pow(sign_x-anchor.x-42,2)
+		var fitted := Vector2(clampf(anchor.x+offset,support.position.x+1-sign_relative_bounds.position.x,support.end.x-1-sign_relative_bounds.end.x),support.position.y-sign_relative_bounds.end.y+.15)
+		var bounds := Rect2(fitted+sign_relative_bounds.position,sign_relative_bounds.size)
+		var clear := true
+		var exposed := bounds; exposed.size.y = maxf(0,support.position.y-.25-exposed.position.y)
+		for solid in solids:
+			if solid.intersects(exposed): clear=false; break
 		for door in doors:
-			if absf(sign_x-door.x)<44: score+=1000000
+			if absf(bounds.get_center().x-door.x)<44: clear=false; break
+		if not clear: continue
+		var score := fitted.distance_squared_to(anchor)
 		if score<best:
-			best=score; selected=Vector2(sign_x-42,anchor.y)
+			best=score; selected={"at":fitted,"support":support}
 	return selected
 
 func _process(delta: float) -> void:
@@ -262,12 +318,12 @@ func _refresh_nearest() -> void:
 	marker.visible = nearest >= 0
 	if nearest >= 0:
 		prompt.text = "[G] Read: " + _title(entries[nearest])
-		marker.position = entries[nearest].at + Vector2(22, -10)
+		marker.global_position = entries[nearest].at + SIGN_OFFSET
 		var board: Node2D = entries[nearest].get("physical_board")
-		marker_art.visible = not is_instance_valid(board)
+		marker_art.visible = not is_instance_valid(board) and entries[nearest].get("sign_supported",false)
 		if is_instance_valid(board):
 			# A real readable board needs only its cue, not a second floating sign.
-			marker.position = board.to_global(Vector2(-20,board.foot_y-72))
+			marker.global_position = board.to_global(Vector2(-20,board.foot_y-72))
 
 func _title(entry: Dictionary) -> String:
 	return entry.title.text if is_instance_valid(entry.title) else entry.text.text.get_slice("\n", 0)

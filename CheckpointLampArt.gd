@@ -38,18 +38,21 @@ func _ready() -> void:
 	animate(0)
 
 func animate(age: float) -> void:
+	current_frame = int(age * 9.0) % 4
+	sync_state()
+	if flame.visible: flame.modulate.a = 0.84 + sin(age * 13.7) * 0.1
+
+func sync_state() -> void:
 	var lit: bool = lamp.is_revealed and (lamp.is_active or lamp.is_resting)
 	flame.visible = lit
 	body.self_modulate = Color.WHITE if lit else Color(0.5, 0.57, 0.59)
 	if not lit: return
-	current_frame = int(age * 9.0) % 4
 	flame.texture = frames[current_frame + (4 if warm else 0)]
 	# The base is registered inside the glass, not at the lamp's ground foot.
 	var ratio := 0.25 * (1.12 if lamp.is_resting else 1.0)
 	var source_ratio := SHEET.get_size()/Vector2(1536,1024)
 	flame.scale = Vector2.ONE * ratio / source_ratio
 	flame.position = Vector2(4, -3) + Vector2((flame.texture.get_width() * 0.5/source_ratio.x - (BASE_X[current_frame] - X[current_frame])) * ratio, (256 - 475) * ratio)
-	flame.modulate.a = 0.84 + sin(age * 13.7) * 0.1
 
 func rest() -> void:
-	animate(0)
+	sync_state()

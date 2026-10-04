@@ -1,6 +1,18 @@
 # Visual style pilot — Echo Grotto / Starfall market
 
-Latest route enrichment (2026-10-03): [eight original transparent sheets, 48 cutouts and exact built-in ImageGen prompts](route_dressing_manifest_v1.json),
+Latest reactive follow-through (2026-10-04): [18 focused passes and 12 inspected native captures](../../tests/reactive_followthrough_verification_v1.json).
+Existing painted foliage now reserves its full four-pose/contact envelope and
+retains world scale inside scaled rooms. New nearby contacts and upward root
+brushes stay responsive within the original budgets. Eight alpha-registered
+root tips feed 132 safely supported drip corridors; an airborne drop no longer
+follows later root motion. Lit lamps and moving rotors share reserved slots
+inside the existing 18/8 animation cap, while lamp state itself updates even
+when culled. Reading pedestals fit their painted footprint onto actual ground,
+including first visits after ceiling/relief construction. Unsupported sites
+retain reading access with only the cue. No source pixels, gameplay collision
+or per-prop callbacks were added in this corrective pass.
+
+Previous route enrichment (2026-10-03): [eight original transparent sheets, 48 cutouts and exact built-in ImageGen prompts](route_dressing_manifest_v1.json),
 with [39-room placement checks, 30 real-controller ceiling checks, nine focused test passes and 12 inspected native views](../../tests/route_richness_verification_v1.json).
 Wet caves, mines, cinder regions and Starfall use distinct low ground bands,
 walk-through foreground, attached rock scallops, ivy, ropes, chains and cloth.

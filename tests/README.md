@@ -1,5 +1,20 @@
 # Automated smoke tests
 
+The 2026-10-04 reactive follow-through is recorded in
+`reactive_followthrough_verification_v1.json`: 18 latest unique focused passes
+and 12 inspected native 1280x720 captures. Across 39 rooms the corrected
+foreground layer has 5,542 visible, supported tufts with no measured wall or
+interaction-reservation overlap. Four-pose bounds, scaled roots, terrain
+replacement, current-contact priority, upward root brushing and shared 18/8
+animation plus 12/6 contact budgets have targeted regressions. Eight registered
+opaque root tips feed 132 safely swept drip corridors. All 596 readables remain
+available: 585 grounded generic pedestals, four cue-only fallbacks and seven
+existing physical boards. First-visit registration is checked synchronously
+after final terrain, not masked by a second finish call. The native preview
+also verifies unlit/active/resting lamps with zero selected animation slots.
+No new raster sources or gameplay colliders were added. These are focused
+checks, not a full campaign, whole-suite run or physical-device benchmark.
+
 The 2026-10-03 route-richness pass is recorded in
 `route_richness_verification_v1.json`: nine focused passes, 12 inspected native
 1280x720 views, eight original generated sheets and 48 registered cutouts.

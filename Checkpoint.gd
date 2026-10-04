@@ -11,10 +11,19 @@ signal player_left(checkpoint)
 @export_range(32.0, 500.0, 8.0) var enemy_block_radius: float = 150.0
 @export var reveal_after_boss_id: String = ""
 
-var is_active: bool = false
-var is_resting: bool = false
+var is_active: bool = false:
+	set(value):
+		is_active = value
+		_sync_lamp_art()
+var is_resting: bool = false:
+	set(value):
+		is_resting = value
+		_sync_lamp_art()
 var player_in_range: Player
-var is_revealed: bool = true
+var is_revealed: bool = true:
+	set(value):
+		is_revealed = value
+		_sync_lamp_art()
 
 @onready var core: Polygon2D = $Core
 @onready var glow: Polygon2D = $Glow
@@ -22,6 +31,13 @@ var is_revealed: bool = true
 @onready var interaction_prompt: Label = $InteractionPrompt
 @onready var respawn_point: Marker2D = $RespawnPoint
 @onready var save_chime: AudioStreamPlayer2D = $SaveChime
+
+
+func _sync_lamp_art() -> void:
+	# State transitions are authoritative even when camera animation is culled.
+	# No extra per-lamp frame callback; keep the current painted flame pose.
+	var living_flame := get_node_or_null("FinishedDevice/LivingFlame")
+	if living_flame != null: living_flame.sync_state()
 
 
 func _ready() -> void:

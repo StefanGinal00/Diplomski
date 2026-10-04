@@ -41,6 +41,13 @@ func animate(age: float) -> void:
 func reaction_bounds() -> Rect2:
 	return footprint
 
+func drip_anchor() -> Vector2:
+	# Alpha-registered root tip, not the transparent bottom-centre of its box.
+	# Sprite-local coordinates also carry the current rooted wind/contact skew.
+	var local := art.get_rect().position+Atlas.drip_tip(family,variant)
+	if art.flip_h: local.x = -local.x
+	return art.to_global(local)
+
 func brush(force: float) -> bool:
 	return response.push(force*(0.75 if kind == "hanging" else 1.0))
 

@@ -1,0 +1,246 @@
+{
+  "date": "2026-10-04",
+  "scope": "Reactive environment follow-through, grounded reading signs and ambient scheduling. Existing raster assets and native gameplay collision are preserved.",
+  "implementation": {
+    "rooms_audited": 39,
+    "foreground": {
+      "before_visible_tufts": 5810,
+      "after_visible_tufts": 5542,
+      "invalid_support_before": 423,
+      "invalid_support_after": 0,
+      "solid_overlap_before": 2,
+      "solid_overlap_after": 0,
+      "reservation_overlap_before": 141,
+      "reservation_overlap_after": 0,
+      "painted_frame_bounds_mismatch_before": 5810,
+      "painted_frame_bounds_mismatch_after": 0,
+      "notes": [
+        "World-unit transforms survive nonuniform room scale; four painted poses and maximum flex reserve real silhouette space.",
+        "Changed/disabled support rebuilds growth; old springs reset and retire safely without stale member-snapshot pointers.",
+        "180 plants per room cap is unchanged; current contacts take priority over distant settling plants."
+      ]
+    },
+    "motion": {
+      "brush_budget_desktop": 12,
+      "brush_budget_low": 6,
+      "animation_budget_desktop": 18,
+      "animation_budget_low": 8,
+      "mixed_fixture_desktop": {
+        "foliage": 14,
+        "flames": 2,
+        "rotors": 2
+      },
+      "mixed_fixture_low": {
+        "foliage": 6,
+        "flames": 1,
+        "rotors": 1
+      },
+      "notes": [
+        "Upward jumps brush hanging roots/cloth; grounded grass still responds to passing/landing.",
+        "Visible fall corridors are considered even when the emitter is above the camera.",
+        "Checkpoint state setters refresh flame/tint immediately outside animation selection; camera refresh does not reset retained flame poses.",
+        "Category reservations share the existing total cap; no extra per-prop callbacks were added."
+      ]
+    },
+    "seeps": {
+      "registered_alpha_tips": 8,
+      "previous_world_count": 163,
+      "safe_world_count": 132,
+      "notes": [
+        "Sources use registered opaque root tips, including cropped atlas offsets and current bend.",
+        "A drop snapshots its emitter on release, then falls independently from later root motion.",
+        "Full root-swing corridors must fit their real landing and clear walls/devices; 31 unsafe legacy sites are omitted.",
+        "Ash remains dry. Source PNG pixels are unchanged."
+      ]
+    },
+    "readables": {
+      "entries": 596,
+      "generic_pedestals": 589,
+      "supported_pedestals": 585,
+      "cue_only_fallbacks": 4,
+      "original_overhanging_pedestals": 38,
+      "first_visit_stale_fits_before": 8,
+      "first_visit_stale_fits_after": 0,
+      "first_visit_rooms": 39,
+      "notes": [
+        "Fit the whole painted pedestal, not its reading anchor (the old artwork was offset by 42 world units).",
+        "Native Gallery DEPTH 5 edge-overhang and Hearth provider ground-contact cases are covered.",
+        "Unsupported or ceiling-blocked sites retain their clue and reading access without an invented floating pedestal or transfer to another tier.",
+        "Restoring support restores the pedestal; reentry is idempotent; physical task-board art is retained.",
+        "First-time finish revalidates signs after final portal, ceiling-vault and relief geometry."
+      ]
+    },
+    "retained_route_counts": {
+      "floor_details": 7253,
+      "hanging_details": 3501,
+      "walk_through_route_foreground": 2863,
+      "understory_details": 1468,
+      "lowered_vaults": 22,
+      "registered_route_cutouts": 48
+    },
+    "new_raster_sources": 0,
+    "collision_changes_this_pass": 0,
+    "new_per_decoration_callbacks": 0
+  },
+  "verification": {
+    "passed": 18,
+    "total": 18,
+    "tests": [
+      {
+        "test": "ambient_contact_priority_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-150131-699-f7eae49c"
+      },
+      {
+        "test": "reactive_foliage_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-144958-397-4439773b"
+      },
+      {
+        "test": "ambient_continuity_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-144958-397-011bd7c0"
+      },
+      {
+        "test": "boss_lamp_reveal_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-145008-008-55cb7ac2"
+      },
+      {
+        "test": "lamp_travel_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-145008-007-913b46fd"
+      },
+      {
+        "test": "save_failure_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-145325-079-88fa4bdd"
+      },
+      {
+        "test": "opening_checkpoint_regression_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-145325-059-77c5e4c1"
+      },
+      {
+        "test": "world_ambience_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-145325-060-046d2d8e"
+      },
+      {
+        "test": "foreground_placement_lifecycle_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-150103-845-03058b7d"
+      },
+      {
+        "test": "living_world_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-144745-539-620a59ed"
+      },
+      {
+        "test": "readable_support_footprint_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-150440-900-4edb87d1"
+      },
+      {
+        "test": "world_readables_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-150451-113-83617a4d"
+      },
+      {
+        "test": "settlement_reading_occlusion_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-150023-909-4e347414"
+      },
+      {
+        "test": "painted_tasks_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-150034-125-d6d8f0cc"
+      },
+      {
+        "test": "canopy_seep_source_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-150553-742-17b99ab8"
+      },
+      {
+        "test": "route_richness_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-150113-979-461851b1"
+      },
+      {
+        "test": "world_grounding_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-150120-457-be0b5579"
+      },
+      {
+        "test": "route_vault_traversal_smoke.gd",
+        "status": "PASS",
+        "run": ".tmp-smoke-suite-20261004-150227-717-c2644ca7"
+      }
+    ],
+    "failing_before_evidence": [
+      {
+        "area": "foreground placement",
+        "run": ".tmp-smoke-suite-20261004-144414-478-fa584934"
+      },
+      {
+        "area": "synchronous first-visit sign fitting",
+        "run": ".tmp-smoke-suite-20261004-150356-121-13ad79ae",
+        "findings": 8
+      }
+    ],
+    "source_alpha_audit": "tests/audit_route_drip_sources.gd",
+    "native_previews": {
+      "script": "tests/preview_reactive_followthrough.gd",
+      "log": ".tmp-reactive-followthrough-delivery.log",
+      "captures_reviewed": 12,
+      "drip_rooms": [
+        "shaft_gallery",
+        "echo_depths",
+        "starfall_rooted_hall"
+      ],
+      "drip_phases": [
+        "release",
+        "fall",
+        "splash"
+      ],
+      "lamp_states": [
+        "unlit",
+        "lit",
+        "resting"
+      ],
+      "paths": [
+        "art/characters/preview_reactive_drip_<room>_<phase>.png",
+        "art/characters/preview_reactive_lamp_culled_<state>.png"
+      ],
+      "notes": [
+        "Native 1280x720 renderer; player settles on actual collision before each view.",
+        "Lamp states are captured with zero active ambient slots and no direct call to its animator.",
+        "Preview only: room simulation and enemy/area collision are frozen to isolate scenery. This is not a normal-health combat playthrough."
+      ]
+    },
+    "traversal": {
+      "actual_player_checks": 110,
+      "lowered_vaults": 22
+    },
+    "world_grounding": {
+      "rooms": 39,
+      "surfaces": 3161,
+      "contacts": 14610,
+      "portals": 112,
+      "outer_boundaries": 95
+    },
+    "editor_import": {
+      "exit_code": 0,
+      "log": ".tmp-reactive-followthrough-import.log",
+      "script_errors": 0,
+      "notes": "Class registration and asset import succeeded; sandbox denied saving global editor settings outside the workspace."
+    },
+    "limitations": [
+      "Focused regression selection, not the complete smoke suite, continuous full campaign, exported-build certification or device/FPS benchmark.",
+      "Windows root-certificate warning remains; native rendering reports sandbox shader-cache write denials, not script/shader compilation failures.",
+      "Mixed ambient category counts are synthetic fixture measurements, not a claimed count of all previously starved lamps in the live world.",
+      "No new raster generation in this corrective pass; existing art is reused. Full-game visual completion is not claimed.",
+      "Run folders are ignored local artifacts; tests, this report and native screenshots are versioned."
+    ]
+  }
+}
